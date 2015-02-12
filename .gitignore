@@ -1,0 +1,8 @@
+*.o
+*.so
+
+# LaTeX
+*.pdf
+*.log
+*.aux
+*.toc
