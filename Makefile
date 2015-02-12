@@ -6,8 +6,15 @@ SRC = \
 BIN = \
 	$(NULL)
 
+# Variables pour la documentation
+
 DOCDIR = doc
+REPDIR = $(DOCDIR)/report
 PDFDIR = $(DOCDIR)
+
+REPDEPS = \
+	$(REPDIR)/*.tex \
+	$(NULL)
 
 PDF = \
 	$(PDFDIR)/report.pdf \
@@ -22,10 +29,18 @@ PDFCLN = \
 
 all: doc
 
+# Compilation de la documentation
+
 doc: $(PDF)
 
-$(PDFDIR)/%.pdf: $(DOCDIR)/report/%.tex
+$(PDFDIR)/%.pdf: $(REPDIR)/%.tex
+	# Compile pour générer la TOC
 	pdflatex -output-directory $(@D) $^
+	# Compile avec la TOC
+	pdflatex -output-directory $(@D) $^
+
+$(REPDIR)/report.tex: $(REPDEPS)
+	touch $@
 
 clean:
 	rm -Rf $(BIN) $(PDFCLN)
