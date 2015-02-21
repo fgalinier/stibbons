@@ -1,6 +1,51 @@
 \section{Qt}
 
-\subsection{Généralités}
+Qt est un framework d'application multiplateforme écrit en C++ principalement utilisé pour la création d'interfaces graphiques.
 
-\subsection{Dessiner avec Qt}
+\subsection{Multi plateforme et multi langages}
+
+Qt est utilisable sur de nombreuses plates-formes telles que Windows, Mac OS X, X11, Wayland, Android ou iOS.
+
+De plus, bien que Qt soit développé en C++, n'est pas le seul langage depuis lequel il est utilisable, on trouve notament des bindings pour Python, JavaScript, Go, Ruby, Haskell ou encore Ada.
+
+\subsection{Modules}
+
+Qt comprend de nombreux modules afin d'aider tant que possible le développement d'applications.
+On peut particulièrement citer :
+\begin{description}
+	\item[Core]~: une implémentation des types de base (QString...), conteneurs, parallèlisme, entrées-sorties, système d'évènements...
+	\item[Widgets]~: des widgets pour le développement d'interfaces graphiques
+	\item[Network]~: support de divers protocoles réseau (TCP, UDP, HTTP, SSL, ...)
+	\item[Multimedia]~: lecture audio et vidéo
+	\item[SQL]~: accès à des bases de données comprenant SQL
+	\item[WebKit]~: moteur de rendu HTML
+\end{description}
+
+\subsection{Concepts fondamentaux}
+
+\subsubsection{Widgets et layouts}
+
+Qt propose un système de widgets complet et puissant. Il propose de nombreux widgets classiques tels que des boutons, des choix à puce, des onglets, des étiquettes, des images...
+
+Pour Qt, tout widget peut contenir des enfants et les arranger selon une disposition qui lui est affectée. Un widget n'ayant pas de widget parent sera considéré comme étant une fenêtre.
+Son fonctionnement est ainsi assez différent de son concurrent Gtk+ pour qui seuls les widgets descendant de Container peuvent contenir des enfants, les dispositions étant des widgets conteneurs, et pour qui une fenêtre est un widget descendant de Window, classe descendant elle même de Container.
+
+\subsubsection{Signaux et slots}
+
+Qt propose également un système de signaux et de slots permettant d'implémenter de modèle observeur de manière efficace.
+
+Ainsi un widget peut émettre des signaux contenant ou non des données (par exemple, pour signaler le changement de valeur d'une entrée) et un autre widget peut réceptionner ce signal dans un de ses slots, l'exécutant alors.
+Son concurrent GObject propose un système similaire mais pour lequel toute fonction ayant le bon prototype (potentiellement une lambda) peut être déclenchée par un signal, il n'y a ainsi donc pas de notion de slot.
+
+\subsubsection{Une extension à C++}
+
+Qt propose une extension à C++~: il ajoute y ajoute des mots clés pour permettre de simplifier la définition d'objets descendant de QObject.
+, tout particulièrement en spécifiant un ensemble de slots d'une certaine visibilités.
+Ainsi lors de la déclaration d'une classe, il est possible de déclarer une liste de slots publics ou de signaux en les précédant des mentions \verb|public slots| et \verb|signals|, respectivement.
+Le Meta-Object Compiler de Qt est alors utilisé pour convertir ces définitions en C++ clasique à la compilation.
+qmake
+
+Qt propose également un système permettant d'embarquer des ressources (images, sons, ...) directement dans le binaire produit via la définition d'un fichier de collection de ressources (\verb|.qrc|) et l'utilisation d'un Ressource Compiler.
+
+qmake est un générateur de Makefiles permettant de simplifier l'utilisation du Meta-Object Compiler et du Ressource Compiler.
 
