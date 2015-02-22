@@ -55,3 +55,17 @@ Qt permet de développer des interfaces dans un langage déclaratif basé sur XM
 
 Qt Creator va encore plus loin puisqu'il est un IDE assez complet centré sur le développement d'applications avec Qt. En effet il permet de gérer des projets, d'éditer du code, de designer des interfaces comme Qt Designer et même de créer des slots de manière graphique. Bien entendu il permet également de compiler, exécuter et débuguer le projet.
 
+\subsection{Dessiner avec Qt}
+
+Il est possible de réaliser des widgets personalisés en redéfinitssant la méthode \verb|paintEvent| d'un widget et en utilisant la classe QPainter pour dessiner sur le widget.
+
+Une instance QPainter est liée à un widget et propose diverses méthodes  permettant de dessiner dessus, permettant notament de dessiner :
+\begin{itemize}
+	\item des lignes
+	\item des arcs de cercle
+	\item des polygones
+	\item des ellipses
+	\item des images
+	\item du texte
+\end{itemize}
+
