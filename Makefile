@@ -23,6 +23,7 @@ LIBS = \
 CFLAGS = -fPIC -Wall -Wpedantic -std=c++11
 
 SRC = \
+	src/stibbons.cpp \
 	$(NULL)
 
 MOCHEADERS = \
