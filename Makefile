@@ -25,9 +25,11 @@ CFLAGS = -fPIC -Wall -Wpedantic -std=c++11
 SRC = \
 	src/application.cpp \
 	src/stibbons.cpp \
+	src/window.cpp \
 	$(NULL)
 
 MOCHEADERS = \
+	src/window.h \
 	$(NULL)
 
 MOCSRC = $(MOCHEADERS:%.h=%.moc.cpp)

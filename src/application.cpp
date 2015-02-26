@@ -8,17 +8,20 @@
 
 #include <application.h>
 
-#include <QIcon>
+#include <window.h>
 
 namespace Stibbons {
 
 Application::Application (int & argc, char ** argv) : QApplication (argc, argv) {
 	setOrganizationName("StibbonsTeam");
 	setApplicationName("Stibbons");
-	setWindowIcon(QIcon(":/images/stibbons.png"));
+	setWindowIcon(QIcon(":/images/stibbons.svg"));
 }
 
 int Application::exec () {
+	Window win;
+	win.show();
+
 	return QApplication::exec();
 }
 
