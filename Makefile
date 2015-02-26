@@ -20,7 +20,7 @@ LIBS = \
 	-lQt5Widgets \
 	$(NULL)
 
-CFLAGS = -fPIC -Wall -Wpedantic
+CFLAGS = -fPIC -Wall -Wpedantic -std=c++11
 
 SRC = \
 	$(NULL)
