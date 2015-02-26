@@ -1,19 +1,23 @@
 /**
- * \file stibbons.cpp
- * \brief The Stibbons multi-agent system
+ * \file application.h
+ * \brief The Stibbons application
  * \author Adrien Plazas
  * \version 0.1
  * \date 26/02/2015
  */
 
-#include <application.h>
+#pragma once
 
-int main(int argc, char *argv[]) {
-	// Must be called outside of any namespace
-	Q_INIT_RESOURCE(stibbons);
+#include <QApplication>
 
-	Stibbons::Application app(argc, argv);
-	return app.exec();
+namespace Stibbons {
+
+class Application : private QApplication {
+	public:
+		Application(int & argc, char ** argv);
+		int exec();
+};
+
 }
 
 /*

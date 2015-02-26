@@ -23,6 +23,7 @@ LIBS = \
 CFLAGS = -fPIC -Wall -Wpedantic -std=c++11
 
 SRC = \
+	src/application.cpp \
 	src/stibbons.cpp \
 	$(NULL)
 
@@ -32,6 +33,7 @@ MOCHEADERS = \
 MOCSRC = $(MOCHEADERS:%.h=%.moc.cpp)
 
 QRCFILES = \
+	data/stibbons.qrc \
 	$(NULL)
 
 QRCSRC = $(QRCFILES:%.qrc=%.qrc.cpp)
@@ -77,7 +79,7 @@ $(BIN): $(OBJECTS)
 	$(RCC) -name $(basename $(<F)) $< -o $@
 
 %.o: %.cpp
-	$(CC) $(CFLAGS) $(INCDIRS) $(LIBS) $< -c -o $@
+	$(CC) $(CFLAGS) $(INCDIRS) -I$(<D) $(LIBS) $< -c -o $@
 
 # Compilation de la documentation
 
