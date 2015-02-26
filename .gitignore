@@ -2,6 +2,10 @@
 *.so
 stibbons
 
+# Qt
+*.qrc.cpp
+*.moc.cpp
+
 # LaTeX
 *.pdf
 *.log
