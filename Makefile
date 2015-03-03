@@ -53,10 +53,12 @@ QTSRC = \
 	src/qt/application.cpp \
 	src/qt/stibbons.cpp \
 	src/qt/window.cpp \
+	src/qt/world-view.cpp \
 	$(NULL)
 
 MOCHEADERS = \
 	src/qt/window.h \
+	src/qt/world-view.h \
 	$(NULL)
 
 MOCSRC = $(MOCHEADERS:%.h=%.moc.cpp)

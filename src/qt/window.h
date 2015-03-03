@@ -10,6 +10,9 @@
 
 #include <QMainWindow>
 
+#include "../model/world.h"
+#include "world-view.h"
+
 class QAction;
 class QMenu;
 class QPlainTextEdit;
@@ -21,6 +24,7 @@ class Window : public QMainWindow {
 
 	public:
 		Window();
+		~Window();
 
 	protected:
 		void closeEvent(QCloseEvent *event) Q_DECL_OVERRIDE;
@@ -42,6 +46,9 @@ class Window : public QMainWindow {
 		QAction *haltAct;
 		QAction *quitAct;
 		QAction *aboutAct;
+
+		World *world;
+		WorldView *worldView;
 
 		QToolBar *toolbar;
 };

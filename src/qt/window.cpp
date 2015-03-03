@@ -12,13 +12,25 @@
 
 namespace stibbons {
 
-Window::Window() {
+Window::Window() : world(new World(1.0, 1.0)) {
 	createActions();
 	createToolBars();
+
+	worldView = new WorldView(nullptr);
+	worldView->setWorld(world);
+	setCentralWidget(worldView);
+
+	world->onChanged([this]() {
+		worldView->update();
+	});
 
 	readSettings();
 
 	setUnifiedTitleAndToolBarOnMac(true);
+}
+
+Window::~Window() {
+	delete world;
 }
 
 void Window::createActions() {
