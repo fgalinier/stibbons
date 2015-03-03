@@ -1,0 +1,120 @@
+Grammaire :
+
+Nous avons comme symboles terminaux : {NUMBER, STRING, BOOLEAN, NULL, ID, FD, RT, LT, PU, PD, DIE, {, }, (, ), ',' , +, -, *, /, =, >, >=, <, <=, ==, !=, AND, OR, XOR, NOT, \N}
+
+Ainsi que l'axiome unique : instr_list
+Voici les règles que nous avons définis :
+
+instr_list -> instr instr_list | bloc instr_list | ε
+bloc -> { instr_list }
+
+instr -> expr \N | instr_turtle \N
+// Nous avons choisi qu'il n'y aurait qu'une instruction par ligne (pas d'autres séparateurs que le \N)
+
+expr -> affect | fct_call | lit | ID | expr op_bin expr | op_un expr | ( expr )
+
+affect -> ID = expr 
+// L'affection est une expression ce qui permet de les chaîner (ex : a = b = 3)
+// Il n'y aura également pas de déclaration de variable. Le typage sera dynamique, et les variables non initialisées auront un valeur nulle. 
+
+fct_call -> ID ( params ) | ID ( )
+params -> params , expr | expr
+
+// Stibbons n'aura qu'un seul type numérique (plus de simplicité)
+
+lit -> NUMBER | STRING | BOOLEAN | NULL
+op_un -> NOT | -
+op_bin -> + | * | - | / | > | >= | < | <= | == | != | AND | OR | XOR
+
+instr_turtle -> FD expr | RT expr | LT expr | PD | PU | DIE
+// Les instructions de la tortue se démarquent des appels de fonction par le fait que leurs paramètres ne sont pas forcément entre parenthèses
+
+Tokens (exemple de syntaxe) :
+
+/** Après concertation avec Clément, nous nous sommes dit : Après tout, pourquoi pas ne pas
+  * laisser le choix d'utiliser les mots-clefs en français. Ça peut faire bizarre dans du
+  * code anglais (if, while, etc.) mais après tout, c'est au choix de l'utilisateur (et ça
+  * n'est pas plus compliqué à implémenter pour nous). Qu'en pensez-vous ?
+  * Le propose-t-on aussi pour les booléens (vrai/faux) ? et pour les opérateurs booléens ?
+  */
+
+NUMBER :
+23
+25.2
+.378
+0x85AF -> Est-ce bien pertinent ?
+07657  -> Clément et moi-même pensons que non.
+
+STRING :
+Pour la chaîne de caractère a"d'f :
+"a\"d'f"
+'a"d\'f'
+"""a"d'f"""
+
+BOOLEAN (insensible à la casse) :
+true
+false
+vrai
+faux
+
+NULL (insensible à la casse) :
+null
+
+ID :
+_abboAE3re
+azezZe8
+sefij_241-df4
+--> Commence par [_a-zA-Z], et suivi de [_a-zA-Z0-9\-]*
+
+Les suivants sont tous insensibles à la casse
+
+FD : fd | forward | av | avance
+fd
+forward
+av
+avance
+
+RT : 
+rt
+turn-right
+td
+tourne-droite
+
+LT : 
+lt
+turn-left
+tg
+tourne-gauche
+
+PU : 
+pu
+pen-up
+lc
+leve-crayon
+
+PD : 
+pd
+pen-down
+ac
+abaisse-crayon
+
+DIE :
+die
+mort
+
+AND :
+and
+&
+
+OR :
+or
+|
+
+XOR :
+xor
+^
+
+NOT :
+not
+!
+
