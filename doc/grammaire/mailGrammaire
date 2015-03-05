@@ -49,7 +49,7 @@ Pour la chaîne de caractère a"d'f :
 "a\"d'f"
 'a"d\'f'
 """a"d'f"""
---> regex : 
+--> regex : (\"(\\\"|[^\"])*\")|('(\\'|[^'])*')|(\"\"\"(.|\\n)*\"\"\") 
 
 BOOLEAN (insensible à la casse) :
 true
