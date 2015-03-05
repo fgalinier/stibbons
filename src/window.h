@@ -10,8 +10,6 @@
 
 #include <QMainWindow>
 
-#include <world-view.h>
-
 class QAction;
 class QMenu;
 class QPlainTextEdit;
