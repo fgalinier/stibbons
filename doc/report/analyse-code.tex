@@ -16,7 +16,7 @@ Un générateur d'analyseur permet d'éviter cette étape.\\
 
 Flex est une version libre de l'analyseur lexical Lex. Il est généralement associé à l'analyseur syntaxique GNU Bison, la version GNU de Yacc. \\
 Il lit les fichiers d'entrée donnés pour obtenir la description de l'analyseur à générer. La description est une liste de paires d'expressions rationnelles et de code C, appelées règles. \\
-Flex a plusieurs régles pour l'écriture du fichier .l++ .\\
+Flex a plusieurs régles pour l'écriture du fichier .l+ .\\
 D'abord, un espace entre \%\{ \%\} qui contient une partie optionnelle de définition.\\
 Par exemple :\\
 \%\{\\
@@ -35,7 +35,7 @@ Enfin, une partie optionnelle pour des fonctions C++ définis par l'utilisateur,
 int main()\{
 ...
 \}\\
-Pour compiler : \textit{flex exemple.l+} puis \textit{g++ -g -o exemple lex.yy.c -lfl}.\\
+Pour compiler : \textit{flex -+ exemple.l+}  puis \textit{g++ -g -o exemple lex.yy.cc -lfl}.\\
 Après, c'est la fonction de l'analyseur syntaxique yyparse() qui appelle yylex() pour avoir les jetons correspondant au fichier lu.\\
 La fonction main() appelle yyparse().\\
 

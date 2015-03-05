@@ -42,20 +42,18 @@ NUMBER :
 23
 25.2
 .378
-0x85AF -> Est-ce bien pertinent ?
-07657  -> Clément et moi-même pensons que non.
+--> regex : [1-9]*\.?[0-9]+
 
 STRING :
 Pour la chaîne de caractère a"d'f :
 "a\"d'f"
 'a"d\'f'
 """a"d'f"""
+--> regex : 
 
 BOOLEAN (insensible à la casse) :
 true
 false
-vrai
-faux
 
 NULL (insensible à la casse) :
 null
@@ -64,43 +62,32 @@ ID :
 _abboAE3re
 azezZe8
 sefij_241-df4
---> Commence par [_a-zA-Z], et suivi de [_a-zA-Z0-9\-]*
+--> regex : [_a-zA-Z][_a-zA-Z0-9\-]*
 
 Les suivants sont tous insensibles à la casse
 
-FD : fd | forward | av | avance
+FD :
 fd
 forward
-av
-avance
 
 RT : 
 rt
 turn-right
-td
-tourne-droite
 
 LT : 
 lt
 turn-left
-tg
-tourne-gauche
 
 PU : 
 pu
 pen-up
-lc
-leve-crayon
 
 PD : 
 pd
 pen-down
-ac
-abaisse-crayon
 
 DIE :
 die
-mort
 
 AND :
 and
