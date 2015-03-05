@@ -1,0 +1,101 @@
+/*Define tokens */
+%{
+	#define NUMBER 300
+	#define STRING 301
+	#define BOOLEAN 302
+	#define NIL 303
+	#define ID 304
+	#define FD 305
+	#define LT 306
+	#define RT 307
+	#define PU 308
+	#define PD 309
+	#define DIE 310
+
+	#include <cstdlib>
+	#include <iostream>
+	
+	union{
+		char* s;
+		double d;
+	}yylval;
+%}
+
+%option noyywrap
+%option case-insensitive
+ 
+/*Rules*/
+%%
+[true|false] {return BOOLEAN;}
+
+null {return NIL;}
+
+[fd|forward] {return FD;}
+
+[lt|turn\-left] {return LT;}
+
+[rt|turn\-right] {return RT;}
+
+[pd|pen\-down] {return PD;}
+
+pu {return PU;}
+
+pen\-up {return PU;}
+
+die {return DIE;}
+
+[and|&] {return '&';}
+
+[or| \|] {return '|';}
+
+
+[xor|^] {return '^';}
+
+[not|!] {return '!';}
+
+[1-9]*\.?[0-9]+ {yylval.d=atoi(yytext);return NUMBER;}
+
+[_a-zA-Z][-_a-zA-Z0-9]* {yylval.s=strdup(yytext);return ID;}
+
+(\"(\\\"|[^\"])*\")|('(\\'|[^'])*')|(\"\"\"(.|\\n)*\"\"\")  {yylval.s=strdup(yytext);return STRING;}
+
+\n {return '\n';}
+
+[ |\t]	{}
+
+%%
+/*Program*/
+int main(){
+    int j;
+    yyFlexLexer* lex = new yyFlexLexer();
+    while(0!=(j=lex->yylex())){
+	
+	switch(j){
+	case NUMBER : std::cout<<"; valeur= "<<yylval.d<<"\n"; 
+	break;
+	case STRING : std::cout<<"; valeur= "<<yylval.s<<"\n";
+	break;
+	case BOOLEAN : std::cout<<"; valeur= "<<yylval.s<<"\n";
+	break;
+	case NIL : std::cout<<"; valeur= "<<yylval.s<<"\n";
+	break;
+	case ID : std::cout<<"; valeur= "<<yylval.s<<"\n";
+	break;
+	case FD : std::cout<<"; valeur= "<<yylval.s<<"\n";
+	break;
+	case RT : std::cout<<"; valeur= "<<yylval.s<<"\n";
+	break;
+	case LT : std::cout<<"; valeur= "<<yylval.s<<"\n";
+	break;
+	case PU : std::cout<<"; valeur= "<<yylval.s<<"\n";
+	break;
+	case PD : std::cout<<"; valeur= "<<yylval.s<<"\n";
+	break;
+	case DIE : std::cout<<"; valeur= "<<yylval.s<<"\n";
+	break;	
+	default: std::cout<<"\n";
+	break;
+    	}
+    }
+    return 0;
+}
