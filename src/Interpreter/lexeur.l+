@@ -3,17 +3,22 @@
 	#define NUMBER 300
 	#define STRING 301
 	#define BOOLEAN 302
-	#define NIL 303
-	#define ID 304
-	#define FD 305
-	#define LT 306
-	#define RT 307
-	#define PU 308
-	#define PD 309
-	#define DIE 310
+	#define COLOR 303
+	#define NIL 304
+	#define ID 305
+	#define FD 306
+	#define LT 307
+	#define RT 308
+	#define PU 309
+	#define PD 310
+	#define DIE 311
+	#define AND 312
+	#define OR 313
+	#define XOR 314
+	#define NOT 315
 
-	#include <cstdlib>
 	#include <iostream>
+	#include <cstring>
 	
 	union{
 		char* s;
@@ -26,42 +31,45 @@
  
 /*Rules*/
 %%
-[true|false] {return BOOLEAN;}
+true|false {return BOOLEAN;}
 
 null {return NIL;}
 
-[fd|forward] {return FD;}
+fd|forward {return FD;}
 
-[lt|turn\-left] {return LT;}
+lt|turn-left {return LT;}
 
-[rt|turn\-right] {return RT;}
+rt|turn-right {return RT;}
 
-[pd|pen\-down] {return PD;}
+pd|pen-down {return PD;}
 
-pu {return PU;}
-
-pen\-up {return PU;}
+pu|pen-up {return PU;}
 
 die {return DIE;}
 
-[and|&] {return '&';}
+and|& {return AND;}
 
-[or| \|] {return '|';}
+or|\| {return OR;}
 
+xor|^ {return XOR;}
 
-[xor|^] {return '^';}
-
-[not|!] {return '!';}
+not|! {return NOT;}
 
 [1-9]*\.?[0-9]+ {yylval.d=atoi(yytext);return NUMBER;}
 
-[_a-zA-Z][-_a-zA-Z0-9]* {yylval.s=strdup(yytext);return ID;}
-
 (\"(\\\"|[^\"])*\")|('(\\'|[^'])*')|(\"\"\"(.|\\n)*\"\"\")  {yylval.s=strdup(yytext);return STRING;}
+
+#[a-fA-F0-9]{6}|red|blue|green|yellow|black|white|brown|purple|gray|orange|pink|magenta|cyan {yylval.s=strdup(yytext);return COLOR;}
+
+[_a-zA-Z][\-_a-zA-Z0-9]* {yylval.s=strdup(yytext);return ID;}
+
+"//"[^\n]*\n {}
+
+"/*"([^*]|"*"+[^*/])*"*"+"/" {}
 
 \n {return '\n';}
 
-[ |\t]	{}
+[ \t]* {}
 
 %%
 /*Program*/
@@ -71,27 +79,27 @@ int main(){
     while(0!=(j=lex->yylex())){
 	
 	switch(j){
-	case NUMBER : std::cout<<"; valeur= "<<yylval.d<<"\n"; 
+	case NUMBER : std::cout<<"nombre; valeur= "<<yylval.d<<"\n"; 
 	break;
-	case STRING : std::cout<<"; valeur= "<<yylval.s<<"\n";
+	case STRING : std::cout<<"string; valeur= "<<yylval.s<<"\n";
 	break;
-	case BOOLEAN : std::cout<<"; valeur= "<<yylval.s<<"\n";
+	case BOOLEAN : std::cout<<"boolean; valeur= "<<yylval.s<<"\n";
 	break;
-	case NIL : std::cout<<"; valeur= "<<yylval.s<<"\n";
+	case NIL : std::cout<<"nil; valeur= "<<yylval.s<<"\n";
 	break;
-	case ID : std::cout<<"; valeur= "<<yylval.s<<"\n";
+	case ID : std::cout<<"id; valeur= "<<yylval.s<<"\n";
 	break;
-	case FD : std::cout<<"; valeur= "<<yylval.s<<"\n";
+	case FD : std::cout<<"fd; valeur= "<<yylval.s<<"\n";
 	break;
-	case RT : std::cout<<"; valeur= "<<yylval.s<<"\n";
+	case RT : std::cout<<"rt; valeur= "<<yylval.s<<"\n";
 	break;
-	case LT : std::cout<<"; valeur= "<<yylval.s<<"\n";
+	case LT : std::cout<<"lt; valeur= "<<yylval.s<<"\n";
 	break;
-	case PU : std::cout<<"; valeur= "<<yylval.s<<"\n";
+	case PU : std::cout<<"pu; valeur= "<<yylval.s<<"\n";
 	break;
-	case PD : std::cout<<"; valeur= "<<yylval.s<<"\n";
+	case PD : std::cout<<"pd; valeur= "<<yylval.s<<"\n";
 	break;
-	case DIE : std::cout<<"; valeur= "<<yylval.s<<"\n";
+	case DIE : std::cout<<"die; valeur= "<<yylval.s<<"\n";
 	break;	
 	default: std::cout<<"\n";
 	break;

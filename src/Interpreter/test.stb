@@ -2,5 +2,5 @@ a=3
 b=a
 
 fd 2
-rt 3
+rt b
 
