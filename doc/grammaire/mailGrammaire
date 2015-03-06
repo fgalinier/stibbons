@@ -1,6 +1,6 @@
 Grammaire :
 
-Nous avons comme symboles terminaux : {NUMBER, STRING, BOOLEAN, NULL, ID, FD, RT, LT, PU, PD, DIE, {, }, (, ), ',' , +, -, *, /, =, >, >=, <, <=, ==, !=, AND, OR, XOR, NOT, \N}
+Nous avons comme symboles terminaux : {NUMBER, STRING, BOOLEAN, COLOR, NULL, ID, FD, RT, LT, PU, PD, DIE, {, }, (, ), ',' , +, -, *, /, =, >, >=, <, <=, ==, !=, AND, OR, XOR, NOT, \N}
 
 Ainsi que l'axiome unique : instr_list
 Voici les règles que nous avons définis :
@@ -22,7 +22,7 @@ params -> params , expr | expr
 
 // Stibbons n'aura qu'un seul type numérique (plus de simplicité)
 
-lit -> NUMBER | STRING | BOOLEAN | NULL
+lit -> NUMBER | STRING | BOOLEAN | COLOR | NULL
 op_un -> NOT | -
 op_bin -> + | * | - | / | > | >= | < | <= | == | != | AND | OR | XOR
 
@@ -54,6 +54,9 @@ Pour la chaîne de caractère a"d'f :
 BOOLEAN (insensible à la casse) :
 true
 false
+
+COLOR (insensible à la casse) :
+--> regex : #[a-fA-F0-9]{6}|red|blue|green|yellow|black|white|brown|purple|gray|orange|pink|magenta|cyan
 
 NULL (insensible à la casse) :
 null
