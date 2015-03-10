@@ -18,6 +18,7 @@ namespace stibbons {
  * \author Julia Bassoumi
  */
 enum class Type {
+	COLOR
 };
 
 /**

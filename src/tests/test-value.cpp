@@ -1,13 +1,25 @@
 #include "values.h"
 
+#include "../model/color.h"
+
 #include <cppunit/TestCase.h>
 #include <cppunit/extensions/HelperMacros.h>
 
+using namespace std;
 using namespace CppUnit;
 
 class TestValue : public TestCase {
 	CPPUNIT_TEST_SUITE(TestValue);
+	CPPUNIT_TEST(checkColor);
 	CPPUNIT_TEST_SUITE_END();
+
+	public:
+		stibbons::Color color;
+
+		void checkColor() {
+			cout << "TestValue::checkColor" << endl;
+			CPPUNIT_ASSERT (stibbons::Type::COLOR == color.getType());
+		}
 };
 
 /* enregistrement du nom des test dans le registre */
