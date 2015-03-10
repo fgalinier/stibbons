@@ -28,6 +28,7 @@ CFLAGS = -fPIC -Wall -Wpedantic -std=c++11
 
 MODELSRC = \
 	src/model/color.cpp \
+	src/model/line.cpp \
 	src/model/point.cpp \
 	$(NULL)
 
