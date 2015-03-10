@@ -1,29 +1,14 @@
 /*Define tokens */
 %{
-	#define NUMBER 300
-	#define STRING 301
-	#define BOOLEAN 302
-	#define COLOR 303
-	#define NIL 304
-	#define ID 305
-	#define FD 306
-	#define LT 307
-	#define RT 308
-	#define PU 309
-	#define PD 310
-	#define DIE 311
-	#define AND 312
-	#define OR 313
-	#define XOR 314
-	#define NOT 315
-
-	#include <iostream>
-	#include <cstring>
+	#include <string>
+	#include <cstdlib>
+	#include "y.tab.h"
+	using namespace std;
 	
-	union{
-		char* s;
-		double d;
-	}yylval;
+	#define YY_DECL yy::parser::token_type yylex (yy::parser::semantic_type* pyylval)
+	YY_DECL;
+	
+	#define yyterminate() {}
 %}
 
 %option noyywrap
@@ -31,79 +16,58 @@
  
 /*Rules*/
 %%
-true|false {return BOOLEAN;}
+true|false {if(yytext[0] == 't' || yytext[0] == 'T') { pyylval->b = true; } else { pyylval->b = false; } return yy::parser::token::BOOLEAN;}
 
-null {return NIL;}
+null {return yy::parser::token::NIL;}
 
-fd|forward {return FD;}
+fd|forward {return yy::parser::token::FD;}
 
-lt|turn-left {return LT;}
+lt|turn-left {return yy::parser::token::LT;}
 
-rt|turn-right {return RT;}
+rt|turn-right {return yy::parser::token::RT;}
 
-pd|pen-down {return PD;}
+pd|pen-down {return yy::parser::token::PD;}
 
-pu|pen-up {return PU;}
+pu|pen-up {return yy::parser::token::PU;}
 
-die {return DIE;}
+die {return yy::parser::token::DIE;}
 
-and|& {return AND;}
+"==" {return yy::parser::token::EQ;}
 
-or|\| {return OR;}
+"!=" {return yy::parser::token::NEQ;}
 
-xor|^ {return XOR;}
+">" {return yy::parser::token::GT;}
 
-not|! {return NOT;}
+">=" {return yy::parser::token::GEQ;}
 
-[1-9]*\.?[0-9]+ {yylval.d=atoi(yytext);return NUMBER;}
+"<" {return yy::parser::token::LS;}
 
-(\"(\\\"|[^\"])*\")|('(\\'|[^'])*')|(\"\"\"(.|\\n)*\"\"\")  {yylval.s=strdup(yytext);return STRING;}
+"<=" {return yy::parser::token::LEQ;}
 
-#[a-fA-F0-9]{6}|red|blue|green|yellow|black|white|brown|purple|gray|orange|pink|magenta|cyan {yylval.s=strdup(yytext);return COLOR;}
+and|& {return yy::parser::token::AND;}
 
-[_a-zA-Z][\-_a-zA-Z0-9]* {yylval.s=strdup(yytext);return ID;}
+or|\| {return yy::parser::token::OR;}
+
+xor|^ {return yy::parser::token::XOR;}
+
+not|! {return yy::parser::token::NOT;}
+
+[1-9]*\.?[0-9]+ {pyylval->d=atof(yytext); return yy::parser::token::NUMBER;}
+
+(\"(\\\"|[^\"])*\")|('(\\'|[^'])*')|(\"\"\"(.|\\n)*\"\"\")  {pyylval->ps=new std::string(yytext); return yy::parser::token::STRING;}
+
+#[a-fA-F0-9]{6}|red|blue|green|yellow|black|white|brown|purple|gray|orange|pink|magenta|cyan {pyylval->ps=new std::string(yytext); return yy::parser::token::COLOR;}
+
+[_a-zA-Z][\-_a-zA-Z0-9]* {pyylval->ps=new std::string(yytext); return yy::parser::token::ID;}
 
 "//"[^\n]*\n {}
 
-"/*"([^*]|"*"+[^*/])*"*"+"/" {}
-
-\n {return '\n';}
+"/*"([^*]|"*"+[^*/])*"*"+"/" ;
 
 [ \t]* {}
 
+.|\n {return yy::parser::token_type(yytext[0]);}
+
 %%
 /*Program*/
-int main(){
-    int j;
-    yyFlexLexer* lex = new yyFlexLexer();
-    while(0!=(j=lex->yylex())){
-	
-	switch(j){
-	case NUMBER : std::cout<<"nombre; valeur= "<<yylval.d<<"\n"; 
-	break;
-	case STRING : std::cout<<"string; valeur= "<<yylval.s<<"\n";
-	break;
-	case BOOLEAN : std::cout<<"boolean; valeur= "<<yylval.s<<"\n";
-	break;
-	case NIL : std::cout<<"nil; valeur= "<<yylval.s<<"\n";
-	break;
-	case ID : std::cout<<"id; valeur= "<<yylval.s<<"\n";
-	break;
-	case FD : std::cout<<"fd; valeur= "<<yylval.s<<"\n";
-	break;
-	case RT : std::cout<<"rt; valeur= "<<yylval.s<<"\n";
-	break;
-	case LT : std::cout<<"lt; valeur= "<<yylval.s<<"\n";
-	break;
-	case PU : std::cout<<"pu; valeur= "<<yylval.s<<"\n";
-	break;
-	case PD : std::cout<<"pd; valeur= "<<yylval.s<<"\n";
-	break;
-	case DIE : std::cout<<"die; valeur= "<<yylval.s<<"\n";
-	break;	
-	default: std::cout<<"\n";
-	break;
-    	}
-    }
-    return 0;
-}
+

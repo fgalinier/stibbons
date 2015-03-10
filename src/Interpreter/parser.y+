@@ -1,0 +1,104 @@
+%{
+	#include <iostream>
+	#include <exception>
+	#include <string>
+	using namespace std;
+	
+	#define YY_DECL yy::parser::token_type yylex (yy::parser::semantic_type* pyylval)
+%}
+
+%skeleton "lalr1.cc"
+%union{
+	double d;
+	std::string *ps;
+	bool b;
+}
+
+%{
+	YY_DECL;
+%}
+%token NIL FD LT RT PU PD DIE AND OR XOR NOT EQ NEQ GT GEQ LS LEQ
+%token <d> NUMBER
+%token <ps> STRING
+%token <ps> COLOR
+%token <b> BOOLEAN 
+%token <ps> ID
+%type <d> expr_num
+%type <ps> expr_str
+%type <b> expr_bool
+
+%left '+' '-' '*' '/' '%' AND OR XOR EQ NEQ GT GEQ LS LEQ
+%right MOINSUNAIRE NOT
+%%
+instr_list : instr instr_list {}
+					 | bloc instr_list {}
+					 | {};
+						 
+bloc : '{' instr_list '}' {};
+						 
+instr : expr '\n' {}
+			| instr_turtle '\n' {};
+
+instr_turtle : FD expr_num {cout<<"FORWARD "<<$2<<endl;}
+						 | LT expr_num {cout<<"TURN-LEFT "<<$2<<endl;}
+						 | RT expr_num {cout<<"TURN-RIGHT "<<$2<<endl;}
+						 | PU {cout<<"Pen is now up."<<endl;}
+						 | PD {cout<<"Pen is now down"<<endl;}
+						 | DIE {cout<<"DIE"<<endl;};
+
+expr : expr_num {cout<<$1<<endl;} 
+	 	 | expr_str {cout<<*$1<<endl;}
+	 	 | expr_bool {cout<<$1<<endl;}
+	 	 | COLOR {cout<<*$1<<endl;}
+	 	 | fct_call {};
+		 
+expr_num : NUMBER {$$ = $1;}
+				 | expr_num '+' expr_num {$$ = $1 + $3;}
+				 | expr_num '-' expr_num {$$ = $1 - $3;}
+				 | expr_num '*' expr_num {$$ = $1 * $3;}
+				 | expr_num '/' expr_num {if($3) $$ = $1 / $3;
+				 												else throw std::exception(); }
+				 | '-' expr_num %prec MOINSUNAIRE {$$ = -$2;}
+				 | '(' expr_num ')' {$$ = $2;};
+		 
+expr_str : STRING {$$ = $1;}
+				 | expr_str '+' expr_str {$$ = new string(*$1 + *$3);};
+
+expr_bool : BOOLEAN {$$ = $1;}
+					| expr_num GT expr_num {$$ = $1 > $3;}
+					| expr_num GEQ expr_num {$$ = $1 >= $3;}
+					| expr_num LS expr_num {$$ = $1 < $3;}
+					| expr_num LEQ expr_num {$$ = $1 <= $3;}
+					| expr_num EQ expr_num {$$ = $1 == $3;}
+					| expr_num NEQ expr_num {$$ = $1 != $3;}
+					| expr_str GT expr_str {$$ = *$1 > *$3;}
+					| expr_str GEQ expr_str {$$ = *$1 >= *$3;}
+					| expr_str LS expr_str {$$ = *$1 < *$3;}
+					| expr_str LEQ expr_str {$$ = *$1 <= *$3;}
+					| expr_str EQ expr_str {$$ = *$1 == *$3;}
+					| expr_str NEQ expr_str {$$ = *$1 != *$3;}
+					| expr_bool EQ expr_bool {$$ = $1 == $3;}
+					| expr_bool NEQ expr_bool {$$ = $1 != $3;}
+					| COLOR EQ COLOR {$$ = *$1 == *$3;}
+					| COLOR NEQ COLOR {$$ = *$1 != *$3;}
+					| expr_bool AND expr_bool {$$ = $1 && $3;}
+					| expr_bool OR expr_bool {$$ = $1 || $3;}
+					| expr_bool XOR expr_bool {$$ = $1 ^ $3;}
+					| NOT expr_bool {$$ = ! $2;};
+					
+fct_call : ID '(' params ')' {cout<<*$1<<" is called."<<endl;}
+				 | ID '(' ')' {cout<<*$1<<" is called."<<endl;};
+params : params ',' expr  {}
+		   | expr {};
+	
+%%
+void yy::parser::error(string const& s) {
+	cout<<endl<<"Erreur : "<<s<<endl;
+}
+
+int main() {
+	yy::parser* pparser = new yy::parser();
+	int i=pparser->parse();
+	
+	return i;
+}
