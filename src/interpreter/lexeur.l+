@@ -60,13 +60,23 @@ not|! {return yy::parser::token::NOT;}
 
 [_a-zA-Z][\-_a-zA-Z0-9]* {pyylval->ps=new std::string(yytext); return yy::parser::token::ID;}
 
-"//"[^\n]*\n {}
+"//"[^\n]*\n ;
 
 "/*"([^*]|"*"+[^*/])*"*"+"/" ;
 
-[ \t]* {}
+[ \t]* ;
 
-.|\n {return yy::parser::token_type(yytext[0]);}
+\{\n* {return yy::parser::token::LB;}
+
+\}\n* {return yy::parser::token::RB;}
+
+\(\n* {return yy::parser::token::LP;}
+
+\) {return yy::parser::token::RP;}
+
+\n\n* {return yy::parser::token_type(yytext[0]);}
+
+. {return yy::parser::token_type(yytext[0]);}
 
 %%
 /*Program*/
