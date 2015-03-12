@@ -7,14 +7,18 @@ RCC = rcc-qt5
 INCDIR = /usr/include
 QTINCDIR = $(INCDIR)/qt5
 
-INCDIRS = \
+TESTINCDIRS = `pkg-config --cflags cppunit`
+
+TESTLIBS = `pkg-config --libs cppunit`
+
+QTINCDIRS = \
 	-I$(QTINCDIR) \
 	-I$(QTINCDIR)/QtCore \
 	-I$(QTINCDIR)/QtGui \
 	-I$(QTINCDIR)/QtWidgets \
 	$(NULL)
 
-LIBS = \
+QTLIBS = \
 	-lQt5Core \
 	-lQt5Gui \
 	-lQt5Widgets \
@@ -22,7 +26,11 @@ LIBS = \
 
 CFLAGS = -fPIC -Wall -Wpedantic -std=c++11
 
-SRC = \
+TESTSRC = \
+	src/tests/tests.cpp \
+	$(NULL)
+
+QTSRC = \
 	src/application.cpp \
 	src/stibbons.cpp \
 	src/window.cpp \
@@ -40,9 +48,13 @@ QRCFILES = \
 
 QRCSRC = $(QRCFILES:%.qrc=%.qrc.cpp)
 
-OBJECTS = $(SRC:%.cpp=%.o) $(MOCSRC:%.cpp=%.o) $(QRCSRC:%.cpp=%.o)
+TESTOBJECTS = $(TESTSRC:%.cpp=%.o)
 
-BIN = stibbons
+QTOBJECTS = $(QTSRC:%.cpp=%.o) $(MOCSRC:%.cpp=%.o) $(QRCSRC:%.cpp=%.o)
+
+APP = stibbons
+
+TEST = test
 
 # Variables pour la documentation
 
@@ -67,21 +79,27 @@ PDFCLN = \
 
 # Tout compiler
 
-all: doc $(BIN)
+all: doc $(APP) $(TEST)
 
 # Compilation du logiciel
 
-$(BIN): $(OBJECTS)
-	$(CC) $(CFLAGS) $(INCDIRS) $(LIBS) $^ -o $@
+$(APP): $(QTOBJECTS)
+	$(CC) $^ -o $@ $(CFLAGS) $(QTINCDIRS) $(QTLIBS)
+
+$(TEST): $(TESTOBJECTS)
+	$(CC) $^ -o $@ $(CFLAGS) $(TESTINCDIRS) $(TESTLIBS)
 
 %.moc.cpp: %.h
-	$(MOC) $(INCDIRS) $< -o $@
+	$(MOC) $(QTINCDIRS) $< -o $@
 
 %.qrc.cpp: %.qrc
 	$(RCC) -name $(basename $(<F)) $< -o $@
 
-%.o: %.cpp
-	$(CC) $(CFLAGS) $(INCDIRS) $(LIBS) $< -c -o $@
+$(TESTOBJECTS): %.o: %.cpp
+	$(CC) $< -c -o $@ $(CFLAGS) $(TESTINCDIRS) $(TESTLIBS)
+
+$(QTOBJECTS): %.o: %.cpp
+	$(CC) $< -c -o $@ $(CFLAGS) $(QTINCDIRS) $(QTLIBS)
 
 # Compilation de la documentation
 
@@ -97,7 +115,7 @@ $(REPDIR)/report.tex: $(REPDEPS)
 	touch $@
 
 clean:
-	rm -Rf $(BIN) $(OBJECTS) $(PDFCLN)
+	rm -Rf $(APP) $(TEST) $(TESTOBJECTS) $(QTOBJECTS) $(PDFCLN)
 
 .PHONY: all doc clean
 
