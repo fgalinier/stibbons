@@ -26,7 +26,11 @@ QTLIBS = \
 
 CFLAGS = -fPIC -Wall -Wpedantic -std=c++11
 
+MODELSRC = \
+	$(NULL)
+
 TESTSRC = \
+	src/tests/test-value.cpp \
 	src/tests/tests.cpp \
 	$(NULL)
 
@@ -47,6 +51,8 @@ QRCFILES = \
 	$(NULL)
 
 QRCSRC = $(QRCFILES:%.qrc=%.qrc.cpp)
+
+MODELOBJECTS = $(MODELSRC:%.cpp=%.o)
 
 TESTOBJECTS = $(TESTSRC:%.cpp=%.o)
 
@@ -83,10 +89,10 @@ all: doc $(APP) $(TEST)
 
 # Compilation du logiciel
 
-$(APP): $(QTOBJECTS)
+$(APP): $(MODELOBJECTS) $(QTOBJECTS)
 	$(CC) $^ -o $@ $(CFLAGS) $(QTINCDIRS) $(QTLIBS)
 
-$(TEST): $(TESTOBJECTS)
+$(TEST): $(MODELOBJECTS) $(TESTOBJECTS)
 	$(CC) $^ -o $@ $(CFLAGS) $(TESTINCDIRS) $(TESTLIBS)
 
 %.moc.cpp: %.h
@@ -94,6 +100,9 @@ $(TEST): $(TESTOBJECTS)
 
 %.qrc.cpp: %.qrc
 	$(RCC) -name $(basename $(<F)) $< -o $@
+
+$(MODELOBJECTS): %.o: %.cpp
+	$(CC) $< -c -o $@ $(CFLAGS)
 
 $(TESTOBJECTS): %.o: %.cpp
 	$(CC) $< -c -o $@ $(CFLAGS) $(TESTINCDIRS) $(TESTLIBS)
@@ -115,7 +124,7 @@ $(REPDIR)/report.tex: $(REPDEPS)
 	touch $@
 
 clean:
-	rm -Rf $(APP) $(TEST) $(TESTOBJECTS) $(QTOBJECTS) $(PDFCLN)
+	rm -Rf $(APP) $(TEST) $(MODELOBJECTS) $(TESTOBJECTS) $(QTOBJECTS) $(PDFCLN)
 
 .PHONY: all doc clean
 

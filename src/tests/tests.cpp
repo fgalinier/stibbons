@@ -6,6 +6,8 @@ using namespace CppUnit;
 Test *suite() {
 	auto &registry = TestFactoryRegistry::getRegistry();
 
+	registry.registerFactory(&TestFactoryRegistry::getRegistry("TestValue"));
+
 	return registry.makeTest();
 }
 
