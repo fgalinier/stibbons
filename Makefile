@@ -81,7 +81,7 @@ $(BIN): $(OBJECTS)
 	$(RCC) -name $(basename $(<F)) $< -o $@
 
 %.o: %.cpp
-	$(CC) $(CFLAGS) $(INCDIRS) -I$(<D) $(LIBS) $< -c -o $@
+	$(CC) $(CFLAGS) $(INCDIRS) $(LIBS) $< -c -o $@
 
 # Compilation de la documentation
 

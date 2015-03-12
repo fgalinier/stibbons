@@ -6,9 +6,9 @@
  * \date 26/02/2015
  */
 
-#include <application.h>
+#include "application.h"
 
-#include <window.h>
+#include "window.h"
 
 namespace Stibbons {
 

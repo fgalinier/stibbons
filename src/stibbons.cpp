@@ -6,7 +6,7 @@
  * \date 26/02/2015
  */
 
-#include <application.h>
+#include "application.h"
 
 int main(int argc, char *argv[]) {
 	// Must be called outside of any namespace
