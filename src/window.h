@@ -14,7 +14,7 @@ class QAction;
 class QMenu;
 class QPlainTextEdit;
 
-namespace Stibbons {
+namespace stibbons {
 
 class Window : public QMainWindow {
 	Q_OBJECT

@@ -10,7 +10,7 @@
 
 #include "window.h"
 
-namespace Stibbons {
+namespace stibbons {
 
 Application::Application (int & argc, char ** argv) : QApplication (argc, argv) {
 	setOrganizationName("StibbonsTeam");

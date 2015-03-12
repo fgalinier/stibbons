@@ -10,7 +10,7 @@
 
 #include <QApplication>
 
-namespace Stibbons {
+namespace stibbons {
 
 class Application : private QApplication {
 	public:

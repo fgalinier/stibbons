@@ -10,7 +10,7 @@
 
 #include <QtWidgets>
 
-namespace Stibbons {
+namespace stibbons {
 
 Window::Window() {
 	createActions();

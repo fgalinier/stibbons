@@ -12,7 +12,7 @@ int main(int argc, char *argv[]) {
 	// Must be called outside of any namespace
 	Q_INIT_RESOURCE(stibbons);
 
-	Stibbons::Application app(argc, argv);
+	stibbons::Application app(argc, argv);
 	return app.exec();
 }
 
