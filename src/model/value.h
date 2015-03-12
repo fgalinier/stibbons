@@ -19,6 +19,7 @@ namespace stibbons {
  */
 enum class Type {
 	NIL,
+	NUMBER,
 	COLOR
 };
 

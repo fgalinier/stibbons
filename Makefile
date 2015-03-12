@@ -30,12 +30,14 @@ MODELSRC = \
 	src/model/color.cpp \
 	src/model/line.cpp \
 	src/model/nil.cpp \
+	src/model/number.cpp \
 	src/model/point.cpp \
 	$(NULL)
 
 TESTSRC = \
 	src/tests/test-color.cpp \
 	src/tests/test-point.cpp \
+	src/tests/test-number.cpp \
 	src/tests/test-value.cpp \
 	src/tests/tests.cpp \
 	$(NULL)
