@@ -3,6 +3,7 @@
 #include "../model/color.h"
 #include "../model/nil.h"
 #include "../model/number.h"
+#include "../model/string.h"
 
 #include <cppunit/TestCase.h>
 #include <cppunit/extensions/HelperMacros.h>
@@ -15,12 +16,14 @@ class TestValue : public TestCase {
 	CPPUNIT_TEST(checkColor);
 	CPPUNIT_TEST(checkNil);
 	CPPUNIT_TEST(checkNumber);
+	CPPUNIT_TEST(checkString);
 	CPPUNIT_TEST_SUITE_END();
 
 	public:
 		stibbons::Color color;
 		stibbons::Nil nil;
 		stibbons::Number number;
+		stibbons::String string;
 
 		void checkColor() {
 			cout << "TestValue::checkColor" << endl;
@@ -35,6 +38,11 @@ class TestValue : public TestCase {
 		void checkNumber() {
 			cout << "TestValue::checkNumber" << endl;
 			CPPUNIT_ASSERT (stibbons::Type::NUMBER == number.getType());
+		}
+
+		void checkString() {
+			cout << "TestValue::checkString" << endl;
+			CPPUNIT_ASSERT (stibbons::Type::STRING == string.getType());
 		}
 };
 

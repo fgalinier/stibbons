@@ -32,6 +32,7 @@ MODELSRC = \
 	src/model/nil.cpp \
 	src/model/number.cpp \
 	src/model/point.cpp \
+	src/model/string.cpp \
 	$(NULL)
 
 TESTSRC = \
