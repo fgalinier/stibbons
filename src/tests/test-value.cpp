@@ -1,6 +1,7 @@
 #include "values.h"
 
 #include "../model/color.h"
+#include "../model/nil.h"
 
 #include <cppunit/TestCase.h>
 #include <cppunit/extensions/HelperMacros.h>
@@ -11,14 +12,21 @@ using namespace CppUnit;
 class TestValue : public TestCase {
 	CPPUNIT_TEST_SUITE(TestValue);
 	CPPUNIT_TEST(checkColor);
+	CPPUNIT_TEST(checkNil);
 	CPPUNIT_TEST_SUITE_END();
 
 	public:
 		stibbons::Color color;
+		stibbons::Nil nil;
 
 		void checkColor() {
 			cout << "TestValue::checkColor" << endl;
 			CPPUNIT_ASSERT (stibbons::Type::COLOR == color.getType());
+		}
+
+		void checkNil() {
+			cout << "TestValue::checkNil" << endl;
+			CPPUNIT_ASSERT (stibbons::Type::NIL == nil.getType());
 		}
 };
 
