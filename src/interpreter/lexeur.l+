@@ -1,20 +1,25 @@
 /*Define tokens */
 %{
-	#include <string>
-	#include <cstdlib>
-	#include "y.tab.h"
-	using namespace std;
+#include <string>
+#include <cstdlib>
+#include "y.tab.h"
+#include "../model/number.h"
+#include "../model/string.h"
+#include "../model/color.h"
+#include "../model/boolean.h"
+#include "../model/nil.h"
+  using namespace std;
 	
-	#define YY_DECL yy::parser::token_type yylex (yy::parser::semantic_type* pyylval)
-	YY_DECL;
+#define YY_DECL yy::parser::token_type yylex (yy::parser::semantic_type* pyylval)
+  YY_DECL;
 	
-	#define yyterminate() {}
+#define yyterminate() {}
 %}
 
 %option noyywrap
 %option case-insensitive
- 
-/*Rules*/
+
+ /*Rules*/
 %%
 true|false {if(yytext[0] == 't' || yytext[0] == 'T') { pyylval->b = true; } else { pyylval->b = false; } return yy::parser::token::BOOLEAN;}
 
@@ -56,9 +61,9 @@ not|! {return yy::parser::token::NOT;}
 
 (\"(\\\"|[^\"])*\")|('(\\'|[^'])*')|(\"\"\"(.|\\n)*\"\"\")  {pyylval->ps=new std::string(yytext); return yy::parser::token::STRING;}
 
-#[a-fA-F0-9]{6}|red|blue|green|yellow|black|white|brown|purple|gray|orange|pink|magenta|cyan {pyylval->ps=new std::string(yytext); return yy::parser::token::COLOR;}
+#([a-f0-9]{6}|[a-f0-9]{3}) {pyylval->ps=new std::string(yytext); return yy::parser::token::COLOR;}
 
-[_a-zA-Z][\-_a-zA-Z0-9]* {pyylval->ps=new std::string(yytext); return yy::parser::token::ID;}
+[_a-z][\-_a-z0-9]* {pyylval->ps=new std::string(yytext); return yy::parser::token::ID;}
 
 "//"[^\n]*\n ;
 
@@ -79,5 +84,3 @@ not|! {return yy::parser::token::NOT;}
 . {return yy::parser::token_type(yytext[0]);}
 
 %%
-/*Program*/
-
