@@ -20,6 +20,7 @@ namespace stibbons {
 enum class Type {
 	NIL,
 	NUMBER,
+	BOOLEAN,
 	STRING,
 	COLOR
 };

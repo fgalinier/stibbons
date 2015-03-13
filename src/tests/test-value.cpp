@@ -1,5 +1,6 @@
 #include "values.h"
 
+#include "../model/boolean.h"
 #include "../model/color.h"
 #include "../model/nil.h"
 #include "../model/number.h"
@@ -13,6 +14,7 @@ using namespace CppUnit;
 
 class TestValue : public TestCase {
 	CPPUNIT_TEST_SUITE(TestValue);
+	CPPUNIT_TEST(checkBoolean);
 	CPPUNIT_TEST(checkColor);
 	CPPUNIT_TEST(checkNil);
 	CPPUNIT_TEST(checkNumber);
@@ -20,10 +22,16 @@ class TestValue : public TestCase {
 	CPPUNIT_TEST_SUITE_END();
 
 	public:
+		stibbons::Boolean boolean;
 		stibbons::Color color;
 		stibbons::Nil nil;
 		stibbons::Number number;
 		stibbons::String string;
+
+		void checkBoolean() {
+			cout << "TestValue::checkBoolean" << endl;
+			CPPUNIT_ASSERT (stibbons::Type::BOOLEAN == boolean.getType());
+		}
 
 		void checkColor() {
 			cout << "TestValue::checkColor" << endl;
