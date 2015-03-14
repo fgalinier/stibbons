@@ -27,9 +27,11 @@ QTLIBS = \
 CFLAGS = -fPIC -Wall -Wpedantic -std=c++11
 
 MODELSRC = \
+	src/model/point.cpp \
 	$(NULL)
 
 TESTSRC = \
+	src/tests/test-point.cpp \
 	src/tests/test-value.cpp \
 	src/tests/tests.cpp \
 	$(NULL)
