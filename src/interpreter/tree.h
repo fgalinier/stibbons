@@ -15,7 +15,6 @@
 #include <vector>
 #include <utility>
 #include <tuple>
-#include "y.tab.h"
 #include "../model/values.h"
 
 namespace stibbons {
@@ -32,7 +31,7 @@ namespace stibbons {
 	  */
 	class Tree {
 	private:
-		pair<yy::parser::token_type,Values*> node;
+		pair<int,Values*> node;
 		vector<Tree>* sons;
 	public:
 
@@ -41,7 +40,7 @@ namespace stibbons {
 		 * \param token The kind of token that is used to create the node
 		 * \param val The value (if needed) corresponding to the token
 		 */
-		Tree(yy::parser::token_type,Values*);
+		Tree(int,Values*);
 
 		/**
 		 * Destroy a tree and his sons.
@@ -59,14 +58,20 @@ namespace stibbons {
 		 * Return current node.
 		 * \return A pair of <token_type,Value> corresponding to current node
 		 */
-		virtual pair<yy::parser::token_type,Values*> getNode() const;
+		virtual pair<int,Values*> getNode() const;
 
 		/**
-		 * Append a son to current tree.
+		 * Create and append a son to current tree.
 		 * \param token The kind of token that is used to create the son
 		 * \param val The value (if needed) corresponding to the son's token
 		 */
-		virtual void addSon(yy::parser::token_type,Values*);
+		virtual void addSon(int,Values*);
+
+		/**
+		 * Append a tree son to current tree.
+		 * \param t The tree to append
+		 */
+		virtual void addSon(Tree*);
 
 		/**
 		 * Return a son identify by his position
