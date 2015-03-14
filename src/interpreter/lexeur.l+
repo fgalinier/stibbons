@@ -1,9 +1,12 @@
 /*Define tokens */
 %{
-#include <string>
 #include <cstdlib>
 #include "y.tab.h"
-using namespace std;
+#include "../model/nil.h"
+#include "../model/number.h"
+#include "../model/string.h"
+#include "../model/boolean.h"
+#include "../model/color.h"
 	
 #define yyterminate() {}
 %}
@@ -13,7 +16,7 @@ using namespace std;
 
  /*Rules*/
 %%
-true|false {if(yytext[0] == 't' || yytext[0] == 'T') { pyylval->b = true; } else { pyylval->b = false; } return yy::parser::token::BOOLEAN;}
+true|false {if(yytext[0] == 't' || yytext[0] == 'T') { pyylval->v = new stibbons::Boolean(true); } else { pyylval->v = new stibbons::Boolean(false); } return yy::parser::token::BOOLEAN;}
 
 null {return yy::parser::token::NIL;}
 
@@ -49,13 +52,13 @@ xor|^ {return yy::parser::token::XOR;}
 
 not|! {return yy::parser::token::NOT;}
 
-[1-9]*\.?[0-9]+ {pyylval->d=atof(yytext); return yy::parser::token::NUMBER;}
+[1-9]*\.?[0-9]+ {pyylval->v=new stibbons::Number(atof(yytext)); return yy::parser::token::NUMBER;}
 
-(\"(\\\"|[^\"])*\")|('(\\'|[^'])*')|(\"\"\"(.|\\n)*\"\"\")  {pyylval->ps=new std::string(yytext); return yy::parser::token::STRING;}
+(\"(\\\"|[^\"])*\")|('(\\'|[^'])*')|(\"\"\"(.|\\n)*\"\"\")  {pyylval->v=new stibbons::String(yytext); return yy::parser::token::STRING;}
 
-#([a-f0-9]{6}|[a-f0-9]{3}) {pyylval->ps=new std::string(yytext); return yy::parser::token::COLOR;}
+#([a-f0-9]{6}|[a-f0-9]{3}) {pyylval->v=new stibbons::Color(yytext); return yy::parser::token::COLOR;}
 
-[_a-z][\-_a-z0-9]* {pyylval->ps=new std::string(yytext); return yy::parser::token::ID;}
+[_a-z][\-_a-z0-9]* {pyylval->v=new stibbons::String(yytext); return yy::parser::token::ID;}
 
 "//"[^\n]*\n ;
 

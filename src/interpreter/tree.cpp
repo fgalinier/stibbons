@@ -2,10 +2,13 @@
 
 namespace stibbons {
 
-	Tree::Tree(int token,Values* val): node(token,val),sons(new vector<Tree>()) {}
+	Tree::Tree(int token,Value* val): node(token,val),sons(new std::vector<Tree*>()) {}
 
 	Tree::~Tree() {
-		delete std::get<1>(node);
+		if(std::get<1>(node) != nullptr) delete std::get<1>(node);
+		for(auto t : *sons) {
+			delete t;
+		}
 		delete sons;
 	}
 
@@ -13,22 +16,30 @@ namespace stibbons {
 		return sons->empty();
 	}
 
-	pair<int,Values*> Tree::getNode() const {
+	std::pair<int,Value*> Tree::getNode() const {
 		return node;
 	}
 
 	void Tree::addSon(Tree* t) {
-		sons->push_back(*t);
+		if(t) {
+			sons->push_back(t);
+		}
 	}
 
-	void Tree::addSon(int token,Values* val) {
-		sons->push_back({token,val});
+	void Tree::addSon(int token,Value* val) {
+		sons->push_back(new Tree(token,val));
 	}
 
-	Tree& Tree::getSon(size_t pos) const {
+	Tree* Tree::getSon(size_t pos) const {
 		return sons->at(pos);
 	}
 
+	void Tree::output(std::ostream& os,std::string dec) const {
+		os<<dec<<" "<<std::get<0>(node)<<std::endl;
+		for(auto t : *sons) {
+			t->output(os, dec+"-");
+		}
+	}
 }
 
 /*

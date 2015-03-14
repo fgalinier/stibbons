@@ -3,107 +3,278 @@
 #include <exception>
 #include <string>
 #include "tree.h"
+#include "../model/value.h"
 
-using namespace std;
-%}
+  using namespace std;
+  %}
 
 %skeleton "lalr1.cc"
 
 %code requires {
 #include "tree.h"
 #define YY_DECL yy::parser::token_type yylex (yy::parser::semantic_type* pyylval)
-}
+ }
 
 %union{
-  bool b;
-  double d;
-  std::string* ps;
-}
+  stibbons::Value* v;
+  stibbons::Tree* tr;
+ }
 
 %{
   YY_DECL;
-%}
-%token FD LT RT PU PD DIE AND OR XOR NOT EQ NEQ GT GEQ LS LEQ LB RB LP RP
-%token NUMBER
-%token STRING
-%token COLOR
-%token BOOLEAN 
-%token NIL
-%token ID
-%type <d> instr
-%type <d> expr
+  %}
+%token FD LT RT PU PD DIE AND OR XOR NOT EQ NEQ GT GEQ LS LEQ LB RB LP RP FCT_ID
+%token <v> NUMBER
+%token <v> STRING
+%token <v> COLOR
+%token <v> BOOLEAN 
+%token <v> NIL
+%token <v> ID
+%type <tr> instr
+%type <tr> instr_list
+%type <tr> instr_bloc
+%type <tr> instr_turtle
+%type <tr> bloc
+%type <tr> expr
+%type <tr> lit
+%type <tr> affect
+%type <tr> fct_call
+%type <tr> params
 
-%left '+' '-' '*' '/' '%' AND OR XOR EQ NEQ GT GEQ LS LEQ
+%right '='
+%left AND OR XOR 
+%left EQ NEQ
+%left GT GEQ LS LEQ
+%left '+' '-'  
+%left '*' '/' '%'
 %right MOINSUNAIRE NOT
+%nonassoc LB RB LP RP
 %parse-param {stibbons::Tree* t}
 %%
-instr_list : instr instr_list { /*t->addSon(0,$1);*/  }
-| bloc instr_list {}
-| {};
-						 
-bloc : LB instr_list instr_bloc RB {};
-     
-instr_bloc : expr {} 
-| instr_turtle {}
-| {};
-	 
-instr : expr '\n' {}
-| instr_turtle '\n' {};
+code : instr_list {t->addSon($1);};
 
-instr_turtle : FD expr {}
-| LT expr {}
-| RT expr {}
-| PU {}
-| PD {}
-| DIE {};
+instr_list : instr instr_list 
+{
+  stibbons::Tree *t1 = new stibbons::Tree(0,nullptr);
+  t1->addSon($1);
+  t1->addSon($2);
+  $$ = t1; 
+}
+| bloc instr_list 
+{
+  stibbons::Tree *t1 = new stibbons::Tree(0,nullptr);
+  t1->addSon($1);
+  t1->addSon($2);
+  $$ = t1; 
+}
+| { $$ = nullptr;};
 
-expr : LP expr RP {}
-| affect {}
-| lit {}
-| fct_call {}
-| ID {}
-| '-' expr %prec MOINSUNAIRE {}
-| NOT expr {}
-| expr '+' expr {}
-| expr '*' expr {}
-| expr '-' expr {}
-| expr '/' expr {}
-| expr '%' expr {}
-| expr AND expr {}
-| expr OR expr {}
-| expr XOR expr {}
-| expr EQ expr {}
-| expr NEQ expr {}
-| expr GT expr {}
-| expr GEQ expr {}
-| expr LS expr {}
-| expr LEQ expr {};		
-					
-affect : ID '=' expr {}; 
-					
-fct_call : ID LP params RP {}
-| ID LP RP {};
+bloc : LB instr_list instr_bloc RB
+{ 
+  stibbons::Tree *t1 = new stibbons::Tree(0,nullptr);
+  t1->addSon($2);
+  t1->addSon($3);
+  $$ = t1; 
+};
 
-params : params ',' expr  {}
-| expr {};
-       
-lit : NUMBER {}
-| STRING {}
-| BOOLEAN {}
-| COLOR {}
-| NIL {};
-    
-   
+instr_bloc : expr { $$ = $1;} 
+| instr_turtle { $$ = $1; }
+| { $$ = nullptr; };
+
+instr : expr '\n' { $$ = $1; }
+| instr_turtle '\n' { $$ = $1; };
+
+instr_turtle : FD expr
+{ 
+  stibbons::Tree *t1 = new stibbons::Tree(yy::parser::token::FD,nullptr);
+  t1->addSon($2);
+  $$ = t1; 
+}
+| LT expr
+{ 
+  stibbons::Tree *t1 = new stibbons::Tree(yy::parser::token::LT,nullptr);
+  t1->addSon($2);
+  $$ = t1; 
+}
+| RT expr
+{ 
+  stibbons::Tree *t1 = new stibbons::Tree(yy::parser::token::RT,nullptr);
+  t1->addSon($2);
+  $$ = t1; 
+}
+| PU
+{ 
+  $$ = new stibbons::Tree(yy::parser::token::PU,nullptr);
+}
+| PD
+{ 
+  $$ = new stibbons::Tree(yy::parser::token::PD,nullptr);
+}
+| DIE 
+{ 
+  $$ = new stibbons::Tree(yy::parser::token::DIE,nullptr);
+};
+
+expr : LP expr RP { $$ = $2; }
+| affect { $$ = $1; }
+| lit { $$ = $1; }
+| fct_call { $$ = $1; }
+| ID { $$ = new stibbons::Tree(yy::parser::token::ID,$1); }
+| '-' expr %prec MOINSUNAIRE 
+{
+  stibbons::Tree *t1 = new stibbons::Tree('-',nullptr);
+  t1->addSon($2);
+  $$ = t1;
+}
+| NOT expr
+{
+  stibbons::Tree *t1 = new stibbons::Tree(yy::parser::token::NOT,nullptr);
+  t1->addSon($2);
+  $$ = t1;
+}
+| expr '+' expr
+{
+  stibbons::Tree *t1 = new stibbons::Tree('+',nullptr);
+  t1->addSon($1);
+  t1->addSon($3);
+  $$ = t1;
+}
+| expr '*' expr
+{
+  stibbons::Tree *t1 = new stibbons::Tree('*',nullptr);
+  t1->addSon($1);
+  t1->addSon($3);
+  $$ = t1;
+}
+| expr '-' expr
+{
+  stibbons::Tree *t1 = new stibbons::Tree('-',nullptr);
+  t1->addSon($1);
+  t1->addSon($3);
+  $$ = t1;
+}
+| expr '/' expr
+{
+  stibbons::Tree *t1 = new stibbons::Tree('/',nullptr);
+  t1->addSon($1);
+  t1->addSon($3);
+  $$ = t1;
+}
+| expr '%' expr
+{
+  stibbons::Tree *t1 = new stibbons::Tree('%',nullptr);
+  t1->addSon($1);
+  t1->addSon($3);
+  $$ = t1;
+}
+| expr AND expr
+{
+  stibbons::Tree *t1 = new stibbons::Tree(yy::parser::token::AND,nullptr);
+  t1->addSon($1);
+  t1->addSon($3);
+  $$ = t1;
+}
+| expr OR expr
+{
+  stibbons::Tree *t1 = new stibbons::Tree(yy::parser::token::OR,nullptr);
+  t1->addSon($1);
+  t1->addSon($3);
+  $$ = t1;
+}
+| expr XOR expr
+{
+  stibbons::Tree *t1 = new stibbons::Tree(yy::parser::token::XOR,nullptr);
+  t1->addSon($1);
+  t1->addSon($3);
+  $$ = t1;
+}
+| expr EQ expr
+{
+  stibbons::Tree *t1 = new stibbons::Tree(yy::parser::token::EQ,nullptr);
+  t1->addSon($1);
+  t1->addSon($3);
+  $$ = t1;
+}
+| expr NEQ expr
+{
+  stibbons::Tree *t1 = new stibbons::Tree(yy::parser::token::NEQ,nullptr);
+  t1->addSon($1);
+  t1->addSon($3);
+  $$ = t1;
+}
+| expr GT expr
+{
+  stibbons::Tree *t1 = new stibbons::Tree(yy::parser::token::GT,nullptr);
+  t1->addSon($1);
+  t1->addSon($3);
+  $$ = t1;
+}
+| expr GEQ expr
+{
+  stibbons::Tree *t1 = new stibbons::Tree(yy::parser::token::GEQ,nullptr);
+  t1->addSon($1);
+  t1->addSon($3);
+  $$ = t1;
+}
+| expr LS expr
+{
+  stibbons::Tree *t1 = new stibbons::Tree(yy::parser::token::LS,nullptr);
+  t1->addSon($1);
+  t1->addSon($3);
+  $$ = t1;
+}
+| expr LEQ expr 
+{
+  stibbons::Tree *t1 = new stibbons::Tree(yy::parser::token::LEQ,nullptr);
+  t1->addSon($1);
+  t1->addSon($3);
+  $$ = t1;
+};
+
+affect : ID '=' expr
+{
+  stibbons::Tree *t1 = new stibbons::Tree('=',nullptr);
+  t1->addSon(yy::parser::token::ID,$1);
+  t1->addSon($3);
+  $$ = t1;
+}; 
+
+fct_call : ID LP params RP 
+{
+  stibbons::Tree *t1 = new stibbons::Tree(yy::parser::token::FCT_ID,$1);
+  t1->addSon($3);
+  $$ = t1;
+}
+| ID LP RP {$$ = new stibbons::Tree(yy::parser::token::FCT_ID,$1);};
+
+params : params ',' expr 
+{
+  stibbons::Tree *t1 = new stibbons::Tree(0,nullptr);
+  t1->addSon($1);
+  t1->addSon($3);
+  $$ = t1;
+}
+| expr { $$ = $1;};
+
+lit : NUMBER { $$ = new stibbons::Tree(yy::parser::token::NUMBER,$1); }
+| STRING { $$ = new stibbons::Tree(yy::parser::token::STRING,$1);}
+| BOOLEAN { $$ = new stibbons::Tree(yy::parser::token::BOOLEAN,$1);}
+| COLOR { $$ = new stibbons::Tree(yy::parser::token::COLOR,$1);}
+| NIL { $$ = new stibbons::Tree(yy::parser::token::NIL,$1);};
+
+
 %%
 void yy::parser::error(string const& s) {
   cout<<endl<<"Erreur : "<<s<<endl;
 }
 
 int main() {
-  stibbons::Tree t = {yy::parser::token::AND,nullptr};
+  stibbons::Tree t = {0,nullptr};
   yy::parser* pparser = new yy::parser(&t);
   int i=pparser->parse();
-	
+
+  t.output(std::cout);
+
   return i;
 }
 

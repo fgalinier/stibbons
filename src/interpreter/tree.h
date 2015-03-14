@@ -12,10 +12,11 @@
 
 #pragma once
 
+#include <iostream>
 #include <vector>
 #include <utility>
 #include <tuple>
-#include "../model/values.h"
+#include "../model/value.h"
 
 namespace stibbons {
 	
@@ -31,8 +32,8 @@ namespace stibbons {
 	  */
 	class Tree {
 	private:
-		pair<int,Values*> node;
-		vector<Tree>* sons;
+		std::pair<int,Value*> node;
+		std::vector<Tree*>* sons;
 	public:
 
 		/**
@@ -40,7 +41,7 @@ namespace stibbons {
 		 * \param token The kind of token that is used to create the node
 		 * \param val The value (if needed) corresponding to the token
 		 */
-		Tree(int,Values*);
+		Tree(int,Value*);
 
 		/**
 		 * Destroy a tree and his sons.
@@ -58,14 +59,14 @@ namespace stibbons {
 		 * Return current node.
 		 * \return A pair of <token_type,Value> corresponding to current node
 		 */
-		virtual pair<int,Values*> getNode() const;
+		virtual std::pair<int,Value*> getNode() const;
 
 		/**
 		 * Create and append a son to current tree.
 		 * \param token The kind of token that is used to create the son
 		 * \param val The value (if needed) corresponding to the son's token
 		 */
-		virtual void addSon(int,Values*);
+		virtual void addSon(int,Value*);
 
 		/**
 		 * Append a tree son to current tree.
@@ -76,9 +77,11 @@ namespace stibbons {
 		/**
 		 * Return a son identify by his position
 		 * \param pos the position of the needed son
-		 * \return the requested son (Tree type)
+		 * \return the requested son (Tree* type)
 		 */
-		virtual Tree& getSon(size_t pos=0) const;
+		virtual Tree* getSon(size_t pos=0) const;
+
+		virtual void output(std::ostream&,std::string dec="") const;
 	};
 
 }
