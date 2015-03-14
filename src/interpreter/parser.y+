@@ -1,22 +1,27 @@
 %{
-	#include <iostream>
-	#include <exception>
-	#include <string>
-	using namespace std;
-	
-	#define YY_DECL yy::parser::token_type yylex (yy::parser::semantic_type* pyylval)
+#include <iostream>
+#include <exception>
+#include <string>
+#include "tree.h"
+
+using namespace std;
 %}
 
 %skeleton "lalr1.cc"
+
+%code requires {
+#include "tree.h"
+#define YY_DECL yy::parser::token_type yylex (yy::parser::semantic_type* pyylval)
+}
+
 %union{
-	//Values* v;
-	bool b;
-	double d;
-	std::string* ps;
+  bool b;
+  double d;
+  std::string* ps;
 }
 
 %{
-	YY_DECL;
+  YY_DECL;
 %}
 %token FD LT RT PU PD DIE AND OR XOR NOT EQ NEQ GT GEQ LS LEQ LB RB LP RP
 %token NUMBER
@@ -25,76 +30,92 @@
 %token BOOLEAN 
 %token NIL
 %token ID
+%type <d> instr
 %type <d> expr
 
 %left '+' '-' '*' '/' '%' AND OR XOR EQ NEQ GT GEQ LS LEQ
 %right MOINSUNAIRE NOT
+%parse-param {stibbons::Tree* t}
 %%
-instr_list : instr instr_list 
-           |bloc instr_list {}
-           | {};
+instr_list : instr instr_list { /*t->addSon(0,$1);*/  }
+| bloc instr_list {}
+| {};
 						 
 bloc : LB instr_list instr_bloc RB {};
      
 instr_bloc : expr {} 
-           | instr_turtle {}
-           | {};
+| instr_turtle {}
+| {};
 	 
 instr : expr '\n' {}
-      | instr_turtle '\n' {};
+| instr_turtle '\n' {};
 
 instr_turtle : FD expr {}
-             | LT expr {}
-             | RT expr {}
-             | PU {}
-             | PD {}
-             | DIE {};
+| LT expr {}
+| RT expr {}
+| PU {}
+| PD {}
+| DIE {};
 
 expr : LP expr RP {}
-     | affect {}
-     | lit {}
-     | fct_call {}
-     | ID {}
-     | '-' expr %prec MOINSUNAIRE {}
-     | NOT expr {}
-     | expr '+' expr {}
-     | expr '*' expr {}
-     | expr '-' expr {}
-     | expr '/' expr {}
-     | expr '%' expr {}
-     | expr AND expr {}
-     | expr OR expr {}
-     | expr XOR expr {}
-     | expr EQ expr {}
-     | expr NEQ expr {}
-     | expr GT expr {}
-     | expr GEQ expr {}
-     | expr LS expr {}
-     | expr LEQ expr {};		
+| affect {}
+| lit {}
+| fct_call {}
+| ID {}
+| '-' expr %prec MOINSUNAIRE {}
+| NOT expr {}
+| expr '+' expr {}
+| expr '*' expr {}
+| expr '-' expr {}
+| expr '/' expr {}
+| expr '%' expr {}
+| expr AND expr {}
+| expr OR expr {}
+| expr XOR expr {}
+| expr EQ expr {}
+| expr NEQ expr {}
+| expr GT expr {}
+| expr GEQ expr {}
+| expr LS expr {}
+| expr LEQ expr {};		
 					
 affect : ID '=' expr {}; 
 					
 fct_call : ID LP params RP {}
-         | ID LP RP {};
+| ID LP RP {};
 
 params : params ',' expr  {}
-       | expr {};
+| expr {};
        
 lit : NUMBER {}
-    | STRING {}
-    | BOOLEAN {}
-    | COLOR {}
-    | NIL {};
+| STRING {}
+| BOOLEAN {}
+| COLOR {}
+| NIL {};
     
    
 %%
 void yy::parser::error(string const& s) {
-	cout<<endl<<"Erreur : "<<s<<endl;
+  cout<<endl<<"Erreur : "<<s<<endl;
 }
 
 int main() {
-	yy::parser* pparser = new yy::parser();
-	int i=pparser->parse();
+  stibbons::Tree t = {yy::parser::token::AND,nullptr};
+  yy::parser* pparser = new yy::parser(&t);
+  int i=pparser->parse();
 	
-	return i;
+  return i;
 }
+
+/*
+ * Editor modelines  -  http://www.wireshark.org/tools/modelines.html
+ *
+ * Local variables:
+ * c-basic-offset: 4
+ * tab-width: 4
+ * indent-tabs-mode: t
+ * truncate-lines: 1
+ * End:
+ *
+ * vim:set ft=cpp ts=4 sw=4 sts=4
+ */

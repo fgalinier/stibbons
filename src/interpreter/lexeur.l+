@@ -3,15 +3,7 @@
 #include <string>
 #include <cstdlib>
 #include "y.tab.h"
-#include "../model/number.h"
-#include "../model/string.h"
-#include "../model/color.h"
-#include "../model/boolean.h"
-#include "../model/nil.h"
-  using namespace std;
-	
-#define YY_DECL yy::parser::token_type yylex (yy::parser::semantic_type* pyylval)
-  YY_DECL;
+using namespace std;
 	
 #define yyterminate() {}
 %}
