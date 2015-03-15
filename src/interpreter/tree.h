@@ -75,6 +75,12 @@ namespace stibbons {
 		virtual void addSon(Tree*);
 
 		/**
+		 * Return all sons of current tree
+		 * \return a vector that contains all sons of the Tree
+		 */
+		virtual std::vector<Tree*>* getSons() const;
+
+		/**
 		 * Return a son identify by his position
 		 * \param pos the position of the needed son
 		 * \return the requested son (Tree* type)

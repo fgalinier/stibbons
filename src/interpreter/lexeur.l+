@@ -8,7 +8,7 @@
 #include "../model/boolean.h"
 #include "../model/color.h"
 	
-#define yyterminate() {}
+#define yyterminate() {} 
 %}
 
 %option noyywrap

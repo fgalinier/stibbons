@@ -2,18 +2,19 @@
 #include <iostream>
 #include <exception>
 #include <string>
+#include <fstream>
 #include "tree.h"
 #include "../model/value.h"
 
-  using namespace std;
-  %}
+using namespace std;
+%}
 
 %skeleton "lalr1.cc"
 
 %code requires {
 #include "tree.h"
 #define YY_DECL yy::parser::token_type yylex (yy::parser::semantic_type* pyylval)
- }
+}
 
 %union{
   stibbons::Value* v;
@@ -22,7 +23,7 @@
 
 %{
   YY_DECL;
-  %}
+%}
 %token FD LT RT PU PD DIE AND OR XOR NOT EQ NEQ GT GEQ LS LEQ LB RB LP RP FCT_ID
 %token <v> NUMBER
 %token <v> STRING
@@ -269,11 +270,11 @@ void yy::parser::error(string const& s) {
 }
 
 int main() {
-  stibbons::Tree t = {0,nullptr};
-  yy::parser* pparser = new yy::parser(&t);
+  stibbons::Tree* t = new stibbons::Tree(0,nullptr);
+  yy::parser* pparser = new yy::parser(t);
   int i=pparser->parse();
-
-  t.output(std::cout);
+  
+  t->output(std::cout);
 
   return i;
 }

@@ -30,6 +30,10 @@ namespace stibbons {
 		sons->push_back(new Tree(token,val));
 	}
 
+	std::vector<Tree*>* Tree::getSons() const {
+		return sons;
+	}
+
 	Tree* Tree::getSon(size_t pos) const {
 		return sons->at(pos);
 	}
