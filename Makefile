@@ -35,6 +35,7 @@ MODELSRC = \
 	src/model/point.cpp \
 	src/model/string.cpp \
 	src/model/turtle.cpp \
+	src/model/zone.cpp \
 	$(NULL)
 
 TESTSRC = \
