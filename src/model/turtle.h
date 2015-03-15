@@ -2,6 +2,7 @@
 
 #include "color.h"
 #include "point.h"
+#include "world.h"
 #include "line.h"
 
 #include <future>
@@ -12,6 +13,8 @@
 using namespace std;
 
 namespace stibbons {
+
+class World;
 
 typedef unsigned long turtle_id;
 
@@ -28,7 +31,7 @@ class Turtle : public Point {
 		 * Create a turtle
 		 *
 		 */
-		Turtle (turtle_id id);
+		Turtle (turtle_id id, World *world = nullptr);
 
 		/**
 		 * Set the value of angle
@@ -53,6 +56,12 @@ class Turtle : public Point {
 		 * @return the value of id
 		 */
 		turtle_id getId() const;
+
+		/**
+		 * Get the value of world
+		 * @return the value of world
+		 */
+		World* getWorld ();
 
 		/**
 		 * Set the value for an axis
@@ -104,6 +113,7 @@ class Turtle : public Point {
 	private:
 		turtle_id id;
 		double angle;
+		World * world;
 		Color color;
 		Line* line;
 	};

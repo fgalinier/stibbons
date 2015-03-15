@@ -14,7 +14,7 @@ inline double radian (double degree) {
 	return degree * M_PI / 180;
 }
 
-Turtle::Turtle (turtle_id id) : id(id), angle(0.0), color(Color()), line(nullptr) {}
+Turtle::Turtle (turtle_id id, World *world) : id(id), angle(0.0), world(world), color(Color()), line(nullptr) {}
 
 void Turtle::setId (turtle_id new_var) {
 	id=new_var;
@@ -22,6 +22,10 @@ void Turtle::setId (turtle_id new_var) {
 
 turtle_id Turtle::getId() const {
 	return id;
+}
+
+World* Turtle::getWorld () {
+	return world;
 }
 
 void Turtle::setColor (Color color) {
@@ -67,15 +71,22 @@ void Turtle::turnLeft(double angle) {
 }
 
 void Turtle::penDown() throw (future_error) {
+	if (!world)
+		return;
+
 	if (line)
 		throw future_error(ec);
 
 	line = new Line();
 	line->setColor(getColor());
+	world->addLine(line);
 	line->push_back(Point(*this));
 }
 
 void Turtle::penUp() throw (future_error) {
+	if (!world)
+		return;
+
 	if (!line)
 		throw future_error(ec);
 
