@@ -49,13 +49,13 @@ TESTSRC = \
 	$(NULL)
 
 QTSRC = \
-	src/application.cpp \
-	src/stibbons.cpp \
-	src/window.cpp \
+	src/qt/application.cpp \
+	src/qt/stibbons.cpp \
+	src/qt/window.cpp \
 	$(NULL)
 
 MOCHEADERS = \
-	src/window.h \
+	src/qt/window.h \
 	$(NULL)
 
 MOCSRC = $(MOCHEADERS:%.h=%.moc.cpp)
