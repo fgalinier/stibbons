@@ -1,0 +1,4 @@
+stack.hh
+y.output
+y.tab.*
+lex.yy.c
