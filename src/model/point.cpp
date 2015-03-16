@@ -8,6 +8,12 @@ Point::Point (unsigned dimensions) : dimensions(dimensions) {
 	axes = new double[dimensions]();
 }
 
+Point::Point (const Point &point) : dimensions(point.getDimensions()) {
+	axes = new double[getDimensions()]();
+	for (unsigned i = 0 ; i < getDimensions() ; i++)
+		setValue(i, point.getValue(i));
+}
+
 void Point::setValue (unsigned axis, double value) throw(out_of_range) {
 	if (axis >= dimensions)
 		throw out_of_range(invalidAxisMessage);

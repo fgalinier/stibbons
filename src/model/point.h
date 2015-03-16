@@ -30,6 +30,12 @@ class Point {
 		Point (unsigned dimensions = 2);
 
 		/**
+		 * Create a copy of a point
+		 * @param dimensions the number of dimensions of the point
+		 */
+		Point (const Point &point);
+
+		/**
 		 * Set the value for an axis
 		 * @param axis the axis
 		 * @param value the value
