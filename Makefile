@@ -40,6 +40,27 @@ MODELSRC = \
 	src/model/zone.cpp \
 	$(NULL)
 
+BISONSRC = \
+	src/interpreter/parser.y+ \
+	$(NULL)
+
+BISONTMP = \
+	src/interpreter/y.tab.c \
+	$(NULL)
+
+FLEXSRC = \
+	src/interpreter/lexer.l+ \
+	$(NULL)
+
+FLEXTMP = \
+	src/interpreter/lex.yy.c \
+	$(NULL)
+
+INTERPETERSRC = \
+	src/interpreter/interpreter.cpp \
+	src/interpreter/tree.cpp \
+	$(NULL)
+
 TESTSRC = \
 	src/tests/test-color.cpp \
 	src/tests/test-point.cpp \
@@ -70,6 +91,12 @@ QRCFILES = \
 QRCSRC = $(QRCFILES:%.qrc=%.qrc.cpp)
 
 MODELOBJECTS = $(MODELSRC:%.cpp=%.o)
+
+BISONOBJECTS = $(BISONTMP:%.c=%.o)
+
+FLEXOBJECTS = $(FLEXTMP:%.c=%.o)
+
+INTERPRETEROBJECTS = $(INTERPETERSRC:%.cpp=%.o)
 
 TESTOBJECTS = $(TESTSRC:%.cpp=%.o)
 
@@ -106,11 +133,17 @@ all: doc $(APP) $(TEST)
 
 # Compilation du logiciel
 
-$(APP): $(MODELOBJECTS) $(QTOBJECTS)
+$(APP): $(MODELOBJECTS) $(QTOBJECTS) $(BISONOBJECTS) $(FLEXOBJECTS) $(INTERPRETEROBJECTS)
 	$(CC) $^ -o $@ $(CFLAGS) $(QTINCDIRS) $(QTLIBS)
 
 $(TEST): $(MODELOBJECTS) $(TESTOBJECTS)
 	$(CC) $^ -o $@ $(CFLAGS) $(TESTINCDIRS) $(TESTLIBS)
+
+$(BISONTMP): $(BISONSRC)
+	bison -ydt -b $(<D)/y $<
+
+$(FLEXTMP): $(FLEXSRC)
+	flex -o $@ $<
 
 %.moc.cpp: %.h
 	$(MOC) $(QTINCDIRS) $< -o $@
@@ -119,6 +152,15 @@ $(TEST): $(MODELOBJECTS) $(TESTOBJECTS)
 	$(RCC) -name $(basename $(<F)) $< -o $@
 
 $(MODELOBJECTS): %.o: %.cpp
+	$(CC) $< -c -o $@ $(CFLAGS)
+
+$(BISONOBJECTS): %.o: %.c
+	$(CC) $< -c -o $@ $(CFLAGS)
+
+$(FLEXOBJECTS): %.o: %.c
+	$(CC) $< -c -o $@ $(CFLAGS)
+
+$(INTERPRETEROBJECTS): %.o: %.cpp
 	$(CC) $< -c -o $@ $(CFLAGS)
 
 $(TESTOBJECTS): %.o: %.cpp
@@ -141,7 +183,15 @@ $(REPDIR)/report.tex: $(REPDEPS)
 	touch $@
 
 clean:
-	rm -Rf $(APP) $(TEST) $(MODELOBJECTS) $(TESTOBJECTS) $(QTOBJECTS) $(PDFCLN)
+	rm -Rf $(APP) $(TEST) \
+	$(MODELOBJECTS) \
+	$(BISONOBJECTS) \
+	$(FLEXOBJECTS) \
+	$(INTERPRETEROBJECTS) \
+	$(TESTOBJECTS) \
+	$(QTOBJECTS) \
+	$(PDFCLN)\
+	$(NULL)
 
 .PHONY: all doc clean
 
