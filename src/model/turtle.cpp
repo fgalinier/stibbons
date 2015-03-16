@@ -30,6 +30,8 @@ World* Turtle::getWorld () {
 
 void Turtle::setColor (Color color) {
 	this->color = color;
+
+	changed();
 }
 
 Color& Turtle::getColor () {
@@ -43,6 +45,8 @@ const Color& Turtle::getColor () const {
 void Turtle::setAngle(double new_var) {
 	auto times = floor(new_var / 360.0);
 	angle = new_var - (times * 360.0);
+
+	changed();
 }
 
 double Turtle::getAngle() {
@@ -60,6 +64,8 @@ void Turtle::forward(double dist) {
 
 	if (line)
 		line->push_back(Point(*this));
+
+	changed();
 }
 
 void Turtle::turnRight(double angle) {
@@ -81,6 +87,8 @@ void Turtle::penDown() throw (future_error) {
 	line->setColor(getColor());
 	world->addLine(line);
 	line->push_back(Point(*this));
+
+	changed();
 }
 
 void Turtle::penUp() throw (future_error) {

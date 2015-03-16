@@ -1,5 +1,6 @@
 #pragma once
 
+#include "changeable.h"
 #include "color.h"
 #include "point.h"
 #include "world.h"
@@ -25,7 +26,7 @@ typedef unsigned long turtle_id;
  *
  *\author Julia Bassoumi
  */
-class Turtle : public Point {
+class Turtle : public Point, public Changeable {
 	public:
 		/**
 		 * Create a turtle

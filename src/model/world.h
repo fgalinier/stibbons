@@ -1,5 +1,6 @@
 #pragma once
 
+#include "changeable.h"
 #include "zone.h"
 #include "turtle.h"
 #include "line.h"
@@ -23,7 +24,7 @@ typedef unsigned long turtle_id;
  *
  * \author Julia Bassoumi
  */
-class World {
+class World : public Changeable {
 	public:
 		/**
 		 * Create a world

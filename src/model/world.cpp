@@ -26,6 +26,8 @@ World::~World () {
 
 void World::addLine (Line* add_object) {
 	lines.push_back(add_object);
+
+	changed();
 }
 
 vector<Line *> World::getLines () {
@@ -34,6 +36,11 @@ vector<Line *> World::getLines () {
 
 void World::addTurtle (Turtle * add_object) {
 	turtles.push_back(add_object);
+
+	add_object->onChanged([this]() {
+		changed();
+	});
+	changed();
 }
 
 void World::removeTurtle (Turtle *turtle) {
@@ -44,6 +51,8 @@ void World::removeTurtle (Turtle *turtle) {
 			return;
 		}
 	}
+
+	changed();
 }
 
 vector<Turtle *> World::getTurtles () {
