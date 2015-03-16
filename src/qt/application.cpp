@@ -7,6 +7,7 @@
  */
 
 #include "application.h"
+#include "../model/turtle.h"
 
 #include "window.h"
 
@@ -16,10 +17,22 @@ Application::Application (int & argc, char ** argv) : QApplication (argc, argv) 
 	setOrganizationName("StibbonsTeam");
 	setApplicationName("Stibbons");
 	setWindowIcon(QIcon(":/images/stibbons.svg"));
+
+	world = new World(1, 1);
+
+	auto turtle = new Turtle(0, world);
+	world->addTurtle(turtle);
+
+	interpreter = new Interpreter(turtle);
+}
+
+Application::~Application () {
+	delete interpreter;
+	delete world;
 }
 
 int Application::exec () {
-	Window win;
+	Window win(interpreter, world);
 	win.show();
 
 	return QApplication::exec();

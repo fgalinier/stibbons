@@ -8,6 +8,9 @@
 
 #pragma once
 
+#include "../interpreter/interpreter.h"
+#include "../model/world.h"
+
 #include <QApplication>
 
 namespace stibbons {
@@ -15,7 +18,12 @@ namespace stibbons {
 class Application : private QApplication {
 	public:
 		Application(int & argc, char ** argv);
+		~Application();
 		int exec();
+
+	private:
+		Interpreter *interpreter;
+		World *world;
 };
 
 }

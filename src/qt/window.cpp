@@ -8,11 +8,15 @@
 
 #include "window.h"
 
+#include <iostream>
+
+#include <cstdio>
+#include <unistd.h>
 #include <QtWidgets>
 
 namespace stibbons {
 
-Window::Window() : world(new World(1.0, 1.0)) {
+Window::Window(Interpreter *interpreter, World *world) : interpreter(interpreter), world(world) {
 	createActions();
 	createToolBars();
 
@@ -29,10 +33,6 @@ Window::Window() : world(new World(1.0, 1.0)) {
 	setUnifiedTitleAndToolBarOnMac(true);
 }
 
-Window::~Window() {
-	delete world;
-}
-
 void Window::createActions() {
 	QIcon icon;
 
@@ -44,15 +44,15 @@ void Window::createActions() {
 
 	icon = QApplication::style()->standardIcon (QStyle::SP_MediaPlay);
 	runAct = new QAction(icon, tr("&Run..."), this);
-	runAct->setShortcuts(QKeySequence::Open);
+//	runAct->setShortcuts(QKeySequence::Play);
 	runAct->setStatusTip(tr("Run the program"));
-	connect(openAct, SIGNAL(triggered()), this, SLOT(run()));
+	connect(runAct, SIGNAL(triggered()), this, SLOT(run()));
 
 	icon = QApplication::style()->standardIcon (QStyle::SP_MediaPause);
 	haltAct = new QAction(icon, tr("&Halt..."), this);
-	haltAct->setShortcuts(QKeySequence::Open);
+//	haltAct->setShortcuts(QKeySequence::Pause);
 	haltAct->setStatusTip(tr("Halt the execution of the program"));
-	connect(openAct, SIGNAL(triggered()), this, SLOT(halt()));
+	connect(haltAct, SIGNAL(triggered()), this, SLOT(halt()));
 
 	quitAct = new QAction(tr("&Quit"), this);
 	quitAct->setShortcuts(QKeySequence::Quit);
@@ -94,11 +94,28 @@ void Window::closeEvent(QCloseEvent *event) {
 
 void Window::open() {
 	QString fileName = QFileDialog::getOpenFileName(this);
-	// TODO charger le fichier
+	loadFile(fileName);
+}
+
+void Window::loadFile(const QString &fileName) {
+	QFile file(fileName);
+	if (!file.open(QFile::ReadOnly | QFile::Text)) {
+		QMessageBox::warning(this, tr("Application"),
+		                     tr("Cannot read file %1:\n%2.")
+		                     .arg(fileName)
+		                     .arg(file.errorString()));
+		return;
+	}
+
+	QTextStream in(&file);
+	program = in.readAll().toStdString();
 }
 
 void Window::run() {
 	// TODO démarrer le programme
+
+	auto tree = interpreter->parse(program.c_str());
+	interpreter->interpret(tree);
 }
 
 void Window::halt() {

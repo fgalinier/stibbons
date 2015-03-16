@@ -10,6 +10,7 @@
 
 #include <QMainWindow>
 
+#include "../interpreter/interpreter.h"
 #include "../model/world.h"
 #include "world-view.h"
 
@@ -23,8 +24,7 @@ class Window : public QMainWindow {
 	Q_OBJECT
 
 	public:
-		Window();
-		~Window();
+		Window(Interpreter *interpreter, World *world);
 
 	protected:
 		void closeEvent(QCloseEvent *event) Q_DECL_OVERRIDE;
@@ -41,16 +41,21 @@ class Window : public QMainWindow {
 		void readSettings();
 		void writeSettings();
 
+		void loadFile(const QString &fileName);
+
 		QAction *openAct;
 		QAction *runAct;
 		QAction *haltAct;
 		QAction *quitAct;
 		QAction *aboutAct;
 
+		Interpreter *interpreter;
 		World *world;
 		WorldView *worldView;
 
 		QToolBar *toolbar;
+
+		std::string program;
 };
 
 }
