@@ -1,0 +1,11 @@
+pd
+fd 50
+rt 20 + 25
+fd 5 * 10
+pu
+lt 90
+fd 30
+rt 45
+pd
+fd 50
+pu
