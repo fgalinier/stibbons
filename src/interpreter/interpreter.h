@@ -44,7 +44,7 @@ namespace stibbons {
 		 * Parse the standart input and produce the syntaxic tree.
 		 * \return The syntaxic tree associated to the standart input.
 		 */
-		virtual Tree* parse() const;
+		virtual Tree* parse(const char *program) const;
 		/**
 		 * Interpret the tree and apply it to the turtle.
 		 * \param tree The syntaxic tree to interpret.

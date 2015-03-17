@@ -1,16 +1,37 @@
-#include <stdexcept>
 #include "interpreter.h"
+
+#include <stdexcept>
+#include <cstdio>
+#include <cstring>
+
 #include "tree.h"
 #include "y.tab.h"
+
+extern FILE *yyin;
 
 namespace stibbons {
 
 	Interpreter::Interpreter(Turtle* turtle): turtle(turtle) {}
 
-	Tree* Interpreter::parse() const {
+	Tree* Interpreter::parse(const char *program) const {
+		size_t size = strlen(program);
+
+		// Copy the string to make it non-constant
+		void *buffer = malloc(size);
+		memcpy(buffer, program, size);
+
+		// Create a new file stream for the program string
+		FILE *file = fmemopen(buffer, size, "r+");
+		yyin = file;
+
+		// Parse the program
 		Tree *tree = new Tree(0,nullptr);
 		yy::parser* pparser = new yy::parser(tree);
-		int i=pparser->parse();
+		pparser->parse();
+
+		// Destroy the file stream and the buffer
+		fclose(file);
+		free(buffer);
 
 		return tree;
 	}
