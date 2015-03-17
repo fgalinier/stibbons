@@ -1,0 +1,30 @@
+\section{17 mars 2015}
+
+Nous avons effectué une réunion avec notre encadrant suite à la fin de notre premier sprint. Certain points on était soulevé tels que la communication inter-agents et le moyen de l'implémenté mais cela concerne la version 0.3, nous devons donc commencé à y réfléchir sans le réaliser.
+\\
+Le multi-agents de la version 0.2 sera réalisé à l'aide de threads, avec un thread pour chaque tortue.
+\\
+Le diagramme UML a également été ré-étudié, nous avons donc remarqué certaines différences avec l'implémentation réalisé au cours de la version 0.1, notamment concernant les classes~: 
+\begin{itemize}
+\item Value~;
+\item Type~;
+\item Colored~;
+\item Boolean~;
+\item Color~;
+\item Les classes liées à l'interpréteur (Tree,~Interpreter).
+\end{itemize}
+
+
+Certaines conception ont été revu~:
+\begin{itemize} 
+\item La classe Shape devrai être relié à une Breed, pas à une Tortue : la Breed définira le comportement d'une tortue~;
+\item La classe Breed : renommage en TurtleClass~;
+\item Les agrégations et compositions entre les classes sont à rectifier.
+\end{itemize}
+
+
+Pour terminer, deux pistes concernant la gestion de l'arbre syntaxique ont été évoqué~:
+\begin{itemize}
+\item Réaliser un arbre de dérivation avec chaque frère droit qui est un instruction~;
+\item Un arbre abstrait en UML.
+\end{itemize}
