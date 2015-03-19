@@ -3,7 +3,7 @@
  * \brief Tree class header.
  * \author Florian Galinier
  * \author Clément Simon
- * \version 0.1
+ * \version 0.2
  * \date 13/03/15
  *
  * Declaration of Tree class (used by Interpreter class).

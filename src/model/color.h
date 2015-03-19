@@ -2,7 +2,7 @@
  * \file color.h
  * \brief A color
  * \author Julia Bassoumi, Adrien Plazas
- * \version 0.1
+ * \version 0.2
  * \date 14/03/2015
  */
 

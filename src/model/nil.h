@@ -2,7 +2,7 @@
  * \file nil.h
  * \brief A class to represent the null value
  * \author Julia Bassoumi, Adrien Plazas
- * \version 0.1
+ * \version 0.2
  * \date 14/03/2015
  */
 
