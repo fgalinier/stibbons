@@ -1,0 +1,3 @@
+Quelques suggestions :
+	- Contrôle de la vitesse par l'utilisateur à travers un slider (dans le code : des sleeps entre chaques instructions).
+	- Function hérite de Value et World est en fait un Agent (hérite de Agent).
