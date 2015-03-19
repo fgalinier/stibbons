@@ -20,11 +20,9 @@ namespace stibbons {
  *
  *\author Julia Bassoumi, Adrien Plazas
  */
-class Number : public Value, public SimpleValue<double> {
+class Number : public GenericValue<Type::NUMBER>, public SimpleValue<double> {
 	public:
 		using SimpleValue<double>::SimpleValue;
-
-		Type getType() const;
 };
 
 }

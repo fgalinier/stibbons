@@ -41,6 +41,21 @@ class Value {
 		virtual Type getType() const=0;
 };
 
+/**
+ * \class GenericValue
+ *
+ * \brief An template class easing the implementation of a Value class.
+ *
+ * \author Adrien Plazas
+ */
+template<Type T>
+class GenericValue : public virtual Value {
+	public:
+		virtual Type getType() const {
+			return T;
+		}
+};
+
 }
 
 /*

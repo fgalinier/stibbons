@@ -61,10 +61,6 @@ Color::Color (string color) throw(domain_error) {
 	b(( value             & mask) / max);
 }
 
-Type Color::getType () const {
-	return Type::COLOR;
-}
-
 void Color::r (double r){
 	red = truncate(r);
 }

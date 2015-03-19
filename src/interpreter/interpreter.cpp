@@ -49,19 +49,19 @@ namespace stibbons {
 			case yy::parser::token::FD: {
 				auto val = this->interpret(tree->getSon(0));
 				if(val->getType() != Type::NUMBER) throw std::exception();
-				turtle->forward(((Number*) val)->getValue());
+				turtle->forward(dynamic_cast<Number*>(val)->getValue());
 			}
 				break;
 			case yy::parser::token::RT: {
 				auto val = this->interpret(tree->getSon(0));
 				if(val->getType() != Type::NUMBER) throw std::exception();
-				turtle->turnRight(((Number*) val)->getValue());
+				turtle->turnRight(dynamic_cast<Number*>(val)->getValue());
 			}
 				break;
 			case yy::parser::token::LT: {
 				auto val = this->interpret(tree->getSon(0));
 				if(val->getType() != Type::NUMBER) throw std::exception();
-				turtle->turnLeft(((Number*) val)->getValue());
+				turtle->turnLeft(dynamic_cast<Number*>(val)->getValue());
 			}
 				break;
 			case yy::parser::token::PU:
@@ -78,7 +78,7 @@ namespace stibbons {
 				auto val2 = this->interpret(tree->getSon(1));
 				if(val1->getType() != Type::NUMBER || val2->getType() != Type::NUMBER) 
 					throw std::exception();
-				return new Number((((Number*) val1)->getValue())+(((Number*) val2)->getValue()));
+				return new Number((dynamic_cast<Number*>(val1)->getValue())+(dynamic_cast<Number*>(val2)->getValue()));
 			}
 				break;
 			case '-': {
@@ -86,7 +86,7 @@ namespace stibbons {
 				auto val2 = this->interpret(tree->getSon(1));
 				if(val1->getType() != Type::NUMBER || val2->getType() != Type::NUMBER) 
 					throw std::exception();
-				return new Number((((Number*) val1)->getValue())-(((Number*) val2)->getValue()));
+				return new Number((dynamic_cast<Number*>(val1)->getValue())-(dynamic_cast<Number*>(val2)->getValue()));
 			}
 				break;
 			case '*': {
@@ -94,7 +94,7 @@ namespace stibbons {
 				auto val2 = this->interpret(tree->getSon(1));
 				if(val1->getType() != Type::NUMBER || val2->getType() != Type::NUMBER) 
 					throw std::exception();
-				return new Number((((Number*) val1)->getValue())*(((Number*) val2)->getValue()));
+				return new Number((dynamic_cast<Number*>(val1)->getValue())*(dynamic_cast<Number*>(val2)->getValue()));
 			}
 				break;
 			case '/': {
@@ -102,9 +102,9 @@ namespace stibbons {
 				auto val2 = this->interpret(tree->getSon(1));
 				if(val1->getType() != Type::NUMBER || val2->getType() != Type::NUMBER) 
 					throw std::exception();
-				if(((Number*) val2)->getValue() == 0) 
+				if(dynamic_cast<Number*>(val2)->getValue() == 0) 
 					throw std::exception();
-				return new Number((((Number*) val1)->getValue())/(((Number*) val2)->getValue()));
+				return new Number((dynamic_cast<Number*>(val1)->getValue())/(dynamic_cast<Number*>(val2)->getValue()));
 			}
 				break;
 			case '%': {
@@ -112,9 +112,9 @@ namespace stibbons {
 				auto val2 = this->interpret(tree->getSon(1));
 				if(val1->getType() != Type::NUMBER || val2->getType() != Type::NUMBER) 
 					throw std::exception();
-				if(((Number*) val2)->getValue() == 0) 
+				if(dynamic_cast<Number*>(val2)->getValue() == 0) 
 					throw std::exception();
-				return new Number(((int) ((Number*) val1)->getValue())%((int) ((Number*) val2)->getValue()));
+				return new Number(((int) dynamic_cast<Number*>(val1)->getValue())%((int) dynamic_cast<Number*>(val2)->getValue()));
 			}
 				break;
 			}

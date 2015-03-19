@@ -17,12 +17,9 @@ namespace stibbons {
  *
  * \brief A class to represent the null value.
  *
- * \author Julia Bassoumi
+ * \author Julia Bassoumi, Adrien Plazas
  */
-class Nil : public Value {
-	public:
-		Type getType() const;
-};
+class Nil : public GenericValue<Type::NIL> {};
 
 }
 

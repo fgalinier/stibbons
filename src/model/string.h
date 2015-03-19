@@ -22,11 +22,9 @@ namespace stibbons {
  *
  * \author Julia Bassoumi, Adrien Plazas
  */
-class String : public Value, public SimpleValue<std::string> {
+class String : public GenericValue<Type::STRING>, public SimpleValue<std::string> {
 	public:
 		using SimpleValue<std::string>::SimpleValue;
-
-		Type getType() const;
 };
 
 }

@@ -22,7 +22,7 @@ namespace stibbons {
  *
  * \author Adrien Plazas
  */
-class Color : public Value {
+class Color : public GenericValue<Type::COLOR> {
 	private:
 		double red;
 		double green;
@@ -42,8 +42,6 @@ class Color : public Value {
 		 * @param color a stirng like #FFF or #FFFFFF
 		 */
 		Color (std::string color) throw(std::domain_error);
-
-		Type getType () const;
 
 		/**
 		 * Set the value of red

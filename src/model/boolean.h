@@ -20,11 +20,9 @@ namespace stibbons {
  *
  *\author Julia Bassoumi, Adrien Plazas
  */
-class Boolean : public Value, public SimpleValue<bool> {
+class Boolean : public GenericValue<Type::BOOLEAN>, public SimpleValue<bool> {
 	public:
 		using SimpleValue<bool>::SimpleValue;
-
-		Type getType () const;
 };
 
 }
