@@ -8,6 +8,8 @@
 
 #pragma once
 
+#include <mutex>
+
 namespace stibbons {
 
 /**
@@ -25,6 +27,7 @@ class SimpleValue {
 		 * @param value the new value of value
 		 */
 		void setValue (const T& value) {
+			std::lock_guard<std::mutex> lock(value_m);
 			this->value = value;
 		}
 
@@ -33,6 +36,7 @@ class SimpleValue {
 		 * @return the value of value
 		 */
 		T& getValue () {
+			std::lock_guard<std::mutex> lock(value_m);
 			return value;
 		}
 
@@ -40,7 +44,40 @@ class SimpleValue {
 		SimpleValue() = default;
 		SimpleValue(T value) : value(value) {}
 
+		// Move initialization
+		SimpleValue (SimpleValue&& other) {
+			std::lock_guard<std::mutex> lock(other.value_m);
+			value = std::move(other.value);
+			// FIXME set other's value to the default
+		}
+
+		// Copy initialization
+		SimpleValue(const SimpleValue& other) {
+			std::lock_guard<std::mutex> lock(other.value_m);
+			value = other.value;
+		}
+
+		// Move assignment
+		SimpleValue& operator = (SimpleValue&& other) {
+			std::lock(value_m, other.value_m);
+			std::lock_guard<std::mutex> self_lock(value_m, std::adopt_lock);
+			std::lock_guard<std::mutex> other_lock(other.value_m, std::adopt_lock);
+			value = std::move(other.value);
+			other.value = 0;
+			return *this;
+		}
+
+		// Copy assignment
+		SimpleValue& operator = (const SimpleValue& other) {
+			std::lock(value_m, other.value_m);
+			std::lock_guard<std::mutex> self_lock(value_m, std::adopt_lock);
+			std::lock_guard<std::mutex> other_lock(other.value_m, std::adopt_lock);
+			value = other.value;
+			return *this;
+		}
+
 		T value;
+		std::mutex value_m;
 };
 
 }
