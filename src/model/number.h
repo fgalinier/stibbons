@@ -9,6 +9,7 @@
 #pragma once
 
 #include "value.h"
+#include "simple-value.h"
 
 namespace stibbons {
 
@@ -17,32 +18,13 @@ namespace stibbons {
  *
  *\brief A class representing a real number.
  *
- *\author Julia Bassoumi
+ *\author Julia Bassoumi, Adrien Plazas
  */
-class Number : public Value {
+class Number : public Value, public SimpleValue<double> {
 	public:
-		/**
-		 * Create a Number with its value
-		 * @param value the value of the number
-		 */
-		Number (double value = 0.0);
+		using SimpleValue<double>::SimpleValue;
 
 		Type getType() const;
-
-		/**
-		 * Set the value of value
-		 * @param new_var the new value of value
-		 */
-		void setValue (double new_var);
-
-		/**
-		 * Get the value of value
-		 * @return the value of value
-		 */
-		double getValue ();
-
-	private:
-		double value;
 };
 
 }

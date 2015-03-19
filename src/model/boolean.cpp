@@ -2,16 +2,6 @@
 
 namespace stibbons {
 
-Boolean::Boolean (bool value) : value(value) {}
-
-void Boolean::setValue (bool new_var) {
-	value = new_var;
-}
-
-bool Boolean::getValue () const {
-	return value;
-}
-
 Type Boolean::getType() const {
 	return Type::BOOLEAN;
 }

@@ -9,6 +9,7 @@
 #pragma once
 
 #include "value.h"
+#include "simple-value.h"
 
 #include <string>
 
@@ -19,32 +20,13 @@ namespace stibbons {
  *
  * \brief A class representing a string.
  *
- * \author Julia Bassoumi
+ * \author Julia Bassoumi, Adrien Plazas
  */
-class String : public Value {
+class String : public Value, public SimpleValue<std::string> {
 	public:
-		/**
-		 * Create a string
-		 *@param s the value of the string
-		 */
-		String (std::string s = "");
+		using SimpleValue<std::string>::SimpleValue;
 
 		Type getType() const;
-
-		/**
-		 * Set the value of value
-		 * @param new_var the new value of value
-		 */
-		void setValue (std::string new_var);
-
-		/**
-		 * Get the value of value
-		 * @return the value of value
-		 */
-		std::string getValue ();
-
-	private:
-		std::string value;
 };
 
 }

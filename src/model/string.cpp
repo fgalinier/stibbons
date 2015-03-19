@@ -1,21 +1,9 @@
 #include "string.h"
 
-using namespace std;
-
 namespace stibbons {
-
-String::String (string s) : value(s) {}
 
 Type String::getType () const {
 	return Type::STRING;
-}
-
-string String::getValue () {
-	return value;
-}
-
-void String::setValue (string new_var) {
-	value = new_var;
 }
 
 }

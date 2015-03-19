@@ -9,6 +9,7 @@
 #pragma once
 
 #include "value.h"
+#include "simple-value.h"
 
 namespace stibbons {
 
@@ -17,31 +18,13 @@ namespace stibbons {
  *
  *\brief A class representing a boolean.
  *
- *\author Julia Bassoumi
+ *\author Julia Bassoumi, Adrien Plazas
  */
-class Boolean : public Value {
+class Boolean : public Value, public SimpleValue<bool> {
 	public:
-		/**
-		 * Create a boolean from a 
-		 */
-		Boolean (bool value = false);
+		using SimpleValue<bool>::SimpleValue;
 
 		Type getType () const;
-
-		/**
-		 * Set the value of value
-		 * @param new_var the new value of value
-		 */
-		void setValue (bool new_var);
-
-		/**
-		 * Get the value of value
-		 * @return the value of value
-		 */
-		bool getValue () const;
-
-	private:
-		bool value;
 };
 
 }

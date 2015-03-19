@@ -2,18 +2,8 @@
 
 namespace stibbons {
 
-Number::Number (double value) : value(value) {}
-
 Type Number::getType() const{
 	return Type::NUMBER;
-}
-
-void Number::setValue (double new_var) {
-	value = new_var;
-}
-
-double Number::getValue () {
-	return value;
 }
 
 }
