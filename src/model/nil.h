@@ -9,6 +9,7 @@
 #pragma once
 
 #include "value.h"
+#include "singleton.h"
 
 namespace stibbons {
 
@@ -19,7 +20,7 @@ namespace stibbons {
  *
  * \author Julia Bassoumi, Adrien Plazas
  */
-class Nil : public GenericValue<Type::NIL> {};
+class Nil : public GenericValue<Type::NIL>, public Singleton<Nil> {};
 
 }
 
