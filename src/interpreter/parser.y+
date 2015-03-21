@@ -306,6 +306,7 @@ lit : NUMBER { $$ = new stibbons::Tree(yy::parser::token::NUMBER,$1); }
 condi : IF expr instr condielse
 {
   stibbons::Tree *t1 = new stibbons::Tree(yy::parser::token::IF,nullptr);
+  t1->addSon($2);
   t1->addSon($3);
   t1->addSon($4);
   $$ = t1;
@@ -313,6 +314,7 @@ condi : IF expr instr condielse
 | IF expr bloc condielse 
 {
   stibbons::Tree *t1 = new stibbons::Tree(yy::parser::token::IF,nullptr);
+  t1->addSon($2);
   t1->addSon($3);
   t1->addSon($4);
   $$ = t1;

@@ -138,6 +138,22 @@ namespace stibbons {
 				return new Number(((int) dynamic_cast<Number*>(val1)->getValue())%((int) dynamic_cast<Number*>(val2)->getValue()));
 			}
 				break;
+			case yy::parser::token::IF: {
+				auto cond = this->interpret(tree->getSon(0));
+				if(cond->getType() != Type::BOOLEAN) 
+					throw std::exception();
+				if(cond){
+					return this->interpret(tree->getSon(1));
+				}
+				else{
+					return this->interpret(tree->getSon(2));
+				}
+			}
+			case yy::parser::token::ELSE: {
+				auto val1 = this->interpret(tree->getSon(0));
+				return val1;
+			}
+				break;
 			}
 		}
 

@@ -1,13 +1,8 @@
-if(false) {
-	if(1==1){
-		rt 10
-		fd 5
-	}
-	else {
-	     rt 90
-	     fd 10
-	}	     
+if(false){
+	rt 10
 }
-else fd 50
+else{
+	fd 90
+}
 
-if(true) fd 10
+if(true) rt 45
