@@ -41,7 +41,9 @@ BISONSRC = \
 	$(NULL)
 
 BISONTMP = \
+	src/interpreter/stack.hh \
 	src/interpreter/y.tab.c \
+	src/interpreter/y.tab.h \
 	$(NULL)
 
 FLEXSRC = \
@@ -129,7 +131,7 @@ all: doc $(APP) $(TEST)
 
 # Compilation du logiciel
 
-$(APP): $(MODELOBJECTS) $(QTOBJECTS) $(BISONOBJECTS) $(FLEXOBJECTS) $(INTERPRETEROBJECTS)
+$(APP): $(MODELOBJECTS) $(BISONOBJECTS) $(FLEXOBJECTS) $(INTERPRETEROBJECTS) $(QTOBJECTS)
 	$(CC) $^ -o $@ $(CFLAGS) $(QTINCDIRS) $(QTLIBS)
 
 $(TEST): $(MODELOBJECTS) $(TESTOBJECTS)
@@ -181,10 +183,14 @@ $(REPDIR)/report.tex: $(REPDEPS)
 clean:
 	rm -Rf $(APP) $(TEST) \
 	$(MODELOBJECTS) \
+	$(BISONTMP) \
 	$(BISONOBJECTS) \
+	$(FLEXTMP) \
 	$(FLEXOBJECTS) \
 	$(INTERPRETEROBJECTS) \
 	$(TESTOBJECTS) \
+	$(MOCSRC) \
+	$(QRCSRC) \
 	$(QTOBJECTS) \
 	$(PDFCLN)\
 	$(NULL)
