@@ -26,7 +26,7 @@ using namespace std;
 %{
   YY_DECL;
 %}
-%token FD LT RT PU PD DIE AND OR XOR NOT EQ NEQ GT GEQ LS LEQ LB RB LP RP FCT_ID RPT WHL END
+%token FD LT RT PU PD DIE AND OR XOR NOT EQ NEQ GT GEQ LS LEQ LB RB LP RP FCT_ID RPT WHL END IF ELSE
 %token <v> NUMBER
 %token <v> STRING
 %token <v> COLOR
@@ -43,6 +43,8 @@ using namespace std;
 %type <tr> fct_call
 %type <tr> params
 %type <tr> loop
+%type <tr> condi
+%type <tr> condielse
 
 %right '='
 %left AND OR XOR 
@@ -90,7 +92,8 @@ bloc : LB instr_list RB
 
 instr : expr { $$ = $1; }
 | loop { $$ = $1; }
-| instr_turtle { $$ = $1; };
+| instr_turtle { $$ = $1; }
+| condi { $$ = $1; };
 
 instr_turtle : FD expr
 { 
@@ -300,8 +303,37 @@ lit : NUMBER { $$ = new stibbons::Tree(yy::parser::token::NUMBER,$1); }
 | COLOR { $$ = new stibbons::Tree(yy::parser::token::COLOR,$1);}
 | NIL { $$ = new stibbons::Tree(yy::parser::token::NIL,$1);};
 
+condi : IF expr instr condielse
+{
+  stibbons::Tree *t1 = new stibbons::Tree(yy::parser::token::IF,nullptr);
+  t1->addSon($3);
+  t1->addSon($4);
+  $$ = t1;
+}
+| IF expr bloc condielse 
+{
+  stibbons::Tree *t1 = new stibbons::Tree(yy::parser::token::IF,nullptr);
+  t1->addSon($3);
+  t1->addSon($4);
+  $$ = t1;
+};
+
+condielse : ELSE instr 
+{
+  stibbons::Tree *t1 = new stibbons::Tree(yy::parser::token::ELSE,nullptr);
+  t1->addSon($2);
+  $$ = t1;
+}
+| ELSE bloc 
+{
+  stibbons::Tree *t1 = new stibbons::Tree(yy::parser::token::ELSE,nullptr);
+  t1->addSon($2);
+  $$ = t1;
+}
+| { $$ = nullptr; };
 
 %%
+
 void yy::parser::error(const location& loc,string const& s) {
   cerr<<s<<" at "<<loc.begin.line<<":"<<loc.begin.column<<"."<<endl;
 }

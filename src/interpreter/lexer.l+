@@ -76,6 +76,10 @@ repeat {return yy::parser::token::RPT;}
 
 while {return yy::parser::token::WHL;}
 
+if {return yy::parser::token::IF;}
+
+else {return yy::parser::token::ELSE;}
+
 [1-9]*\.?[0-9]+ {pyylval->v=new stibbons::Number(atof(yytext)); return yy::parser::token::NUMBER;}
 
 (\"(\\\"|[^\"])*\")|('(\\'|[^'])*')|(\"\"\"(.|\\n)*\"\"\")  {pyylval->v=new stibbons::String(yytext); return yy::parser::token::STRING;}
