@@ -1,8 +1,11 @@
-if(false){
-	rt 10
+if(true){
+	fd 180
 }
 else{
-	fd 90
+	fd 50
 }
 
 if(true) rt 45
+
+if(false) lt 90
+else fd 50
