@@ -62,6 +62,7 @@ INTERPETERSRC = \
 	$(NULL)
 
 TESTSRC = \
+	src/tests/test-agent.cpp \
 	src/tests/test-color.cpp \
 	src/tests/test-point.cpp \
 	src/tests/test-number.cpp \

@@ -1,4 +1,5 @@
 #include "../model/turtle.h"
+#include "../model/agent.h"
 
 #include <cppunit/TestCase.h>
 #include <cppunit/extensions/HelperMacros.h>

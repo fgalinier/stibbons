@@ -5,6 +5,7 @@
 namespace stibbons {
 
 error_code ec (errno,std::generic_category());
+static const string error = "Didn't find.";
 
 /**
  * Check whether a value is between 0 and 1 and put it truncated to fit
@@ -14,7 +15,13 @@ inline double radian (double degree) {
 	return degree * M_PI / 180;
 }
 
-Turtle::Turtle (turtle_id id, World *world) : id(id), angle(0.0), world(world), color(Color()), line(nullptr) {}
+Turtle::Turtle (turtle_id id, World *world) : id(id), angle(0.0), world(world), color(Color()), line(nullptr) {properties=new unordered_map<string,Value*>();}
+
+Turtle::~Turtle () {
+	delete line;
+	delete world;
+	delete properties;
+}
 
 void Turtle::setId (turtle_id new_var) {
 	id=new_var;
@@ -99,6 +106,27 @@ void Turtle::penUp() throw (future_error) {
 		throw future_error(ec);
 
 	line = nullptr;
+}
+
+void Turtle::setProperty (pair<string,Value*> &new_var) {
+	unordered_map<string,Value*>::const_iterator search = properties->find (new_var.first);
+	if ( search == properties->end())
+	properties->insert(new_var);
+	else {
+		properties->erase(new_var.first);
+		properties->insert(new_var);
+	}
+}
+
+unordered_map<string,Value*> Turtle::getProperties() const {
+	return *properties;
+}
+
+Value* Turtle::getProperty(string p) const throw (domain_error){
+	unordered_map<string,Value*>::const_iterator got = properties->find(p);
+	if ( got == properties->end())
+		throw domain_error(error);
+	else return got->second;
 }
 
 }

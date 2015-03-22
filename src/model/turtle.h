@@ -5,11 +5,13 @@
 #include "point.h"
 #include "world.h"
 #include "line.h"
-
+#include "agent.h"
+#include "value.h"
 #include <future>
-//#include <cmath>
-//#include <stdexcept>
-//#include <system_error>
+#include <cmath>
+#include <stdexcept>
+#include <system_error>
+#include <unordered_map>
 
 using namespace std;
 
@@ -26,13 +28,18 @@ typedef unsigned long turtle_id;
  *
  *\author Julia Bassoumi
  */
-class Turtle : public Point, public Changeable {
+class Turtle : public Point, public Changeable/*, public Agent*/ {
 	public:
 		/**
 		 * Create a turtle
 		 *
 		 */
 		Turtle (turtle_id id, World *world = nullptr);
+
+		/**
+		 * Empty Destructor
+		 */
+		virtual ~Turtle ();
 
 		/**
 		 * Set the value of angle
@@ -111,12 +118,19 @@ class Turtle : public Point, public Changeable {
 		 */
 		void penUp() throw (future_error);
 
+		void setProperty (pair<string,Value*> &new_var);
+
+		unordered_map<string,stibbons::Value*> getProperties() const;
+
+		Value* getProperty(string p) const throw (domain_error);
+
 	private:
 		turtle_id id;
 		double angle;
 		World * world;
 		Color color;
 		Line* line;
+		unordered_map<string,Value*> *properties;
 	};
 }
 
