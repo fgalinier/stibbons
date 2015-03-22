@@ -88,7 +88,10 @@ namespace stibbons {
 			case yy::parser::token::PD:
 				turtle->penDown();
 				break;
-			case yy::parser::token::NUMBER:
+			case yy::parser::token::NUMBER:		
+				return std::get<1>(tree->getNode());
+				break;
+			case yy::parser::token::BOOLEAN:
 				return std::get<1>(tree->getNode());
 				break;
 			case yy::parser::token::BOOLEAN:
@@ -142,7 +145,7 @@ namespace stibbons {
 				auto cond = this->interpret(tree->getSon(0));
 				if(cond->getType() != Type::BOOLEAN) 
 					throw std::exception();
-				if(cond){
+				if(dynamic_cast<Boolean*>(cond)->getValue()){
 					return this->interpret(tree->getSon(1));
 				}
 				else{
@@ -150,8 +153,7 @@ namespace stibbons {
 				}
 			}
 			case yy::parser::token::ELSE: {
-				auto val1 = this->interpret(tree->getSon(0));
-				return val1;
+				return this->interpret(tree->getSon(0));
 			}
 				break;
 			}
