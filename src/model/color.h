@@ -70,6 +70,8 @@ class Color : public GenericValue<Type::COLOR> {
 		 */
 		Color (std::string color) throw(std::domain_error);
 
+		virtual ~Color () = default;
+
 		/**
 		 * Set the value of red
 		 * @param red the new value of red

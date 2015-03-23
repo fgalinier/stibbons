@@ -1,5 +1,4 @@
 #include "../model/turtle.h"
-#include "../model/agent.h"
 
 #include <cppunit/TestCase.h>
 #include <cppunit/extensions/HelperMacros.h>
@@ -14,34 +13,35 @@ class TestTurtle : public TestCase{
 	CPPUNIT_TEST_SUITE_END();
 
 	public :
-		stibbons::Turtle turtle = stibbons::Turtle(0);
+/*Explication : pas de constructeur vide ds tortue, donc on ne peux pas laisser turtle, et seg fault si redefinit dans le setUp => pointeur ou constructeur vide dans tortue*/
+		stibbons::Turtle* turtle;// stibbons::Turtle(0);
 
 		void setUp(){
-			turtle=stibbons::Turtle(0);
+			turtle=new stibbons::Turtle(0);
 		}
 
 		void testAngle() {
 			cout << "TestTurtle::testAngle" << endl;
-			CPPUNIT_ASSERT_EQUAL (0.0, turtle.getAngle());
-			turtle.turnRight(90.0);
-			CPPUNIT_ASSERT_EQUAL (90.0, turtle.getAngle());
-			turtle.turnLeft(90.0);
-			CPPUNIT_ASSERT_EQUAL (0.0, turtle.getAngle());
-			turtle.turnLeft(90.0);
-			CPPUNIT_ASSERT_EQUAL (270.0, turtle.getAngle());
+			CPPUNIT_ASSERT_EQUAL (0.0, turtle->getAngle());
+			turtle->turnRight(90.0);
+			CPPUNIT_ASSERT_EQUAL (90.0, turtle->getAngle());
+			turtle->turnLeft(90.0);
+			CPPUNIT_ASSERT_EQUAL (0.0, turtle->getAngle());
+			turtle->turnLeft(90.0);
+			CPPUNIT_ASSERT_EQUAL (270.0, turtle->getAngle());
 		}
 
 		void testForward() {
 			cout << "TestTurtle::testForward" << endl;
-			CPPUNIT_ASSERT_EQUAL (0.0, turtle[0]);
-			CPPUNIT_ASSERT_EQUAL (0.0, turtle[1]);
-			turtle.forward(1.0);
-			CPPUNIT_ASSERT_EQUAL (1.0, turtle[0]);
-			CPPUNIT_ASSERT_EQUAL (0.0, turtle[1]);
-			turtle.turnRight(90.0);
-			turtle.forward(1.0);
-			CPPUNIT_ASSERT_EQUAL (1.0, turtle[0]);
-			CPPUNIT_ASSERT_EQUAL (1.0, turtle[1]);
+			CPPUNIT_ASSERT_EQUAL (0.0, turtle->getValue(0));
+			CPPUNIT_ASSERT_EQUAL (0.0, turtle->getValue(1));
+			turtle->forward(1.0);
+			CPPUNIT_ASSERT_EQUAL (1.0, turtle->getValue(0));
+			CPPUNIT_ASSERT_EQUAL (0.0, turtle->getValue(1));
+			turtle->turnRight(90.0);
+			turtle->forward(1.0);
+			CPPUNIT_ASSERT_EQUAL (1.0, turtle->getValue(0));
+			CPPUNIT_ASSERT_EQUAL (1.0, turtle->getValue(1));
 		}
 };
 

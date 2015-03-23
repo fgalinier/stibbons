@@ -6,47 +6,59 @@
 
 #include <cppunit/TestCase.h>
 #include <cppunit/extensions/HelperMacros.h>
-
+using namespace stibbons;
 using namespace std;
 using namespace CppUnit;
 
 class TestAgent : public TestCase {
 	CPPUNIT_TEST_SUITE(TestAgent);
-	CPPUNIT_TEST(getValues);
-	CPPUNIT_TEST(changeValue);
+	CPPUNIT_TEST(getValuesT);
+	CPPUNIT_TEST(getValuesZ);
+	CPPUNIT_TEST(changeValueT);
 	CPPUNIT_TEST_SUITE_END();
 
 	public :
 		stibbons::Turtle* t;
-		//stibbons::Zone z;
+		stibbons::Zone* z;
 
 		void setUp() {
 			t=new  stibbons::Turtle(0);
-			pair<string,stibbons::Value*> paire("chasse", new stibbons::Number(6.0));
-			pair<string,stibbons::Value*> deuxieme("couleur", new stibbons::String("chat"));
+			pair<string,Value*> paire("chasse", new Number(6.0));
+			pair<string,Value*> deuxieme("couleur", new String("chat"));
 			t->setProperty(paire);
 			t->setProperty(deuxieme);
+
+			z=new stibbons::Zone();
+			z->setProperty(deuxieme);
 		}
 
-		void getValues() {
-			cout << "TestAgent::getValues" << endl;
+		void getValuesT() {
+			cout << "TestAgent::getValuesT" << endl;
 			auto chasse = t->getProperty("chasse");
-			CPPUNIT_ASSERT (stibbons::Type::NUMBER == chasse->getType());
-			//auto chasse_reel = (stibbons::Number *) chasse;
-			//CPPUNIT_ASSERT_EQUAL (6.0, chasse_reel->getValue());
+			CPPUNIT_ASSERT (Type::NUMBER == chasse->getType());
+			auto chasse_reel = dynamic_cast<Number*>( chasse);
+			CPPUNIT_ASSERT_EQUAL (6.0, chasse_reel->getValue());
 		}
 
-		void changeValue(){
-		cout << "TestAgent::changeValue" << endl;
-		pair<string,stibbons::Value*> paire("chasse", new stibbons::Number(7.7));
+		void changeValueT(){
+		cout << "TestAgent::changeValueT" << endl;
+		pair<string,Value*> paire("chasse", new Number(7.7));
 		t->setProperty(paire);
-		unordered_map<string,stibbons::Value*>::const_iterator search = (t->getProperties()).find ("chasse");
+		unordered_map<string,Value*>::const_iterator search = (t->getProperties()).find ("chasse");
 		if (search == (t->getProperties()).end()){
 		cout<<"pas trouver"<<endl;
-		//auto valeur=(stibbons::Number)search->second;
-		//CPPUNIT_ASSERT_EQUAL(7.7, valeur);
+		auto valeur=dynamic_cast<Number*>(search->second);
+		CPPUNIT_ASSERT_EQUAL(7.7, valeur->getValue());
 		}
 		
+		}
+
+		void getValuesZ(){
+		cout << "TestAgent::getValuesZ" << endl;
+		auto couleur = z->getProperty("couleur");
+		CPPUNIT_ASSERT (Type::STRING == couleur->getType());
+		auto couleur_reel = dynamic_cast<String*> (couleur);
+		CPPUNIT_ASSERT ("chat" == couleur_reel->getValue());
 		}
 
 };

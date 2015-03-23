@@ -21,33 +21,36 @@ class Agent
 		/**
 		 * Empty Constructor
 		 */
-		Agent (){};
+		Agent ();
 
 		/**
 		 * Empty Destructor
 		 */
-		virtual ~Agent (){};
+		virtual ~Agent ();
 
 		/**
 		 * Add a value in properties,
 		 * @param new_var the new value of properties, his type is pair<string,Value>
 		 */
-		virtual void setProperty (pair<string,Value*> &new_var)=0;
+		virtual void setProperty (pair<string,Value*> &new_var);
 
 		/**
 		 * Get the value of properties
 		 * @return the value of properties
 		 */
-		 virtual unordered_map<string,stibbons::Value*> getProperties() const =0;
+		 virtual unordered_map<string,stibbons::Value*> getProperties() const ;
 		 
 		 /**
 		 * Get the value of the propertie p
 		 * @return the value of propertie p
 		 */
-		 virtual Value* getProperty(string p) const throw (domain_error)=0;
+		 virtual Value* getProperty(string p);
 
 	protected:
 		unordered_map<string,Value*> *properties;
+
+	private:
+		void tryDelete (Value* value) throw (domain_error);
 };
 }
 /*

@@ -71,9 +71,9 @@ class SimpleValue {
 
 		// Copy assignment
 		SimpleValue& operator = (const SimpleValue& other) {
-			lock(value_m, other.value_m);
-			lock_guard<mutex> self_lock(value_m, adopt_lock);
-			lock_guard<mutex> other_lock(other.value_m, adopt_lock);
+//			lock(value_m, other.value_m);
+//			lock_guard<mutex> self_lock(value_m, adopt_lock);
+			//lock_guard<mutex> other_lock(other.value_m, adopt_lock);
 			value = other.value;
 			return *this;
 		}

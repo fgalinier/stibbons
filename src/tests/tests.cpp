@@ -10,7 +10,7 @@ Test *suite() {
 	registry.registerFactory(&TestFactoryRegistry::getRegistry("TestColor"));
 	registry.registerFactory(&TestFactoryRegistry::getRegistry("TestPoint"));
 	registry.registerFactory(&TestFactoryRegistry::getRegistry("TestNumber"));
-	registry.registerFactory(&TestFactoryRegistry::getRegistry("TestTurtle"));//FIXME
+	registry.registerFactory(&TestFactoryRegistry::getRegistry("TestTurtle"));
 	registry.registerFactory(&TestFactoryRegistry::getRegistry("TestValue"));
 
 	return registry.makeTest();

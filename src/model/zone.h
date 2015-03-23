@@ -1,6 +1,10 @@
 #pragma once
 
 #include "color.h"
+#include "agent.h"
+#include <stdexcept>
+#include <system_error>
+#include <unordered_map>
 
 #include <mutex>
 
@@ -13,7 +17,7 @@ namespace stibbons {
  *
  * \author Julia Bassoumi
  */
-class Zone {
+class Zone : public Agent{
 	public:
 		/**
 		 * Create a zone

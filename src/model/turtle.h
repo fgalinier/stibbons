@@ -28,18 +28,13 @@ typedef unsigned long turtle_id;
  *
  *\author Julia Bassoumi
  */
-class Turtle : public Point, public Changeable/*, public Agent*/ {
+class Turtle : public Point, public Changeable, public Agent{
 	public:
 		/**
 		 * Create a turtle
 		 *
 		 */
 		Turtle (turtle_id id, World *world = nullptr);
-
-		/**
-		 * Empty Destructor
-		 */
-		virtual ~Turtle ();
 
 		/**
 		 * Set the value of angle
@@ -117,12 +112,6 @@ class Turtle : public Point, public Changeable/*, public Agent*/ {
 		 * Stop to trace on the map behind the turtle
 		 */
 		void penUp() throw (future_error);
-
-		void setProperty (pair<string,Value*> &new_var);
-
-		unordered_map<string,stibbons::Value*> getProperties() const;
-
-		Value* getProperty(string p) const throw (domain_error);
 
 	private:
 		turtle_id id;
