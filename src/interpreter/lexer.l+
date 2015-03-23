@@ -61,7 +61,7 @@ not|! {return yy::parser::token::NOT;}
 
 repeat {return yy::parser::token::RPT;}
 
-"while" {return yy::parser::token::WHL;}
+while {return yy::parser::token::WHL;}
 
 [1-9]*\.?[0-9]+ {pyylval->v=new stibbons::Number(atof(yytext)); return yy::parser::token::NUMBER;}
 

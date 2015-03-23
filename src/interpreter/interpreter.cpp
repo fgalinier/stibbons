@@ -46,6 +46,14 @@ namespace stibbons {
 					for(auto son : *sons) interpret(son);
 				}
 				break;
+			case yy::parser::token::RPT: {
+				auto val = this->interpret(tree->getSon(0));
+				if(val->getType() != Type::NUMBER) throw std::exception();
+				for(auto i=0;i<dynamic_cast<Number*>(val)->getValue();i++) {
+					this->interpret(tree->getSon(1));
+				}
+			}
+				break;
 			case yy::parser::token::FD: {
 				auto val = this->interpret(tree->getSon(0));
 				if(val->getType() != Type::NUMBER) throw std::exception();
@@ -71,6 +79,9 @@ namespace stibbons {
 				turtle->penDown();
 				break;
 			case yy::parser::token::NUMBER:
+				return std::get<1>(tree->getNode());
+				break;
+			case yy::parser::token::BOOLEAN:
 				return std::get<1>(tree->getNode());
 				break;
 			case '+': {

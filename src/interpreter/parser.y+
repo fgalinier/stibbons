@@ -247,7 +247,28 @@ affect : ID '=' expr
   $$ = t1;
 }; 
 
-loop : RPT expr instr_turtle
+loop : RPT expr instr
+{
+  stibbons::Tree *t1 = new stibbons::Tree(yy::parser::token::RPT,nullptr);
+  t1->addSon($2);
+  t1->addSon($3);
+  $$ = t1;  
+}
+| RPT expr bloc
+{
+  stibbons::Tree *t1 = new stibbons::Tree(yy::parser::token::RPT,nullptr);
+  t1->addSon($2);
+  t1->addSon($3);
+  $$ = t1;  
+}
+| WHL expr instr
+{
+  stibbons::Tree *t1 = new stibbons::Tree(yy::parser::token::RPT,nullptr);
+  t1->addSon($2);
+  t1->addSon($3);
+  $$ = t1;  
+}
+| WHL expr bloc
 {
   stibbons::Tree *t1 = new stibbons::Tree(yy::parser::token::RPT,nullptr);
   t1->addSon($2);
