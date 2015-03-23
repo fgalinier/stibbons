@@ -7,15 +7,22 @@
 #include "../model/string.h"
 #include "../model/boolean.h"
 #include "../model/color.h"
-	
-#define yyterminate() {} 
+
+#define YY_USER_ACTION loc->columns(yyleng);
+#define yyterminate() {}
 %}
 
-%option noyywrap
+%option yylineno
+%option noyywrap nounput
 %option case-insensitive
 
  /*Rules*/
 %%
+
+%{
+loc->step();
+%}
+
 true|false {if(yytext[0] == 't' || yytext[0] == 'T') { pyylval->v = new stibbons::Boolean(true); } else { pyylval->v = new stibbons::Boolean(false); } return yy::parser::token::BOOLEAN;}
 
 null {return yy::parser::token::NIL;}
@@ -52,6 +59,10 @@ xor|^ {return yy::parser::token::XOR;}
 
 not|! {return yy::parser::token::NOT;}
 
+repeat {return yy::parser::token::RPT;}
+
+"while" {return yy::parser::token::WHL;}
+
 [1-9]*\.?[0-9]+ {pyylval->v=new stibbons::Number(atof(yytext)); return yy::parser::token::NUMBER;}
 
 (\"(\\\"|[^\"])*\")|('(\\'|[^'])*')|(\"\"\"(.|\\n)*\"\"\")  {pyylval->v=new stibbons::String(yytext); return yy::parser::token::STRING;}
@@ -60,11 +71,11 @@ not|! {return yy::parser::token::NOT;}
 
 [_a-z][\-_a-z0-9]* {pyylval->v=new stibbons::String(yytext); return yy::parser::token::ID;}
 
-"//"[^\n]*\n ;
+"//"[^\n]*\n+ { loc->lines(yyleng); loc->step(); return yy::parser::token_type('\n');}
 
 "/*"([^*]|"*"+[^*/])*"*"+"/" ;
 
-[ \t]* ;
+[ \r\t]*  {loc->step();}
 
 \{\n* {return yy::parser::token::LB;}
 
@@ -74,7 +85,7 @@ not|! {return yy::parser::token::NOT;}
 
 \) {return yy::parser::token::RP;}
 
-\n\n* {return yy::parser::token_type(yytext[0]);}
+\n\n* { loc->lines(yyleng); loc->step(); return yy::parser::token_type(yytext[0]);}
 
 . {return yy::parser::token_type(yytext[0]);}
 

@@ -10,10 +10,12 @@ using namespace std;
 %}
 
 %skeleton "lalr1.cc"
+%locations
+%error-verbose
 
 %code requires {
 #include "tree.h"
-#define YY_DECL yy::parser::token_type yylex (yy::parser::semantic_type* pyylval)
+#define YY_DECL yy::parser::token_type yylex (yy::parser::semantic_type* pyylval,yy::parser::location_type* loc)
 }
 
 %union{
@@ -24,7 +26,7 @@ using namespace std;
 %{
   YY_DECL;
 %}
-%token FD LT RT PU PD DIE AND OR XOR NOT EQ NEQ GT GEQ LS LEQ LB RB LP RP FCT_ID
+%token FD LT RT PU PD DIE AND OR XOR NOT EQ NEQ GT GEQ LS LEQ LB RB LP RP FCT_ID RPT WHL END
 %token <v> NUMBER
 %token <v> STRING
 %token <v> COLOR
@@ -33,7 +35,6 @@ using namespace std;
 %token <v> ID
 %type <tr> instr
 %type <tr> instr_list
-%type <tr> instr_bloc
 %type <tr> instr_turtle
 %type <tr> bloc
 %type <tr> expr
@@ -41,6 +42,7 @@ using namespace std;
 %type <tr> affect
 %type <tr> fct_call
 %type <tr> params
+%type <tr> loop
 
 %right '='
 %left AND OR XOR 
@@ -54,11 +56,22 @@ using namespace std;
 %%
 code : instr_list {t->addSon($1);};
 
-instr_list : instr instr_list 
+instr_list : instr
+{
+  $$ = $1; 
+}
+| instr '\n' instr_list 
 {
   stibbons::Tree *t1 = new stibbons::Tree(0,nullptr);
   t1->addSon($1);
-  t1->addSon($2);
+  t1->addSon($3);
+  $$ = t1; 
+}
+| bloc '\n' instr_list 
+{
+  stibbons::Tree *t1 = new stibbons::Tree(0,nullptr);
+  t1->addSon($1);
+  t1->addSon($3);
   $$ = t1; 
 }
 | bloc instr_list 
@@ -70,20 +83,14 @@ instr_list : instr instr_list
 }
 | { $$ = nullptr;};
 
-bloc : LB instr_list instr_bloc RB
+bloc : LB instr_list RB
 { 
-  stibbons::Tree *t1 = new stibbons::Tree(0,nullptr);
-  t1->addSon($2);
-  t1->addSon($3);
-  $$ = t1; 
+  $$ = $2; 
 };
 
-instr_bloc : expr { $$ = $1;} 
-| instr_turtle { $$ = $1; }
-| { $$ = nullptr; };
-
-instr : expr '\n' { $$ = $1; }
-| instr_turtle '\n' { $$ = $1; };
+instr : expr { $$ = $1; }
+| loop  { $$ = $1; }
+| instr_turtle { $$ = $1; };
 
 instr_turtle : FD expr
 { 
@@ -240,6 +247,15 @@ affect : ID '=' expr
   $$ = t1;
 }; 
 
+loop : RPT expr instr_turtle
+{
+  stibbons::Tree *t1 = new stibbons::Tree(yy::parser::token::RPT,nullptr);
+  t1->addSon($2);
+  t1->addSon($3);
+  $$ = t1;  
+}
+;
+
 fct_call : ID LP params RP 
 {
   stibbons::Tree *t1 = new stibbons::Tree(yy::parser::token::FCT_ID,$1);
@@ -265,6 +281,6 @@ lit : NUMBER { $$ = new stibbons::Tree(yy::parser::token::NUMBER,$1); }
 
 
 %%
-void yy::parser::error(string const& s) {
-  cout<<endl<<"Erreur : "<<s<<endl;
+void yy::parser::error(const location& loc,string const& s) {
+  cerr<<s<<" at "<<loc.begin.line<<":"<<loc.begin.column<<endl;
 }
