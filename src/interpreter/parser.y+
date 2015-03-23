@@ -263,14 +263,14 @@ loop : RPT expr instr
 }
 | WHL expr instr
 {
-  stibbons::Tree *t1 = new stibbons::Tree(yy::parser::token::RPT,nullptr);
+  stibbons::Tree *t1 = new stibbons::Tree(yy::parser::token::WHL,nullptr);
   t1->addSon($2);
   t1->addSon($3);
   $$ = t1;  
 }
 | WHL expr bloc
 {
-  stibbons::Tree *t1 = new stibbons::Tree(yy::parser::token::RPT,nullptr);
+  stibbons::Tree *t1 = new stibbons::Tree(yy::parser::token::WHL,nullptr);
   t1->addSon($2);
   t1->addSon($3);
   $$ = t1;  

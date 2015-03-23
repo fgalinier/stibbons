@@ -46,6 +46,16 @@ namespace stibbons {
 					for(auto son : *sons) interpret(son);
 				}
 				break;
+			case yy::parser::token::WHL: {
+				auto val = this->interpret(tree->getSon(0));
+				if(val->getType() != Type::BOOLEAN) throw std::exception();
+				while(dynamic_cast<Boolean*>(val)->getValue()) {
+					this->interpret(tree->getSon(1));
+					auto val = this->interpret(tree->getSon(0));
+					if(val->getType() != Type::BOOLEAN) throw std::exception();
+				}
+			}
+				break;
 			case yy::parser::token::RPT: {
 				auto val = this->interpret(tree->getSon(0));
 				if(val->getType() != Type::NUMBER) throw std::exception();
