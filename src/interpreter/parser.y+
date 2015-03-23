@@ -89,7 +89,7 @@ bloc : LB instr_list RB
 };
 
 instr : expr { $$ = $1; }
-| loop  { $$ = $1; }
+| loop { $$ = $1; }
 | instr_turtle { $$ = $1; };
 
 instr_turtle : FD expr
@@ -247,28 +247,28 @@ affect : ID '=' expr
   $$ = t1;
 }; 
 
-loop : RPT expr instr
+loop : RPT expr bloc
 {
   stibbons::Tree *t1 = new stibbons::Tree(yy::parser::token::RPT,nullptr);
   t1->addSon($2);
   t1->addSon($3);
   $$ = t1;  
 }
-| RPT expr bloc
+| RPT expr instr
 {
   stibbons::Tree *t1 = new stibbons::Tree(yy::parser::token::RPT,nullptr);
   t1->addSon($2);
   t1->addSon($3);
   $$ = t1;  
 }
-| WHL expr instr
+| WHL expr bloc
 {
   stibbons::Tree *t1 = new stibbons::Tree(yy::parser::token::WHL,nullptr);
   t1->addSon($2);
   t1->addSon($3);
   $$ = t1;  
 }
-| WHL expr bloc
+| WHL expr instr
 {
   stibbons::Tree *t1 = new stibbons::Tree(yy::parser::token::WHL,nullptr);
   t1->addSon($2);
