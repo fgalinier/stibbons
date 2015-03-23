@@ -72,15 +72,15 @@ while {return yy::parser::token::WHL;}
 
 [_a-z][\-_a-z0-9]* {pyylval->v=new stibbons::String(yytext); return yy::parser::token::ID;}
 
-"//"[^\n]*\n+ { loc->lines(yylineno); loc->columns(0); loc->step(); return yy::parser::token_type('\n');}
+"//"[^\n]*\n { loc->step(); return yy::parser::token_type('\n');}
 
 "/*"([^*]|"*"+[^*/])*"*"+"/" ;
 
 [ \r\t]*  {loc->step();}
 
-\{\n* { loc->lines(yyleng); loc->step();return yy::parser::token::LB;}
+\{\n* {return yy::parser::token::LB;}
 
-\} { loc->lines(yyleng); loc->step(); return yy::parser::token::RB;}
+\} {return yy::parser::token::RB;}
 
 \(\n* {return yy::parser::token::LP;}
 

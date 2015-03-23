@@ -303,5 +303,5 @@ lit : NUMBER { $$ = new stibbons::Tree(yy::parser::token::NUMBER,$1); }
 
 %%
 void yy::parser::error(const location& loc,string const& s) {
-  cerr<<s<<" at "<<loc.begin.line<<":"<<loc.begin.column<<endl;
+  cerr<<s<<" at line "<<loc.begin.line<<"."<<endl;
 }
