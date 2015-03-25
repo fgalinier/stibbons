@@ -12,6 +12,7 @@ Test *suite() {
 	registry.registerFactory(&TestFactoryRegistry::getRegistry("TestNumber"));
 	registry.registerFactory(&TestFactoryRegistry::getRegistry("TestTurtle"));
 	registry.registerFactory(&TestFactoryRegistry::getRegistry("TestValue"));
+	registry.registerFactory(&TestFactoryRegistry::getRegistry("TestWorld"));
 
 	return registry.makeTest();
 }

@@ -25,7 +25,7 @@ typedef unsigned long turtle_id;
  *
  * \author Julia Bassoumi
  */
-class World : public Changeable {
+class World : public Changeable, public Agent {
 	public:
 		/**
 		 * Create a world

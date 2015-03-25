@@ -3,6 +3,7 @@
 #include "../model/turtle.h"
 #include "../model/number.h"
 #include "../model/string.h"
+#include "../model/color.h"
 
 #include <cppunit/TestCase.h>
 #include <cppunit/extensions/HelperMacros.h>
@@ -15,21 +16,30 @@ class TestAgent : public TestCase {
 	CPPUNIT_TEST(getValuesT);
 	CPPUNIT_TEST(getValuesZ);
 	CPPUNIT_TEST(changeValueT);
+	CPPUNIT_TEST(getValuesW);
 	CPPUNIT_TEST_SUITE_END();
 
 	public :
-		stibbons::Turtle* t;
-		stibbons::Zone* z;
+		Turtle* t;
+		Zone* z;
+		World* w;
 
 		void setUp() {
-			t=new  stibbons::Turtle(0);
 			pair<string,Value*> paire("chasse", new Number(6.0));
 			pair<string,Value*> deuxieme("couleur", new String("chat"));
+			pair<string,Value*> troisieme("tortue", new String("bleu"));
+			pair<string,Value*> quatrieme("color", new Color());
+
+			t=new Turtle(0);
 			t->setProperty(paire);
 			t->setProperty(deuxieme);
 
-			z=new stibbons::Zone();
+			z=new Zone();
 			z->setProperty(deuxieme);
+
+			w=new World(10,10);
+			w->setProperty(troisieme);
+			w->setProperty(quatrieme);
 		}
 
 		void getValuesT() {
@@ -46,11 +56,11 @@ class TestAgent : public TestCase {
 		t->setProperty(paire);
 		unordered_map<string,Value*>::const_iterator search = (t->getProperties()).find ("chasse");
 		if (search == (t->getProperties()).end()){
-		cout<<"pas trouver"<<endl;
+			cout<<"pas trouver"<<endl;
+		}
 		auto valeur=dynamic_cast<Number*>(search->second);
 		CPPUNIT_ASSERT_EQUAL(7.7, valeur->getValue());
-		}
-		
+
 		}
 
 		void getValuesZ(){
@@ -59,6 +69,15 @@ class TestAgent : public TestCase {
 		CPPUNIT_ASSERT (Type::STRING == couleur->getType());
 		auto couleur_reel = dynamic_cast<String*> (couleur);
 		CPPUNIT_ASSERT ("chat" == couleur_reel->getValue());
+		}
+
+		void getValuesW(){
+		cout << "TestAgent::getValuesW" << endl;
+		auto couleur = w->getProperty("color");
+		CPPUNIT_ASSERT (Type::COLOR == couleur->getType());
+		auto tortue = w->getProperty("tortue");
+		auto tt = dynamic_cast<String*> (tortue);
+		CPPUNIT_ASSERT ("bleu" == tt->getValue());
 		}
 
 };

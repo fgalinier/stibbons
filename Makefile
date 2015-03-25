@@ -69,6 +69,7 @@ TESTSRC = \
 	src/tests/test-number.cpp \
 	src/tests/test-turtle.cpp \
 	src/tests/test-value.cpp \
+	src/tests/test-world.cpp \
 	src/tests/tests.cpp \
 	$(NULL)
 
