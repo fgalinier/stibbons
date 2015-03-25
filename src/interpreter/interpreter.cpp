@@ -40,30 +40,14 @@ namespace stibbons {
 		if(tree == nullptr) return nullptr;
 		else {
 			switch(std::get<0>(tree->getNode())) {
+		   	//Sequence case:
 			case 0:
 				if(!tree->isLeaf()) {
 					auto sons = tree->getSons();
 					for(auto son : *sons) interpret(son);
 				}
 				break;
-			case yy::parser::token::WHL: {
-				auto val = this->interpret(tree->getSon(0));
-				if(val->getType() != Type::BOOLEAN) throw std::exception();
-				while(dynamic_cast<Boolean*>(val)->getValue()) {
-					this->interpret(tree->getSon(1));
-					auto val = this->interpret(tree->getSon(0));
-					if(val->getType() != Type::BOOLEAN) throw std::exception();
-				}
-			}
-				break;
-			case yy::parser::token::RPT: {
-				auto val = this->interpret(tree->getSon(0));
-				if(val->getType() != Type::NUMBER) throw std::exception();
-				for(auto i=0;i<dynamic_cast<Number*>(val)->getValue();i++) {
-					this->interpret(tree->getSon(1));
-				}
-			}
-				break;
+		  	//Basic cases:
 			case yy::parser::token::FD: {
 				auto val = this->interpret(tree->getSon(0));
 				if(val->getType() != Type::NUMBER) throw std::exception();
@@ -88,12 +72,63 @@ namespace stibbons {
 			case yy::parser::token::PD:
 				turtle->penDown();
 				break;
+		   	//Loop cases:
+			case yy::parser::token::WHL: {
+				auto val = this->interpret(tree->getSon(0));
+				if(val->getType() != Type::BOOLEAN) throw std::exception();
+				while(dynamic_cast<Boolean*>(val)->getValue()) {
+					this->interpret(tree->getSon(1));
+					auto val = this->interpret(tree->getSon(0));
+					if(val->getType() != Type::BOOLEAN) throw std::exception();
+				}
+			}
+				break;
+			case yy::parser::token::RPT: {
+				auto val = this->interpret(tree->getSon(0));
+				if(val->getType() != Type::NUMBER) throw std::exception();
+				for(auto i=0;i<dynamic_cast<Number*>(val)->getValue();i++) {
+					this->interpret(tree->getSon(1));
+				}
+			}
+				break;
+		   	//Conditionnal cases:
+			case yy::parser::token::IF: {
+				auto cond = this->interpret(tree->getSon(0));
+				if(cond->getType() != Type::BOOLEAN) 
+					throw std::exception();
+				if(dynamic_cast<Boolean*>(cond)->getValue()){
+					return this->interpret(tree->getSon(1));
+				}
+				else{
+					return this->interpret(tree->getSon(2));
+				}
+			}
+				break;
+			case yy::parser::token::ELSE: {
+				return this->interpret(tree->getSon(0));
+			}
+				break;
+			//Variable cases:
+			case yy::parser::token::ID: {
+				return turtle->getProperty(dynamic_cast<String*>(std::get<1>(tree->getNode()))->getValue());
+			}
+				break;
+			case '=': {
+				auto val = this->interpret(tree->getSon(0));
+				auto id = std::get<1>(tree->getNode());
+				pair<string,Value*> prop = {dynamic_cast<String*>(id)->getValue(),val};
+				turtle->setProperty(prop);
+				return val;
+			}
+				break;
+		   	//Type cases:
 			case yy::parser::token::NUMBER:		
 				return std::get<1>(tree->getNode());
 				break;
 			case yy::parser::token::BOOLEAN:
 				return std::get<1>(tree->getNode());
 				break;
+		   	//Arithmetic cases:
 			case '+': {
 				auto val1 = this->interpret(tree->getSon(0));
 				auto val2 = this->interpret(tree->getSon(1));
@@ -138,25 +173,43 @@ namespace stibbons {
 				return new Number(((int) dynamic_cast<Number*>(val1)->getValue())%((int) dynamic_cast<Number*>(val2)->getValue()));
 			}
 				break;
-			case yy::parser::token::IF: {
-				auto cond = this->interpret(tree->getSon(0));
-				if(cond->getType() != Type::BOOLEAN) 
+	   		//Boolean operation cases:
+			case yy::parser::token::AND: {
+				auto val1 = this->interpret(tree->getSon(0));
+				auto val2 = this->interpret(tree->getSon(1));
+				if(val1->getType() != Type::BOOLEAN || val2->getType() != Type::BOOLEAN) 
 					throw std::exception();
-				if(dynamic_cast<Boolean*>(cond)->getValue()){
-					return this->interpret(tree->getSon(1));
-				}
-				else{
-					return this->interpret(tree->getSon(2));
-				}
-			}
-			case yy::parser::token::ELSE: {
-				return this->interpret(tree->getSon(0));
+				return new Boolean((dynamic_cast<Boolean*>(val1)->getValue()) && (dynamic_cast<Boolean*>(val2)->getValue()));
 			}
 				break;
+			case yy::parser::token::OR: {
+				auto val1 = this->interpret(tree->getSon(0));
+				auto val2 = this->interpret(tree->getSon(1));
+				if(val1->getType() != Type::BOOLEAN || val2->getType() != Type::BOOLEAN) 
+					throw std::exception();
+				return new Boolean((dynamic_cast<Boolean*>(val1)->getValue()) || (dynamic_cast<Boolean*>(val2)->getValue()));
+			}
+				break;
+			case yy::parser::token::XOR: {
+				auto val1 = this->interpret(tree->getSon(0));
+				auto val2 = this->interpret(tree->getSon(1));
+				if(val1->getType() != Type::BOOLEAN || val2->getType() != Type::BOOLEAN) 
+					throw std::exception();
+				return new Boolean((dynamic_cast<Boolean*>(val1)->getValue()) ^ (dynamic_cast<Boolean*>(val2)->getValue()));
+			}
+				break;
+			case yy::parser::token::NOT: {
+				auto val1 = this->interpret(tree->getSon(0));
+				if(val1->getType() != Type::BOOLEAN) 
+					throw std::exception();
+				return new Boolean(!(dynamic_cast<Boolean*>(val1)->getValue()));
+			}
+				break;	
 			}
 		}
 
-		//DIE AND OR XOR NOT EQ NEQ GT GEQ LS LEQ FCT_ID STRING COLOR BOOLEAN NIL ID
+		//Operations tokens : EQ NEQ GT GEQ LS LEQ
+		//Stibbons spécial tokens : DIE FCT_ID STRING COLOR NIL ID
 		return nullptr;
 	}
 }
