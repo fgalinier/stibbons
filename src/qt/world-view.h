@@ -28,6 +28,9 @@ class WorldView : public QWidget {
 	protected:
 		virtual void paintEvent(QPaintEvent *event);
 
+	signals:
+		void changed();
+
 	private:
 		void paint(QPainter &p, World &world);
 		void paint(QPainter &p, Line &line);

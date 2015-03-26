@@ -18,7 +18,10 @@ inline QPen pen(Color c) {
 	return QPen(qc);
 }
 
-WorldView::WorldView(QWidget *parent) : QWidget(parent) {}
+WorldView::WorldView(QWidget *parent) : QWidget(parent) {
+	setMinimumSize(QSize(100, 100));
+	connect(this, SIGNAL(changed()), this, SLOT(update()));
+}
 
 void WorldView::paintEvent(QPaintEvent *event) {
 	Q_UNUSED(event);
@@ -34,6 +37,10 @@ void WorldView::paintEvent(QPaintEvent *event) {
 
 void WorldView::setWorld(World *world) {
 	this->world = world;
+
+	world->onChanged([this]() {
+		emit changed();
+	});
 }
 
 World *WorldView::getWorld() {
