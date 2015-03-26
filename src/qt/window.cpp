@@ -16,7 +16,7 @@
 
 namespace stibbons {
 
-Window::Window(Interpreter *interpreter, World *world) : interpreter(interpreter), world(world), runner(nullptr) {
+Window::Window(World *world) : world(world), runner(nullptr) {
 	createActions();
 	createToolBars();
 

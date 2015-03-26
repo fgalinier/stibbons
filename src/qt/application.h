@@ -22,7 +22,6 @@ class Application : private QApplication {
 		int exec();
 
 	private:
-		Interpreter *interpreter;
 		World *world;
 };
 

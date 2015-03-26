@@ -10,7 +10,6 @@
 
 #include <QMainWindow>
 
-#include "../interpreter/interpreter.h"
 #include "../model/world.h"
 #include "world-view.h"
 #include "runner.h"
@@ -25,7 +24,7 @@ class Window : public QMainWindow {
 	Q_OBJECT
 
 	public:
-		Window(Interpreter *interpreter, World *world);
+		Window(World *world);
 		~Window();
 
 	protected:
@@ -51,7 +50,6 @@ class Window : public QMainWindow {
 		QAction *quitAct;
 		QAction *aboutAct;
 
-		Interpreter *interpreter;
 		World *world;
 		WorldView *worldView;
 

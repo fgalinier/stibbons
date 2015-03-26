@@ -22,17 +22,14 @@ Application::Application (int & argc, char ** argv) : QApplication (argc, argv) 
 
 	auto turtle = new Turtle(0, world);
 	world->addTurtle(turtle);
-
-	interpreter = new Interpreter(turtle);
 }
 
 Application::~Application () {
-	delete interpreter;
 	delete world;
 }
 
 int Application::exec () {
-	Window win(interpreter, world);
+	Window win(world);
 	win.show();
 
 	return QApplication::exec();
