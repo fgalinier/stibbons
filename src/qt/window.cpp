@@ -21,12 +21,9 @@ Window::Window(Interpreter *interpreter, World *world) : interpreter(interpreter
 	createToolBars();
 
 	worldView = new WorldView(nullptr);
+	worldView->show();
 	worldView->setWorld(world);
 	setCentralWidget(worldView);
-
-	world->onChanged([this]() {
-		worldView->update();
-	});
 
 	readSettings();
 
