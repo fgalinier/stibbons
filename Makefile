@@ -70,6 +70,7 @@ TESTSRC = \
 
 QTSRC = \
 	src/qt/application.cpp \
+	src/qt/runner.cpp \
 	src/qt/stibbons.cpp \
 	src/qt/window.cpp \
 	src/qt/world-view.cpp \
