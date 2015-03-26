@@ -13,6 +13,7 @@
 #include "../interpreter/interpreter.h"
 #include "../model/world.h"
 #include "world-view.h"
+#include "runner.h"
 
 class QAction;
 class QMenu;
@@ -25,6 +26,7 @@ class Window : public QMainWindow {
 
 	public:
 		Window(Interpreter *interpreter, World *world);
+		~Window();
 
 	protected:
 		void closeEvent(QCloseEvent *event) Q_DECL_OVERRIDE;
@@ -56,6 +58,7 @@ class Window : public QMainWindow {
 		QToolBar *toolbar;
 
 		std::string program;
+		Runner *runner;
 };
 
 }

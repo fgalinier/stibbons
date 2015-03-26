@@ -16,7 +16,7 @@
 
 namespace stibbons {
 
-Window::Window(Interpreter *interpreter, World *world) : interpreter(interpreter), world(world) {
+Window::Window(Interpreter *interpreter, World *world) : interpreter(interpreter), world(world), runner(nullptr) {
 	createActions();
 	createToolBars();
 
@@ -28,6 +28,13 @@ Window::Window(Interpreter *interpreter, World *world) : interpreter(interpreter
 	readSettings();
 
 	setUnifiedTitleAndToolBarOnMac(true);
+}
+
+Window::~Window() {
+	if (runner != nullptr) {
+		delete runner;
+		runner = nullptr;
+	}
 }
 
 void Window::createActions() {
@@ -109,10 +116,16 @@ void Window::loadFile(const QString &fileName) {
 }
 
 void Window::run() {
-	// TODO démarrer le programme
+	if (runner != nullptr) {
+		delete runner;
+		runner = nullptr;
+	}
 
-	auto tree = interpreter->parse(program.c_str());
-	interpreter->interpret(tree);
+	auto turtles = world->getTurtles();
+	if (turtles.size() > 0) {
+		runner = new Runner(*(turtles[0]), program);
+		runner->start();
+	}
 }
 
 void Window::halt() {
