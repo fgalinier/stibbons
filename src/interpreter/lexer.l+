@@ -25,7 +25,6 @@
 
 %}
 
-%option yylineno
 %option noyywrap nounput
 %option case-insensitive
 
@@ -94,11 +93,11 @@ else {return yy::parser::token::ELSE;}
 
 [ \r\t]+  {loc->step();}
 
-\{\n* {return yy::parser::token::LB;}
+\{\n* {loc->lines(countNewLine(yytext)); loc->step();return yy::parser::token::LB;}
 
-\} {return yy::parser::token::RB;}
+\n*\} {return yy::parser::token::RB;}
 
-\(\n* {return yy::parser::token::LP;}
+\(\n* {loc->lines(countNewLine(yytext)); loc->step();return yy::parser::token::LP;}
 
 \) {return yy::parser::token::RP;}
 
@@ -107,3 +106,4 @@ else {return yy::parser::token::ELSE;}
 . {return yy::parser::token_type(yytext[0]);}
 
 %%
+

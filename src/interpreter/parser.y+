@@ -15,13 +15,13 @@ using namespace std;
 
 %code requires {
 #include "tree.h"
-#define YY_DECL yy::parser::token_type yylex (yy::parser::semantic_type* pyylval,yy::parser::location_type* loc)
+#define YY_DECL yy::parser::token_type yylex (yy::parser::semantic_type* pyylval, yy::parser::location_type* loc)
 }
 
 %union{
   stibbons::Value* v;
   stibbons::Tree* tr;
- }
+}
 
 %{
   YY_DECL;
@@ -41,10 +41,11 @@ using namespace std;
 %type <tr> lit
 %type <tr> affect
 %type <tr> fct_call
+%type <tr> statement
 %type <tr> params
+%type <tr> struc
 %type <tr> loop
 %type <tr> condi
-%type <tr> condielse
 
 %right '='
 %left AND OR XOR 
@@ -58,42 +59,45 @@ using namespace std;
 %%
 code : instr_list {t->addSon($1);};
 
-instr_list : instr
+// General languages struct
+
+instr_list : statement
 {
   $$ = $1; 
 }
-| instr '\n' instr_list 
+| statement '\n' instr_list
 {
   stibbons::Tree *t1 = new stibbons::Tree(0,nullptr);
   t1->addSon($1);
   t1->addSon($3);
   $$ = t1; 
 }
-| bloc '\n' instr_list 
-{
-  stibbons::Tree *t1 = new stibbons::Tree(0,nullptr);
-  t1->addSon($1);
-  t1->addSon($3);
-  $$ = t1; 
-}
-| bloc instr_list 
-{
+| struc instr_list 
+{ 
   stibbons::Tree *t1 = new stibbons::Tree(0,nullptr);
   t1->addSon($1);
   t1->addSon($2);
-  $$ = t1; 
+  $$ = t1;
 }
 | { $$ = nullptr;};
+
+statement : bloc { $$ = $1; }
+| instr { $$ = $1; }
+| statement '\n' { $$ = $1; }
+; 
+
+struc : condi { $$ = $1; }
+| loop { $$ = $1; };
 
 bloc : LB instr_list RB
 { 
   $$ = $2; 
-};
+}; 
 
 instr : expr { $$ = $1; }
-| loop { $$ = $1; }
-| instr_turtle { $$ = $1; }
-| condi { $$ = $1; };
+| instr_turtle { $$ = $1; };
+
+// Turtle instructions
 
 instr_turtle : FD expr
 { 
@@ -125,6 +129,8 @@ instr_turtle : FD expr
 { 
   $$ = new stibbons::Tree(yy::parser::token::DIE,nullptr);
 };
+
+// Expressions
 
 expr : LP expr RP { $$ = $2; }
 | affect { $$ = $1; }
@@ -250,35 +256,7 @@ affect : ID '=' expr
   $$ = t1;
 }; 
 
-loop : RPT expr bloc
-{
-  stibbons::Tree *t1 = new stibbons::Tree(yy::parser::token::RPT,nullptr);
-  t1->addSon($2);
-  t1->addSon($3);
-  $$ = t1;  
-}
-| RPT expr instr
-{
-  stibbons::Tree *t1 = new stibbons::Tree(yy::parser::token::RPT,nullptr);
-  t1->addSon($2);
-  t1->addSon($3);
-  $$ = t1;  
-}
-| WHL expr bloc
-{
-  stibbons::Tree *t1 = new stibbons::Tree(yy::parser::token::WHL,nullptr);
-  t1->addSon($2);
-  t1->addSon($3);
-  $$ = t1;  
-}
-| WHL expr instr
-{
-  stibbons::Tree *t1 = new stibbons::Tree(yy::parser::token::WHL,nullptr);
-  t1->addSon($2);
-  t1->addSon($3);
-  $$ = t1;  
-}
-;
+// Functions
 
 fct_call : ID LP params RP 
 {
@@ -297,42 +275,49 @@ params : params ',' expr
 }
 | expr { $$ = $1;};
 
+// Literals
+
 lit : NUMBER { $$ = new stibbons::Tree(yy::parser::token::NUMBER,$1); }
 | STRING { $$ = new stibbons::Tree(yy::parser::token::STRING,$1);}
 | BOOLEAN { $$ = new stibbons::Tree(yy::parser::token::BOOLEAN,$1);}
 | COLOR { $$ = new stibbons::Tree(yy::parser::token::COLOR,$1);}
 | NIL { $$ = new stibbons::Tree(yy::parser::token::NIL,$1);};
 
-condi : IF expr instr condielse
-{
-  stibbons::Tree *t1 = new stibbons::Tree(yy::parser::token::IF,nullptr);
-  t1->addSon($2);
-  t1->addSon($3);
-  t1->addSon($4);
-  $$ = t1;
-}
-| IF expr bloc condielse 
-{
-  stibbons::Tree *t1 = new stibbons::Tree(yy::parser::token::IF,nullptr);
-  t1->addSon($2);
-  t1->addSon($3);
-  t1->addSon($4);
-  $$ = t1;
-};
+// Control struct
 
-condielse : ELSE instr 
+loop : RPT expr statement
 {
-  stibbons::Tree *t1 = new stibbons::Tree(yy::parser::token::ELSE,nullptr);
+  stibbons::Tree *t1 = new stibbons::Tree(yy::parser::token::RPT,nullptr);
   t1->addSon($2);
+  t1->addSon($3);
+  $$ = t1;  
+}
+| WHL expr statement
+{
+  stibbons::Tree *t1 = new stibbons::Tree(yy::parser::token::WHL,nullptr);
+  t1->addSon($2);
+  t1->addSon($3);
+  $$ = t1;  
+}
+;
+
+condi : IF expr statement 
+{
+  stibbons::Tree *t1 = new stibbons::Tree(yy::parser::token::IF,nullptr);
+  t1->addSon($2);
+  t1->addSon($3);
+  t1->addSon(nullptr);
   $$ = t1;
 }
-| ELSE bloc 
+| IF expr statement ELSE statement
 {
-  stibbons::Tree *t1 = new stibbons::Tree(yy::parser::token::ELSE,nullptr);
+  stibbons::Tree *t1 = new stibbons::Tree(yy::parser::token::IF,nullptr);
   t1->addSon($2);
+  t1->addSon($3);
+  t1->addSon($5);
   $$ = t1;
 }
-| { $$ = nullptr; };
+;
 
 %%
 
