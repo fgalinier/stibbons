@@ -9,6 +9,7 @@
 #pragma once
 
 #include <vector>
+#include <mutex>
 
 #include "point.h"
 #include "color.h"
@@ -24,8 +25,34 @@ namespace stibbons {
  *
  * \author Adrien Plazas
  */
-class Line : public vector<Point> {
+class Line {
 	public:
+		Line() = default;
+
+		/**
+		 * Create a copy of a line
+		 * @param other the other line
+		 */
+		Line (Line &other);
+
+		/**
+		 * Move a line
+		 * @param other the other line
+		 */
+		Line (Line &&other);
+
+		/**
+		 * Copy of a line
+		 * @param other the other line
+		 */
+		Line& operator= (Line& other);
+
+		/**
+		 * Move a line
+		 * @param other the other line
+		 */
+		Line& operator= (Line&& other);
+
 		/**
 		 * Set the value for an axis
 		 * @param axis the axis
@@ -45,8 +72,29 @@ class Line : public vector<Point> {
 		 */
 		const Color& getColor () const;
 
+		/**
+		 * Add a point
+		 * @param point the point to add
+		 */
+		void push_back (Point point);
+
+		/**
+		 * Get the number of points
+		 * @return the number of points in the line
+		 */
+		size_t size ();
+
+		/**
+		 * Do something for a copy of each point
+		 * @param foreachFunc the fonction to call for each point
+		 */
+		void for_each (std::function<void(Point)> foreachFunc);
+
 	private:
 		Color color;
+		vector<Point> points;
+
+		mutex value_m;
 };
 
 }

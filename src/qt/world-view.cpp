@@ -57,21 +57,24 @@ void WorldView::paint(QPainter &p, World &world, int xt, int yt) {
 }
 
 void WorldView::paint(QPainter &p, Line &line, int xt, int yt) {
-	size_t i = 0;
-	auto points = new QPointF[line.size()] ();
+	Line l(line);
 
-	for (auto& point : line) {
-		double x = point.getDimensions() < 1 ? 0 : point[0];
-		double y = point.getDimensions() < 2 ? 0 : point[1];
-		points[i].setX(x + xt);
-		points[i].setY(y + yt);
-		i++;
-	}
+	size_t i = 0;
+	size_t *ip = &i;
+	auto points = new QPointF[l.size()] ();
+
+	l.for_each ([points, ip, xt, yt](Point p){
+		if (p.getDimensions() >= 2) {
+			points[*ip].setX(p[0] + xt);
+			points[*ip].setY(p[1] + yt);
+			(*ip)++;
+		}
+	});
 
 	auto oldPen = p.pen();
-	p.setPen(pen(line.getColor()));
+	p.setPen(pen(l.getColor()));
 
-	p.drawPolyline(points, line.size());
+	p.drawPolyline(points, l.size());
 
 	p.setPen(oldPen);
 }
