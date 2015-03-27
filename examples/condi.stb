@@ -1,11 +1,18 @@
+
+pd
+
 if(true){
 	fd 180
 }
-else{
-	fd 50
+else {
+	fd 20
 }
 
-if(true) rt 45
+if true rt 90 else fd 5
 
-if(false) lt 90
+if false fd 5
 else fd 50
+
+repeat 4 {
+	fd 50
+	if true rt 90 }
