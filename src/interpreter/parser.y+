@@ -57,7 +57,8 @@ using namespace std;
 %nonassoc LB RB LP RP
 %parse-param {stibbons::Tree* t}
 %%
-code : instr_list {t->addSon($1);};
+code : instr_list {t->addSon($1);}
+| '\n' instr_list {t->addSon($2);};
 
 // General languages struct
 
