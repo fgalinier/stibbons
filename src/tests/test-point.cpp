@@ -16,8 +16,8 @@ class TestPoint : public TestCase {
 		stibbons::Point point2d;
 
 		void setUp() {
-			point2d[0] = 2.0;
-			point2d[1] = 4.0;
+			point2d.setValue(0, 2.0);
+			point2d.setValue(1, 4.0);
 		}
 
 		void getValues() {

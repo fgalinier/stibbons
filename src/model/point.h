@@ -9,6 +9,7 @@
 #pragma once
 
 #include <stdexcept>
+#include <mutex>
 
 using namespace std;
 
@@ -31,9 +32,27 @@ class Point {
 
 		/**
 		 * Create a copy of a point
-		 * @param dimensions the number of dimensions of the point
+		 * @param other the other point
 		 */
-		Point (const Point &point);
+		Point (Point &other);
+
+		/**
+		 * Move a point
+		 * @param other the other point
+		 */
+		Point (Point &&other);
+
+		/**
+		 * Copy of a point
+		 * @param other the other point
+		 */
+		Point& operator= (Point& other);
+
+		/**
+		 * Move a point
+		 * @param other the other point
+		 */
+		Point& operator= (Point&& other);
 
 		/**
 		 * Set the value for an axis
@@ -44,15 +63,9 @@ class Point {
 
 		/**
 		 * Get the value for an axis
-		 * @return a reference to the value for an axis
+		 * @return the value for an axis
 		 */
-		double& getValue (unsigned axis) throw(out_of_range);
-
-		/**
-		 * Get the value for an axis
-		 * @return a constant reference to the value for an axis
-		 */
-		const double& getValue (unsigned axis) const throw(out_of_range);
+		double getValue (unsigned axis) throw(out_of_range);
 
 		/**
 		 * Get the number of dimensions
@@ -62,19 +75,15 @@ class Point {
 
 		/**
 		 * Get the value for an axis
-		 * @return a reference to the value for an axis
+		 * @return the value for an axis
 		 */
-		double& operator[] (unsigned axis) throw(out_of_range);
-
-		/**
-		 * Get the value for an axis
-		 * @return a constant reference to the value for an axis
-		 */
-		const double& operator[] (unsigned axis) const throw(out_of_range);
+		double operator[] (unsigned axis) throw(out_of_range);
 
 	private:
 		unsigned dimensions;
 		double* axes;
+
+		mutex value_m;
 };
 
 }
