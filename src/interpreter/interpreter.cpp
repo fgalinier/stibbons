@@ -94,9 +94,6 @@ namespace stibbons {
 			case yy::parser::token::BOOLEAN:
 				return std::get<1>(tree->getNode());
 				break;
-			case yy::parser::token::BOOLEAN:
-				return std::get<1>(tree->getNode());
-				break;
 			case '+': {
 				auto val1 = this->interpret(tree->getSon(0));
 				auto val2 = this->interpret(tree->getSon(1));
