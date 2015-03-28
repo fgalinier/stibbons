@@ -37,7 +37,7 @@ class SimpleValue {
 		 * Get the value of value
 		 * @return the value of value
 		 */
-		T& getValue () {
+		T getValue () {
 			lock_guard<mutex> lock(value_m);
 			return value;
 		}
