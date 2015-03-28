@@ -1,18 +1,66 @@
 #include "zone.h"
 
+using namespace std;
+
 namespace stibbons {
 
 Zone::Zone () : color(Color(1.0, 1.0, 1.0)) {}
 
+Zone::Zone(Zone& other) {
+	lock_guard<mutex> lock(other.value_m);
+
+	// Set this
+	color = other.color;
+}
+
+Zone::Zone (Zone&& other) {
+	lock_guard<mutex> lock(other.value_m);
+
+	// Set this
+	color = move(other.color);
+
+	// Reset other
+	other.color = Color();
+}
+
+Zone& Zone::operator= (Zone& other) {
+	if (this == &other)
+		return *this;
+
+	lock(value_m, other.value_m);
+	lock_guard<mutex> self_lock(value_m, adopt_lock);
+	lock_guard<mutex> other_lock(other.value_m, adopt_lock);
+
+	// Set this
+	color = other.color;
+
+	return *this;
+}
+
+Zone& Zone::operator= (Zone&& other) {
+	if (this == &other)
+		return *this;
+
+	lock(value_m, other.value_m);
+	lock_guard<mutex> self_lock(value_m, adopt_lock);
+	lock_guard<mutex> other_lock(other.value_m, adopt_lock);
+
+	// Set this
+	color = move(other.color);
+
+	// Reset other
+	other.color = Color();
+
+	return *this;
+}
+
 void Zone::setColor (Color color) {
+	lock_guard<mutex> lock(value_m);
 	this->color = color;
 }
 
-Color& Zone::getColor () {
-	return color;
-}
-
-const Color& Zone::getColor () const {
+Color Zone::getColor () {
+	lock_guard<mutex> lock(value_m);
 	return color;
 }
 

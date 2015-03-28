@@ -2,6 +2,8 @@
 
 #include "color.h"
 
+#include <mutex>
+
 namespace stibbons {
 
 /**
@@ -19,6 +21,30 @@ class Zone {
 		Zone ();
 
 		/**
+		 * Create a copy of a zone
+		 * @param other the other zone
+		 */
+		Zone (Zone &other);
+
+		/**
+		 * Move a zone
+		 * @param other the other zone
+		 */
+		Zone (Zone &&other);
+
+		/**
+		 * Copy of a zone
+		 * @param other the other zone
+		 */
+		Zone& operator= (Zone& other);
+
+		/**
+		 * Move a zone
+		 * @param other the other zone
+		 */
+		Zone& operator= (Zone&& other);
+
+		/**
 		 * Set the value for an axis
 		 * @param axis the axis
 		 * @param value the value
@@ -29,16 +55,12 @@ class Zone {
 		 * Get the value for an axis
 		 * @return a reference to the value for an axis
 		 */
-		Color& getColor ();
-
-		/**
-		 * Get the value for an axis
-		 * @return a constant reference to the value for an axis
-		 */
-		const Color& getColor () const;
+		Color getColor ();
 
 	private:
 		Color color;
+
+		std::mutex value_m;
 };
 
 }
