@@ -9,6 +9,7 @@
 #include "world-view.h"
 
 #include <QPainter>
+#include <QPaintEvent>
 
 namespace stibbons {
 
@@ -24,7 +25,7 @@ WorldView::WorldView(QWidget *parent) : QWidget(parent) {
 }
 
 void WorldView::paintEvent(QPaintEvent *event) {
-	Q_UNUSED(event);
+	auto rect = event->rect();
 
 	QPainter painter(this);
 	painter.setRenderHint(QPainter::Antialiasing);
@@ -32,7 +33,7 @@ void WorldView::paintEvent(QPaintEvent *event) {
 	setMinimumHeight(boundingRect.height());
 
 	if (getWorld())
-		paint(painter, *getWorld());
+		paint(painter, *getWorld(), rect.width() / 2, rect.height() / 2);
 }
 
 void WorldView::setWorld(World *world) {
@@ -47,21 +48,23 @@ World *WorldView::getWorld() {
 	return world;
 }
 
-void WorldView::paint(QPainter &p, World &world) {
+void WorldView::paint(QPainter &p, World &world, int xt, int yt) {
 	for (auto& line : world.getLines())
-		paint(p, *line);
+		paint(p, *line, xt, yt);
 
 	for (auto& turtle : world.getTurtles())
-		paint(p, *turtle);
+		paint(p, *turtle, xt, yt);
 }
 
-void WorldView::paint(QPainter &p, Line &line) {
+void WorldView::paint(QPainter &p, Line &line, int xt, int yt) {
 	size_t i = 0;
 	auto points = new QPointF[line.size()] ();
 
 	for (auto& point : line) {
-		points[i].setX(point.getDimensions() < 1 ? 0 : point[0]);
-		points[i].setY(point.getDimensions() < 2 ? 0 : point[1]);
+		double x = point.getDimensions() < 1 ? 0 : point[0];
+		double y = point.getDimensions() < 2 ? 0 : point[1];
+		points[i].setX(x + xt);
+		points[i].setY(y + yt);
 		i++;
 	}
 
@@ -73,12 +76,12 @@ void WorldView::paint(QPainter &p, Line &line) {
 	p.setPen(oldPen);
 }
 
-void WorldView::paint(QPainter &p, Turtle &turtle) {
+void WorldView::paint(QPainter &p, Turtle &turtle, int xt, int yt) {
 	auto oldPen = p.pen();
 	p.setPen(pen(turtle.getColor()));
 
 	auto triangle = getTriangle();
-	paint(p, triangle, turtle[0], turtle[1], turtle.getAngle(), 5.0);
+	paint(p, triangle, turtle[0] + xt, turtle[1] + yt, turtle.getAngle(), 5.0);
 
 	p.setPen(oldPen);
 }

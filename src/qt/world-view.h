@@ -32,9 +32,9 @@ class WorldView : public QWidget {
 		void changed();
 
 	private:
-		void paint(QPainter &p, World &world);
-		void paint(QPainter &p, Line &line);
-		void paint(QPainter &p, Turtle &turtle);
+		void paint(QPainter &p, World &world, int xt, int yt);
+		void paint(QPainter &p, Line &line, int xt, int yt);
+		void paint(QPainter &p, Turtle &turtle, int xt, int yt);
 
 		void paint(QPainter &p, QPolygon &polygon, double x, double y, double angle, double size = 1.0);
 		QPolygon getTriangle();
