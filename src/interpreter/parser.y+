@@ -252,8 +252,7 @@ expr : LP expr RP { $$ = $2; }
 
 affect : ID '=' expr
 {
-  stibbons::Tree *t1 = new stibbons::Tree('=',nullptr);
-  t1->addSon(yy::parser::token::ID,$1);
+  stibbons::Tree *t1 = new stibbons::Tree('=',$1);
   t1->addSon($3);
   $$ = t1;
 }; 
