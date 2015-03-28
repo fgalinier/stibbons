@@ -57,6 +57,8 @@ FLEXTMP = \
 INTERPETERSRC = \
 	src/interpreter/interpreter.cpp \
 	src/interpreter/tree.cpp \
+	src/interpreter/interpreter-exception.cpp \
+	src/interpreter/syntax-exception.cpp \
 	$(NULL)
 
 TESTSRC = \

@@ -5,6 +5,7 @@
 #include <fstream>
 #include "tree.h"
 #include "../model/value.h"
+#include "syntax-exception.h"
 
 using namespace std;
 %}
@@ -323,5 +324,5 @@ condi : IF expr statement
 %%
 
 void yy::parser::error(const location& loc,string const& s) {
-  cerr<<s<<" at "<<loc.begin.line<<":"<<loc.begin.column<<"."<<endl;
+  throw stibbons::SyntaxException(s.c_str(),loc.begin);
 }
