@@ -25,16 +25,22 @@ World::~World () {
 }
 
 void World::addLine (Line* add_object) {
+	lock_guard<mutex> lock(value_m);
+
 	lines.push_back(add_object);
 
 	changed();
 }
 
 vector<Line *> World::getLines () {
+	lock_guard<mutex> lock(value_m);
+
 	return lines;
 }
 
 void World::addTurtle (Turtle * add_object) {
+	lock_guard<mutex> lock(value_m);
+
 	turtles.push_back(add_object);
 
 	add_object->onChanged([this]() {
@@ -44,6 +50,8 @@ void World::addTurtle (Turtle * add_object) {
 }
 
 void World::removeTurtle (Turtle *turtle) {
+	lock_guard<mutex> lock(value_m);
+
 	for (auto i = turtles.begin(); i != turtles.end() ; i++) {
 		if(*i == turtle) {
 			turtles.erase(i);
@@ -56,6 +64,8 @@ void World::removeTurtle (Turtle *turtle) {
 }
 
 vector<Turtle *> World::getTurtles () {
+	lock_guard<mutex> lock(value_m);
+
 	return turtles;
 }
 

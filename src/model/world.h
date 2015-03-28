@@ -7,6 +7,7 @@
 
 //#include <cstdarg>
 #include <vector>
+#include <mutex>
 //#include <stdlib.h>
 
 using namespace std;
@@ -75,6 +76,8 @@ class World : public Changeable {
 
 		vector<Turtle*> turtles;
 		turtle_id id;
+
+		mutex value_m;
 };
 
 }
