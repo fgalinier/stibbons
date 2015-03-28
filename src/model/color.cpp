@@ -27,6 +27,66 @@ Color::Color(double red, double green, double blue) {
 	b(blue);
 }
 
+Color::Color(Color& other) {
+	lock_guard<mutex> lock(other.value_m);
+
+	// Set this
+	red   = other.red;
+	green = other.green;
+	blue  = other.blue;
+}
+
+Color::Color (Color&& other) {
+	lock_guard<mutex> lock(other.value_m);
+
+	// Set this
+	red   = other.red;
+	green = other.green;
+	blue  = other.blue;
+
+	// Reset other
+	other.red   = 0.0;
+	other.green = 0.0;
+	other.blue  = 0.0;
+}
+
+Color& Color::operator= (Color& other) {
+	if (this == &other)
+		return *this;
+
+	lock(value_m, other.value_m);
+	lock_guard<mutex> self_lock(value_m, adopt_lock);
+	lock_guard<mutex> other_lock(other.value_m, adopt_lock);
+
+	// Set this
+	red   = other.red;
+	green = other.green;
+	blue  = other.blue;
+
+	return *this;
+}
+
+Color& Color::operator= (Color&& other) {
+	if (this == &other)
+		return *this;
+
+	lock(value_m, other.value_m);
+	lock_guard<mutex> self_lock(value_m, adopt_lock);
+	lock_guard<mutex> other_lock(other.value_m, adopt_lock);
+
+	// Set this
+	red   = other.red;
+	green = other.green;
+	blue  = other.blue;
+
+	// Reset other
+	other.red   = 0.0;
+	other.green = 0.0;
+	other.blue  = 0.0;
+
+	return *this;
+}
+
 Color::Color (string color) throw(domain_error) {
 	auto str = color.c_str() + 1;
 
@@ -62,26 +122,32 @@ Color::Color (string color) throw(domain_error) {
 }
 
 void Color::r (double r){
+	lock_guard<mutex> lock(value_m);
 	red = truncate(r);
 }
 
 void Color::g (double g){
+	lock_guard<mutex> lock(value_m);
 	green = truncate(g);
 }
 
 void Color::b (double b){
+	lock_guard<mutex> lock(value_m);
 	blue = truncate(b);
 }
 
-double Color::r () const {
+double Color::r () {
+	lock_guard<mutex> lock(value_m);
 	return red;
 }
 
-double Color::g () const {
+double Color::g () {
+	lock_guard<mutex> lock(value_m);
 	return green;
 }
 
-double Color::b () const {
+double Color::b () {
+	lock_guard<mutex> lock(value_m);
 	return blue;
 }
 

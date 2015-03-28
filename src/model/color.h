@@ -12,6 +12,7 @@
 
 #include <stdexcept>
 #include <string>
+#include <mutex>
 
 namespace stibbons {
 
@@ -28,7 +29,33 @@ class Color : public GenericValue<Type::COLOR> {
 		double green;
 		double blue;
 
+		std::mutex value_m;
+
 	public:
+		/**
+		 * Create a copy of a color
+		 * @param other the other color
+		 */
+		Color (Color &other);
+
+		/**
+		 * Move a color
+		 * @param other the other color
+		 */
+		Color (Color &&other);
+
+		/**
+		 * Copy of a color
+		 * @param other the other color
+		 */
+		Color& operator= (Color& other);
+
+		/**
+		 * Move a color
+		 * @param other the other color
+		 */
+		Color& operator= (Color&& other);
+
 		/**
 		 * Create a color from its red, green and blue values.
 		 * @param red the value of the red composant
@@ -65,19 +92,19 @@ class Color : public GenericValue<Type::COLOR> {
 		 * Return the value of red
 		 * @return the value of red
 		 */
-		double r () const;
+		double r ();
 
 		/**
 		 * Return the value of green
 		 * @return the value of green
 		 */
-		double g () const;
+		double g ();
 
 		/**
 		 * Return the value of blue
 		 * @return the value of blue
 		 */
-		double b () const;
+		double b ();
 };
 
 }
