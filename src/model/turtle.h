@@ -38,7 +38,7 @@ class Turtle : public Point, public Changeable, public Agent{
 		 * Create a turtle
 		 *
 		 */
-		Turtle (turtle_id id, World *world);
+		Turtle (Agent *parent, turtle_id id = 0);
 
 		virtual Type getType() const;
 
@@ -124,14 +124,13 @@ class Turtle : public Point, public Changeable, public Agent{
 		/**
 		 * Special constructor for Breed
 		 */
-		Turtle (Breed *breed);
+		Turtle (Breed *breed, Agent *parent);
 
 		turtle_id id;
 
 		Breed *breed;
 
 		double angle;
-		World * world;
 		Color color;
 		Line* line;
 		unordered_map<string,Value*> *properties;

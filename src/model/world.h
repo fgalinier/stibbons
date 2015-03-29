@@ -37,7 +37,7 @@ class World : public Changeable, public Agent {
 		/**
 		 * Create a world
 		 */
-		World (unsigned width, unsigned height);
+		World (Agent *parent, unsigned width, unsigned height);
 
 		/**
 		 * Empty Destructor

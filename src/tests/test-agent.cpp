@@ -30,14 +30,14 @@ class TestAgent : public TestCase {
 			pair<string,Value*> troisieme("tortue", new String("bleu"));
 			pair<string,Value*> quatrieme("color", new Color());
 
-			w=new World(10,10);
+			w=new World(nullptr, 10,10);
 			w->setProperty(troisieme);
 			w->setProperty(quatrieme);
 
-			z=new Zone();
+			z=new Zone(w);
 			z->setProperty(deuxieme);
 
-			t=new Turtle(0, w);
+			t=new Turtle(w, 0);
 			t->setProperty(paire);
 			t->setProperty(deuxieme);
 		}
@@ -54,14 +54,12 @@ class TestAgent : public TestCase {
 		cout << "TestAgent::changeValueT" << endl;
 		pair<string,Value*> paire("chasse", new Number(7.7));
 		t->setProperty(paire);
-		unordered_map<string,Value*>::const_iterator search = (t->getProperties()).find ("chasse");
-		if (search == (t->getProperties()).end()){
-			cout<<"pas trouver"<<endl;
-		}
-		auto valeur=dynamic_cast<
-		Number*>(search->second);
-		CPPUNIT_ASSERT_EQUAL(7.7, valeur->getValue());
 
+		auto search = t->getProperty(paire.first);
+		CPPUNIT_ASSERT (
+			search->getType() == Type::NUMBER &&
+			dynamic_cast<Number*>(search)->getValue() == 7.7
+		);
 		}
 
 		void getValuesZ(){

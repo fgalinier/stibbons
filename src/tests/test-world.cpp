@@ -18,9 +18,9 @@ class TestWorld : public TestCase{
 		Turtle* turtle;
 
 		void setUp(){
-			world=new stibbons::World(10,10);
+			world=new stibbons::World(nullptr,10,10);
 			line=new Line();
-			turtle=new Turtle(0,world);
+			turtle=new Turtle(nullptr);
 		}
 
 		void testAjoutTurtle() {

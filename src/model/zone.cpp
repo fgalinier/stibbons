@@ -4,7 +4,7 @@ using namespace std;
 
 namespace stibbons {
 
-Zone::Zone () : color(Color(1.0, 1.0, 1.0)) {}
+Zone::Zone (Agent *parent) : Agent(parent), color(Color(1.0, 1.0, 1.0)) {}
 
 Zone::Zone(Zone& other) {
 	lock_guard<mutex> lock(other.value_m);

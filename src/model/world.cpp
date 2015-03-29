@@ -2,15 +2,18 @@
 
 namespace stibbons {
 
-World::World (unsigned width, unsigned height) :
+World::World (Agent *parent, unsigned width, unsigned height) :
+	Agent(parent),
 	width(width),
 	height(height),
 	zones(vector<Zone*>()),
 	lines(vector<Line*>()),
 	turtles(vector<Turtle*>()),
 	id(0) {
-	for (unsigned i = 0 ; i < width * height ; i++)
-		zones.push_back(new Zone());
+	for (unsigned i = 0 ; i < width * height ; i++) {
+		auto zone = new Zone(this);
+		zones.push_back(zone);
+	}
 }
 
 World::~World () {

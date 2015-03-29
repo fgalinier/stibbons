@@ -22,7 +22,7 @@ class Zone : public Agent{
 		/**
 		 * Create a zone
 		 */
-		Zone ();
+		Zone (Agent *parent);
 
 		/**
 		 * Create a copy of a zone

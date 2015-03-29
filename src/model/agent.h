@@ -2,9 +2,11 @@
 #include "value.h"
 #include <exception>
 #include <utility>
+#include <unordered_set>
 #include <unordered_map>
 #include <iostream>
 #include <string>
+#include <mutex>
 
 
 using namespace std;
@@ -20,12 +22,28 @@ class Agent : public Value {
 		/**
 		 * Empty Constructor
 		 */
-		Agent ();
+		Agent (Agent *parent = nullptr);
 
 		/**
 		 * Empty Destructor
 		 */
 		virtual ~Agent ();
+
+		 /**
+		 * Get the parent of the agent
+		 * @return the parent of the agent
+		 */
+		Agent* getParent ();
+
+		/**
+		 * Reparent to the grand parent agent
+		 */
+		void reparent ();
+
+		/**
+		 * Remove the parent
+		 */
+		void unparent ();
 
 		/**
 		 * Add a value in properties,
@@ -33,23 +51,21 @@ class Agent : public Value {
 		 */
 		virtual void setProperty (pair<string,Value*> &new_var);
 
-		/**
-		 * Get the value of properties
-		 * @return the value of properties
-		 */
-		 virtual unordered_map<string,stibbons::Value*> getProperties() const ;
-		 
 		 /**
 		 * Get the value of the propertie p
 		 * @return the value of propertie p
 		 */
 		 virtual Value* getProperty(string p);
 
-	protected:
+	private:
+		Agent *parent;
+		unordered_set<Agent *> children;
+
 		unordered_map<string,Value*> *properties;
 
-	private:
 		void tryDelete (Value* value) throw (domain_error);
+
+		mutex parent_m;
 };
 }
 /*

@@ -10,11 +10,16 @@
 
 namespace stibbons {
 
-Agent::Agent () {
+Agent::Agent (Agent *parent) : parent(parent) {
 	properties=new unordered_map<string,Value*>();
+
+	if (parent != nullptr)
+		parent->children.insert(this);
 }
 
 Agent::~Agent () {
+	lock_guard<mutex> lock(parent_m);
+
 	for (auto value : *properties) {
 		tryDelete (value.second);
 	}
@@ -22,7 +27,53 @@ Agent::~Agent () {
 	delete properties;
 }
 
+Agent* Agent::getParent () {
+	return parent;
+}
+
+void Agent::reparent () {
+	lock_guard<mutex> lock(parent_m);
+
+	if (parent == nullptr)
+		return;
+
+	lock_guard<mutex> pLock(parent->parent_m);
+
+	parent->children.erase(this);
+
+	auto grandParent = parent->parent;
+
+	if (grandParent == nullptr) {
+		parent = nullptr;
+	}
+	else {
+		lock_guard<mutex> gpLock(grandParent->parent_m);
+
+		grandParent->children.insert(this);
+
+		parent = grandParent;
+	}
+}
+
+void Agent::unparent () {
+	lock_guard<mutex> lock(parent_m);
+
+	if (parent == nullptr)
+		return;
+
+	lock_guard<mutex> pLock(parent->parent_m);
+
+	parent->children.erase(this);
+
+	// TODO si child non dans les enfants acutels, lever erreur
+	// TODO retirer this de la liste des enfants du parent
+
+	parent = parent;
+}
+
 void Agent::setProperty (pair<string,Value*> &new_var) {
+	lock_guard<mutex> lock(parent_m);
+
 	auto search = properties->find (new_var.first);
 	if ( search == properties->end())
 		properties->insert(new_var);
@@ -33,11 +84,9 @@ void Agent::setProperty (pair<string,Value*> &new_var) {
 	}
 }
 
-unordered_map<string,Value*> Agent::getProperties() const {
-	return *properties;
-}
-
 Value* Agent::getProperty(string p) {
+	lock_guard<mutex> lock(parent_m);
+
 	unordered_map<string,Value*>::const_iterator got = properties->find(p);
 
 	if ( got == properties->end())
