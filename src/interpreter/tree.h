@@ -35,13 +35,12 @@ namespace stibbons {
 		std::pair<int,Value*> node;
 		std::vector<Tree*>* sons;
 	public:
-
 		/**
 		 * Create a new tree from a token_type and a value
 		 * \param token The kind of token that is used to create the node
 		 * \param val The value (if needed) corresponding to the token
 		 */
-		Tree(int,Value*);
+		Tree(int token = 0, Value* val=nullptr);
 
 		/**
 		 * Destroy a tree and his sons.

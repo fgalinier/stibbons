@@ -7,7 +7,9 @@ Test *suite() {
 	auto &registry = TestFactoryRegistry::getRegistry();
 
 	registry.registerFactory(&TestFactoryRegistry::getRegistry("TestAgent"));
+	registry.registerFactory(&TestFactoryRegistry::getRegistry("TestBreed"));
 	registry.registerFactory(&TestFactoryRegistry::getRegistry("TestColor"));
+	registry.registerFactory(&TestFactoryRegistry::getRegistry("TestFunction"));
 	registry.registerFactory(&TestFactoryRegistry::getRegistry("TestPoint"));
 	registry.registerFactory(&TestFactoryRegistry::getRegistry("TestNumber"));
 	registry.registerFactory(&TestFactoryRegistry::getRegistry("TestTurtle"));

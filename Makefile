@@ -27,11 +27,14 @@ QTLIBS = \
 CFLAGS = -fPIC -Wall -Wpedantic -std=c++11
 
 MODELSRC = \
+	src/interpreter/tree.cpp \
 	src/model/agent.cpp \
+	src/model/breed.cpp \
 	src/model/boolean.cpp \
 	src/model/changeable.cpp \
 	src/model/color.cpp \
 	src/model/line.cpp \
+	src/model/function.cpp \
 	src/model/number.cpp \
 	src/model/point.cpp \
 	src/model/string.cpp \
@@ -67,7 +70,9 @@ INTERPETERSRC = \
 
 TESTSRC = \
 	src/tests/test-agent.cpp \
+	src/tests/test-breed.cpp \
 	src/tests/test-color.cpp \
+	src/tests/test-function.cpp \
 	src/tests/test-point.cpp \
 	src/tests/test-number.cpp \
 	src/tests/test-turtle.cpp \

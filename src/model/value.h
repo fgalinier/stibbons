@@ -22,7 +22,8 @@ enum class Type {
 	NUMBER,
 	BOOLEAN,
 	STRING,
-	COLOR
+	COLOR,
+	FUNCTION
 };
 
 /**
