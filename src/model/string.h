@@ -26,6 +26,8 @@ class String : public GenericValue<Type::STRING>, public SimpleValue<std::string
 	public:
 		using SimpleValue<std::string>::SimpleValue;
 		virtual ~String () = default;
+
+		virtual void reset ();
 };
 
 }

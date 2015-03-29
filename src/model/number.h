@@ -24,6 +24,8 @@ class Number : public GenericValue<Type::NUMBER>, public SimpleValue<double> {
 	public:
 		using SimpleValue<double>::SimpleValue;
 		virtual ~Number () = default;
+
+		virtual void reset ();
 };
 
 }

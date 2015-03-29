@@ -24,6 +24,8 @@ class Boolean : public GenericValue<Type::BOOLEAN>, public SimpleValue<bool> {
 	public:
 		using SimpleValue<bool>::SimpleValue;
 		virtual ~Boolean () = default;
+
+		virtual void reset ();
 };
 
 }

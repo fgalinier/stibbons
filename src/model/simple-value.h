@@ -53,6 +53,7 @@ class SimpleValue {
 			value = move(other.value);
 
 			// Reset other
+			other.reset();
 		}
 
 		// Copy initialization
@@ -76,6 +77,7 @@ class SimpleValue {
 			value = move(other.value);
 
 			// Reset other
+			other.reset();
 
 			return *this;
 		}
@@ -96,6 +98,11 @@ class SimpleValue {
 		}
 
 	protected:
+		/**
+		 * Reset to the default value
+		 */
+		virtual void reset () =0;
+
 		T value;
 		mutex value_m;
 };

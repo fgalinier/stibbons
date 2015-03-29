@@ -28,10 +28,13 @@ CFLAGS = -fPIC -Wall -Wpedantic -std=c++11
 
 MODELSRC = \
 	src/model/agent.cpp \
+	src/model/boolean.cpp \
 	src/model/changeable.cpp \
 	src/model/color.cpp \
 	src/model/line.cpp \
+	src/model/number.cpp \
 	src/model/point.cpp \
+	src/model/string.cpp \
 	src/model/turtle.cpp \
 	src/model/world.cpp \
 	src/model/zone.cpp \
