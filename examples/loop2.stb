@@ -1,0 +1,8 @@
+while (true) {
+	pd
+	repeat 360 {
+		rt 1
+		fd 1
+	}
+	pu
+}

@@ -1,0 +1,5 @@
+pd
+while (true) {
+	rt 1
+	fd 1
+}
