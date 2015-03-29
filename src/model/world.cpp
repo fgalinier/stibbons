@@ -24,6 +24,10 @@ World::~World () {
 		delete i;
 }
 
+Type World::getType() const {
+	return Type::WORLD;
+}
+
 void World::addLine (Line* add_object) {
 	lock_guard<mutex> lock(value_m);
 

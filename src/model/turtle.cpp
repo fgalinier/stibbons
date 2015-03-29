@@ -22,6 +22,10 @@ void Turtle::setId (turtle_id new_var) {
 	id=new_var;
 }
 
+Type Turtle::getType() const {
+	return Type::TURTLE;
+}
+
 turtle_id Turtle::getId() const {
 	return id;
 }

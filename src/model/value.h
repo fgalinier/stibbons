@@ -23,7 +23,10 @@ enum class Type {
 	BOOLEAN,
 	STRING,
 	COLOR,
-	FUNCTION
+	FUNCTION,
+	TURTLE,
+	ZONE,
+	WORLD
 };
 
 /**

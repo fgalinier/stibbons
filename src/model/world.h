@@ -44,6 +44,8 @@ class World : public Changeable, public Agent {
 		 */
 		~World ();
 
+		virtual Type getType() const;
+
 		/**
 		 * Add a line
 		 */

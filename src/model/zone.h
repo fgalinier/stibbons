@@ -48,6 +48,8 @@ class Zone : public Agent{
 		 */
 		Zone& operator= (Zone&& other);
 
+		virtual Type getType() const;
+
 		/**
 		 * Set the value for an axis
 		 * @param axis the axis

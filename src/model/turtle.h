@@ -40,6 +40,8 @@ class Turtle : public Point, public Changeable, public Agent{
 		 */
 		Turtle (turtle_id id, World *world);
 
+		virtual Type getType() const;
+
 		/**
 		 * Set the value of angle
 		 * @param new_var the new value of angle

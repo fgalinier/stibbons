@@ -15,8 +15,7 @@ namespace stibbons {
  *
  * \brief class Agent in stibbons 
  */
-class Agent 
-{
+class Agent : public Value {
 	public:
 		/**
 		 * Empty Constructor

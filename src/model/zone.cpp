@@ -54,6 +54,10 @@ Zone& Zone::operator= (Zone&& other) {
 	return *this;
 }
 
+Type Zone::getType() const {
+	return Type::ZONE;
+}
+
 void Zone::setColor (Color color) {
 	lock_guard<mutex> lock(value_m);
 	this->color = color;
