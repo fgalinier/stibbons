@@ -42,42 +42,60 @@ class SimpleValue {
 			return value;
 		}
 
-	public:
 		SimpleValue() = default;
 		SimpleValue(T value) : value(value) {}
 
 		// Move initialization
 		SimpleValue (SimpleValue&& other) {
 			lock_guard<mutex> lock(other.value_m);
+
+			// Set this
 			value = move(other.value);
-			// FIXME set other's value to the default
+
+			// Reset other
 		}
 
 		// Copy initialization
-		SimpleValue(const SimpleValue& other) {
+		SimpleValue(SimpleValue& other) {
 			lock_guard<mutex> lock(other.value_m);
+
+			// Set this
 			value = other.value;
 		}
 
 		// Move assignment
 		SimpleValue& operator = (SimpleValue&& other) {
+			if (this == &other)
+				return *this;
+
 			lock(value_m, other.value_m);
 			lock_guard<mutex> self_lock(value_m, adopt_lock);
 			lock_guard<mutex> other_lock(other.value_m, adopt_lock);
+
+			// Set this
 			value = move(other.value);
-			other.value = 0;
+
+			// Reset other
+
 			return *this;
 		}
 
 		// Copy assignment
-		SimpleValue& operator = (const SimpleValue& other) {
-//			lock(value_m, other.value_m);
-//			lock_guard<mutex> self_lock(value_m, adopt_lock);
-			//lock_guard<mutex> other_lock(other.value_m, adopt_lock);
+		SimpleValue& operator = (SimpleValue& other) {
+			if (this == &other)
+				return *this;
+
+			lock(value_m, other.value_m);
+			lock_guard<mutex> self_lock(value_m, adopt_lock);
+			lock_guard<mutex> other_lock(other.value_m, adopt_lock);
+
+			// Set this
 			value = other.value;
+
 			return *this;
 		}
 
+	protected:
 		T value;
 		mutex value_m;
 };

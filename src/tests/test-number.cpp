@@ -15,7 +15,7 @@ class TestNumber : public TestCase {
 		stibbons::Number two;
 
 		void setUp() {
-			two = stibbons::Number(2.0);
+			two.setValue(2.0);
 		}
 
 		void getValue() {
