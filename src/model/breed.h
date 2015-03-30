@@ -25,7 +25,7 @@ namespace stibbons {
  *\author Julia Bassoumi
  */
 
-class Breed : public Agent{
+class Breed {
 	public:
 		/**
 		* Empty Constructor
