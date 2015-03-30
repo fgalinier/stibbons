@@ -58,20 +58,11 @@ class World : public Changeable, public Agent {
 		vector<Line*> getLines ();
 
 		/**
-		 * Add a turtle
+		 * Get a named breed
+		 * @param name the name of the breed
+		 * @return the breed
 		 */
-		void addTurtle (Turtle* add_object);
-
-		/**
-		 * Remove a turtle
-		 */
-		void removeTurtle (Turtle* remove_object);
-
-		/**
-		 * Get the turtles
-		 * @return the turtles
-		 */
-		vector<Turtle*> getTurtles ();
+		Breed* getBreed(string name) throw(out_of_range);
 
 		/**
 		 * Create and add a new named breed
@@ -88,7 +79,13 @@ class World : public Changeable, public Agent {
 		 */
 		Breed* createBreed (Function& function);
 
-		turtle_id getId () const;
+		/**
+		 * Get the turtles
+		 * @return the turtles
+		 */
+		unordered_set<Turtle *> getTurtles ();
+
+		turtle_id getId ();
 		void setId (turtle_id i);
 
 	private:
@@ -101,9 +98,7 @@ class World : public Changeable, public Agent {
 		unordered_map<string, Breed*> namedBreeds;
 		unordered_set<Breed*> anonymousBreeds;
 
-		vector<Turtle*> turtles;
 		turtle_id id;
-
 		mutex value_m;
 };
 

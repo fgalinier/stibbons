@@ -16,22 +16,18 @@ class TestWorld : public TestCase{
 		World* world;
 		Line* line;
 		Turtle* turtle;
+		Function* f;
 
 		void setUp(){
 			world=new stibbons::World(nullptr,10,10);
 			line=new Line();
 			turtle=new Turtle();
+			f=new Function();
 		}
 
 		void testAjoutTurtle() {
 			cout << "TestWorld::testAjoutTurtle" << endl;
-			turtle->turnRight(90);
-			world->addTurtle(turtle);
-			auto vector=world->getTurtles();
-			for (auto i=vector.begin();i<vector.end();i++)
-			{
-				CPPUNIT_ASSERT_EQUAL (90.0, (*i)->getAngle());
-			}
+			world->createBreed(*f,"setup");
 		}
 
 };

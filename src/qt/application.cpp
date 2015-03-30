@@ -19,9 +19,9 @@ Application::Application (int & argc, char ** argv) : QApplication (argc, argv) 
 	setWindowIcon(QIcon(":/images/stibbons.svg"));
 
 	world = new World(nullptr, 1, 1);
-
-	auto turtle = new Turtle(world, 0);
-	world->addTurtle(turtle);
+	auto f = new Function();
+	auto breed = world->createBreed(*f);
+	auto turtle = breed->createTurtle();
 }
 
 Application::~Application () {

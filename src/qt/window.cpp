@@ -122,8 +122,9 @@ void Window::run() {
 	}
 
 	auto turtles = world->getTurtles();
-	if (turtles.size() > 0) {
-		runner = new Runner(*(turtles[0]), program);
+	auto turtle_i = turtles.begin();
+	if (turtle_i != turtles.end()) {
+		runner = new Runner(**turtle_i, program);
 		runner->start();
 	}
 }

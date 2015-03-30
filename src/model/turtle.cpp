@@ -154,6 +154,13 @@ Turtle *Turtle::createChild() {
 	return child;
 }
 
+void Turtle::changed() {
+	auto world = getWorld();
+
+	if (world)
+		world->changed();
+}
+
 }
 
 /*

@@ -30,7 +30,7 @@ typedef unsigned long turtle_id;
  *
  *\author Julia Bassoumi
  */
-class Turtle : public Point, public Changeable, public Agent{
+class Turtle : public Point, public Agent{
 	friend Breed;
 
 	public:
@@ -145,6 +145,8 @@ class Turtle : public Point, public Changeable, public Agent{
 		 * Special constructor for Breed
 		 */
 		Turtle (Turtle *parent);
+
+		void changed ();
 
 		turtle_id id;
 

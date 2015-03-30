@@ -8,7 +8,8 @@ World::World (Agent *parent, unsigned width, unsigned height) :
 	height(height),
 	zones(vector<Zone*>()),
 	lines(vector<Line*>()),
-	turtles(vector<Turtle*>()),
+	namedBreeds(unordered_map<string,Breed*>()),
+	anonymousBreeds(unordered_set<Breed*>()),
 	id(0) {
 	for (unsigned i = 0 ; i < width * height ; i++) {
 		auto zone = new Zone(this);
@@ -23,8 +24,11 @@ World::~World () {
 	for (auto i : lines)
 		delete i;
 
-	for (auto i : turtles)
+	for (auto i : anonymousBreeds)
 		delete i;
+
+	for (auto i : namedBreeds)
+		delete i.second;
 }
 
 Type World::getType() const {
@@ -45,33 +49,29 @@ vector<Line *> World::getLines () {
 	return lines;
 }
 
-void World::addTurtle (Turtle * add_object) {
+Breed* World::getBreed (string name) throw(out_of_range) {
 	lock_guard<mutex> lock(value_m);
 
-	turtles.push_back(add_object);
+	auto breed_i = namedBreeds.find(name);
 
-	add_object->onChanged([this]() {
-		changed();
-	});
-	changed();
+	if (breed_i == namedBreeds.end())
+		throw out_of_range("There is no breed with this name");
+
+	return breed_i->second;
 }
 
-void World::removeTurtle (Turtle *turtle) {
+unordered_set<Turtle *> World::getTurtles () {
 	lock_guard<mutex> lock(value_m);
 
-	for (auto i = turtles.begin(); i != turtles.end() ; i++) {
-		if(*i == turtle) {
-			turtles.erase(i);
-			delete turtle;
-			return;
-		}
-	}
+	auto turtles = unordered_set<Turtle *>();
 
-	changed();
-}
+	for (auto breed : namedBreeds)
+		for (auto turtle : (breed.second)->getTurtles())
+			turtles.insert(turtle);
 
-vector<Turtle *> World::getTurtles () {
-	lock_guard<mutex> lock(value_m);
+	for (auto breed : anonymousBreeds)
+		for (auto turtle : breed->getTurtles())
+			turtles.insert(turtle);
 
 	return turtles;
 }
@@ -82,6 +82,8 @@ Breed* World::createBreed (Function& function, string name) throw(invalid_argume
 
 	Breed* breed = new Breed(this, &function);
 
+	lock_guard<mutex> lock(value_m);
+
 	namedBreeds.insert({{name, breed}});
 
 	return breed;
@@ -89,6 +91,8 @@ Breed* World::createBreed (Function& function, string name) throw(invalid_argume
 
 Breed* World::createBreed (Function& function) {
 	Breed* breed = new Breed(this, &function);
+
+	lock_guard<mutex> lock(value_m);
 
 	anonymousBreeds.insert(breed);
 
