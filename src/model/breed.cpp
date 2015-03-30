@@ -2,7 +2,9 @@
 
 namespace stibbons {
 
-Breed::Breed(Function *function) : function(function) {}
+Breed::Breed(World *world, Function *function) : world(world), function(function) {}
+
+Breed::Breed(Function *function) : world(nullptr), function(function) {}
 
 void Breed::addTurtles ( Turtle * add_object ) {
 	turtles.push_back(add_object);
@@ -21,6 +23,10 @@ void Breed::removeTurtles ( Turtle * remove_object ) {
 }
 vector<Turtle *> Breed::getTurtlesList ( ) {
 	return turtles;
+}
+
+World *Breed::getWorld () {
+	return world;
 }
 
 Function *Breed::getFunction () {

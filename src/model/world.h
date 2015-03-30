@@ -4,17 +4,24 @@
 #include "zone.h"
 #include "turtle.h"
 #include "line.h"
+#include "breed.h"
+#include "function.h"
 
 //#include <cstdarg>
 #include <vector>
 #include <mutex>
 //#include <stdlib.h>
+#include <unordered_map>
+#include <unordered_set>
+#include <stdexcept>
 
 using namespace std;
 
 namespace stibbons {
 
 class Turtle;
+class Breed;
+class Function;
 
 typedef unsigned long turtle_id;
 
@@ -64,6 +71,21 @@ class World : public Changeable, public Agent {
 		 */
 		vector<Turtle*> getTurtles ();
 
+		/**
+		 * Create and add a new named breed
+		 * @param function the function of the breed
+		 * @param name the name of the breed
+		 * @return a reference to the new breed
+		 */
+		Breed* createBreed (Function& function, string name) throw(invalid_argument);
+
+		/**
+		 * Create and add a new anonymous breed
+		 * @param function the function of the breed
+		 * @return a reference to the new breed
+		 */
+		Breed* createBreed (Function& function);
+
 		turtle_id getId () const;
 		void setId (turtle_id i);
 
@@ -73,6 +95,9 @@ class World : public Changeable, public Agent {
 		vector<Zone*> zones;
 
 		vector<Line*> lines;
+
+		unordered_map<string, Breed*> namedBreeds;
+		unordered_set<Breed*> anonymousBreeds;
 
 		vector<Turtle*> turtles;
 		turtle_id id;

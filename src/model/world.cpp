@@ -69,6 +69,25 @@ vector<Turtle *> World::getTurtles () {
 	return turtles;
 }
 
+Breed* World::createBreed (Function& function, string name) throw(invalid_argument) {
+	if (namedBreeds.find(name) != namedBreeds.end())
+		throw invalid_argument("Can't create a breed with an already used name");
+
+	Breed* breed = new Breed(this, &function);
+
+	namedBreeds.insert({{name, breed}});
+
+	return breed;
+}
+
+Breed* World::createBreed (Function& function) {
+	Breed* breed = new Breed(this, &function);
+
+	anonymousBreeds.insert(breed);
+
+	return breed;
+}
+
 }
 
 /*

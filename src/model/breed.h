@@ -17,6 +17,9 @@
 
 namespace stibbons {
 
+class Turtle;
+class World;
+
 /**
  * class Breed
  *
@@ -26,6 +29,8 @@ namespace stibbons {
  */
 
 class Breed {
+	friend World;
+
 	public:
 		/**
 		* Empty Constructor
@@ -54,17 +59,27 @@ class Breed {
 		vector<Turtle *> getTurtlesList ( );
 
 		/**
+		* Get the world
+		* @return the world of the breed
+		*/
+		World *getWorld ();
+
+		/**
 		* Get the function
 		* @return the function of the breed
 		*/
 		Function *getFunction ();
 
 	private:
-		vector<Turtle*> turtles;
+		/**
+		* Special constructor for World
+		*/
+		Breed (World *world, Function *function);
+
+		World *world;
 		Function *function;
 
-
-
+		vector<Turtle*> turtles;
 };
 }
 /*
