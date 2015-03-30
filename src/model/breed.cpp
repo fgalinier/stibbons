@@ -25,6 +25,14 @@ vector<Turtle *> Breed::getTurtlesList ( ) {
 	return turtles;
 }
 
+Turtle* Breed::createTurtle () {
+	Turtle* turtle = new Turtle(this);
+
+	turtles.push_back(turtle);
+
+	return turtle;
+}
+
 World *Breed::getWorld () {
 	return world;
 }

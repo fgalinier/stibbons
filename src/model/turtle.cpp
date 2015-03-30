@@ -14,7 +14,9 @@ inline double radian (double degree) {
 	return degree * M_PI / 180;
 }
 
-Turtle::Turtle (turtle_id id, World *world) : id(id), angle(0.0), world(world), color(Color()), line(nullptr) {}
+Turtle::Turtle (turtle_id id, World *world) : id(id), breed(nullptr), angle(0.0), world(world), color(Color()), line(nullptr) {}
+
+Turtle::Turtle (Breed *breed) : id(0), breed(breed), angle(0.0), world(breed->getWorld()), color(Color()), line(nullptr) {}
 
 void Turtle::setId (turtle_id new_var) {
 	id=new_var;
@@ -25,6 +27,9 @@ turtle_id Turtle::getId() const {
 }
 
 World* Turtle::getWorld () {
+	if (breed)
+		return breed->getWorld();
+
 	return world;
 }
 

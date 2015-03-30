@@ -6,6 +6,7 @@
 #include "world.h"
 #include "line.h"
 #include "agent.h"
+#include "breed.h"
 #include "value.h"
 #include <future>
 #include <cmath>
@@ -18,6 +19,7 @@ using namespace std;
 namespace stibbons {
 
 class World;
+class Breed;
 
 typedef unsigned long turtle_id;
 
@@ -29,12 +31,14 @@ typedef unsigned long turtle_id;
  *\author Julia Bassoumi
  */
 class Turtle : public Point, public Changeable, public Agent{
+	friend Breed;
+
 	public:
 		/**
 		 * Create a turtle
 		 *
 		 */
-		Turtle (turtle_id id, World *world = nullptr);
+		Turtle (turtle_id id, World *world);
 
 		/**
 		 * Set the value of angle
@@ -114,7 +118,16 @@ class Turtle : public Point, public Changeable, public Agent{
 		void penUp() throw (future_error);
 
 	private:
+	public:
+		/**
+		 * Special constructor for Breed
+		 */
+		Turtle (Breed *breed);
+
 		turtle_id id;
+
+		Breed *breed;
+
 		double angle;
 		World * world;
 		Color color;

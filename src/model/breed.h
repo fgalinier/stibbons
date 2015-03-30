@@ -9,6 +9,7 @@
 #pragma once
 
 #include "agent.h"
+#include "turtle.h"
 #include <string>
 #include <vector>
 #include "turtle.h"
@@ -51,6 +52,13 @@ class Breed {
 		* Remove a Turtles object from turtlesVector List
 		*/
 		void removeTurtles ( Turtle * remove_object );
+
+		/**
+		 * Create and add a new turtle
+		 * @param parent the parent of the turtle
+		 * @return a reference to the new breed
+		 */
+		Turtle* createTurtle ();
 
 		/**
 		* Get the list of Turtles objects held by turtles

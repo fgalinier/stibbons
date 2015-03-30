@@ -30,16 +30,16 @@ class TestAgent : public TestCase {
 			pair<string,Value*> troisieme("tortue", new String("bleu"));
 			pair<string,Value*> quatrieme("color", new Color());
 
-			t=new Turtle(0);
-			t->setProperty(paire);
-			t->setProperty(deuxieme);
+			w=new World(10,10);
+			w->setProperty(troisieme);
+			w->setProperty(quatrieme);
 
 			z=new Zone();
 			z->setProperty(deuxieme);
 
-			w=new World(10,10);
-			w->setProperty(troisieme);
-			w->setProperty(quatrieme);
+			t=new Turtle(0, w);
+			t->setProperty(paire);
+			t->setProperty(deuxieme);
 		}
 
 		void getValuesT() {
@@ -58,7 +58,8 @@ class TestAgent : public TestCase {
 		if (search == (t->getProperties()).end()){
 			cout<<"pas trouver"<<endl;
 		}
-		auto valeur=dynamic_cast<Number*>(search->second);
+		auto valeur=dynamic_cast<
+		Number*>(search->second);
 		CPPUNIT_ASSERT_EQUAL(7.7, valeur->getValue());
 
 		}
