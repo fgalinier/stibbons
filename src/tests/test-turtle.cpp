@@ -17,7 +17,7 @@ class TestTurtle : public TestCase{
 		stibbons::Turtle* turtle;// stibbons::Turtle(0, nullptr);
 
 		void setUp(){
-			turtle=new stibbons::Turtle(nullptr);
+			turtle=new stibbons::Turtle();
 		}
 
 		void testAngle() {

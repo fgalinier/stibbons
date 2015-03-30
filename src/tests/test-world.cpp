@@ -20,7 +20,7 @@ class TestWorld : public TestCase{
 		void setUp(){
 			world=new stibbons::World(nullptr,10,10);
 			line=new Line();
-			turtle=new Turtle(nullptr);
+			turtle=new Turtle();
 		}
 
 		void testAjoutTurtle() {

@@ -1,7 +1,7 @@
 /**
  * \file breed.h
  * \brief A class representing a breed
- * \author Julia Bassoumi
+ * \author Julia Bassoumi, Adrien Plazas
  * \version 0.2
  * \date 29/03/2015
  */
@@ -9,12 +9,12 @@
 #pragma once
 
 #include "agent.h"
-#include "turtle.h"
-#include <string>
-#include <vector>
-#include "turtle.h"
 #include "function.h"
-#include <unordered_map>
+#include "turtle.h"
+#include "world.h"
+
+#include <string>
+#include <unordered_set>
 
 namespace stibbons {
 
@@ -26,69 +26,104 @@ class World;
  *
  *\brief A class representing a breed.
  *
- *\author Julia Bassoumi
+ *\author Julia Bassoumi, Adrien Plazas
  */
-
 class Breed {
 	friend World;
 	friend Turtle;
 
 	public:
 		/**
-		* Empty Constructor
-		*/
+		 * Create a breed from a function.
+		 *
+		 * The breed will own the function and destroy it when it is
+		 * deleted.
+		 *
+		 * @param function the function of the breed
+		 */
 		Breed (Function *function);
 
-		/**
-		* Empty Destructor
-		*/
-		virtual ~Breed ( );
+		virtual ~Breed ();
 
 		/**
-		 * Create and add a new turtle
-		 * @param parent the parent of the turtle
-		 * @return a reference to the new breed
+		 * Create and add a new turtle to the breed
+		 *
+		 * The parent of the turtle will be the breed's world.
+		 *
+		 * @return a reference to the new turtle
 		 */
 		Turtle *createTurtle ();
 
 		/**
-		* Get the world
-		* @return the world of the breed
-		*/
+		 * Create and add a new turtle to the breed
+		 *
+		 * @param parent the parent of the turtle
+		 * @return a reference to the new turtle
+		 */
+		Turtle *createTurtle (Turtle *parent);
+
+		/**
+		 * Remove a turtle from the breed and delete it
+		 *
+		 * @param turtle the turtle to remove and delete
+		 * @throw invalid_argument the breed doesn't contain the turtle
+		 */
+		void deleteTurtle (Turtle *turtle) throw(invalid_argument);
+
+		/**
+		 * Get the turtles
+		 *
+		 * @return a set containing the turtles of the breed
+		 */
+		unordered_set<Turtle*> getTurtles ();
+
+		/**
+		 * Get the world
+		 *
+		 * @return the world of the breed
+		 */
 		World *getWorld ();
 
 		/**
-		* Get the function
-		* @return the function of the breed
-		*/
+		 * Get the function
+		 *
+		 * @return the function of the breed
+		 */
 		Function *getFunction ();
 
 	private:
 		/**
-		* Special constructor for World
-		*/
+		 * Create a breed from a world and a function.
+		 *
+		 * Special constructor for World
+		 *
+		 * The breed will own the function and destroy it when it is
+		 * deleted.
+		 *
+		 * @param world the world of the breed
+		 * @param function the function of the breed
+		 */
 		Breed (World *world, Function *function);
 
 		/**
-		* Add a Turtles object to the turtlesVector List
-		*/
+		 * Add a turtle to the breed
+		 *
+		 * @param turtle the turtle to add
+		 */
 		void addTurtle (Turtle *turtle);
 
 		/**
-		* Remove a Turtles object from turtlesVector List
-		*/
-		void removeTurtle (Turtle *turtle);
-
-		/**
-		* Get the list of Turtles objects held by turtles
-		* @return vector<Turtle *> list of Turtles objects held by turtles
-		*/
-		vector<Turtle *> getTurtlesList ( );
+		 * Remove a turtle from the breed
+		 *
+		 * @param turtle the turtle to remove
+		 * @throw invalid_argument the breed doesn't contain the turtle
+		 */
+		void removeTurtle (Turtle *turtle) throw(invalid_argument);
 
 		World *world;
 		Function *function;
 
-		vector<Turtle*> turtles;
+		unordered_set<Turtle*> turtles;
 };
 }
 /*

@@ -6,31 +6,48 @@ Breed::Breed(World *world, Function *function) : world(world), function(function
 
 Breed::Breed(Function *function) : world(nullptr), function(function) {}
 
-void Breed::addTurtle (Turtle *turtle) {
-	turtles.push_back(turtle);
+Breed::~Breed () {
+	for (auto turtle : turtles)
+		delete turtle;
+
+	delete function;
 }
 
-void Breed::removeTurtle (Turtle *turtle) {
-	int i, size = turtles.size();
-	for ( i = 0; i < size; ++i) {
-		Turtle * item = turtles.at(i);
-		if(item == turtle) {
-			vector<Turtle *>::iterator it = turtles.begin() + i;
-			turtles.erase(it);
-			return;
-		}
-	}
+void Breed::addTurtle (Turtle *turtle) {
+	turtles.insert(turtle);
 }
-vector<Turtle *> Breed::getTurtlesList ( ) {
-	return turtles;
+
+void Breed::removeTurtle (Turtle *turtle) throw(invalid_argument) {
+	if (turtles.find(turtle) == turtles.end())
+		throw invalid_argument("This breed doesn't contain this turtle");
+
+	turtles.erase(turtle);
+}
+
+unordered_set<Turtle*> Breed::getTurtles ( ) {
+	return unordered_set<Turtle*>(turtles);
 }
 
 Turtle* Breed::createTurtle () {
-	Turtle* turtle = new Turtle(this, getWorld());
+	Turtle* turtle = new Turtle(this);
 
-	turtles.push_back(turtle);
+	addTurtle(turtle);
 
 	return turtle;
+}
+
+Turtle* Breed::createTurtle (Turtle* parent) {
+	Turtle* turtle = new Turtle(parent);
+
+	addTurtle(turtle);
+
+	return turtle;
+}
+
+void Breed::deleteTurtle (Turtle *turtle) throw(invalid_argument) {
+	removeTurtle(turtle);
+
+	delete turtle;
 }
 
 World *Breed::getWorld () {

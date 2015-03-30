@@ -14,9 +14,37 @@ inline double radian (double degree) {
 	return degree * M_PI / 180;
 }
 
-Turtle::Turtle (Agent* parent, turtle_id id) : Agent(parent), id(id), breed(nullptr), angle(0.0), color(Color()), line(nullptr) {}
+Turtle::Turtle () :
+	Agent(nullptr),
+	id(0),
+	breed(nullptr),
+	angle(0.0),
+	color(Color()),
+	line(nullptr) {}
 
-Turtle::Turtle (Breed *breed, Agent *parent) : Agent(parent), id(0), breed(breed), angle(0.0), color(Color()), line(nullptr) {}
+Turtle::Turtle (Agent* parent, turtle_id id) :
+	Agent(parent),
+	id(id),
+	breed(nullptr),
+	angle(0.0),
+	color(Color()),
+	line(nullptr) {}
+
+Turtle::Turtle (Breed *breed) :
+	Agent(breed->getWorld()),
+	id(0),
+	breed(breed),
+	angle(0.0),
+	color(Color()),
+	line(nullptr) {}
+
+Turtle::Turtle (Turtle *parent) :
+	Agent(parent),
+	id(0),
+	breed(parent->breed),
+	angle(parent->angle),
+	color(parent->color),
+	line(nullptr) {}
 
 void Turtle::setId (turtle_id new_var) {
 	id=new_var;
@@ -121,12 +149,7 @@ void Turtle::penUp() throw (future_error) {
 Turtle *Turtle::createChild() {
 	auto child = new Turtle(this);
 
-	child->breed = breed;
-	child->angle = angle;
-	child->color = color;
-
-	if (breed)
-		breed->addTurtle (child);
+	breed->addTurtle (child);
 
 	return child;
 }

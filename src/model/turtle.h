@@ -36,6 +36,11 @@ class Turtle : public Point, public Changeable, public Agent{
 	public:
 		/**
 		 * Create a turtle
+		 */
+		Turtle ();
+
+		/**
+		 * Create a turtle
 		 *
 		 */
 		Turtle (Agent *parent, turtle_id id = 0);
@@ -134,7 +139,12 @@ class Turtle : public Point, public Changeable, public Agent{
 		/**
 		 * Special constructor for Breed
 		 */
-		Turtle (Breed *breed, Agent *parent);
+		Turtle (Breed *breed);
+
+		/**
+		 * Special constructor for Breed
+		 */
+		Turtle (Turtle *parent);
 
 		turtle_id id;
 
