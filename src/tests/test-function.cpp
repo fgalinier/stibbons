@@ -17,28 +17,23 @@ class TestFunction : public TestCase {
 	CPPUNIT_TEST_SUITE_END();
 
 	public :
-/* le Function f ne marche pas : pas de Function() définit, j'ai crée un cas par défaut, pour quoi ca ne marche pas ? à voir avec adrien */
 		Function* f;
-		Number* i=new Number();
+		string nombre;
 		Tree *t;
-
-
 
 		void setUp() {
 			cout << "TestFunction::setup" << endl;
 			t=new Tree(2,nullptr);
-			i->setValue(2.0);
-			f=new Function(vector<Value*>(),*t);
+			nombre="nb";
+			f=new Function(*t,vector<string>());
 }
 
 		void AjoutArg() {
 			cout << "TestFunction::AjoutArg" << endl;
-			f->setArg(i);
-			vector<Value*> vector=f->getArg();
+			f->setArg(nombre);
+			vector<string> vector=f->getArg();
 			for (auto i : vector){
-				CPPUNIT_ASSERT (Type::NUMBER == i->getType());
-				auto reel = dynamic_cast<Number*>(i);
-				CPPUNIT_ASSERT_EQUAL (2.0,reel->getValue());
+				CPPUNIT_ASSERT("nb" == i);
 			}
 
 		}

@@ -13,6 +13,8 @@
 #include "../interpreter/tree.h"
 #include <iostream>
 #include <vector>
+#include <string>
+#include <mutex>
 
 namespace stibbons {
 
@@ -31,7 +33,7 @@ class Function : public GenericValue<Type::FUNCTION>, public SimpleValue<Tree>{
 		/**
 		* Constructor
 		*/
-		Function (vector<Value*> l = vector<Value*>(), Tree arbre = Tree(0,nullptr));
+		Function (Tree arbre = Tree(0,nullptr),vector<string> l = vector<string>());
 
 		/**
 		* Destructor
@@ -42,18 +44,19 @@ class Function : public GenericValue<Type::FUNCTION>, public SimpleValue<Tree>{
 		* Set the value of argument
 		* @param r the new value of arg
 		*/
-		void setArg (Value* r);
+		void setArg (string r);
 
 		/**
 		* Get the list of arg
 		* @return the list of nbarg
 		*/
-		vector<Value*> getArg ();
+		vector<string> getArg ();
 
 		virtual void reset ();
 
 	private:
-		vector<Value*> arguments;
+		vector<string> arguments;
+		mutex value_m;
 
 
 

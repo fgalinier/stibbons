@@ -4,16 +4,18 @@
 
 namespace stibbons {
 
-Function::Function (vector<Value*> l, Tree arbre){
+Function::Function (Tree arbre, vector<string> l){
 	arguments=l;
 	setValue(arbre);
 }
 
-void Function::setArg (Value* r){
+void Function::setArg (string r){
+	lock_guard<mutex> lock(value_m);
 	arguments.push_back(r);
 }
 
-vector<Value*> Function::getArg (){
+vector<string> Function::getArg (){
+	lock_guard<mutex> lock(value_m);
 	return arguments;
 }
 
