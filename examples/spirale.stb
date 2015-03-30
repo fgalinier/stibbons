@@ -1,0 +1,9 @@
+a = 1
+
+pd
+repeat 60 {
+	rt 30
+	fd a
+	a = a+1
+}
+pu
