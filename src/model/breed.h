@@ -31,6 +31,7 @@ class World;
 
 class Breed {
 	friend World;
+	friend Turtle;
 
 	public:
 		/**

@@ -118,6 +118,19 @@ void Turtle::penUp() throw (future_error) {
 	line = nullptr;
 }
 
+Turtle *Turtle::createChild() {
+	auto child = new Turtle(this);
+
+	child->breed = breed;
+	child->angle = angle;
+	child->color = color;
+
+	if (breed)
+		breed->addTurtles (child);
+
+	return child;
+}
+
 }
 
 /*

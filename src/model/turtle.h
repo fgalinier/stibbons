@@ -119,6 +119,16 @@ class Turtle : public Point, public Changeable, public Agent{
 		 */
 		void penUp() throw (future_error);
 
+		/**
+		 * Create a child turtle
+		 *
+		 * Create a new turtle whose parent is this turtle, and whose
+		 * breed and color are this turtle's breed and color.
+		 *
+		 * @return the new child turtle
+		 */
+		Turtle *createChild();
+
 	private:
 	public:
 		/**
