@@ -42,30 +42,14 @@ class Breed {
 		/**
 		* Empty Destructor
 		*/
-//		virtual ~Breed ( );
-
-		/**
-		* Add a Turtles object to the turtlesVector List
-		*/
-		void addTurtles ( Turtle * add_object );
-
-		/**
-		* Remove a Turtles object from turtlesVector List
-		*/
-		void removeTurtles ( Turtle * remove_object );
+		virtual ~Breed ( );
 
 		/**
 		 * Create and add a new turtle
 		 * @param parent the parent of the turtle
 		 * @return a reference to the new breed
 		 */
-		Turtle* createTurtle ();
-
-		/**
-		* Get the list of Turtles objects held by turtles
-		* @return vector<Turtle *> list of Turtles objects held by turtles
-		*/
-		vector<Turtle *> getTurtlesList ( );
+		Turtle *createTurtle ();
 
 		/**
 		* Get the world
@@ -84,6 +68,22 @@ class Breed {
 		* Special constructor for World
 		*/
 		Breed (World *world, Function *function);
+
+		/**
+		* Add a Turtles object to the turtlesVector List
+		*/
+		void addTurtle (Turtle *turtle);
+
+		/**
+		* Remove a Turtles object from turtlesVector List
+		*/
+		void removeTurtle (Turtle *turtle);
+
+		/**
+		* Get the list of Turtles objects held by turtles
+		* @return vector<Turtle *> list of Turtles objects held by turtles
+		*/
+		vector<Turtle *> getTurtlesList ( );
 
 		World *world;
 		Function *function;

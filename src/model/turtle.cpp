@@ -126,7 +126,7 @@ Turtle *Turtle::createChild() {
 	child->color = color;
 
 	if (breed)
-		breed->addTurtles (child);
+		breed->addTurtle (child);
 
 	return child;
 }

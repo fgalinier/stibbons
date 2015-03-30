@@ -6,19 +6,19 @@ Breed::Breed(World *world, Function *function) : world(world), function(function
 
 Breed::Breed(Function *function) : world(nullptr), function(function) {}
 
-void Breed::addTurtles ( Turtle * add_object ) {
-	turtles.push_back(add_object);
+void Breed::addTurtle (Turtle *turtle) {
+	turtles.push_back(turtle);
 }
 
-void Breed::removeTurtles ( Turtle * remove_object ) {
+void Breed::removeTurtle (Turtle *turtle) {
 	int i, size = turtles.size();
 	for ( i = 0; i < size; ++i) {
-	Turtle * item = turtles.at(i);
-	if(item == remove_object) {
-		vector<Turtle *>::iterator it = turtles.begin() + i;
-		turtles.erase(it);
-		return;
-	}
+		Turtle * item = turtles.at(i);
+		if(item == turtle) {
+			vector<Turtle *>::iterator it = turtles.begin() + i;
+			turtles.erase(it);
+			return;
+		}
 	}
 }
 vector<Turtle *> Breed::getTurtlesList ( ) {
