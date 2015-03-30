@@ -20,6 +20,12 @@ namespace stibbons {
 		return node;
 	}
 
+	void Tree::appendTree(Tree* t) {
+		if(t == nullptr || std::get<0>(t->getNode()) != std::get<0>(this->getNode()))
+			throw std::exception(); 
+		sons->insert(sons->end(),t->getSons()->begin(),t->getSons()->end());
+	}
+
 	void Tree::addSon(Tree* t) {
 		if(t) {
 			sons->push_back(t);

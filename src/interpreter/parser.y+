@@ -71,14 +71,24 @@ instr_list : statement
 {
   stibbons::Tree *t1 = new stibbons::Tree(0,nullptr);
   t1->addSon($1);
-  t1->addSon($3);
+  try {
+    t1->appendTree($3);
+  }
+  catch(std::exception& e) {
+    t1->addSon($3);    
+  }
   $$ = t1; 
 }
 | struc instr_list 
 { 
   stibbons::Tree *t1 = new stibbons::Tree(0,nullptr);
   t1->addSon($1);
-  t1->addSon($2);
+  try {
+    t1->appendTree($2);
+  }
+  catch(std::exception& e) {
+    t1->addSon($2);    
+  }
   $$ = t1;
 }
 | { $$ = nullptr;};
