@@ -67,7 +67,7 @@ namespace stibbons {
 		 * append the sons of t to the current node.
 		 *
 		 * \param t A Tree with root node equal to current Tree root node.
-		 */
+		 */ 
 		void appendTree(Tree*);
 
 		/**

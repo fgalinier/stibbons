@@ -75,7 +75,7 @@ instr_list : statement
     t1->appendTree($3);
   }
   catch(std::exception& e) {
-    t1->addSon($3);    
+    t1->addSon($3);
   }
   $$ = t1; 
 }
