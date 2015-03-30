@@ -66,6 +66,7 @@ INTERPETERSRC = \
 	src/interpreter/tree.cpp \
 	src/interpreter/interpreter-exception.cpp \
 	src/interpreter/syntax-exception.cpp \
+	src/interpreter/semantic-exception.cpp \
 	$(NULL)
 
 TESTSRC = \

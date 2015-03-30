@@ -18,8 +18,9 @@
 #include <tuple>
 #include "../model/value.h"
 
+
 namespace stibbons {
-	
+
 	/**
 	  * \class Tree
 	  * \brief Class that will represent a syntaxic tree.
@@ -34,6 +35,7 @@ namespace stibbons {
 	private:
 		std::pair<int,Value*> node;
 		std::vector<Tree*>* sons;
+		std::pair<int,int> position;
 	public:
 		/**
 		 * Create a new tree from a token_type and a value
@@ -85,6 +87,18 @@ namespace stibbons {
 		 * \return the requested son (Tree* type)
 		 */
 		virtual Tree* getSon(size_t pos=0) const;
+
+		/**
+		 * Set the position of the token in file
+		 * \param pos a pair <line,column>
+		 */
+		virtual void setPosition(std::pair<int,int>);
+
+		/**
+		 * Return the position of the token of current node.
+		 * \return a pair <line,column>
+		 */
+		virtual std::pair<int,int> getPosition() const;
 
 		virtual void output(std::ostream&,std::string dec="") const;
 	};

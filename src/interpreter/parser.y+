@@ -105,18 +105,21 @@ instr_turtle : FD expr
 { 
   stibbons::Tree *t1 = new stibbons::Tree(yy::parser::token::FD,nullptr);
   t1->addSon($2);
+  t1->setPosition({@1.begin.line,@1.begin.column});
   $$ = t1; 
 }
 | LT expr
 { 
   stibbons::Tree *t1 = new stibbons::Tree(yy::parser::token::LT,nullptr);
   t1->addSon($2);
+  t1->setPosition({@1.begin.line,@1.begin.column});
   $$ = t1; 
 }
 | RT expr
 { 
   stibbons::Tree *t1 = new stibbons::Tree(yy::parser::token::RT,nullptr);
   t1->addSon($2);
+  t1->setPosition({@1.begin.line,@1.begin.column});
   $$ = t1; 
 }
 | PU
@@ -149,6 +152,7 @@ expr : LP expr RP { $$ = $2; }
 {
   stibbons::Tree *t1 = new stibbons::Tree(yy::parser::token::NOT,nullptr);
   t1->addSon($2);
+  t1->setPosition({@1.begin.line,@1.begin.column});
   $$ = t1;
 }
 | expr '+' expr
@@ -156,6 +160,7 @@ expr : LP expr RP { $$ = $2; }
   stibbons::Tree *t1 = new stibbons::Tree('+',nullptr);
   t1->addSon($1);
   t1->addSon($3);
+  t1->setPosition({@1.begin.line,@1.begin.column});
   $$ = t1;
 }
 | expr '*' expr
@@ -163,6 +168,7 @@ expr : LP expr RP { $$ = $2; }
   stibbons::Tree *t1 = new stibbons::Tree('*',nullptr);
   t1->addSon($1);
   t1->addSon($3);
+  t1->setPosition({@1.begin.line,@1.begin.column});
   $$ = t1;
 }
 | expr '-' expr
@@ -170,6 +176,7 @@ expr : LP expr RP { $$ = $2; }
   stibbons::Tree *t1 = new stibbons::Tree('-',nullptr);
   t1->addSon($1);
   t1->addSon($3);
+  t1->setPosition({@1.begin.line,@1.begin.column});
   $$ = t1;
 }
 | expr '/' expr
@@ -177,6 +184,7 @@ expr : LP expr RP { $$ = $2; }
   stibbons::Tree *t1 = new stibbons::Tree('/',nullptr);
   t1->addSon($1);
   t1->addSon($3);
+  t1->setPosition({@1.begin.line,@1.begin.column});
   $$ = t1;
 }
 | expr '%' expr
@@ -184,6 +192,7 @@ expr : LP expr RP { $$ = $2; }
   stibbons::Tree *t1 = new stibbons::Tree('%',nullptr);
   t1->addSon($1);
   t1->addSon($3);
+  t1->setPosition({@1.begin.line,@1.begin.column});
   $$ = t1;
 }
 | expr AND expr
@@ -191,6 +200,7 @@ expr : LP expr RP { $$ = $2; }
   stibbons::Tree *t1 = new stibbons::Tree(yy::parser::token::AND,nullptr);
   t1->addSon($1);
   t1->addSon($3);
+  t1->setPosition({@1.begin.line,@1.begin.column});
   $$ = t1;
 }
 | expr OR expr
@@ -198,6 +208,7 @@ expr : LP expr RP { $$ = $2; }
   stibbons::Tree *t1 = new stibbons::Tree(yy::parser::token::OR,nullptr);
   t1->addSon($1);
   t1->addSon($3);
+  t1->setPosition({@1.begin.line,@1.begin.column});
   $$ = t1;
 }
 | expr XOR expr
@@ -205,6 +216,7 @@ expr : LP expr RP { $$ = $2; }
   stibbons::Tree *t1 = new stibbons::Tree(yy::parser::token::XOR,nullptr);
   t1->addSon($1);
   t1->addSon($3);
+  t1->setPosition({@1.begin.line,@1.begin.column});
   $$ = t1;
 }
 | expr EQ expr
@@ -212,6 +224,7 @@ expr : LP expr RP { $$ = $2; }
   stibbons::Tree *t1 = new stibbons::Tree(yy::parser::token::EQ,nullptr);
   t1->addSon($1);
   t1->addSon($3);
+  t1->setPosition({@1.begin.line,@1.begin.column});
   $$ = t1;
 }
 | expr NEQ expr
@@ -226,6 +239,7 @@ expr : LP expr RP { $$ = $2; }
   stibbons::Tree *t1 = new stibbons::Tree(yy::parser::token::GT,nullptr);
   t1->addSon($1);
   t1->addSon($3);
+  t1->setPosition({@1.begin.line,@1.begin.column});
   $$ = t1;
 }
 | expr GEQ expr
@@ -233,6 +247,7 @@ expr : LP expr RP { $$ = $2; }
   stibbons::Tree *t1 = new stibbons::Tree(yy::parser::token::GEQ,nullptr);
   t1->addSon($1);
   t1->addSon($3);
+  t1->setPosition({@1.begin.line,@1.begin.column});
   $$ = t1;
 }
 | expr LS expr
@@ -240,6 +255,7 @@ expr : LP expr RP { $$ = $2; }
   stibbons::Tree *t1 = new stibbons::Tree(yy::parser::token::LS,nullptr);
   t1->addSon($1);
   t1->addSon($3);
+  t1->setPosition({@1.begin.line,@1.begin.column});
   $$ = t1;
 }
 | expr LEQ expr 
@@ -247,6 +263,7 @@ expr : LP expr RP { $$ = $2; }
   stibbons::Tree *t1 = new stibbons::Tree(yy::parser::token::LEQ,nullptr);
   t1->addSon($1);
   t1->addSon($3);
+  t1->setPosition({@1.begin.line,@1.begin.column});
   $$ = t1;
 };
 
@@ -291,6 +308,7 @@ loop : RPT expr statement
   stibbons::Tree *t1 = new stibbons::Tree(yy::parser::token::RPT,nullptr);
   t1->addSon($2);
   t1->addSon($3);
+  t1->setPosition({@1.begin.line,@1.begin.column});
   $$ = t1;  
 }
 | WHL expr statement
@@ -298,6 +316,7 @@ loop : RPT expr statement
   stibbons::Tree *t1 = new stibbons::Tree(yy::parser::token::WHL,nullptr);
   t1->addSon($2);
   t1->addSon($3);
+  t1->setPosition({@1.begin.line,@1.begin.column});
   $$ = t1;  
 }
 ;
@@ -308,6 +327,7 @@ condi : IF expr statement
   t1->addSon($2);
   t1->addSon($3);
   t1->addSon(nullptr);
+  t1->setPosition({@1.begin.line,@1.begin.column});
   $$ = t1;
 }
 | IF expr statement ELSE statement
@@ -316,6 +336,7 @@ condi : IF expr statement
   t1->addSon($2);
   t1->addSon($3);
   t1->addSon($5);
+  t1->setPosition({@1.begin.line,@1.begin.column});
   $$ = t1;
 }
 ;

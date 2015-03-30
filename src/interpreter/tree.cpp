@@ -38,6 +38,15 @@ namespace stibbons {
 		return sons->at(pos);
 	}
 
+
+	void Tree::setPosition(std::pair<int,int> pos) {
+		position = pos;
+	}
+
+	std::pair<int,int> Tree::getPosition() const {
+		return position;
+	}
+
 	void Tree::output(std::ostream& os,std::string dec) const {
 		os<<dec<<" "<<std::get<0>(node)<<std::endl;
 		for(auto t : *sons) {

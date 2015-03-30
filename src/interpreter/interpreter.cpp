@@ -1,10 +1,10 @@
 #include "interpreter.h"
 
-#include <stdexcept>
 #include <cstdio>
 #include <cstring>
 
 #include "tree.h"
+#include "semantic-exception.h"
 #include "y.tab.h"
 
 extern FILE *yyin;
@@ -50,19 +50,28 @@ namespace stibbons {
 		  	//Basic cases:
 			case yy::parser::token::FD: {
 				auto val = this->interpret(tree->getSon(0));
-				if(val->getType() != Type::NUMBER) throw std::exception();
+				if(val->getType() != Type::NUMBER) 
+					throw SemanticException("FD expect a number",
+											yy::position(nullptr,std::get<0>(tree->getPosition()),
+														 std::get<0>(tree->getPosition())));
 				turtle->forward(dynamic_cast<Number*>(val)->getValue());
 			}
 				break;
 			case yy::parser::token::RT: {
 				auto val = this->interpret(tree->getSon(0));
-				if(val->getType() != Type::NUMBER) throw std::exception();
+				if(val->getType() != Type::NUMBER) 
+					throw SemanticException("RT expect a number",
+											yy::position(nullptr,std::get<0>(tree->getPosition()),
+														 std::get<0>(tree->getPosition())));
 				turtle->turnRight(dynamic_cast<Number*>(val)->getValue());
 			}
 				break;
 			case yy::parser::token::LT: {
 				auto val = this->interpret(tree->getSon(0));
-				if(val->getType() != Type::NUMBER) throw std::exception();
+				if(val->getType() != Type::NUMBER) 
+					throw SemanticException("LT expect a number",
+											yy::position(nullptr,std::get<0>(tree->getPosition()),
+														 std::get<0>(tree->getPosition())));
 				turtle->turnLeft(dynamic_cast<Number*>(val)->getValue());
 			}
 				break;
@@ -75,17 +84,26 @@ namespace stibbons {
 		   	//Loop cases:
 			case yy::parser::token::WHL: {
 				auto val = this->interpret(tree->getSon(0));
-				if(val->getType() != Type::BOOLEAN) throw std::exception();
+				if(val->getType() != Type::BOOLEAN) 
+					throw SemanticException("WHILE loop expect a boolean",
+											yy::position(nullptr,std::get<0>(tree->getPosition()),
+														 std::get<0>(tree->getPosition())));
 				while(dynamic_cast<Boolean*>(val)->getValue()) {
 					this->interpret(tree->getSon(1));
 					auto val = this->interpret(tree->getSon(0));
-					if(val->getType() != Type::BOOLEAN) throw std::exception();
+					if(val->getType() != Type::BOOLEAN)
+					throw SemanticException("WHILE loop expect a boolean",
+											yy::position(nullptr,std::get<0>(tree->getPosition()),
+														 std::get<0>(tree->getPosition())));
 				}
 			}
 				break;
 			case yy::parser::token::RPT: {
 				auto val = this->interpret(tree->getSon(0));
-				if(val->getType() != Type::NUMBER) throw std::exception();
+				if(val->getType() != Type::NUMBER)
+					throw SemanticException("REPEAT loop expect a number",
+											yy::position(nullptr,std::get<0>(tree->getPosition()),
+														 std::get<0>(tree->getPosition())));
 				for(auto i=0;i<dynamic_cast<Number*>(val)->getValue();i++) {
 					this->interpret(tree->getSon(1));
 				}
@@ -95,17 +113,15 @@ namespace stibbons {
 			case yy::parser::token::IF: {
 				auto cond = this->interpret(tree->getSon(0));
 				if(cond->getType() != Type::BOOLEAN) 
-					throw std::exception();
+					throw SemanticException("IF expect a boolean",
+											yy::position(nullptr,std::get<0>(tree->getPosition()),
+														 std::get<0>(tree->getPosition())));
 				if(dynamic_cast<Boolean*>(cond)->getValue()){
 					return this->interpret(tree->getSon(1));
 				}
 				else{
 					return this->interpret(tree->getSon(2));
 				}
-			}
-				break;
-			case yy::parser::token::ELSE: {
-				return this->interpret(tree->getSon(0));
 			}
 				break;
 			//Variable cases:
@@ -133,7 +149,9 @@ namespace stibbons {
 				auto val1 = this->interpret(tree->getSon(0));
 				auto val2 = this->interpret(tree->getSon(1));
 				if(val1->getType() != Type::NUMBER || val2->getType() != Type::NUMBER) 
-					throw std::exception();
+					throw SemanticException("+ operator expect two numbers",
+											yy::position(nullptr,std::get<0>(tree->getPosition()),
+														 std::get<0>(tree->getPosition())));
 				return new Number((dynamic_cast<Number*>(val1)->getValue())+(dynamic_cast<Number*>(val2)->getValue()));
 			}
 				break;
@@ -141,7 +159,9 @@ namespace stibbons {
 				auto val1 = this->interpret(tree->getSon(0));
 				auto val2 = this->interpret(tree->getSon(1));
 				if(val1->getType() != Type::NUMBER || val2->getType() != Type::NUMBER) 
-					throw std::exception();
+					throw SemanticException("- operator expect two numbers",
+											yy::position(nullptr,std::get<0>(tree->getPosition()),
+														 std::get<0>(tree->getPosition())));
 				return new Number((dynamic_cast<Number*>(val1)->getValue())-(dynamic_cast<Number*>(val2)->getValue()));
 			}
 				break;
@@ -149,7 +169,9 @@ namespace stibbons {
 				auto val1 = this->interpret(tree->getSon(0));
 				auto val2 = this->interpret(tree->getSon(1));
 				if(val1->getType() != Type::NUMBER || val2->getType() != Type::NUMBER) 
-					throw std::exception();
+					throw SemanticException("* operator expect two numbers",
+											yy::position(nullptr,std::get<0>(tree->getPosition()),
+														 std::get<0>(tree->getPosition())));
 				return new Number((dynamic_cast<Number*>(val1)->getValue())*(dynamic_cast<Number*>(val2)->getValue()));
 			}
 				break;
@@ -157,9 +179,13 @@ namespace stibbons {
 				auto val1 = this->interpret(tree->getSon(0));
 				auto val2 = this->interpret(tree->getSon(1));
 				if(val1->getType() != Type::NUMBER || val2->getType() != Type::NUMBER) 
-					throw std::exception();
+					throw SemanticException("/ operator expect two numbers",
+											yy::position(nullptr,std::get<0>(tree->getPosition()),
+														 std::get<0>(tree->getPosition())));
 				if(dynamic_cast<Number*>(val2)->getValue() == 0) 
-					throw std::exception();
+					throw SemanticException("Cannot divide by 0",
+											yy::position(nullptr,std::get<0>(tree->getPosition()),
+														 std::get<0>(tree->getPosition())));
 				return new Number((dynamic_cast<Number*>(val1)->getValue())/(dynamic_cast<Number*>(val2)->getValue()));
 			}
 				break;
@@ -167,9 +193,13 @@ namespace stibbons {
 				auto val1 = this->interpret(tree->getSon(0));
 				auto val2 = this->interpret(tree->getSon(1));
 				if(val1->getType() != Type::NUMBER || val2->getType() != Type::NUMBER) 
-					throw std::exception();
+					throw SemanticException("% operator expect two numbers",
+											yy::position(nullptr,std::get<0>(tree->getPosition()),
+														 std::get<0>(tree->getPosition())));
 				if(dynamic_cast<Number*>(val2)->getValue() == 0) 
-					throw std::exception();
+					throw SemanticException("Cannot divide by 0",
+											yy::position(nullptr,std::get<0>(tree->getPosition()),
+														 std::get<0>(tree->getPosition())));
 				return new Number(((int) dynamic_cast<Number*>(val1)->getValue())%((int) dynamic_cast<Number*>(val2)->getValue()));
 			}
 				break;
@@ -178,7 +208,9 @@ namespace stibbons {
 				auto val1 = this->interpret(tree->getSon(0));
 				auto val2 = this->interpret(tree->getSon(1));
 				if(val1->getType() != Type::BOOLEAN || val2->getType() != Type::BOOLEAN) 
-					throw std::exception();
+					throw SemanticException("AND operator expect two booleans",
+											yy::position(nullptr,std::get<0>(tree->getPosition()),
+														 std::get<0>(tree->getPosition())));
 				return new Boolean((dynamic_cast<Boolean*>(val1)->getValue()) && (dynamic_cast<Boolean*>(val2)->getValue()));
 			}
 				break;
@@ -186,7 +218,9 @@ namespace stibbons {
 				auto val1 = this->interpret(tree->getSon(0));
 				auto val2 = this->interpret(tree->getSon(1));
 				if(val1->getType() != Type::BOOLEAN || val2->getType() != Type::BOOLEAN) 
-					throw std::exception();
+					throw SemanticException("OR operator expect two booleans",
+											yy::position(nullptr,std::get<0>(tree->getPosition()),
+														 std::get<0>(tree->getPosition())));
 				return new Boolean((dynamic_cast<Boolean*>(val1)->getValue()) || (dynamic_cast<Boolean*>(val2)->getValue()));
 			}
 				break;
@@ -194,14 +228,18 @@ namespace stibbons {
 				auto val1 = this->interpret(tree->getSon(0));
 				auto val2 = this->interpret(tree->getSon(1));
 				if(val1->getType() != Type::BOOLEAN || val2->getType() != Type::BOOLEAN) 
-					throw std::exception();
+					throw SemanticException("XOR operator expect two booleans",
+											yy::position(nullptr,std::get<0>(tree->getPosition()),
+														 std::get<0>(tree->getPosition())));
 				return new Boolean((dynamic_cast<Boolean*>(val1)->getValue()) ^ (dynamic_cast<Boolean*>(val2)->getValue()));
 			}
 				break;
 			case yy::parser::token::NOT: {
 				auto val1 = this->interpret(tree->getSon(0));
 				if(val1->getType() != Type::BOOLEAN) 
-					throw std::exception();
+					throw SemanticException("NOT operator expect a boolean",
+											yy::position(nullptr,std::get<0>(tree->getPosition()),
+														 std::get<0>(tree->getPosition())));
 				return new Boolean(!(dynamic_cast<Boolean*>(val1)->getValue()));
 			}
 				break;	
