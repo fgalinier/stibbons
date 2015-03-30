@@ -30,7 +30,7 @@ class Breed : public Agent{
 		/**
 		* Empty Constructor
 		*/
-		Breed ( );
+		Breed (Function *function);
 
 		/**
 		* Empty Destructor
@@ -53,9 +53,15 @@ class Breed : public Agent{
 		*/
 		vector<Turtle *> getTurtlesList ( );
 
+		/**
+		* Get the function
+		* @return the function of the breed
+		*/
+		Function *getFunction ();
 
 	private:
 		vector<Turtle*> turtles;
+		Function *function;
 
 
 

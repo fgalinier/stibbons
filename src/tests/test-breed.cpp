@@ -20,11 +20,11 @@ class TestBreed : public TestCase {
 	CPPUNIT_TEST_SUITE_END();
 
 	public:
-		Breed breed;
+		Breed breed = Breed(nullptr);
 
 		void setUp() {
 			cout << "TestBreed::" << endl;
-			breed=Breed();
+			breed=Breed(nullptr);
 		}
 
 		void ajout() {
