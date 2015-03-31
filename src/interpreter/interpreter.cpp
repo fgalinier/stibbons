@@ -247,19 +247,21 @@ namespace stibbons {
 			// New agent
 			
 				case yy::parser::token::NEW: {
-				auto type = std::get<1>(tree->getNode());
-				if(type == nullptr) {
-					auto function = new Function(*(tree->getSon(0)),{});
-					auto breed = turtle->getWorld()->createBreed(*function);
-					auto newTurtle = breed->createTurtle();
-					Interpreter inter(newTurtle);
-					std::thread newThread(&Interpreter::interpret, 
-										  &inter, 
-										  tree->getSon(0));
-					newThread.join();
+					auto type = std::get<1>(tree->getNode());
+					if(type == nullptr) {
+
+						auto function = new Function();
+						//auto function = new Function(*(tree->getSon(0)),vector<std::string>()));
+						auto breed = turtle->getWorld()->createBreed(*function);
+						auto newTurtle = breed->createTurtle();
+						auto inter = new Interpreter(newTurtle);
+						std::thread newThread(&Interpreter::interpret, 
+											  inter, 
+											  tree->getSon(0));
+						newThread.detach();
+					}
 				}
-			}
-			break;
+					break;
 			}
 		}
  
