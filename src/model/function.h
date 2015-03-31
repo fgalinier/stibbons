@@ -26,14 +26,14 @@ namespace stibbons {
  *\author Julia Bassoumi
 **/
 
-class Function : public GenericValue<Type::FUNCTION>, public SimpleValue<Tree>{
+class Function : public GenericValue<Type::FUNCTION>, public SimpleValue<Tree*>{
 	public:
-		using SimpleValue<Tree>::SimpleValue;
+		using SimpleValue<Tree*>::SimpleValue;
 
 		/**
 		* Constructor
 		*/
-		Function (Tree arbre = Tree(0,nullptr),vector<string> l = vector<string>());
+		Function (Tree* arbre = new Tree(0,nullptr),vector<string> l = vector<string>());
 
 		/**
 		* Destructor

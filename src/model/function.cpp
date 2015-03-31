@@ -4,7 +4,7 @@
 
 namespace stibbons {
 
-Function::Function (Tree arbre, vector<string> l){
+Function::Function (Tree* arbre, vector<string> l){
 	arguments=l;
 	setValue(arbre);
 }
