@@ -7,6 +7,7 @@ Breed::Breed(World *world, Function *function) : world(world), function(function
 Breed::Breed(Function *function) : world(nullptr), function(function) {}
 
 Breed::~Breed () {
+	lock_guard<mutex> lock(value_m);
 	for (auto turtle : turtles)
 		delete turtle;
 
@@ -14,10 +15,12 @@ Breed::~Breed () {
 }
 
 void Breed::addTurtle (Turtle *turtle) {
+	lock_guard<mutex> lock(value_m);
 	turtles.insert(turtle);
 }
 
 void Breed::removeTurtle (Turtle *turtle) throw(invalid_argument) {
+	lock_guard<mutex> lock(value_m);
 	if (turtles.find(turtle) == turtles.end())
 		throw invalid_argument("This breed doesn't contain this turtle");
 
@@ -25,6 +28,7 @@ void Breed::removeTurtle (Turtle *turtle) throw(invalid_argument) {
 }
 
 unordered_set<Turtle*> Breed::getTurtles ( ) {
+	lock_guard<mutex> lock(value_m);
 	return unordered_set<Turtle*>(turtles);
 }
 
@@ -51,10 +55,12 @@ void Breed::deleteTurtle (Turtle *turtle) throw(invalid_argument) {
 }
 
 World *Breed::getWorld () {
+	lock_guard<mutex> lock(value_m);
 	return world;
 }
 
 Function *Breed::getFunction () {
+	lock_guard<mutex> lock(value_m);
 	return function;
 }
 

@@ -47,6 +47,7 @@ Turtle::Turtle (Turtle *parent) :
 	line(nullptr) {}
 
 void Turtle::setId (turtle_id new_var) {
+	lock_guard<mutex> lock(value_m);
 	id=new_var;
 }
 
@@ -54,7 +55,8 @@ Type Turtle::getType() const {
 	return Type::TURTLE;
 }
 
-turtle_id Turtle::getId() const {
+turtle_id Turtle::getId() {
+	lock_guard<mutex> lock(value_m);
 	return id;
 }
 
@@ -70,20 +72,23 @@ World* Turtle::getWorld () {
 }
 
 void Turtle::setColor (Color color) {
+	lock_guard<mutex> lock(value_m);
 	this->color = color;
 
 	changed();
 }
 
 Color& Turtle::getColor () {
+	lock_guard<mutex> lock(value_m);
 	return color;
 }
 
-const Color& Turtle::getColor () const {
+const Color& Turtle::getColor () const{
 	return color;
 }
 
 void Turtle::setAngle(double new_var) {
+	lock_guard<mutex> lock(value_m);
 	auto times = floor(new_var / 360.0);
 	angle = new_var - (times * 360.0);
 
@@ -91,6 +96,7 @@ void Turtle::setAngle(double new_var) {
 }
 
 double Turtle::getAngle() {
+	lock_guard<mutex> lock(value_m);
 	return angle;
 }
 
@@ -135,6 +141,7 @@ void Turtle::penDown() throw (future_error) {
 }
 
 void Turtle::penUp() throw (future_error) {
+	lock_guard<mutex> lock(value_m);
 	auto world = getWorld();
 
 	if (!world)
@@ -147,6 +154,7 @@ void Turtle::penUp() throw (future_error) {
 }
 
 Turtle *Turtle::createChild() {
+	lock_guard<mutex> lock(value_m);
 	auto child = new Turtle(this);
 
 	breed->addTurtle (child);
@@ -155,6 +163,7 @@ Turtle *Turtle::createChild() {
 }
 
 void Turtle::changed() {
+	lock_guard<mutex> lock(value_m);
 	auto world = getWorld();
 
 	if (world)

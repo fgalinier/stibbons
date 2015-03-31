@@ -64,7 +64,7 @@ class Agent : public Value {
 		unordered_map<string,Value*> *properties;
 
 		void tryDelete (Value* value) throw (domain_error);
-
+protected :
 		mutex parent_m;
 };
 }

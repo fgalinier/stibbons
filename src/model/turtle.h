@@ -13,7 +13,7 @@
 #include <stdexcept>
 #include <system_error>
 #include <unordered_map>
-
+#include <mutex>
 using namespace std;
 
 namespace stibbons {
@@ -69,7 +69,7 @@ class Turtle : public Point, public Agent{
 		 * Get the value of id
 		 * @return the value of id
 		 */
-		turtle_id getId() const;
+		turtle_id getId();
 
 		/**
 		 * Get the value of world
@@ -134,8 +134,6 @@ class Turtle : public Point, public Agent{
 		 */
 		Turtle *createChild();
 
-	private:
-	public:
 		/**
 		 * Special constructor for Breed
 		 */
@@ -148,14 +146,13 @@ class Turtle : public Point, public Agent{
 
 		void changed ();
 
+	private:
 		turtle_id id;
-
 		Breed *breed;
-
 		double angle;
 		Color color;
 		Line* line;
-		unordered_map<string,Value*> *properties;
+		mutex value_m;
 	};
 }
 
