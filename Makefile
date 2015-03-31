@@ -24,7 +24,7 @@ QTLIBS = \
 	-lQt5Widgets \
 	$(NULL)
 
-CFLAGS = -fPIC -Wall -Wpedantic -std=c++11
+CFLAGS = -fPIC -Wall -Wpedantic -std=c++11 -g
 
 MODELSRC = \
 	src/interpreter/tree.cpp \

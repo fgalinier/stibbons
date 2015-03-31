@@ -2,6 +2,7 @@
 
 #include <cstdio>
 #include <cstring>
+#include <thread>
 
 #include "tree.h"
 #include "semantic-exception.h"
@@ -243,9 +244,25 @@ namespace stibbons {
 				return new Boolean(!(dynamic_cast<Boolean*>(val1)->getValue()));
 			}
 				break;	
+			// New agent
+			
+				case yy::parser::token::NEW: {
+				auto type = std::get<1>(tree->getNode());
+				if(type == nullptr) {
+					auto function = new Function(*(tree->getSon(0)),{});
+					auto breed = turtle->getWorld()->createBreed(*function);
+					auto newTurtle = breed->createTurtle();
+					Interpreter inter(newTurtle);
+					std::thread newThread(&Interpreter::interpret, 
+										  &inter, 
+										  tree->getSon(0));
+					newThread.join();
+				}
+			}
+			break;
 			}
 		}
-
+ 
 		//Operations tokens : EQ NEQ GT GEQ LS LEQ
 		//Stibbons spécial tokens : DIE FCT_ID STRING COLOR NIL ID
 		return nullptr;

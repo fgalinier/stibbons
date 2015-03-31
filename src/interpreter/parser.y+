@@ -27,7 +27,7 @@ using namespace std;
 %{
   YY_DECL;
 %}
-%token FD LT RT PU PD DIE AND OR XOR NOT EQ NEQ GT GEQ LS LEQ LB RB LP RP FCT_ID RPT WHL END IF ELSE
+%token FD LT RT PU PD DIE AND OR XOR NOT EQ NEQ GT GEQ LS LEQ LB RB LP RP FCT_ID RPT WHL END IF ELSE NEW AGT
 %token <v> NUMBER
 %token <v> STRING
 %token <v> COLOR
@@ -47,6 +47,7 @@ using namespace std;
 %type <tr> struc
 %type <tr> loop
 %type <tr> condi
+%type <tr> creat
 
 %right '='
 %left AND OR XOR 
@@ -67,7 +68,7 @@ instr_list : statement
 {
   $$ = $1; 
 }
-| statement '\n' instr_list
+| statement '\n' instr_list 
 {
   stibbons::Tree *t1 = new stibbons::Tree(0,nullptr);
   t1->addSon($1);
@@ -107,7 +108,25 @@ bloc : LB instr_list RB
 }; 
 
 instr : expr { $$ = $1; }
-| instr_turtle { $$ = $1; };
+| instr_turtle { $$ = $1; } 
+| creat { $$ = $1; }
+| expr creat 
+{
+  stibbons::Tree *t1 = new stibbons::Tree(yy::parser::token::RPT,nullptr);
+  t1->addSon($1);
+  t1->addSon($2);
+  t1->setPosition({@1.begin.line,@1.begin.column});
+  $$ = t1;  
+};
+
+// New agent
+
+creat : NEW AGT statement 
+{
+  auto t1 = new stibbons::Tree(yy::parser::token::NEW,nullptr);
+  t1->addSon($3);
+  $$ = t1;
+};
 
 // Turtle instructions
 
