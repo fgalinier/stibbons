@@ -100,15 +100,7 @@ statement : bloc { $$ = $1; }
 ; 
 
 struc : condi { $$ = $1; }
-| loop { $$ = $1; };
-
-bloc : LB instr_list RB
-{ 
-  $$ = $2; 
-}; 
-
-instr : expr { $$ = $1; }
-| instr_turtle { $$ = $1; } 
+| loop { $$ = $1; }
 | creat { $$ = $1; }
 | expr creat 
 {
@@ -118,6 +110,14 @@ instr : expr { $$ = $1; }
   t1->setPosition({@1.begin.line,@1.begin.column});
   $$ = t1;  
 };
+
+bloc : LB instr_list RB
+{ 
+  $$ = $2; 
+}; 
+
+instr : expr { $$ = $1; }
+| instr_turtle { $$ = $1; } ;
 
 // New agent
 
