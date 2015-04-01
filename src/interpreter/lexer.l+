@@ -83,6 +83,8 @@ new {return yy::parser::token::NEW;}
 
 agent {return yy::parser::token::AGT;}
 
+function {return yy::parser::token::FCT;}
+
 [0-9]+\.?[0-9]*|\.[0-9]+ {pyylval->v=new stibbons::Number(atof(yytext)); return yy::parser::token::NUMBER;}
 
 (\"(\\\"|[^\"])*\")|('(\\'|[^'])*')|(\"\"\"(.|\\n)*\"\"\")  {pyylval->v=new stibbons::String(yytext); return yy::parser::token::STRING;}

@@ -27,7 +27,7 @@ using namespace std;
 %{
   YY_DECL;
 %}
-%token FD LT RT PU PD DIE AND OR XOR NOT EQ NEQ GT GEQ LS LEQ LB RB LP RP FCT_ID RPT WHL END IF ELSE NEW AGT
+%token FD LT RT PU PD DIE AND OR XOR NOT EQ NEQ GT GEQ LS LEQ LB RB LP RP CALL RPT WHL END IF ELSE FCT NEW AGT
 %token <v> NUMBER
 %token <v> STRING
 %token <v> COLOR
@@ -48,6 +48,7 @@ using namespace std;
 %type <tr> loop
 %type <tr> condi
 %type <tr> creat
+%type <tr> fct_decl
 
 %right '='
 %left AND OR XOR 
@@ -109,7 +110,9 @@ struc : condi { $$ = $1; }
   t1->addSon($2);
   t1->setPosition({@1.begin.line,@1.begin.column});
   $$ = t1;  
-};
+}
+| fct_decl { $$ = $1; }
+| struc '\n' { $$ = $1; };
 
 bloc : LB instr_list RB
 { 
@@ -305,13 +308,21 @@ affect : ID '=' expr
 
 // Functions
 
+fct_decl : FCT ID LP RP bloc
+{
+  stibbons::Tree *t1 = new stibbons::Tree(yy::parser::token::FCT,$2);
+  t1->addSon($5);
+  $$ = t1;  
+}
+;
+
 fct_call : ID LP params RP 
 {
-  stibbons::Tree *t1 = new stibbons::Tree(yy::parser::token::FCT_ID,$1);
+  stibbons::Tree *t1 = new stibbons::Tree(yy::parser::token::CALL,$1);
   t1->addSon($3);
   $$ = t1;
 }
-| ID LP RP {$$ = new stibbons::Tree(yy::parser::token::FCT_ID,$1);};
+| ID LP RP {$$ = new stibbons::Tree(yy::parser::token::CALL,$1);};
 
 params : params ',' expr 
 {

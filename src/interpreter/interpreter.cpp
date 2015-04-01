@@ -243,7 +243,7 @@ namespace stibbons {
 														 std::get<0>(tree->getPosition())));
 				return new Boolean(!(dynamic_cast<Boolean*>(val1)->getValue()));
 			}
-				break;	
+				break;  
 			// New agent
 			
 				case yy::parser::token::NEW: {
@@ -262,6 +262,26 @@ namespace stibbons {
 					}
 				}
 					break;
+				// Functions
+			case yy::parser::token::FCT: {
+				auto id = dynamic_cast<String*>(std::get<1>(tree->getNode()))->getValue();
+				auto fctTree = tree->getSon(0);
+				auto fct = new Function(*fctTree,{});
+				auto prop = std::pair<std::string,Value*>(id,fct);
+				turtle->setProperty(prop);
+			}
+				break;
+			case yy::parser::token::CALL: {
+				auto id = dynamic_cast<String*>(std::get<1>(tree->getNode()))->getValue();
+				auto fct = turtle->getProperty(id);
+				if(fct->getType() != Type::FUNCTION)
+					throw SemanticException("Try to eval a non function value",
+										yy::position(nullptr,std::get<0>(tree->getPosition()),
+														 std::get<0>(tree->getPosition())));
+				auto fctTree = dynamic_cast<Function*>(fct)->getValue();
+				//this->interpret(&fctTree);
+			}
+				break;
 			}
 		}
  
