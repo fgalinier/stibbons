@@ -266,7 +266,7 @@ namespace stibbons {
 			case yy::parser::token::FCT: {
 				auto id = dynamic_cast<String*>(std::get<1>(tree->getNode()))->getValue();
 				auto fctTree = tree->getSon(0);
-				auto fct = new Function(*fctTree,{});
+				auto fct = new Function(fctTree,{});
 				auto prop = std::pair<std::string,Value*>(id,fct);
 				turtle->setProperty(prop);
 			}
@@ -279,7 +279,7 @@ namespace stibbons {
 										yy::position(nullptr,std::get<0>(tree->getPosition()),
 														 std::get<0>(tree->getPosition())));
 				auto fctTree = dynamic_cast<Function*>(fct)->getValue();
-				//this->interpret(&fctTree);
+				this->interpret(fctTree);
 			}
 				break;
 			}
