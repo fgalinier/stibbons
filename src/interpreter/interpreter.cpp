@@ -37,7 +37,7 @@ namespace stibbons {
 		return tree;
 	}
   
-	Value* Interpreter::interpret(const Tree* tree) {
+	Value* Interpreter::interpret(const Tree* tree,unordered_map<std::string,Value*>* hashTable) {
 		if(tree == nullptr) return nullptr;
 		else {
 			switch(std::get<0>(tree->getNode())) {
@@ -45,12 +45,12 @@ namespace stibbons {
 			case 0:
 				if(!tree->isLeaf()) {
 					auto sons = tree->getSons();
-					for(auto son : *sons) interpret(son);
+					for(auto son : *sons) interpret(son,hashTable);
 				}
 				break;
 		  	//Basic cases:
 			case yy::parser::token::FD: {
-				auto val = this->interpret(tree->getSon(0));
+				auto val = this->interpret(tree->getSon(0),hashTable);
 				if(val->getType() != Type::NUMBER) 
 					throw SemanticException("FD expect a number",
 											yy::position(nullptr,std::get<0>(tree->getPosition()),
@@ -59,7 +59,7 @@ namespace stibbons {
 			}
 				break;
 			case yy::parser::token::RT: {
-				auto val = this->interpret(tree->getSon(0));
+				auto val = this->interpret(tree->getSon(0),hashTable);
 				if(val->getType() != Type::NUMBER) 
 					throw SemanticException("RT expect a number",
 											yy::position(nullptr,std::get<0>(tree->getPosition()),
@@ -68,7 +68,7 @@ namespace stibbons {
 			}
 				break;
 			case yy::parser::token::LT: {
-				auto val = this->interpret(tree->getSon(0));
+				auto val = this->interpret(tree->getSon(0),hashTable);
 				if(val->getType() != Type::NUMBER) 
 					throw SemanticException("LT expect a number",
 											yy::position(nullptr,std::get<0>(tree->getPosition()),
@@ -84,13 +84,13 @@ namespace stibbons {
 				break;
 		   	//Loop cases:
 			case yy::parser::token::WHL: {
-				auto val = this->interpret(tree->getSon(0));
+				auto val = this->interpret(tree->getSon(0),hashTable);
 				if(val->getType() != Type::BOOLEAN) 
 					throw SemanticException("WHILE loop expect a boolean",
 											yy::position(nullptr,std::get<0>(tree->getPosition()),
 														 std::get<0>(tree->getPosition())));
 				while(dynamic_cast<Boolean*>(val)->getValue()) {
-					this->interpret(tree->getSon(1));
+					this->interpret(tree->getSon(1),hashTable);
 					auto val = this->interpret(tree->getSon(0));
 					if(val->getType() != Type::BOOLEAN)
 					throw SemanticException("WHILE loop expect a boolean",
@@ -106,34 +106,46 @@ namespace stibbons {
 											yy::position(nullptr,std::get<0>(tree->getPosition()),
 														 std::get<0>(tree->getPosition())));
 				for(auto i=0;i<dynamic_cast<Number*>(val)->getValue();i++) {
-					this->interpret(tree->getSon(1));
+					this->interpret(tree->getSon(1),hashTable);
 				}
 			}
 				break;
 		   	//Conditionnal cases:
 			case yy::parser::token::IF: {
-				auto cond = this->interpret(tree->getSon(0));
+				auto cond = this->interpret(tree->getSon(0),hashTable);
 				if(cond->getType() != Type::BOOLEAN) 
 					throw SemanticException("IF expect a boolean",
 											yy::position(nullptr,std::get<0>(tree->getPosition()),
 														 std::get<0>(tree->getPosition())));
 				if(dynamic_cast<Boolean*>(cond)->getValue()){
-					return this->interpret(tree->getSon(1));
+					return this->interpret(tree->getSon(1),hashTable);
 				}
 				else{
-					return this->interpret(tree->getSon(2));
+					return this->interpret(tree->getSon(2),hashTable);
 				}
 			}
 				break;
 			//Variable cases:
 			case yy::parser::token::ID: {
-				return turtle->getProperty(dynamic_cast<String*>(std::get<1>(tree->getNode()))->getValue());
+				auto id = dynamic_cast<String*>(std::get<1>(tree->getNode()))->getValue();
+				if(hashTable) {
+					auto got = hashTable->find(id);
+					if (got != hashTable->end())
+						return hashTable->at(id);
+				}
+				return turtle->getProperty(id);
 			}
 				break;
 			case '=': {
-				auto val = this->interpret(tree->getSon(0));
-				auto id = std::get<1>(tree->getNode());
-				pair<string,Value*> prop = {dynamic_cast<String*>(id)->getValue(),val};
+				auto val = this->interpret(tree->getSon(0),hashTable);
+				auto id = dynamic_cast<String*>(std::get<1>(tree->getNode()))->getValue();
+				pair<string,Value*> prop = {id,val};
+				if(hashTable) {
+					auto got = hashTable->find(id);
+					if (got != hashTable->end()) {
+						(*hashTable)[id] = val;
+					}
+				}
 				turtle->setProperty(prop);
 				return val;
 			}
@@ -147,8 +159,8 @@ namespace stibbons {
 				break;
 		   	//Arithmetic cases:
 			case '+': {
-				auto val1 = this->interpret(tree->getSon(0));
-				auto val2 = this->interpret(tree->getSon(1));
+				auto val1 = this->interpret(tree->getSon(0),hashTable);
+				auto val2 = this->interpret(tree->getSon(1),hashTable);
 				if(val1->getType() != Type::NUMBER || val2->getType() != Type::NUMBER) 
 					throw SemanticException("+ operator expect two numbers",
 											yy::position(nullptr,std::get<0>(tree->getPosition()),
@@ -157,8 +169,8 @@ namespace stibbons {
 			}
 				break;
 			case '-': {
-				auto val1 = this->interpret(tree->getSon(0));
-				auto val2 = this->interpret(tree->getSon(1));
+				auto val1 = this->interpret(tree->getSon(0),hashTable);
+				auto val2 = this->interpret(tree->getSon(1),hashTable);
 				if(val1->getType() != Type::NUMBER || val2->getType() != Type::NUMBER) 
 					throw SemanticException("- operator expect two numbers",
 											yy::position(nullptr,std::get<0>(tree->getPosition()),
@@ -167,8 +179,8 @@ namespace stibbons {
 			}
 				break;
 			case '*': {
-				auto val1 = this->interpret(tree->getSon(0));
-				auto val2 = this->interpret(tree->getSon(1));
+				auto val1 = this->interpret(tree->getSon(0),hashTable);
+				auto val2 = this->interpret(tree->getSon(1),hashTable);
 				if(val1->getType() != Type::NUMBER || val2->getType() != Type::NUMBER) 
 					throw SemanticException("* operator expect two numbers",
 											yy::position(nullptr,std::get<0>(tree->getPosition()),
@@ -177,8 +189,8 @@ namespace stibbons {
 			}
 				break;
 			case '/': {
-				auto val1 = this->interpret(tree->getSon(0));
-				auto val2 = this->interpret(tree->getSon(1));
+				auto val1 = this->interpret(tree->getSon(0),hashTable);
+				auto val2 = this->interpret(tree->getSon(1),hashTable);
 				if(val1->getType() != Type::NUMBER || val2->getType() != Type::NUMBER) 
 					throw SemanticException("/ operator expect two numbers",
 											yy::position(nullptr,std::get<0>(tree->getPosition()),
@@ -191,8 +203,8 @@ namespace stibbons {
 			}
 				break;
 			case '%': {
-				auto val1 = this->interpret(tree->getSon(0));
-				auto val2 = this->interpret(tree->getSon(1));
+				auto val1 = this->interpret(tree->getSon(0),hashTable);
+				auto val2 = this->interpret(tree->getSon(1),hashTable);
 				if(val1->getType() != Type::NUMBER || val2->getType() != Type::NUMBER) 
 					throw SemanticException("% operator expect two numbers",
 											yy::position(nullptr,std::get<0>(tree->getPosition()),
@@ -206,8 +218,8 @@ namespace stibbons {
 				break;
 	   		//Boolean operation cases:
 			case yy::parser::token::AND: {
-				auto val1 = this->interpret(tree->getSon(0));
-				auto val2 = this->interpret(tree->getSon(1));
+				auto val1 = this->interpret(tree->getSon(0),hashTable);
+				auto val2 = this->interpret(tree->getSon(1),hashTable);
 				if(val1->getType() != Type::BOOLEAN || val2->getType() != Type::BOOLEAN) 
 					throw SemanticException("AND operator expect two booleans",
 											yy::position(nullptr,std::get<0>(tree->getPosition()),
@@ -216,8 +228,8 @@ namespace stibbons {
 			}
 				break;
 			case yy::parser::token::OR: {
-				auto val1 = this->interpret(tree->getSon(0));
-				auto val2 = this->interpret(tree->getSon(1));
+				auto val1 = this->interpret(tree->getSon(0),hashTable);
+				auto val2 = this->interpret(tree->getSon(1),hashTable);
 				if(val1->getType() != Type::BOOLEAN || val2->getType() != Type::BOOLEAN) 
 					throw SemanticException("OR operator expect two booleans",
 											yy::position(nullptr,std::get<0>(tree->getPosition()),
@@ -226,8 +238,8 @@ namespace stibbons {
 			}
 				break;
 			case yy::parser::token::XOR: {
-				auto val1 = this->interpret(tree->getSon(0));
-				auto val2 = this->interpret(tree->getSon(1));
+				auto val1 = this->interpret(tree->getSon(0),hashTable);
+				auto val2 = this->interpret(tree->getSon(1),hashTable);
 				if(val1->getType() != Type::BOOLEAN || val2->getType() != Type::BOOLEAN) 
 					throw SemanticException("XOR operator expect two booleans",
 											yy::position(nullptr,std::get<0>(tree->getPosition()),
@@ -236,7 +248,7 @@ namespace stibbons {
 			}
 				break;
 			case yy::parser::token::NOT: {
-				auto val1 = this->interpret(tree->getSon(0));
+				auto val1 = this->interpret(tree->getSon(0),hashTable);
 				if(val1->getType() != Type::BOOLEAN) 
 					throw SemanticException("NOT operator expect a boolean",
 											yy::position(nullptr,std::get<0>(tree->getPosition()),
@@ -266,20 +278,43 @@ namespace stibbons {
 			case yy::parser::token::FCT: {
 				auto id = dynamic_cast<String*>(std::get<1>(tree->getNode()))->getValue();
 				auto fctTree = tree->getSon(0);
-				auto fct = new Function(fctTree,{});
+				auto params = new std::vector<std::string>();
+				auto sons = tree->getSons();
+				for(size_t i=1;i<sons->size();i++) {
+					params->push_back(
+						dynamic_cast<String*>(
+							std::get<1>(
+								sons->at(i)->getNode()
+							)
+						)->getValue()
+					);
+				}
+				auto fct = new Function(fctTree,*params);
 				auto prop = std::pair<std::string,Value*>(id,fct);
 				turtle->setProperty(prop);
 			}
 				break;
 			case yy::parser::token::CALL: {
 				auto id = dynamic_cast<String*>(std::get<1>(tree->getNode()))->getValue();
-				auto fct = turtle->getProperty(id);
+				auto fct = dynamic_cast<Function*>(turtle->getProperty(id));
 				if(fct->getType() != Type::FUNCTION)
 					throw SemanticException("Try to eval a non function value",
 										yy::position(nullptr,std::get<0>(tree->getPosition()),
 														 std::get<0>(tree->getPosition())));
+				if(fct->getArg().size() != tree->getSons()->size()) {
+					std::ostringstream oss; 
+					oss<<"No matching function for "<<id<<" with "<<tree->getSons()->size()<<" parameters";
+					throw SemanticException(oss.str().c_str(),
+										yy::position(nullptr,std::get<0>(tree->getPosition()),
+														 std::get<0>(tree->getPosition())));
+				}	
+				auto newHashTable = (!hashTable)?(new unordered_map<std::string,Value*>()):hashTable;
+				
+				for(size_t i=0;i<fct->getArg().size();i++) {
+					(*newHashTable)[fct->getArg().at(i)] = this->interpret(tree->getSon(i),hashTable);
+				}
 				auto fctTree = dynamic_cast<Function*>(fct)->getValue();
-				this->interpret(fctTree);
+				this->interpret(fctTree,newHashTable);
 			}
 				break;
 			}

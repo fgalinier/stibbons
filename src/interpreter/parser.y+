@@ -49,6 +49,7 @@ using namespace std;
 %type <tr> condi
 %type <tr> creat
 %type <tr> fct_decl
+%type <tr> params_decl
 
 %right '='
 %left AND OR XOR 
@@ -308,30 +309,64 @@ affect : ID '=' expr
 
 // Functions
 
-fct_decl : FCT ID LP RP bloc
+fct_decl : FCT ID LP params_decl RP bloc
 {
   stibbons::Tree *t1 = new stibbons::Tree(yy::parser::token::FCT,$2);
+  t1->setPosition({@1.begin.line,@1.begin.column});
+  t1->addSon($6);
+  t1->appendTree($4);
+  $$ = t1;  
+}
+| FCT ID LP RP bloc
+{
+  stibbons::Tree *t1 = new stibbons::Tree(yy::parser::token::FCT,$2);
+  t1->setPosition({@1.begin.line,@1.begin.column});
   t1->addSon($5);
   $$ = t1;  
 }
 ;
 
+params_decl : params_decl ',' ID
+{
+  stibbons::Tree *t1 = new stibbons::Tree(yy::parser::token::FCT,nullptr);
+  t1->appendTree($1);
+  t1->addSon(new stibbons::Tree(yy::parser::token::ID,$3));
+  $$ = t1;
+}
+| ID
+{
+  stibbons::Tree *t1 = new stibbons::Tree(yy::parser::token::FCT,nullptr);
+  t1->addSon(new stibbons::Tree(yy::parser::token::ID,$1));
+  $$ = t1;
+};
+
 fct_call : ID LP params RP 
 {
   stibbons::Tree *t1 = new stibbons::Tree(yy::parser::token::CALL,$1);
-  t1->addSon($3);
+  t1->setPosition({@1.begin.line,@1.begin.column});
+  t1->appendTree($3);
   $$ = t1;
 }
-| ID LP RP {$$ = new stibbons::Tree(yy::parser::token::CALL,$1);};
+| ID LP RP 
+{
+  auto t1 = new stibbons::Tree(yy::parser::token::CALL,$1);
+  t1->setPosition({@1.begin.line,@1.begin.column});
+  $$ = t1;
+};
 
 params : params ',' expr 
 {
-  stibbons::Tree *t1 = new stibbons::Tree(0,nullptr);
-  t1->addSon($1);
+  stibbons::Tree *t1 = new stibbons::Tree(yy::parser::token::CALL,nullptr);
+  t1->appendTree($1);
   t1->addSon($3);
   $$ = t1;
 }
-| expr { $$ = $1;};
+| expr 
+{
+  stibbons::Tree *t1 = new stibbons::Tree(yy::parser::token::CALL,nullptr);
+  t1->addSon($1);
+  $$ = t1;
+};
 
 // Literals
 

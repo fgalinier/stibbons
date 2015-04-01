@@ -50,7 +50,7 @@ namespace stibbons {
 		 * \param tree The syntaxic tree to interpret.
 		 * \return An int equal to 0 if no error has occurred.
 		 */
-		virtual Value* interpret(const Tree*);
+		virtual Value* interpret(const Tree*,unordered_map<std::string,Value*>* hashTable=nullptr);
 	};
 }
 /*
