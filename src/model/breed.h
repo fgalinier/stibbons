@@ -126,7 +126,6 @@ class Breed {
 		Function *function;
 		mutex value_m;
 		unordered_set<Turtle*> turtles;
-		mutex value_m;
 };
 }
 /*
