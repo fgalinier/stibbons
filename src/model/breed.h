@@ -12,6 +12,7 @@
 #include "function.h"
 #include "turtle.h"
 #include "world.h"
+#include <mutex>
 
 #include <string>
 #include <unordered_set>
@@ -124,6 +125,7 @@ class Breed {
 		Function *function;
 
 		unordered_set<Turtle*> turtles;
+		mutex value_m;
 };
 }
 /*
