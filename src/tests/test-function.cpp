@@ -25,7 +25,7 @@ class TestFunction : public TestCase {
 			cout << "TestFunction::setup" << endl;
 			t=new Tree(2,nullptr);
 			nombre="nb";
-			f=new Function(*t,vector<string>());
+			f=new Function(t,vector<string>());
 }
 
 		void AjoutArg() {
