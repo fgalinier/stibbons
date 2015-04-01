@@ -40,7 +40,7 @@ void World::addLine (Line* add_object) {
 
 	lines.push_back(add_object);
 
-	changed();
+	//changed();
 }
 
 vector<Line *> World::getLines () {

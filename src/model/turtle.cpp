@@ -74,8 +74,6 @@ World* Turtle::getWorld () {
 void Turtle::setColor (Color color) {
 	lock_guard<mutex> lock(value_m);
 	this->color = color;
-
-	changed();
 }
 
 Color& Turtle::getColor () {
@@ -91,8 +89,6 @@ void Turtle::setAngle(double new_var) {
 	lock_guard<mutex> lock(value_m);
 	auto times = floor(new_var / 360.0);
 	angle = new_var - (times * 360.0);
-
-	changed();
 }
 
 double Turtle::getAngle() {
@@ -117,10 +113,12 @@ void Turtle::forward(double dist) {
 
 void Turtle::turnRight(double angle) {
 	setAngle(getAngle() + angle);
+	changed();
 }
 
 void Turtle::turnLeft(double angle) {
 	setAngle(getAngle() - angle);
+	changed();
 }
 
 void Turtle::penDown() throw (future_error) {
