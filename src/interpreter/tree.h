@@ -63,10 +63,9 @@ namespace stibbons {
 		virtual std::pair<int,Value*> getNode() const;
 
 		/**
-		 * If current tree node is equal to t root node,
-		 * append the sons of t to the current node.
+		 * Append the sons of t to the current node.
 		 *
-		 * \param t A Tree with root node equal to current Tree root node.
+		 * \param t A Tree.
 		 */ 
 		void appendTree(Tree*);
 

@@ -274,7 +274,8 @@ namespace stibbons {
 					auto inter = new Interpreter(newTurtle);
 					std::thread newThread(&Interpreter::interpret, 
 										  inter, 
-										  tree->getSon(0));
+										  tree->getSon(0),
+										  hashTable);
 					newThread.detach();
 				}
 			}
