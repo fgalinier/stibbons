@@ -38,14 +38,15 @@ namespace stibbons {
 	}
   
 	Value* Interpreter::interpret(const Tree* tree,unordered_map<std::string,Value*>* hashTable) {
-		if(tree == nullptr) return nullptr;
-		else {
+		if(tree != nullptr) {
 			switch(std::get<0>(tree->getNode())) {
 		   	//Sequence case:
 			case 0:
+				Value* res;
 				if(!tree->isLeaf()) {
 					auto sons = tree->getSons();
-					for(auto son : *sons) interpret(son,hashTable);
+					for(auto son : *sons) res = interpret(son,hashTable);
+					return res;
 				}
 				break;
 		  	//Basic cases:
@@ -85,29 +86,34 @@ namespace stibbons {
 		   	//Loop cases:
 			case yy::parser::token::WHL: {
 				auto val = this->interpret(tree->getSon(0),hashTable);
+				Value* res;
 				if(val->getType() != Type::BOOLEAN) 
 					throw SemanticException("WHILE loop expect a boolean",
 											yy::position(nullptr,std::get<0>(tree->getPosition()),
 														 std::get<0>(tree->getPosition())));
 				while(dynamic_cast<Boolean*>(val)->getValue()) {
-					this->interpret(tree->getSon(1),hashTable);
+					res = this->interpret(tree->getSon(1),hashTable);
 					auto val = this->interpret(tree->getSon(0));
 					if(val->getType() != Type::BOOLEAN)
 					throw SemanticException("WHILE loop expect a boolean",
 											yy::position(nullptr,std::get<0>(tree->getPosition()),
 														 std::get<0>(tree->getPosition())));
 				}
+				return res;
 			}
 				break;
 			case yy::parser::token::RPT: {
 				auto val = this->interpret(tree->getSon(0));
+				auto nb = dynamic_cast<Number*>(val)->getValue();
+				Value* res;
 				if(val->getType() != Type::NUMBER)
 					throw SemanticException("REPEAT loop expect a number",
 											yy::position(nullptr,std::get<0>(tree->getPosition()),
 														 std::get<0>(tree->getPosition())));
-				for(auto i=0;i<dynamic_cast<Number*>(val)->getValue();i++) {
-					this->interpret(tree->getSon(1),hashTable);
+				for(auto i=0;i<nb;i++) {
+					res = this->interpret(tree->getSon(1),hashTable);
 				}
+				return res;
 			}
 				break;
 		   	//Conditionnal cases:
@@ -257,24 +263,23 @@ namespace stibbons {
 			}
 				break;  
 			// New agent
-			
-				case yy::parser::token::NEW: {
-					auto type = std::get<1>(tree->getNode());
-					if(type == nullptr) {
+			case yy::parser::token::NEW: {
+				auto type = std::get<1>(tree->getNode());
+				if(type == nullptr) {
 
-						auto function = new Function();
-						//auto function = new Function(*(tree->getSon(0)),vector<std::string>()));
-						auto breed = turtle->getWorld()->createBreed(*function);
-						auto newTurtle = breed->createTurtle();
-						auto inter = new Interpreter(newTurtle);
-						std::thread newThread(&Interpreter::interpret, 
-											  inter, 
-											  tree->getSon(0));
-						newThread.detach();
-					}
+					auto function = new Function();
+					//auto function = new Function(*(tree->getSon(0)),vector<std::string>()));
+					auto breed = turtle->getWorld()->createBreed(*function);
+					auto newTurtle = breed->createTurtle();
+					auto inter = new Interpreter(newTurtle);
+					std::thread newThread(&Interpreter::interpret, 
+										  inter, 
+										  tree->getSon(0));
+					newThread.detach();
 				}
-					break;
-				// Functions
+			}
+				break;
+			// Functions
 			case yy::parser::token::FCT: {
 				auto id = dynamic_cast<String*>(std::get<1>(tree->getNode()))->getValue();
 				auto fctTree = tree->getSon(0);
@@ -314,7 +319,7 @@ namespace stibbons {
 					(*newHashTable)[fct->getArg().at(i)] = this->interpret(tree->getSon(i),hashTable);
 				}
 				auto fctTree = dynamic_cast<Function*>(fct)->getValue();
-				this->interpret(fctTree,newHashTable);
+				return this->interpret(fctTree,newHashTable);
 			}
 				break;
 			}
@@ -322,7 +327,7 @@ namespace stibbons {
  
 		//Operations tokens : EQ NEQ GT GEQ LS LEQ
 		//Stibbons spécial tokens : DIE FCT_ID STRING COLOR NIL ID
-		return nullptr;
+		return &Nil::getInstance();
 	}
 }
 
