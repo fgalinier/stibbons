@@ -37,7 +37,8 @@ namespace stibbons {
 		return tree;
 	}
   
-	Value* Interpreter::interpret(const Tree* tree,unordered_map<std::string,Value*>* hashTable) {
+	Value* Interpreter::interpret(const Tree* tree,
+								  unordered_map<std::string,Value*>* hashTable) const {
 		if(tree != nullptr) {
 			switch(std::get<0>(tree->getNode())) {
 		   	//Sequence case:
@@ -263,39 +264,39 @@ namespace stibbons {
 			}
 				break;  
 			// New agent
+			case yy::parser::token::AGT: {
+				auto id = dynamic_cast<String*>(std::get<1>(tree->getNode()))->getValue();
+				auto function = this->getFunctionFromTree(tree);
+				turtle->getWorld()->createBreed(*function,id);
+			}
+				break;
 			case yy::parser::token::NEW: {
 				auto type = std::get<1>(tree->getNode());
+				std::string id;
+				Breed* breed;
+				const Tree* paramTree;
 				if(type == nullptr) {
-
-					auto function = new Function();
-					//auto function = new Function(*(tree->getSon(0)),vector<std::string>()));
-					auto breed = turtle->getWorld()->createBreed(*function);
-					auto newTurtle = breed->createTurtle();
-					auto inter = new Interpreter(newTurtle);
-					std::thread newThread(&Interpreter::interpret, 
-										  inter, 
-										  tree->getSon(0),
-										  hashTable);
-					newThread.detach();
+					id = "anonym agent";
+					auto function = new Function(tree->getSon(0),vector<std::string>());
+					breed = turtle->getWorld()->createBreed(*function);
+					paramTree = new Tree();
 				}
+				else {
+					id = dynamic_cast<String*>(type)->getValue();
+					breed = turtle->getWorld()->getBreed(id);
+					paramTree = tree;
+				}
+				auto fct = breed->getFunction();
+				auto newTurtle = breed->createTurtle();
+				auto inter = new Interpreter(newTurtle);
+				std::thread newThread(&Interpreter::interpretFunction,inter,fct,paramTree,hashTable,id);
+				newThread.detach();
 			}
 				break;
 			// Functions
 			case yy::parser::token::FCT: {
 				auto id = dynamic_cast<String*>(std::get<1>(tree->getNode()))->getValue();
-				auto fctTree = tree->getSon(0);
-				auto params = new std::vector<std::string>();
-				auto sons = tree->getSons();
-				for(size_t i=1;i<sons->size();i++) {
-					params->push_back(
-						dynamic_cast<String*>(
-							std::get<1>(
-								sons->at(i)->getNode()
-							)
-						)->getValue()
-					);
-				}
-				auto fct = new Function(fctTree,*params);
+				auto fct = this->getFunctionFromTree(tree);
 				auto prop = std::pair<std::string,Value*>(id,fct);
 				turtle->setProperty(prop);
 			}
@@ -303,24 +304,11 @@ namespace stibbons {
 			case yy::parser::token::CALL: {
 				auto id = dynamic_cast<String*>(std::get<1>(tree->getNode()))->getValue();
 				auto fct = dynamic_cast<Function*>(turtle->getProperty(id));
-				if(fct->getType() != Type::FUNCTION)
+				if(fct == nullptr || fct->getType() != Type::FUNCTION)
 					throw SemanticException("Try to eval a non function value",
 										yy::position(nullptr,std::get<0>(tree->getPosition()),
 														 std::get<0>(tree->getPosition())));
-				if(fct->getArg().size() != tree->getSons()->size()) {
-					std::ostringstream oss; 
-					oss<<"No matching function for "<<id<<" with "<<tree->getSons()->size()<<" parameters";
-					throw SemanticException(oss.str().c_str(),
-										yy::position(nullptr,std::get<0>(tree->getPosition()),
-														 std::get<0>(tree->getPosition())));
-				}	
-				auto newHashTable = (!hashTable)?(new unordered_map<std::string,Value*>()):hashTable;
-				
-				for(size_t i=0;i<fct->getArg().size();i++) {
-					(*newHashTable)[fct->getArg().at(i)] = this->interpret(tree->getSon(i),hashTable);
-				}
-				auto fctTree = dynamic_cast<Function*>(fct)->getValue();
-				return this->interpret(fctTree,newHashTable);
+				return this->interpretFunction(fct,tree,hashTable,id);
 			}
 				break;
 			}
@@ -329,6 +317,46 @@ namespace stibbons {
 		//Operations tokens : EQ NEQ GT GEQ LS LEQ
 		//Stibbons spécial tokens : DIE FCT_ID STRING COLOR NIL ID
 		return &Nil::getInstance();
+	}
+
+	Function* Interpreter::getFunctionFromTree(const Tree* tree) const {
+		auto fctTree = tree->getSon(0);
+		auto params = new std::vector<std::string>();
+		auto sons = tree->getSons();
+		for(size_t i=1;i<sons->size();i++) {
+			params->push_back(
+				dynamic_cast<String*>(
+					std::get<1>(
+						sons->at(i)->getNode()
+					)
+				)->getValue()
+			);
+		}
+		return new Function(fctTree,*params);
+	}
+
+	Value* Interpreter::interpretFunction(Function* fct,
+										  const Tree* tree,
+										  std::unordered_map<std::string,Value*>* hashTable,
+										  std::string id) const {
+		if(fct->getArg().size() != tree->getSons()->size()) {
+			std::ostringstream oss; 
+			oss<<"No matching function for "
+			   <<id
+			   <<" with "
+			   <<tree->getSons()->size()
+			   <<" parameters";
+			throw SemanticException(oss.str().c_str(),
+									yy::position(nullptr,std::get<0>(tree->getPosition()),
+												 std::get<0>(tree->getPosition())));
+		}	
+		auto newHashTable = (!hashTable)?(new unordered_map<std::string,Value*>()):hashTable;
+				
+		for(size_t i=0;i<fct->getArg().size();i++) {
+			(*newHashTable)[fct->getArg().at(i)] = this->interpret(tree->getSon(i),hashTable);
+		}
+		auto fctTree = fct->getValue();
+		return this->interpret(fctTree,newHashTable);
 	}
 }
 

@@ -50,6 +50,8 @@ using namespace std;
 %type <tr> creat
 %type <tr> fct_decl
 %type <tr> params_decl
+%type <tr> breed_creat
+%type <tr> agt_decl
 
 %right '='
 %left AND OR XOR 
@@ -75,7 +77,7 @@ instr_list : statement
   stibbons::Tree *t1 = new stibbons::Tree(0,nullptr);
   t1->addSon($1);
   try {
-    t1->appendTree($3);
+    t1->mergeTree($3);
   }
   catch(std::exception& e) {
     t1->addSon($3);
@@ -87,7 +89,7 @@ instr_list : statement
   stibbons::Tree *t1 = new stibbons::Tree(0,nullptr);
   t1->addSon($1);
   try {
-    t1->appendTree($2);
+    t1->mergeTree($2);
   }
   catch(std::exception& e) {
     t1->addSon($2);    
@@ -113,6 +115,7 @@ struc : condi { $$ = $1; }
   $$ = t1;  
 }
 | fct_decl { $$ = $1; }
+| agt_decl { $$ = $1; }
 | struc '\n' { $$ = $1; };
 
 bloc : LB instr_list RB
@@ -121,7 +124,16 @@ bloc : LB instr_list RB
 }; 
 
 instr : expr { $$ = $1; }
-| instr_turtle { $$ = $1; } ;
+| instr_turtle { $$ = $1; } 
+| breed_creat { $$ = $1; }
+| expr breed_creat 
+{
+  stibbons::Tree *t1 = new stibbons::Tree(yy::parser::token::RPT,nullptr);
+  t1->addSon($1);
+  t1->addSon($2);
+  t1->setPosition({@1.begin.line,@1.begin.column});
+  $$ = t1;  
+};
 
 // New agent
 
@@ -130,6 +142,36 @@ creat : NEW AGT statement
   auto t1 = new stibbons::Tree(yy::parser::token::NEW,nullptr);
   t1->addSon($3);
   $$ = t1;
+};
+
+breed_creat : NEW ID LP params RP
+{
+  stibbons::Tree *t1 = new stibbons::Tree(yy::parser::token::NEW,$2);
+  t1->setPosition({@1.begin.line,@1.begin.column});
+  t1->appendSons($4);
+  $$ = t1;
+}
+| NEW ID LP RP 
+{
+  auto t1 = new stibbons::Tree(yy::parser::token::NEW,$2);
+  t1->setPosition({@1.begin.line,@1.begin.column});
+  $$ = t1;
+};
+
+agt_decl : AGT ID LP params_decl RP statement
+{
+  stibbons::Tree *t1 = new stibbons::Tree(yy::parser::token::AGT,$2);
+  t1->setPosition({@1.begin.line,@1.begin.column});
+  t1->addSon($6);
+  t1->appendSons($4);
+  $$ = t1;  
+}
+| AGT ID LP RP statement
+{
+  stibbons::Tree *t1 = new stibbons::Tree(yy::parser::token::AGT,$2);
+  t1->setPosition({@1.begin.line,@1.begin.column});
+  t1->addSon($5);
+  $$ = t1;  
 };
 
 // Turtle instructions
@@ -314,7 +356,7 @@ fct_decl : FCT ID LP params_decl RP bloc
   stibbons::Tree *t1 = new stibbons::Tree(yy::parser::token::FCT,$2);
   t1->setPosition({@1.begin.line,@1.begin.column});
   t1->addSon($6);
-  t1->appendTree($4);
+  t1->appendSons($4);
   $$ = t1;  
 }
 | FCT ID LP RP bloc
@@ -329,7 +371,7 @@ fct_decl : FCT ID LP params_decl RP bloc
 params_decl : params_decl ',' ID
 {
   stibbons::Tree *t1 = new stibbons::Tree(yy::parser::token::FCT,nullptr);
-  t1->appendTree($1);
+  t1->appendSons($1);
   t1->addSon(new stibbons::Tree(yy::parser::token::ID,$3));
   $$ = t1;
 }
@@ -344,7 +386,7 @@ fct_call : ID LP params RP
 {
   stibbons::Tree *t1 = new stibbons::Tree(yy::parser::token::CALL,$1);
   t1->setPosition({@1.begin.line,@1.begin.column});
-  t1->appendTree($3);
+  t1->appendSons($3);
   $$ = t1;
 }
 | ID LP RP 
@@ -357,7 +399,7 @@ fct_call : ID LP params RP
 params : params ',' expr 
 {
   stibbons::Tree *t1 = new stibbons::Tree(yy::parser::token::CALL,nullptr);
-  t1->appendTree($1);
+  t1->appendSons($1);
   t1->addSon($3);
   $$ = t1;
 }
