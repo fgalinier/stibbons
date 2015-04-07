@@ -71,6 +71,19 @@ void Agent::unparent () {
 	parent = parent;
 }
 
+void Agent::setProperty (pair<string,Value*> &&new_var) {
+	lock_guard<mutex> lock(parent_m);
+
+	auto search = properties->find (new_var.first);
+	if ( search == properties->end())
+		properties->insert(new_var);
+	else {
+		tryDelete (search->second);
+		properties->erase(new_var.first);
+		properties->insert(new_var);
+	}
+}
+
 void Agent::setProperty (pair<string,Value*> &new_var) {
 	lock_guard<mutex> lock(parent_m);
 

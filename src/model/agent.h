@@ -49,6 +49,12 @@ class Agent : public Value {
 		 * Add a value in properties,
 		 * @param new_var the new value of properties, his type is pair<string,Value>
 		 */
+		virtual void setProperty (pair<string,Value*> &&new_var);
+
+		/**
+		 * Add a value in properties,
+		 * @param new_var the new value of properties, his type is pair<string,Value>
+		 */
 		virtual void setProperty (pair<string,Value*> &new_var);
 
 		 /**
