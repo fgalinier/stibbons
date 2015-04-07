@@ -15,6 +15,20 @@ World::World (Agent *parent, unsigned width, unsigned height) :
 		auto zone = new Zone(this);
 		zones.push_back(zone);
 	}
+
+	// Set default colors
+	setProperty(pair<string,Value*>("black", new Color(0.0, 0.0, 0.0)));
+	setProperty(pair<string,Value*>("white", new Color(1.0, 1.0, 1.0)));
+
+	setProperty(pair<string,Value*>("grey", new Color(0.5, 0.5, 0.5)));
+
+	setProperty(pair<string,Value*>("red", new Color(1.0, 0.0, 0.0)));
+	setProperty(pair<string,Value*>("green", new Color(0.0, 1.0, 0.0)));
+	setProperty(pair<string,Value*>("blue", new Color(0.0, 0.0, 1.0)));
+
+	setProperty(pair<string,Value*>("yellow", new Color(1.0, 1.0, 0.0)));
+	setProperty(pair<string,Value*>("cyan", new Color(0.0, 1.0, 1.0)));
+	setProperty(pair<string,Value*>("magenta", new Color(1.0, 0.0, 1.0)));
 }
 
 World::~World () {
