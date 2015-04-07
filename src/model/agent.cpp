@@ -89,8 +89,9 @@ Value* Agent::getProperty(string p) {
 
 	unordered_map<string,Value*>::const_iterator got = properties->find(p);
 
-	if ( got == properties->end())
-		return &Nil::getInstance();
+	if (got == properties->end())
+		return (parent == nullptr) ? &Nil::getInstance() :
+		                             parent->getProperty(p);
 
 	return got->second;
 }
