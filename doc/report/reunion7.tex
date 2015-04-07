@@ -1,0 +1,9 @@
+\section{7 avril 2015}
+Nous avons fini le second sprint. Nous avons surtout ajouté des choses dans le modèle et dans l'interpréteur : 
+il s'agissait de la prise en charge du multi-threading et des variables.\\
+Coté modèle, on a ajouté les classes Function, Breed, adapté la classe Turtle, ajouté des mutexs dans chaque classe qui le demandait.
+Nous avons également rajouté un systéme de "parenté", qui permet à une tortue de connaître son parent et d'avoir accès à ses propriétés.\\
+Coté interprète, il a fallu mettre en place le mettre en place les threads, un à chaque "new agent", et les fonctions.
+Lors de cette dernière réunion, nous avons discuté de comment afficher les résultats de simulation de notre programme : diagramme, variables tracées avec un journal... Il faudra choisir une simulation de NetLogo, la tester et comparer les résultats des deux applications.\\
+Pour le moment, nous devons redémarrer le programme pour lancer un nouveau fichier. Il faudra utiliser yywrap, qui chaîne les fichiers.\\
+Pour la taille du monde, nous pensons à faire une taille par défaut si l'utilisateur n'en choisit pas, et lui donné la possibilité d'en choisir une en début de fichier grâce à une syntaxe différente du stibbons.
