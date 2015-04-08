@@ -8,27 +8,9 @@
 
 #pragma once
 
+#include "type.h"
+
 namespace stibbons {
-
-/**
- * \class Type
- *
- * \brief The available value types.
- *
- * \author Julia Bassoumi
- */
-enum class Type {
-	NIL,
-	NUMBER,
-	BOOLEAN,
-	STRING,
-	COLOR,
-	FUNCTION,
-	TURTLE,
-	ZONE,
-	WORLD
-};
-
 /**
  * \class Value
  *

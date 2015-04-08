@@ -39,6 +39,7 @@ MODELSRC = \
 	src/model/point.cpp \
 	src/model/string.cpp \
 	src/model/turtle.cpp \
+	src/model/type.cpp \
 	src/model/world.cpp \
 	src/model/zone.cpp \
 	$(NULL)
