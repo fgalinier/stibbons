@@ -71,6 +71,15 @@ World* Turtle::getWorld () {
 	return nullptr;
 }
 
+Zone* Turtle::getZone () {
+	auto world = getWorld();
+
+	if (world == nullptr)
+		return nullptr;
+
+	world->getZone(*this);
+}
+
 void Turtle::setColor (Color color) {
 	lock_guard<mutex> lock(value_m);
 	this->color = color;

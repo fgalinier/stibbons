@@ -78,6 +78,12 @@ class Turtle : public Point, public Agent{
 		World* getWorld ();
 
 		/**
+		 * Get the hovered zone
+		 * @return the hovered zone
+		 */
+		Zone* getZone ();
+
+		/**
 		 * Set the value for an axis
 		 * @param axis the axis
 		 * @param value the value
