@@ -3,6 +3,8 @@
 namespace stibbons {
 	InterpreterException::InterpreterException(const char* msg, yy::position pos): msg(msg), pos(pos) {}
 
+	InterpreterException::InterpreterException(std::string msg, yy::position pos): msg(msg.c_str()), pos(pos) {}
+
 	const char* InterpreterException::what() const throw() {
 		std::ostringstream oss; 
 		oss<<msg<<" at "<<pos.line<<":"<<pos.column<<".";

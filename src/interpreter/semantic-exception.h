@@ -12,6 +12,12 @@
 
 #include "interpreter-exception.h"
 
+#include "../model/type.h"
+
+#include <string>
+
+using namespace std;
+
 namespace stibbons {
 
 	/**
@@ -30,6 +36,27 @@ namespace stibbons {
 		 * \param pos The position of error.
 		 */
 		SemanticException(const char*, yy::position);
+
+		/**
+		 * Create a new SemanticException
+		 * \param msg The error message.
+		 * \param expectedType The expected type.
+		 * \param actualType The actual type.
+		 * \param pos The position of error.
+		 */
+		SemanticException(std::string msg, Type expectedType, Type actualType, yy::position pos);
+
+		/**
+		 * Create a new SemanticException
+		 * \param msg The error message.
+		 * \param expectedType1 The first expected type.
+		 * \param expectedType2 The second expected type.
+		 * \param actualType1 The first actual type.
+		 * \param actualType2 The second actual type.
+		 * \param pos The position of error.
+		 */
+		SemanticException(std::string msg, Type expectedType1, Type expectedType2, Type actualType1, Type actualType2, yy::position pos);
+
 		/**
 		 * Return a message with the error that occurred.
 		 * \return A message with the error and the position

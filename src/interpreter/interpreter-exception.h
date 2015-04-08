@@ -11,6 +11,7 @@
  */
 
 #include <exception>
+#include <string>
 #include <sstream>
 #include "y.tab.h"
 
@@ -36,6 +37,14 @@ namespace stibbons {
 		 * \param pos The position of error.
 		 */
 		InterpreterException(const char*, yy::position);   
+
+		/**
+		 * Create a new InterpreterException
+		 * \param msg The error message.
+		 * \param pos The position of error.
+		 */
+		InterpreterException(std::string msg, yy::position);
+
 		/**
 		 * Return a message with the error that occurred.
 		 * \return A message with the error and the position
