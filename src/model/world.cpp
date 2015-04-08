@@ -93,6 +93,32 @@ unordered_set<Turtle *> World::getTurtles () {
 	return turtles;
 }
 
+Zone* World::getZone (Point& point) throw(domain_error) {
+	// If a point of different dimension number is passed, it's an error
+	if (worldSize.getDimensions() != point.getDimensions())
+		throw domain_error("Can't get a zone for a point which dimension is different from the world's");
+
+	// Compute the coordinates of the requested zone
+	auto requestedZone = Size(point.getDimensions());
+	for (size_t i = 0 ; i < requestedZone.getDimensions() ; i++)
+		requestedZone.setValue(i, (size_t) (point.getValue(i) / zoneSize.getValue(i)));
+
+	// If no zone correspond to the coordinates, return a null pointer
+	for (size_t i = 0 ; i < requestedZone.getDimensions() ; i++)
+		if (requestedZone.getValue(i) > worldSize.getValue(i))
+			return nullptr;
+
+	// Compute the index of the zone
+	size_t prevDimensionsSize = 1;
+	size_t index = 0;
+	for (size_t i = 0 ; i < requestedZone.getDimensions() ; i++) {
+		index += requestedZone.getValue(i) * prevDimensionsSize;
+		prevDimensionsSize *= worldSize.getValue(i);
+	}
+
+	return zones[index];
+}
+
 Breed* World::createBreed (Function& function, string name) throw(invalid_argument) {
 	if (namedBreeds.find(name) != namedBreeds.end())
 		throw invalid_argument("Can't create a breed with an already used name");

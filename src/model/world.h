@@ -86,6 +86,12 @@ class World : public Changeable, public Agent {
 		 */
 		unordered_set<Turtle *> getTurtles ();
 
+		/**
+		 * Get the zone at a given point
+		 * @return the zone
+		 */
+		Zone* getZone (Point& point) throw(domain_error);
+
 		turtle_id getId ();
 		void setId (turtle_id i);
 
