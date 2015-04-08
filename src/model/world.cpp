@@ -2,8 +2,8 @@
 
 namespace stibbons {
 
-World::World (Agent *parent, unsigned width, unsigned height) :
-	Agent(parent),
+World::World (unsigned width, unsigned height) :
+	Agent(nullptr),
 	width(width),
 	height(height),
 	zones(vector<Zone*>()),

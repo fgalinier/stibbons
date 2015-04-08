@@ -30,7 +30,7 @@ class TestAgent : public TestCase {
 			pair<string,Value*> troisieme("tortue", new String("bleu"));
 			pair<string,Value*> quatrieme("color", new Color());
 
-			w=new World(nullptr, 10,10);
+			w=new World(10,10);
 			w->setProperty(troisieme);
 			w->setProperty(quatrieme);
 
