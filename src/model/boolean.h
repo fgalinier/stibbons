@@ -26,6 +26,12 @@ class Boolean : public GenericValue<Type::BOOLEAN>, public SimpleValue<bool> {
 		virtual ~Boolean () = default;
 
 		virtual void reset ();
+
+		/**
+		 * Return a string corresponding to the value
+		 * @return a string corresponding to the value
+		 */
+		virtual string toString ();
 };
 
 }

@@ -162,6 +162,10 @@ Breed* World::createBreed (Function& function) {
 	return breed;
 }
 
+string World::toString () {
+	return "world";
+}
+
 }
 
 /*

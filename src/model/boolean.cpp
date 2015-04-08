@@ -8,6 +8,10 @@ void Boolean::reset () {
 	value = false;
 }
 
+string Boolean::toString () {
+	return getValue() ? "true" : "false";
+}
+
 }
 
 /*

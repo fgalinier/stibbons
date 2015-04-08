@@ -54,6 +54,12 @@ class Function : public GenericValue<Type::FUNCTION>, public SimpleValue<Tree*>{
 
 		virtual void reset ();
 
+		/**
+		 * Return a string corresponding to the value
+		 * @return a string corresponding to the value
+		 */
+		virtual string toString ();
+
 	private:
 		vector<string> arguments;
 		mutex value_m;

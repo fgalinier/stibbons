@@ -25,6 +25,12 @@ class Value {
 		 * @return a Type
 		 */
 		virtual Type getType() const=0;
+
+		/**
+		 * Return a string corresponding to the value
+		 * @return a string corresponding to the value
+		 */
+		virtual std::string toString ()=0;
 };
 
 /**

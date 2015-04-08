@@ -63,6 +63,12 @@ class Zone : public Agent{
 		 */
 		Color getColor ();
 
+		/**
+		 * Return a string corresponding to the value
+		 * @return a string corresponding to the value
+		 */
+		virtual string toString ();
+
 	private:
 		Color color;
 

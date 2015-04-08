@@ -28,6 +28,12 @@ class String : public GenericValue<Type::STRING>, public SimpleValue<std::string
 		virtual ~String () = default;
 
 		virtual void reset ();
+
+		/**
+		 * Return a string corresponding to the value
+		 * @return a string corresponding to the value
+		 */
+		virtual string toString ();
 };
 
 }

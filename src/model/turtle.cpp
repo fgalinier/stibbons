@@ -1,6 +1,7 @@
 #include "turtle.h"
 
 #include <cmath>
+#include <sstream>
 
 namespace stibbons {
 
@@ -175,6 +176,14 @@ void Turtle::changed() {
 
 	if (world)
 		world->changed();
+}
+
+string Turtle::toString () {
+	std::ostringstream oss;
+
+	oss << "turtle(" << getId() << ")";
+
+	return oss.str();
 }
 
 }

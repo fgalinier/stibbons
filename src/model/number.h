@@ -26,6 +26,12 @@ class Number : public GenericValue<Type::NUMBER>, public SimpleValue<double> {
 		virtual ~Number () = default;
 
 		virtual void reset ();
+
+		/**
+		 * Return a string corresponding to the value
+		 * @return a string corresponding to the value
+		 */
+		virtual string toString ();
 };
 
 }

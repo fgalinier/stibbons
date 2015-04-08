@@ -152,6 +152,12 @@ class Turtle : public Point, public Agent{
 
 		void changed ();
 
+		/**
+		 * Return a string corresponding to the value
+		 * @return a string corresponding to the value
+		 */
+		virtual string toString ();
+
 	private:
 		turtle_id id;
 		Breed *breed;

@@ -2,6 +2,8 @@
 
 #include <cerrno>
 #include <cstring>
+#include <iomanip>
+#include <sstream>
 
 using namespace std;
 
@@ -149,6 +151,21 @@ double Color::g () {
 double Color::b () {
 	lock_guard<mutex> lock(value_m);
 	return blue;
+}
+
+string Color::toString () {
+	std::ostringstream oss;
+
+	long _r = (long) (r() * 255);
+	long _g = (long) (g() * 255);
+	long _b = (long) (b() * 255);
+	long color = (_r << 16) + (_g << 8) + _b;
+
+	oss << "#"
+	    << std::setfill ('0') << std::setw(6)
+	    << std::hex << color;
+
+	return oss.str();
 }
 
 }

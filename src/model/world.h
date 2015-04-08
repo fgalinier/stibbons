@@ -119,6 +119,12 @@ class World : public Changeable, public Agent {
 		turtle_id getId ();
 		void setId (turtle_id i);
 
+		/**
+		 * Return a string corresponding to the value
+		 * @return a string corresponding to the value
+		 */
+		virtual string toString ();
+
 	private:
 		Size worldSize;
 		Size zoneSize;

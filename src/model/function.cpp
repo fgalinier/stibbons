@@ -1,6 +1,7 @@
 #include "function.h"
 
 #include <cstring>
+#include <sstream>
 
 namespace stibbons {
 
@@ -20,6 +21,14 @@ vector<string> Function::getArg (){
 }
 
 void Function::reset(){
+}
+
+string Function::toString () {
+	std::ostringstream oss;
+
+	oss << "function(" << getValue() << ")";
+
+	return oss.str();
 }
 
 }

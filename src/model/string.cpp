@@ -8,6 +8,10 @@ void String::reset () {
 	value = "";
 }
 
+string String::toString () {
+	return string("\"") + getValue() + string("\"");
+}
+
 }
 
 /*

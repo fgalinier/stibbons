@@ -13,6 +13,7 @@ class TestColor : public TestCase {
 	CPPUNIT_TEST(longString);
 	CPPUNIT_TEST(shortString);
 	CPPUNIT_TEST(invalidString);
+	CPPUNIT_TEST(toString);
 	CPPUNIT_TEST_SUITE_END();
 
 	public:
@@ -59,6 +60,14 @@ class TestColor : public TestCase {
 		void invalidString() {
 			cout << "TestColor::invalidString" << endl;
 			CPPUNIT_ASSERT_THROW (stibbons::Color("Not a color"), domain_error);
+		}
+
+		void toString() {
+			cout << "TestColor::toString" << endl;
+			CPPUNIT_ASSERT_EQUAL (string("#7f7f7f"), grey.toString());
+			CPPUNIT_ASSERT_EQUAL (string("#ff0000"), red.toString());
+			CPPUNIT_ASSERT_EQUAL (string("#00ff00"), green.toString());
+			CPPUNIT_ASSERT_EQUAL (string("#0000ff"), blue.toString());
 		}
 };
 

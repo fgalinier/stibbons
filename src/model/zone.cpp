@@ -68,6 +68,10 @@ Color Zone::getColor () {
 	return color;
 }
 
+string Zone::toString () {
+	return "zone";
+}
+
 }
 
 /*

@@ -1,11 +1,21 @@
 #include "number.h"
 
+#include <sstream>
+
 using namespace std;
 
 namespace stibbons {
 
 void Number::reset () {
 	value = 0.0;
+}
+
+string Number::toString () {
+	std::ostringstream oss;
+
+	oss << getValue();
+
+	return oss.str();
 }
 
 }

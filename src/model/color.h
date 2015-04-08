@@ -107,6 +107,12 @@ class Color : public GenericValue<Type::COLOR> {
 		 * @return the value of blue
 		 */
 		double b ();
+
+		/**
+		 * Return a string corresponding to the value
+		 * @return a string corresponding to the value
+		 */
+		virtual std::string toString ();
 };
 
 }
