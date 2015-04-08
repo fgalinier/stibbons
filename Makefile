@@ -40,6 +40,7 @@ MODELSRC = \
 	src/model/point.cpp \
 	src/model/size.cpp \
 	src/model/string.cpp \
+	src/model/table.cpp \
 	src/model/turtle.cpp \
 	src/model/type.cpp \
 	src/model/world.cpp \
@@ -79,6 +80,7 @@ TESTSRC = \
 	src/tests/test-function.cpp \
 	src/tests/test-point.cpp \
 	src/tests/test-number.cpp \
+	src/tests/test-table.cpp \
 	src/tests/test-turtle.cpp \
 	src/tests/test-value.cpp \
 	src/tests/test-world.cpp \

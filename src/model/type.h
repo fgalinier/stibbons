@@ -25,6 +25,7 @@ enum class Type {
 	BOOLEAN,
 	STRING,
 	COLOR,
+	TABLE,
 	FUNCTION,
 	TURTLE,
 	ZONE,

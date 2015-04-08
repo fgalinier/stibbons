@@ -16,6 +16,8 @@ std::string toString(Type& type) {
 			return "String";
 		case Type::COLOR:
 			return "Color";
+		case Type::TABLE:
+			return "Table";
 		case Type::FUNCTION:
 			return "Function";
 		case Type::TURTLE:
@@ -41,6 +43,8 @@ std::string toString(Type&& type) {
 			return "String";
 		case Type::COLOR:
 			return "Color";
+		case Type::TABLE:
+			return "Table";
 		case Type::FUNCTION:
 			return "Function";
 		case Type::TURTLE:
