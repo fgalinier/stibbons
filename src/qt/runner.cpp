@@ -12,15 +12,19 @@
 namespace stibbons {
 
 Runner::Runner(std::string& program) {
-	interpreter.parse(program.c_str());
+	interpreter = new WorldInterpreter(program.c_str());
+}
+
+Runner::~Runner() {
+	delete interpreter;
 }
 
 World* Runner::getWorld() {
-	return interpreter.getWorld();
+	return interpreter->getWorld();
 }
 
 void Runner::run() {
-	interpreter.run();
+	interpreter->run();
 }
 
 }

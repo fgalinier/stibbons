@@ -71,6 +71,7 @@ INTERPETERSRC = \
 	src/interpreter/interpreter-exception.cpp \
 	src/interpreter/syntax-exception.cpp \
 	src/interpreter/semantic-exception.cpp \
+	src/interpreter/world-interpreter.cpp \
 	$(NULL)
 
 TESTSRC = \

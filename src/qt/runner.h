@@ -12,18 +12,19 @@
 
 #include <string>
 
-#include "../interpreter/interpreter.h"
+#include "../interpreter/world-interpreter.h"
 
 namespace stibbons {
 
 class Runner : public QThread {
 	public:
 		Runner(std::string& program);
+		~Runner();
 		World* getWorld();
 		void run();
 
 	private:
-		Interpreter interpreter;
+		WorldInterpreter* interpreter;
 };
 
 }

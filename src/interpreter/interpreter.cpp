@@ -12,58 +12,6 @@ extern FILE *yyin;
 
 namespace stibbons {
 
-	Interpreter::Interpreter(): world(nullptr), tree(nullptr) {}
-
-	void Interpreter::parse(const char *program) {
-		size_t size = strlen(program);
-
-		// Copy the string to make it non-constant
-		void *buffer = malloc(size);
-		memcpy(buffer, program, size);
-
-		// Create a new file stream for the program string
-		FILE *file = fmemopen(buffer, size, "r+");
-		yyin = file;
-
-		// Parse the program
-		tree = new Tree(0,nullptr);
-		yy::parser* pparser = new yy::parser(tree);
-		pparser->parse();
-
-		// Destroy the file stream and the buffer
-		fclose(file);
-		free(buffer);
-
-		// Create a new world depending on the program's parameters
-		auto worldSize = Size(2);
-		worldSize.setValue(0, 100);
-		worldSize.setValue(1, 100);
-		auto zoneSize = Size(2);
-		zoneSize.setValue(0, 2);
-		zoneSize.setValue(1, 2);
-		world = new World(worldSize, zoneSize);
-
-		auto f = new Function();
-		auto breed = world->createBreed(*f);
-		breed->createTurtle();
-	}
-
-	World* Interpreter::getWorld() {
-		return world;
-	}
-
-	void Interpreter::run() {
-		if (world == nullptr )
-			return;
-
-		if (tree == nullptr )
-			return;
-
-		auto turtles = world->getTurtles();
-		auto turtle_i = turtles.begin();
-		interpret(*turtle_i, tree);
-	}
-
 	Value* Interpreter::interpret(Turtle* turtle,
 	                              const Tree* tree,
 								  unordered_map<std::string,Value*>* hashTable) const {
