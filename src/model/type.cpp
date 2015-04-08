@@ -29,6 +29,31 @@ std::string toString(Type& type) {
 	}
 }
 
+std::string toString(Type&& type) {
+	switch (type) {
+		case Type::NIL:
+			return "Nil";
+		case Type::NUMBER:
+			return "Number";
+		case Type::BOOLEAN:
+			return "Boolean";
+		case Type::STRING:
+			return "String";
+		case Type::COLOR:
+			return "Color";
+		case Type::FUNCTION:
+			return "Function";
+		case Type::TURTLE:
+			return "Turtle";
+		case Type::ZONE:
+			return "Zone";
+		case Type::WORLD:
+			return "World";
+		default:
+			throw std::domain_error("Can't convert unknown type to string");
+	}
+}
+
 }
 /*
  * Editor modelines  -  http://www.wireshark.org/tools/modelines.html

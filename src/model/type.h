@@ -32,6 +32,7 @@ enum class Type {
 };
 
 std::string toString(Type& type);
+std::string toString(Type&& type);
 
 }
 
