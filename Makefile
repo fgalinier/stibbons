@@ -37,6 +37,7 @@ MODELSRC = \
 	src/model/function.cpp \
 	src/model/number.cpp \
 	src/model/point.cpp \
+	src/model/size.cpp \
 	src/model/string.cpp \
 	src/model/turtle.cpp \
 	src/model/type.cpp \
