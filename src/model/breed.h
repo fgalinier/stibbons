@@ -2,7 +2,7 @@
  * \file breed.h
  * \brief A class representing a breed
  * \author Julia Bassoumi, Adrien Plazas
- * \version 0.2
+ * \version 0.3
  * \date 29/03/2015
  */
 

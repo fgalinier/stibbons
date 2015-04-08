@@ -2,7 +2,7 @@
  * \file point.h
  * \brief A point with a parametrable number of dimensions
  * \author Julia Bassoumi, Adrien Plazas
- * \version 0.2
+ * \version 0.3
  * \date 14/03/2015
  */
 

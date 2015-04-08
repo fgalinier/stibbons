@@ -2,7 +2,7 @@
  * \file window.cpp
  * \brief The Stibbons main window
  * \author Adrien Plazas
- * \version 0.2
+ * \version 0.3
  * \date 26/02/2015
  */
 

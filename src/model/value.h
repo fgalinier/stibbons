@@ -2,7 +2,7 @@
  * \file value.h
  * \brief An abstract class who represent a values of a given type
  * \author Julia Bassoumi, Adrien Plazas
- * \version 0.2
+ * \version 0.3
  * \date 14/03/2015
  */
 

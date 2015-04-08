@@ -2,7 +2,7 @@
  * \file function.h
  * \brief A class representing a function
  * \author Julia Bassoumi
- * \version 0.2
+ * \version 0.3
  * \date 28/03/2015
  */
 
