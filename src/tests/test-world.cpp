@@ -19,7 +19,13 @@ class TestWorld : public TestCase{
 		Function* f;
 
 		void setUp(){
-			world=new stibbons::World(10,10);
+			auto worldSize = Size(2);
+			worldSize.setValue(0, 10);
+			worldSize.setValue(1, 10);
+			auto zoneSize = Size(2);
+			zoneSize.setValue(0, 10);
+			zoneSize.setValue(1, 10);
+			world=new stibbons::World(worldSize, zoneSize);
 			line=new Line();
 			turtle=new Turtle();
 			f=new Function();

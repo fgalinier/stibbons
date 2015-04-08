@@ -2,16 +2,19 @@
 
 namespace stibbons {
 
-World::World (unsigned width, unsigned height) :
-	Agent(nullptr),
-	width(width),
-	height(height),
-	zones(vector<Zone*>()),
-	lines(vector<Line*>()),
-	namedBreeds(unordered_map<string,Breed*>()),
-	anonymousBreeds(unordered_set<Breed*>()),
-	id(0) {
-	for (unsigned i = 0 ; i < width * height ; i++) {
+World::World (Size worldSize, Size zoneSize) throw(domain_error) : Agent(nullptr), worldSize(worldSize), zoneSize(zoneSize), id(0) {
+	if (worldSize.getDimensions() != zoneSize.getDimensions())
+		throw domain_error("Can't create a world with a dimension number different to its zones'");
+
+	// Count the number of zones
+	size_t zonesNb = worldSize.getDimensions() > 0 ? 1 : 0;
+
+	for (size_t i = 0 ; i < worldSize.getDimensions() ; i++) {
+		zonesNb *= worldSize.getValue(i);
+	}
+
+	// Create the zones
+	for (size_t i = 0 ; i < zonesNb ; i++) {
 		auto zone = new Zone(this);
 		zones.push_back(zone);
 	}

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "changeable.h"
+#include "size.h"
 #include "zone.h"
 #include "turtle.h"
 #include "line.h"
@@ -37,7 +38,7 @@ class World : public Changeable, public Agent {
 		/**
 		 * Create a world
 		 */
-		World (unsigned width, unsigned height);
+		World (Size worldSize, Size zoneSize) throw(domain_error);
 
 		/**
 		 * Empty Destructor
@@ -89,8 +90,9 @@ class World : public Changeable, public Agent {
 		void setId (turtle_id i);
 
 	private:
-		unsigned width;
-		unsigned height;
+		Size worldSize;
+		Size zoneSize;
+
 		vector<Zone*> zones;
 
 		vector<Line*> lines;

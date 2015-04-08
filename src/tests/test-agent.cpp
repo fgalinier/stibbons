@@ -30,7 +30,13 @@ class TestAgent : public TestCase {
 			pair<string,Value*> troisieme("tortue", new String("bleu"));
 			pair<string,Value*> quatrieme("color", new Color());
 
-			w=new World(10,10);
+			auto worldSize = Size(2);
+			worldSize.setValue(0, 10);
+			worldSize.setValue(1, 10);
+			auto zoneSize = Size(2);
+			zoneSize.setValue(0, 10);
+			zoneSize.setValue(1, 10);
+			w=new World(worldSize, zoneSize);
 			w->setProperty(troisieme);
 			w->setProperty(quatrieme);
 
