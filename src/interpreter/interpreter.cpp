@@ -12,9 +12,9 @@ extern FILE *yyin;
 
 namespace stibbons {
 
-	Interpreter::Interpreter(Turtle* turtle): turtle(turtle) {}
+	Interpreter::Interpreter(): world(nullptr), tree(nullptr) {}
 
-	Tree* Interpreter::parse(const char *program) const {
+	void Interpreter::parse(const char *program) {
 		size_t size = strlen(program);
 
 		// Copy the string to make it non-constant
@@ -26,7 +26,7 @@ namespace stibbons {
 		yyin = file;
 
 		// Parse the program
-		Tree *tree = new Tree(0,nullptr);
+		tree = new Tree(0,nullptr);
 		yy::parser* pparser = new yy::parser(tree);
 		pparser->parse();
 
@@ -34,10 +34,38 @@ namespace stibbons {
 		fclose(file);
 		free(buffer);
 
-		return tree;
+		// Create a new world depending on the program's parameters
+		auto worldSize = Size(2);
+		worldSize.setValue(0, 100);
+		worldSize.setValue(1, 100);
+		auto zoneSize = Size(2);
+		zoneSize.setValue(0, 2);
+		zoneSize.setValue(1, 2);
+		world = new World(worldSize, zoneSize);
+
+		auto f = new Function();
+		auto breed = world->createBreed(*f);
+		breed->createTurtle();
 	}
-  
-	Value* Interpreter::interpret(const Tree* tree,
+
+	World* Interpreter::getWorld() {
+		return world;
+	}
+
+	void Interpreter::run() {
+		if (world == nullptr )
+			return;
+
+		if (tree == nullptr )
+			return;
+
+		auto turtles = world->getTurtles();
+		auto turtle_i = turtles.begin();
+		interpret(*turtle_i, tree);
+	}
+
+	Value* Interpreter::interpret(Turtle* turtle,
+	                              const Tree* tree,
 								  unordered_map<std::string,Value*>* hashTable) const {
 		if(tree != nullptr) {
 			switch(std::get<0>(tree->getNode())) {
@@ -46,13 +74,13 @@ namespace stibbons {
 				Value* res;
 				if(!tree->isLeaf()) {
 					auto sons = tree->getSons();
-					for(auto son : *sons) res = interpret(son,hashTable);
+					for(auto son : *sons) res = interpret(turtle,son,hashTable);
 					return res;
 				}
 				break;
 		  	//Basic cases:
 			case yy::parser::token::FD: {
-				auto val = this->interpret(tree->getSon(0),hashTable);
+				auto val = this->interpret(turtle,tree->getSon(0),hashTable);
 				if(val->getType() != Type::NUMBER) 
 					throw SemanticException("FD",
 					                        Type::NUMBER,
@@ -63,7 +91,7 @@ namespace stibbons {
 			}
 				break;
 			case yy::parser::token::RT: {
-				auto val = this->interpret(tree->getSon(0),hashTable);
+				auto val = this->interpret(turtle,tree->getSon(0),hashTable);
 				if(val->getType() != Type::NUMBER) 
 					throw SemanticException("RT",
 					                        Type::NUMBER,
@@ -74,7 +102,7 @@ namespace stibbons {
 			}
 				break;
 			case yy::parser::token::LT: {
-				auto val = this->interpret(tree->getSon(0),hashTable);
+				auto val = this->interpret(turtle,tree->getSon(0),hashTable);
 				if(val->getType() != Type::NUMBER) 
 					throw SemanticException("LT",
 					                        Type::NUMBER,
@@ -92,7 +120,7 @@ namespace stibbons {
 				break;
 		   	//Loop cases:
 			case yy::parser::token::WHL: {
-				auto val = this->interpret(tree->getSon(0),hashTable);
+				auto val = this->interpret(turtle,tree->getSon(0),hashTable);
 				Value* res;
 				if(val->getType() != Type::BOOLEAN) 
 					throw SemanticException("WHILE",
@@ -101,8 +129,8 @@ namespace stibbons {
 											yy::position(nullptr,std::get<0>(tree->getPosition()),
 														 std::get<0>(tree->getPosition())));
 				while(dynamic_cast<Boolean*>(val)->getValue()) {
-					res = this->interpret(tree->getSon(1),hashTable);
-					auto val = this->interpret(tree->getSon(0));
+					res = this->interpret(turtle,tree->getSon(1),hashTable);
+					auto val = this->interpret(turtle,tree->getSon(0));
 					if(val->getType() != Type::BOOLEAN)
 					throw SemanticException("WHILE",
 					                        Type::BOOLEAN,
@@ -114,7 +142,7 @@ namespace stibbons {
 			}
 				break;
 			case yy::parser::token::RPT: {
-				auto val = this->interpret(tree->getSon(0));
+				auto val = this->interpret(turtle,tree->getSon(0));
 				auto nb = dynamic_cast<Number*>(val)->getValue();
 				Value* res;
 				if(val->getType() != Type::NUMBER)
@@ -124,14 +152,14 @@ namespace stibbons {
 											yy::position(nullptr,std::get<0>(tree->getPosition()),
 														 std::get<0>(tree->getPosition())));
 				for(auto i=0;i<nb;i++) {
-					res = this->interpret(tree->getSon(1),hashTable);
+					res = this->interpret(turtle,tree->getSon(1),hashTable);
 				}
 				return res;
 			}
 				break;
 		   	//Conditionnal cases:
 			case yy::parser::token::IF: {
-				auto cond = this->interpret(tree->getSon(0),hashTable);
+				auto cond = this->interpret(turtle,tree->getSon(0),hashTable);
 				if(cond->getType() != Type::BOOLEAN) 
 					throw SemanticException("IF",
 					                        Type::BOOLEAN,
@@ -139,10 +167,10 @@ namespace stibbons {
 											yy::position(nullptr,std::get<0>(tree->getPosition()),
 														 std::get<0>(tree->getPosition())));
 				if(dynamic_cast<Boolean*>(cond)->getValue()){
-					return this->interpret(tree->getSon(1),hashTable);
+					return this->interpret(turtle,tree->getSon(1),hashTable);
 				}
 				else{
-					return this->interpret(tree->getSon(2),hashTable);
+					return this->interpret(turtle,tree->getSon(2),hashTable);
 				}
 			}
 				break;
@@ -158,7 +186,7 @@ namespace stibbons {
 			}
 				break;
 			case '=': {
-				auto val = this->interpret(tree->getSon(0),hashTable);
+				auto val = this->interpret(turtle,tree->getSon(0),hashTable);
 				auto id = dynamic_cast<String*>(std::get<1>(tree->getNode()))->getValue();
 				pair<string,Value*> prop = {id,val};
 				if(hashTable) {
@@ -180,8 +208,8 @@ namespace stibbons {
 				break;
 		   	//Arithmetic cases:
 			case '+': {
-				auto val1 = this->interpret(tree->getSon(0),hashTable);
-				auto val2 = this->interpret(tree->getSon(1),hashTable);
+				auto val1 = this->interpret(turtle,tree->getSon(0),hashTable);
+				auto val2 = this->interpret(turtle,tree->getSon(1),hashTable);
 				if(val1->getType() != Type::NUMBER || val2->getType() != Type::NUMBER) 
 					throw SemanticException("+",
 					                        Type::NUMBER, Type::NUMBER,
@@ -192,8 +220,8 @@ namespace stibbons {
 			}
 				break;
 			case '-': {
-				auto val1 = this->interpret(tree->getSon(0),hashTable);
-				auto val2 = this->interpret(tree->getSon(1),hashTable);
+				auto val1 = this->interpret(turtle,tree->getSon(0),hashTable);
+				auto val2 = this->interpret(turtle,tree->getSon(1),hashTable);
 				if(val1->getType() != Type::NUMBER || val2->getType() != Type::NUMBER) 
 					throw SemanticException("-",
 					                        Type::NUMBER, Type::NUMBER,
@@ -204,8 +232,8 @@ namespace stibbons {
 			}
 				break;
 			case '*': {
-				auto val1 = this->interpret(tree->getSon(0),hashTable);
-				auto val2 = this->interpret(tree->getSon(1),hashTable);
+				auto val1 = this->interpret(turtle,tree->getSon(0),hashTable);
+				auto val2 = this->interpret(turtle,tree->getSon(1),hashTable);
 				if(val1->getType() != Type::NUMBER || val2->getType() != Type::NUMBER) 
 					throw SemanticException("*",
 					                        Type::NUMBER, Type::NUMBER,
@@ -216,8 +244,8 @@ namespace stibbons {
 			}
 				break;
 			case '/': {
-				auto val1 = this->interpret(tree->getSon(0),hashTable);
-				auto val2 = this->interpret(tree->getSon(1),hashTable);
+				auto val1 = this->interpret(turtle,tree->getSon(0),hashTable);
+				auto val2 = this->interpret(turtle,tree->getSon(1),hashTable);
 				if(val1->getType() != Type::NUMBER || val2->getType() != Type::NUMBER) 
 					throw SemanticException("/",
 					                        Type::NUMBER, Type::NUMBER,
@@ -232,8 +260,8 @@ namespace stibbons {
 			}
 				break;
 			case '%': {
-				auto val1 = this->interpret(tree->getSon(0),hashTable);
-				auto val2 = this->interpret(tree->getSon(1),hashTable);
+				auto val1 = this->interpret(turtle,tree->getSon(0),hashTable);
+				auto val2 = this->interpret(turtle,tree->getSon(1),hashTable);
 				if(val1->getType() != Type::NUMBER || val2->getType() != Type::NUMBER) 
 					throw SemanticException("%",
 					                        Type::NUMBER, Type::NUMBER,
@@ -249,8 +277,8 @@ namespace stibbons {
 				break;
 	   		//Boolean operation cases:
 			case yy::parser::token::AND: {
-				auto val1 = this->interpret(tree->getSon(0),hashTable);
-				auto val2 = this->interpret(tree->getSon(1),hashTable);
+				auto val1 = this->interpret(turtle,tree->getSon(0),hashTable);
+				auto val2 = this->interpret(turtle,tree->getSon(1),hashTable);
 				if(val1->getType() != Type::BOOLEAN || val2->getType() != Type::BOOLEAN) 
 					throw SemanticException("AND",
 					                        Type::BOOLEAN, Type::BOOLEAN,
@@ -261,8 +289,8 @@ namespace stibbons {
 			}
 				break;
 			case yy::parser::token::OR: {
-				auto val1 = this->interpret(tree->getSon(0),hashTable);
-				auto val2 = this->interpret(tree->getSon(1),hashTable);
+				auto val1 = this->interpret(turtle,tree->getSon(0),hashTable);
+				auto val2 = this->interpret(turtle,tree->getSon(1),hashTable);
 				if(val1->getType() != Type::BOOLEAN || val2->getType() != Type::BOOLEAN) 
 					throw SemanticException("OR",
 					                        Type::BOOLEAN, Type::BOOLEAN,
@@ -273,8 +301,8 @@ namespace stibbons {
 			}
 				break;
 			case yy::parser::token::XOR: {
-				auto val1 = this->interpret(tree->getSon(0),hashTable);
-				auto val2 = this->interpret(tree->getSon(1),hashTable);
+				auto val1 = this->interpret(turtle,tree->getSon(0),hashTable);
+				auto val2 = this->interpret(turtle,tree->getSon(1),hashTable);
 				if(val1->getType() != Type::BOOLEAN || val2->getType() != Type::BOOLEAN) 
 					throw SemanticException("XOR",
 					                        Type::BOOLEAN, Type::BOOLEAN,
@@ -285,7 +313,7 @@ namespace stibbons {
 			}
 				break;
 			case yy::parser::token::NOT: {
-				auto val1 = this->interpret(tree->getSon(0),hashTable);
+				auto val1 = this->interpret(turtle,tree->getSon(0),hashTable);
 				if(val1->getType() != Type::BOOLEAN) 
 					throw SemanticException("NOT",
 					                        Type::BOOLEAN,
@@ -320,8 +348,8 @@ namespace stibbons {
 				}
 				auto fct = breed->getFunction();
 				auto newTurtle = breed->createTurtle();
-				auto inter = new Interpreter(newTurtle);
-				std::thread newThread(&Interpreter::interpretFunction,inter,fct,paramTree,hashTable,id);
+				auto inter = new Interpreter();
+				std::thread newThread(&Interpreter::interpretFunction,inter,fct,newTurtle,paramTree,hashTable,id);
 				newThread.detach();
 			}
 				break;
@@ -346,7 +374,7 @@ namespace stibbons {
 					                        fct->getType(),
 										yy::position(nullptr,std::get<0>(tree->getPosition()),
 														 std::get<0>(tree->getPosition())));
-				return this->interpretFunction(fct,tree,hashTable,id);
+				return this->interpretFunction(fct,turtle,tree,hashTable,id);
 			}
 				break;
 			}
@@ -374,6 +402,7 @@ namespace stibbons {
 	}
 
 	Value* Interpreter::interpretFunction(Function* fct,
+	                                      Turtle* turtle,
 										  const Tree* tree,
 										  std::unordered_map<std::string,Value*>* hashTable,
 										  std::string id) const {
@@ -391,10 +420,10 @@ namespace stibbons {
 		auto newHashTable = (!hashTable)?(new unordered_map<std::string,Value*>()):hashTable;
 				
 		for(size_t i=0;i<fct->getArg().size();i++) {
-			(*newHashTable)[fct->getArg().at(i)] = this->interpret(tree->getSon(i),hashTable);
+			(*newHashTable)[fct->getArg().at(i)] = this->interpret(turtle,tree->getSon(i),hashTable);
 		}
 		auto fctTree = fct->getValue();
-		return this->interpret(fctTree,newHashTable);
+		return this->interpret(turtle, fctTree,newHashTable);
 	}
 }
 

@@ -12,18 +12,18 @@
 
 #include <string>
 
-#include "../model/turtle.h"
+#include "../interpreter/interpreter.h"
 
 namespace stibbons {
 
 class Runner : public QThread {
 	public:
-		Runner(Turtle& turtle, std::string& program);
+		Runner(std::string& program);
+		World* getWorld();
 		void run();
 
 	private:
-		Turtle& turtle;
-		std::string& program;
+		Interpreter interpreter;
 };
 
 }

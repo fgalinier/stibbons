@@ -24,7 +24,7 @@ class Window : public QMainWindow {
 	Q_OBJECT
 
 	public:
-		Window(World *world);
+		Window();
 		~Window();
 
 	protected:
@@ -50,12 +50,10 @@ class Window : public QMainWindow {
 		QAction *quitAct;
 		QAction *aboutAct;
 
-		World *world;
 		WorldView *worldView;
 
 		QToolBar *toolbar;
 
-		std::string program;
 		Runner *runner;
 };
 

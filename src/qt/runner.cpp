@@ -8,16 +8,19 @@
 
 #include "runner.h"
 
-#include "../interpreter/interpreter.h"
 #include <iostream>
 namespace stibbons {
 
-Runner::Runner(Turtle& turtle, std::string& program) : turtle(turtle), program(program) {}
+Runner::Runner(std::string& program) {
+	interpreter.parse(program.c_str());
+}
+
+World* Runner::getWorld() {
+	return interpreter.getWorld();
+}
 
 void Runner::run() {
-	auto interpreter = Interpreter(&turtle);
-	auto tree = interpreter.parse(program.c_str());
-	interpreter.interpret(tree);
+	interpreter.run();
 }
 
 }

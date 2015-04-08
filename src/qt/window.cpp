@@ -16,16 +16,16 @@
 
 namespace stibbons {
 
-Window::Window(World *world) : world(world), runner(nullptr) {
+Window::Window() : runner(nullptr) {
 	createActions();
 	createToolBars();
 
 	auto scrollArea = new QScrollArea();
 	scrollArea->setAlignment(Qt::AlignCenter);
+	scrollArea->show();
 
 	worldView = new WorldView(nullptr);
 	worldView->show();
-	worldView->setWorld(world);
 
 	setCentralWidget(scrollArea);
 	scrollArea->setWidget(worldView);
@@ -117,21 +117,33 @@ void Window::loadFile(const QString &fileName) {
 	}
 
 	QTextStream in(&file);
-	program = in.readAll().toStdString();
-}
+	auto program = in.readAll().toStdString();
 
-void Window::run() {
 	if (runner != nullptr) {
 		delete runner;
 		runner = nullptr;
 	}
 
-	auto turtles = world->getTurtles();
-	auto turtle_i = turtles.begin();
-	if (turtle_i != turtles.end()) {
-		runner = new Runner(**turtle_i, program);
-		runner->start();
-	}
+	runner = new Runner(program);
+
+
+	auto scrollArea = new QScrollArea();
+	scrollArea->setAlignment(Qt::AlignCenter);
+	scrollArea->show();
+
+	worldView = new WorldView(nullptr);
+	worldView->setWorld(runner->getWorld());
+	worldView->show();
+
+	setCentralWidget(scrollArea);
+	scrollArea->setWidget(worldView);
+}
+
+void Window::run() {
+	if (runner == nullptr)
+		return;
+
+	runner->start();
 }
 
 void Window::halt() {

@@ -17,18 +17,6 @@ Application::Application (int & argc, char ** argv) : QApplication (argc, argv) 
 	setOrganizationName("StibbonsTeam");
 	setApplicationName("Stibbons");
 	setWindowIcon(QIcon(":/images/stibbons.svg"));
-
-	auto worldSize = Size(2);
-	worldSize.setValue(0, 100);
-	worldSize.setValue(1, 100);
-	auto zoneSize = Size(2);
-	zoneSize.setValue(0, 2);
-	zoneSize.setValue(1, 2);
-	world = new World(worldSize, zoneSize);
-
-	auto f = new Function();
-	auto breed = world->createBreed(*f);
-	auto turtle = breed->createTurtle();
 }
 
 Application::~Application () {
@@ -36,7 +24,7 @@ Application::~Application () {
 }
 
 int Application::exec () {
-	Window win(world);
+	Window win;
 	win.show();
 
 	return QApplication::exec();
