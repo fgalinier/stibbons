@@ -93,6 +93,27 @@ unordered_set<Turtle *> World::getTurtles () {
 	return turtles;
 }
 
+Zone* World::getZone (Size& coordinates) throw(domain_error) {
+	// If a point of different dimension number is passed, it's an error
+	if (worldSize.getDimensions() != coordinates.getDimensions())
+		throw domain_error("Can't get a zone for coordinates in a dimension different from the world's");
+
+	// If no zone correspond to the coordinates, return a null pointer
+	for (size_t i = 0 ; i < coordinates.getDimensions() ; i++)
+		if (coordinates.getValue(i) > worldSize.getValue(i))
+			return nullptr;
+
+	// Compute the index of the zone
+	size_t prevDimensionsSize = 1;
+	size_t index = 0;
+	for (size_t i = 0 ; i < coordinates.getDimensions() ; i++) {
+		index += coordinates.getValue(i) * prevDimensionsSize;
+		prevDimensionsSize *= worldSize.getValue(i);
+	}
+
+	return zones[index];
+}
+
 Zone* World::getZone (Point& point) throw(domain_error) {
 	// If a point of different dimension number is passed, it's an error
 	if (worldSize.getDimensions() != point.getDimensions())
@@ -103,20 +124,19 @@ Zone* World::getZone (Point& point) throw(domain_error) {
 	for (size_t i = 0 ; i < requestedZone.getDimensions() ; i++)
 		requestedZone.setValue(i, (size_t) (point.getValue(i) / zoneSize.getValue(i)));
 
-	// If no zone correspond to the coordinates, return a null pointer
-	for (size_t i = 0 ; i < requestedZone.getDimensions() ; i++)
-		if (requestedZone.getValue(i) > worldSize.getValue(i))
-			return nullptr;
+	return getZone(requestedZone);
+}
 
-	// Compute the index of the zone
-	size_t prevDimensionsSize = 1;
-	size_t index = 0;
-	for (size_t i = 0 ; i < requestedZone.getDimensions() ; i++) {
-		index += requestedZone.getValue(i) * prevDimensionsSize;
-		prevDimensionsSize *= worldSize.getValue(i);
-	}
+unsigned World::getDimensions () const {
+	return worldSize.getDimensions();
+}
 
-	return zones[index];
+Size World::getWorldSize () {
+	return Size(worldSize);
+}
+
+Size World::getZoneSize () {
+	return Size(zoneSize);
 }
 
 Breed* World::createBreed (Function& function, string name) throw(invalid_argument) {

@@ -13,10 +13,14 @@
 
 namespace stibbons {
 
-inline QPen pen(Color c) {
+inline QColor color(Color c) {
 	auto qc = QColor();
 	qc.setRgbF(c.r(), c.g(), c.b());
-	return QPen(qc);
+	return qc;
+}
+
+inline QPen pen(Color c) {
+	return QPen(color(c));
 }
 
 WorldView::WorldView(QWidget *parent) : QWidget(parent) {
@@ -49,6 +53,27 @@ World *WorldView::getWorld() {
 }
 
 void WorldView::paint(QPainter &p, World &world, int xt, int yt) {
+	if (world.getDimensions() != 2)
+		return;
+
+	auto size = world.getZoneSize();
+	int w = size.getValue(0);
+	int h = size.getValue(1);
+
+	// Draw the zones
+	auto i = Size(world.getDimensions());
+	for (i.setValue(0, 0) ;
+	     i.getValue(0) < world.getWorldSize().getValue(0) ;
+	     i.setValue(0, i.getValue(0) + 1))
+	for (i.setValue(1, 0) ;
+	     i.getValue(1) < world.getWorldSize().getValue(1) ;
+	     i.setValue(1, i.getValue(1) + 1)) {
+		int x = (int) i.getValue(0) * w + xt;
+		int y = (int) i.getValue(1) * h + yt;
+
+		p.fillRect(x, y, w, h, color(world.getZone(i)->getColor()));
+	}
+
 	for (auto& line : world.getLines())
 		paint(p, *line, xt, yt);
 
