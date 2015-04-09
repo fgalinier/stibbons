@@ -12,6 +12,12 @@ extern FILE *yyin;
 
 namespace stibbons {
 
+	yy::position Interpreter::getPosition(const Tree* tree) {
+		return yy::position(nullptr,
+		                    std::get<0>(tree->getPosition()),
+		                    std::get<0>(tree->getPosition()));
+	}
+
 	Value* Interpreter::interpret(Turtle* turtle,
 	                              const Tree* tree,
 								  unordered_map<std::string,Value*>* hashTable) const {
@@ -33,8 +39,7 @@ namespace stibbons {
 					throw SemanticException("FD",
 					                        Type::NUMBER,
 					                        val->getType(),
-											yy::position(nullptr,std::get<0>(tree->getPosition()),
-														 std::get<0>(tree->getPosition())));
+					                        getPosition(tree));
 				turtle->forward(dynamic_cast<Number*>(val)->getValue());
 			}
 				break;
@@ -44,8 +49,7 @@ namespace stibbons {
 					throw SemanticException("RT",
 					                        Type::NUMBER,
 					                        val->getType(),
-											yy::position(nullptr,std::get<0>(tree->getPosition()),
-														 std::get<0>(tree->getPosition())));
+					                        getPosition(tree));
 				turtle->turnRight(dynamic_cast<Number*>(val)->getValue());
 			}
 				break;
@@ -55,8 +59,7 @@ namespace stibbons {
 					throw SemanticException("LT",
 					                        Type::NUMBER,
 					                        val->getType(),
-											yy::position(nullptr,std::get<0>(tree->getPosition()),
-														 std::get<0>(tree->getPosition())));
+					                        getPosition(tree));
 				turtle->turnLeft(dynamic_cast<Number*>(val)->getValue());
 			}
 				break;
@@ -74,8 +77,7 @@ namespace stibbons {
 					throw SemanticException("WHILE",
 					                        Type::BOOLEAN,
 					                        val->getType(),
-											yy::position(nullptr,std::get<0>(tree->getPosition()),
-														 std::get<0>(tree->getPosition())));
+					                        getPosition(tree));
 				while(dynamic_cast<Boolean*>(val)->getValue()) {
 					res = this->interpret(turtle,tree->getSon(1),hashTable);
 					auto val = this->interpret(turtle,tree->getSon(0));
@@ -83,8 +85,7 @@ namespace stibbons {
 					throw SemanticException("WHILE",
 					                        Type::BOOLEAN,
 					                        val->getType(),
-											yy::position(nullptr,std::get<0>(tree->getPosition()),
-														 std::get<0>(tree->getPosition())));
+					                        getPosition(tree));
 				}
 				return res;
 			}
@@ -97,8 +98,7 @@ namespace stibbons {
 					throw SemanticException("REPEAT",
 					                        Type::NUMBER,
 					                        val->getType(),
-											yy::position(nullptr,std::get<0>(tree->getPosition()),
-														 std::get<0>(tree->getPosition())));
+					                        getPosition(tree));
 				for(auto i=0;i<nb;i++) {
 					res = this->interpret(turtle,tree->getSon(1),hashTable);
 				}
@@ -112,8 +112,7 @@ namespace stibbons {
 					throw SemanticException("IF",
 					                        Type::BOOLEAN,
 					                        cond->getType(),
-											yy::position(nullptr,std::get<0>(tree->getPosition()),
-														 std::get<0>(tree->getPosition())));
+					                        getPosition(tree));
 				if(dynamic_cast<Boolean*>(cond)->getValue()){
 					return this->interpret(turtle,tree->getSon(1),hashTable);
 				}
@@ -162,8 +161,7 @@ namespace stibbons {
 					throw SemanticException("+",
 					                        Type::NUMBER, Type::NUMBER,
 					                        val1->getType(), val2->getType(),
-											yy::position(nullptr,std::get<0>(tree->getPosition()),
-														 std::get<0>(tree->getPosition())));
+					                        getPosition(tree));
 				return new Number((dynamic_cast<Number*>(val1)->getValue())+(dynamic_cast<Number*>(val2)->getValue()));
 			}
 				break;
@@ -174,8 +172,7 @@ namespace stibbons {
 					throw SemanticException("-",
 					                        Type::NUMBER, Type::NUMBER,
 					                        val1->getType(), val2->getType(),
-											yy::position(nullptr,std::get<0>(tree->getPosition()),
-														 std::get<0>(tree->getPosition())));
+					                        getPosition(tree));
 				return new Number((dynamic_cast<Number*>(val1)->getValue())-(dynamic_cast<Number*>(val2)->getValue()));
 			}
 				break;
@@ -186,8 +183,7 @@ namespace stibbons {
 					throw SemanticException("*",
 					                        Type::NUMBER, Type::NUMBER,
 					                        val1->getType(), val2->getType(),
-											yy::position(nullptr,std::get<0>(tree->getPosition()),
-														 std::get<0>(tree->getPosition())));
+					                        getPosition(tree));
 				return new Number((dynamic_cast<Number*>(val1)->getValue())*(dynamic_cast<Number*>(val2)->getValue()));
 			}
 				break;
@@ -198,12 +194,10 @@ namespace stibbons {
 					throw SemanticException("/",
 					                        Type::NUMBER, Type::NUMBER,
 					                        val1->getType(), val2->getType(),
-											yy::position(nullptr,std::get<0>(tree->getPosition()),
-														 std::get<0>(tree->getPosition())));
+					                        getPosition(tree));
 				if(dynamic_cast<Number*>(val2)->getValue() == 0) 
 					throw SemanticException("/: Cannot divide by 0",
-											yy::position(nullptr,std::get<0>(tree->getPosition()),
-														 std::get<0>(tree->getPosition())));
+					                        getPosition(tree));
 				return new Number((dynamic_cast<Number*>(val1)->getValue())/(dynamic_cast<Number*>(val2)->getValue()));
 			}
 				break;
@@ -214,12 +208,10 @@ namespace stibbons {
 					throw SemanticException("%",
 					                        Type::NUMBER, Type::NUMBER,
 					                        val1->getType(), val2->getType(),
-											yy::position(nullptr,std::get<0>(tree->getPosition()),
-														 std::get<0>(tree->getPosition())));
+					                        getPosition(tree));
 				if(dynamic_cast<Number*>(val2)->getValue() == 0) 
 					throw SemanticException("%: Cannot divide by 0",
-											yy::position(nullptr,std::get<0>(tree->getPosition()),
-														 std::get<0>(tree->getPosition())));
+					                        getPosition(tree));
 				return new Number(((int) dynamic_cast<Number*>(val1)->getValue())%((int) dynamic_cast<Number*>(val2)->getValue()));
 			}
 				break;
@@ -231,8 +223,7 @@ namespace stibbons {
 					throw SemanticException("AND",
 					                        Type::BOOLEAN, Type::BOOLEAN,
 					                        val1->getType(), val2->getType(),
-											yy::position(nullptr,std::get<0>(tree->getPosition()),
-														 std::get<0>(tree->getPosition())));
+					                        getPosition(tree));
 				return new Boolean((dynamic_cast<Boolean*>(val1)->getValue()) && (dynamic_cast<Boolean*>(val2)->getValue()));
 			}
 				break;
@@ -243,8 +234,7 @@ namespace stibbons {
 					throw SemanticException("OR",
 					                        Type::BOOLEAN, Type::BOOLEAN,
 					                        val1->getType(), val2->getType(),
-											yy::position(nullptr,std::get<0>(tree->getPosition()),
-														 std::get<0>(tree->getPosition())));
+					                        getPosition(tree));
 				return new Boolean((dynamic_cast<Boolean*>(val1)->getValue()) || (dynamic_cast<Boolean*>(val2)->getValue()));
 			}
 				break;
@@ -255,8 +245,7 @@ namespace stibbons {
 					throw SemanticException("XOR",
 					                        Type::BOOLEAN, Type::BOOLEAN,
 					                        val1->getType(), val2->getType(),
-											yy::position(nullptr,std::get<0>(tree->getPosition()),
-														 std::get<0>(tree->getPosition())));
+					                        getPosition(tree));
 				return new Boolean((dynamic_cast<Boolean*>(val1)->getValue()) ^ (dynamic_cast<Boolean*>(val2)->getValue()));
 			}
 				break;
@@ -266,8 +255,7 @@ namespace stibbons {
 					throw SemanticException("NOT",
 					                        Type::BOOLEAN,
 					                        val1->getType(),
-											yy::position(nullptr,std::get<0>(tree->getPosition()),
-														 std::get<0>(tree->getPosition())));
+					                        getPosition(tree));
 				return new Boolean(!(dynamic_cast<Boolean*>(val1)->getValue()));
 			}
 				break;  
@@ -314,14 +302,12 @@ namespace stibbons {
 				auto fct = dynamic_cast<Function*>(turtle->getProperty(id));
 				if(fct == nullptr)
 					throw SemanticException("Try to eval a non function value",
-										yy::position(nullptr,std::get<0>(tree->getPosition()),
-														 std::get<0>(tree->getPosition())));
+			                                getPosition(tree));
 				if(fct->getType() != Type::FUNCTION)
 					throw SemanticException("()",
 					                        Type::FUNCTION,
 					                        fct->getType(),
-										yy::position(nullptr,std::get<0>(tree->getPosition()),
-														 std::get<0>(tree->getPosition())));
+			                                getPosition(tree));
 				return this->interpretFunction(fct,turtle,tree,hashTable,id);
 			}
 				break;
@@ -362,8 +348,7 @@ namespace stibbons {
 			   <<tree->getSons()->size()
 			   <<" parameters";
 			throw SemanticException(oss.str().c_str(),
-									yy::position(nullptr,std::get<0>(tree->getPosition()),
-												 std::get<0>(tree->getPosition())));
+			                        getPosition(tree));
 		}	
 		auto newHashTable = (!hashTable)?(new unordered_map<std::string,Value*>()):hashTable;
 				

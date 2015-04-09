@@ -73,6 +73,8 @@ namespace stibbons {
 										 const Tree*,
 										 std::unordered_map<std::string,Value*>*, 
 										 std::string) const;
+
+		static inline yy::position getPosition(const Tree* tree);
 	};
 }
 /*
