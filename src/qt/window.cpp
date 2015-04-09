@@ -20,10 +20,15 @@ Window::Window(World *world) : world(world), runner(nullptr) {
 	createActions();
 	createToolBars();
 
+	auto scrollArea = new QScrollArea();
+	scrollArea->setAlignment(Qt::AlignCenter);
+
 	worldView = new WorldView(nullptr);
 	worldView->show();
 	worldView->setWorld(world);
-	setCentralWidget(worldView);
+
+	setCentralWidget(scrollArea);
+	scrollArea->setWidget(worldView);
 
 	readSettings();
 
