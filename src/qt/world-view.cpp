@@ -24,7 +24,6 @@ inline QPen pen(Color c) {
 }
 
 WorldView::WorldView(QWidget *parent) : QWidget(parent) {
-	setMinimumSize(QSize(100, 100));
 	connect(this, SIGNAL(changed()), this, SLOT(update()));
 }
 
@@ -37,11 +36,19 @@ void WorldView::paintEvent(QPaintEvent *event) {
 	setMinimumHeight(boundingRect.height());
 
 	if (getWorld())
-		paint(painter, *getWorld(), rect.width() / 2, rect.height() / 2);
+		paint(painter, *getWorld(), 0, 0);
 }
 
 void WorldView::setWorld(World *world) {
 	this->world = world;
+
+	if (world) {
+		auto worldSize = world->getWorldSize();
+		auto zoneSize = world->getZoneSize();
+		int w = worldSize.getValue(0) * zoneSize.getValue(0);
+		int h = worldSize.getValue(1) * zoneSize.getValue(1);
+		resize(w, h);
+	}
 
 	world->onChanged([this]() {
 		emit changed();
