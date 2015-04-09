@@ -77,7 +77,7 @@ Zone* Turtle::getZone () {
 	if (world == nullptr)
 		return nullptr;
 
-	world->getZone(*this);
+	return world->getZone(*this);
 }
 
 void Turtle::setColor (Color color) {
