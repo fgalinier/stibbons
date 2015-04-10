@@ -20,7 +20,11 @@ namespace stibbons {
 
 	Value* Interpreter::interpret(Turtle* turtle,
 	                              const Tree* tree,
-								  unordered_map<std::string,Value*>* hashTable) const {
+								  Table* hashTable) const {
+
+		std::cout<<" hashTable: "<<hashTable->toString()<<std::endl;
+
+
 		if(tree != nullptr) {
 			switch(std::get<0>(tree->getNode())) {
 		   	//Sequence case:
@@ -91,7 +95,7 @@ namespace stibbons {
 			}
 				break;
 			case yy::parser::token::RPT: {
-				auto val = this->interpret(turtle,tree->getSon(0));
+				auto val = this->interpret(turtle,tree->getSon(0),hashTable);
 				auto nb = dynamic_cast<Number*>(val)->getValue();
 				Value* res;
 				if(val->getType() != Type::NUMBER)
@@ -125,9 +129,10 @@ namespace stibbons {
 			case yy::parser::token::ID: {
 				auto id = dynamic_cast<String*>(std::get<1>(tree->getNode()))->getValue();
 				if(hashTable) {
-					auto got = hashTable->find(id);
-					if (got != hashTable->end())
-						return hashTable->at(id);
+					auto got = hashTable->getValue(id);
+					if (got != nullptr)
+						return hashTable->getValue(id);
+						//return hashTable->at(id);
 				}
 				return turtle->getProperty(id);
 			}
@@ -137,9 +142,10 @@ namespace stibbons {
 				auto id = dynamic_cast<String*>(std::get<1>(tree->getNode()))->getValue();
 				pair<string,Value*> prop = {id,val};
 				if(hashTable) {
-					auto got = hashTable->find(id);
-					if (got != hashTable->end()) {
-						(*hashTable)[id] = val;
+					auto got = hashTable->getValue(id);
+					if (got != nullptr) {
+						hashTable->setValue(id,val);
+						//(*hashTable)[id] = val;
 					}
 				}
 				turtle->setProperty(prop);
@@ -339,7 +345,7 @@ namespace stibbons {
 	Value* Interpreter::interpretFunction(Function* fct,
 	                                      Turtle* turtle,
 										  const Tree* tree,
-										  std::unordered_map<std::string,Value*>* hashTable,
+										  Table* hashTable,
 										  std::string id) const {
 		if(fct->getArg().size() != tree->getSons()->size()) {
 			std::ostringstream oss; 
@@ -351,13 +357,16 @@ namespace stibbons {
 			throw SemanticException(oss.str().c_str(),
 			                        getPosition(tree));
 		}	
-		auto newHashTable = (!hashTable)?(new unordered_map<std::string,Value*>()):hashTable;
-				
+		auto newHashTable = (!hashTable)?(new Table()):hashTable;
+
 		for(size_t i=0;i<fct->getArg().size();i++) {
-			(*newHashTable)[fct->getArg().at(i)] = this->interpret(turtle,tree->getSon(i),hashTable);
+			std::cout<<"fct(arg(i)) = "<<fct->getArg().at(i)<<std::endl;
+			newHashTable->setValue(fct->getArg().at(i),this->interpret(turtle,tree->getSon(i),hashTable));
+			//(*newHashTable)[fct->getArg().at(i)] = this->interpret(turtle,tree->getSon(i),hashTable);
 		}
 		auto fctTree = fct->getValue();
-		return this->interpret(turtle, fctTree,newHashTable);
+		//std::cout<<turtle->getId()<<" newHashTable: "<<newHashTable->toString()<<std::endl;
+		return this->interpret(turtle, fctTree, newHashTable);
 	}
 }
 

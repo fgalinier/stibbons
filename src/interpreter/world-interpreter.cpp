@@ -55,7 +55,7 @@ namespace stibbons {
 
 		auto turtles = world->getTurtles();
 		auto turtle_i = turtles.begin();
-		interpret(*turtle_i, tree);
+		interpret(*turtle_i, tree,new Table());
 	}
 
 }

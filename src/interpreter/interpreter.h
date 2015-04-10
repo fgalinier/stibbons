@@ -15,6 +15,7 @@
 #include "y.tab.h"
 #include "tree.h"
 #include "../model/turtle.h"
+#include "../model/table.h"
 #include "../model/number.h"
 #include "../model/string.h"
 #include "../model/boolean.h"
@@ -48,7 +49,7 @@ namespace stibbons {
 		 */
 		virtual Value* interpret(Turtle* turtle,
 		                         const Tree*,
-		                         unordered_map<std::string,Value*>* hashTable=nullptr) const;
+		                         Table* hashTable=nullptr) const;
 
 	private:
 		/**
@@ -71,7 +72,7 @@ namespace stibbons {
 		virtual	Value* interpretFunction(Function*,
 		                                 Turtle*,
 										 const Tree*,
-										 std::unordered_map<std::string,Value*>*, 
+										 Table*, 
 										 std::string) const;
 
 		static inline yy::position getPosition(const Tree* tree);
