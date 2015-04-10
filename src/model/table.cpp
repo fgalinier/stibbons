@@ -12,75 +12,46 @@ using namespace std;
 
 namespace stibbons {
 
-Table::~Table () {
-	lock_guard<mutex> lock(value_m);
+	void Table::setValue (pair<string, Value*> pair) {
+		lock_guard<mutex> lock(value_m);
 
-	for (auto value : values) {
-		tryDelete (value.second);
+		auto search = values.find (pair.first);
+		if ( search == values.end())
+			values.insert(pair);
+		else {
+			//tryDelete (search->second);
+			values.erase(pair.first);
+			values.insert(pair);
+		}
 	}
-}
 
-void Table::setValue (pair<string, Value*> pair) {
-	lock_guard<mutex> lock(value_m);
-
-	auto search = values.find (pair.first);
-	if ( search == values.end())
-		values.insert(pair);
-	else {
-		tryDelete (search->second);
-		values.erase(pair.first);
-		values.insert(pair);
+	void Table::setValue (string key, Value* value) {
+		setValue (pair<string, Value*>(key, value));
 	}
-}
 
-void Table::setValue (string key, Value* value) {
-	setValue (pair<string, Value*>(key, value));
-}
+	Value* Table::getValue(string key) {
+		lock_guard<mutex> lock(value_m);
 
-Value* Table::getValue(string key) {
-	lock_guard<mutex> lock(value_m);
+		unordered_map<string,Value*>::const_iterator got = values.find(key);
 
-	unordered_map<string,Value*>::const_iterator got = values.find(key);
+		if (got == values.end())
+			return &Nil::getInstance();
 
-	if (got == values.end())
-		return &Nil::getInstance();
-
-	return got->second;
-}
-
-string Table::toString() {
-	lock_guard<mutex> lock(value_m);
-
-	string str = "{\n";
-
-	for (auto value : values)
-		str += "\t" + value.first + ": " + value.second->toString() + "\n";
-
-	str += "}\n";
-
-	return str;
-}
-
-void Table::tryDelete (Value* value) throw (domain_error) {
-	switch (value->getType()) {
-		case Type::NIL:
-			break;
-		case Type::NUMBER:
-			delete dynamic_cast<Number*> (value);
-			break;
-		case Type::BOOLEAN:
-			delete dynamic_cast<Boolean*> (value);
-			break;
-		case Type::STRING:
-			delete dynamic_cast<String*> (value);
-			break;
-		case Type::COLOR:
-			delete dynamic_cast<Color*> (value);
-			break;
-		default:
-			throw domain_error("Unexpected value type.");
+		return got->second;
 	}
-}
+
+	string Table::toString() {
+		lock_guard<mutex> lock(value_m);
+
+		string str = "{\n";
+
+		for (auto value : values)
+			str += "\t" + value.first + ": " + value.second->toString() + "\n";
+
+		str += "}\n";
+
+		return str;
+	}
 
 }
 

@@ -1,12 +1,5 @@
 agent wolf(a){
-fd a
-}
-
-i=50
-
-3 new wolf(i)
-
-/*	function add(a,b){
+	function add(a,b){
 		a+b
 	}
 	
@@ -17,4 +10,9 @@ i=50
 	fd 5
 	rt 90
 	pd
-	fd add(a,a)*/
+	fd add(a,a)
+}
+
+i=50
+
+40 new wolf(i)

@@ -21,10 +21,6 @@ namespace stibbons {
 	Value* Interpreter::interpret(Turtle* turtle,
 	                              const Tree* tree,
 								  Table* hashTable) const {
-
-		std::cout<<" hashTable: "<<hashTable->toString()<<std::endl;
-
-
 		if(tree != nullptr) {
 			switch(std::get<0>(tree->getNode())) {
 		   	//Sequence case:
@@ -132,7 +128,6 @@ namespace stibbons {
 					auto got = hashTable->getValue(id);
 					if (got != nullptr)
 						return hashTable->getValue(id);
-						//return hashTable->at(id);
 				}
 				return turtle->getProperty(id);
 			}
@@ -145,7 +140,6 @@ namespace stibbons {
 					auto got = hashTable->getValue(id);
 					if (got != nullptr) {
 						hashTable->setValue(id,val);
-						//(*hashTable)[id] = val;
 					}
 				}
 				turtle->setProperty(prop);
@@ -336,7 +330,7 @@ namespace stibbons {
 					std::get<1>(
 						sons->at(i)->getNode()
 					)
-				)->getValue()
+				  )->getValue()
 			);
 		}
 		return new Function(fctTree,*params);
@@ -357,15 +351,13 @@ namespace stibbons {
 			throw SemanticException(oss.str().c_str(),
 			                        getPosition(tree));
 		}	
-		auto newHashTable = (!hashTable)?(new Table()):hashTable;
+		
+		auto newHashTable = (!hashTable)?new Table():hashTable;
 
 		for(size_t i=0;i<fct->getArg().size();i++) {
-			std::cout<<"fct(arg(i)) = "<<fct->getArg().at(i)<<std::endl;
 			newHashTable->setValue(fct->getArg().at(i),this->interpret(turtle,tree->getSon(i),hashTable));
-			//(*newHashTable)[fct->getArg().at(i)] = this->interpret(turtle,tree->getSon(i),hashTable);
 		}
 		auto fctTree = fct->getValue();
-		//std::cout<<turtle->getId()<<" newHashTable: "<<newHashTable->toString()<<std::endl;
 		return this->interpret(turtle, fctTree, newHashTable);
 	}
 }

@@ -1,9 +1,7 @@
 #pragma once
 #include "value.h"
 #include <stdexcept>
-//#include <utility>
 #include <unordered_map>
-//#include <iostream>
 #include <string>
 #include <mutex>
 
@@ -21,11 +19,6 @@ class Table : public GenericValue<Type::TABLE> {
 		 * Empty Constructor
 		 */
 		Table () = default;
-
-		/**
-		 * Empty Destructor
-		 */
-		virtual ~Table ();
 
 		/**
 		 * Add a value
