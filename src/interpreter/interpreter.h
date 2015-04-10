@@ -13,6 +13,7 @@
 #pragma once
 
 #include "y.tab.h"
+#include "semantic-exception.h"
 #include "tree.h"
 #include "../model/turtle.h"
 #include "../model/table.h"
@@ -48,10 +49,10 @@ namespace stibbons {
 		 */
 		virtual ValuePtr interpret(TurtlePtr turtle,
 		                         const TreePtr,
-		                         TablePtr hashTable=nullptr) const;
+		                         TablePtr hashTable=nullptr) const throw(SemanticException);
 		virtual ValuePtr interpret(AgentPtr agent,
 		                         const TreePtr,
-		                         TablePtr hashTable=nullptr) const;
+		                         TablePtr hashTable=nullptr) const throw(SemanticException);
 
 	private:
 		/**

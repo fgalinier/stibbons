@@ -9,7 +9,7 @@ extern FILE *yyin;
 
 namespace stibbons {
 
-	WorldInterpreter::WorldInterpreter(const char *program) {
+	WorldInterpreter::WorldInterpreter(const char *program) throw(SyntaxException) {
 		size_t size = strlen(program);
 
 		// Copy the string to make it non-constant

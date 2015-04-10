@@ -16,6 +16,7 @@
 #include "interpreter.h"
 
 #include "tree.h"
+#include "syntax-exception.h"
 #include "../model/world.h"
 
 namespace stibbons {
@@ -38,7 +39,7 @@ class WorldInterpreter : public virtual Interpreter {
 		 *
 		 * \param program The Stibbons program to parse.
 		 */
-		WorldInterpreter(const char *program);
+		WorldInterpreter(const char *program) throw(SyntaxException);
 
 		/**
 		 * Get the world.

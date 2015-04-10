@@ -10,6 +10,8 @@
  *
  */
 
+#pragma once
+
 #include "interpreter-exception.h"
 
 #include "../model/type.h"

@@ -6,7 +6,6 @@
 
 #include "../model/user-function.h"
 #include "tree.h"
-#include "semantic-exception.h"
 #include "y.tab.h"
 
 extern FILE *yyin;
@@ -21,7 +20,7 @@ namespace stibbons {
 
 	ValuePtr Interpreter::interpret(TurtlePtr turtle,
 									const TreePtr tree,
-									TablePtr hashTable) const {
+									TablePtr hashTable) const throw(SemanticException) {
 		if(tree != nullptr) {
 			switch(std::get<0>(tree->getNode())) {
 		   	//Sequence case:
@@ -421,7 +420,7 @@ namespace stibbons {
 
 	ValuePtr Interpreter::interpret(AgentPtr agent,
 	                              const TreePtr tree,
-	                              TablePtr hashTable) const {
+	                              TablePtr hashTable) const throw(SemanticException) {
 		return interpret(dynamic_pointer_cast<Turtle>(agent), tree, hashTable);
 	}
 

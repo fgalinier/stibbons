@@ -10,6 +10,8 @@
  *
  */
 
+#pragma once
+
 #include "interpreter-exception.h"
 
 namespace stibbons {
