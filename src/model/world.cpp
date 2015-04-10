@@ -1,5 +1,7 @@
 #include "world.h"
 
+#include "standard-function.h"
+
 namespace stibbons {
 
 World::World (Size worldSize, Size zoneSize) throw(domain_error) : Agent(nullptr), worldSize(worldSize), zoneSize(zoneSize), id(0) {
@@ -18,6 +20,9 @@ World::World (Size worldSize, Size zoneSize) throw(domain_error) : Agent(nullptr
 		auto zone = new Zone(this);
 		zones.push_back(zone);
 	}
+
+	// Set standard functions
+	setProperty(pair<string,Value*>("rand", new RandFunction()));
 
 	// Set default colors
 	setProperty(pair<string,Value*>("black", new Color(0.0, 0.0, 0.0)));

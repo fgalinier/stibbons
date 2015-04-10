@@ -39,6 +39,7 @@ MODELSRC = \
 	src/model/nil.cpp \
 	src/model/point.cpp \
 	src/model/size.cpp \
+	src/model/standard-function.cpp \
 	src/model/string.cpp \
 	src/model/table.cpp \
 	src/model/turtle.cpp \
