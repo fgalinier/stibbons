@@ -9,10 +9,21 @@
 #include "runner.h"
 
 #include <iostream>
+
+using namespace std;
+
 namespace stibbons {
 
 Runner::Runner(std::string& program) {
-	interpreter = new WorldInterpreter(program.c_str());
+	try {
+		interpreter = new WorldInterpreter(program.c_str());
+	}
+	catch (SyntaxException e) {
+		cerr << "Syntax error: " << e.what() << endl;
+	}
+	catch (exception e) {
+		cerr << e.what() << endl;
+	}
 }
 
 Runner::~Runner() {
@@ -24,7 +35,15 @@ WorldPtr Runner::getWorld() {
 }
 
 void Runner::run() {
-	interpreter->run();
+	try {
+		interpreter->run();
+	}
+	catch (SemanticException e) {
+		cerr << "Semantic error: " << e.what() << endl;
+	}
+	catch (exception e) {
+		cerr << e.what() << endl;
+	}
 }
 
 }
