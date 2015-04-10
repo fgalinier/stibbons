@@ -22,6 +22,8 @@ World::World (Size worldSize, Size zoneSize) throw(domain_error) : Agent(nullptr
 	}
 
 	// Set standard functions
+	setProperty(pair<string,Value*>("print", new PrintFunction()));
+	setProperty(pair<string,Value*>("println", new PrintlnFunction()));
 	setProperty(pair<string,Value*>("rand", new RandFunction()));
 
 	// Set default colors

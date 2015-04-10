@@ -24,6 +24,32 @@ class RandFunction : public Function {
 		virtual Value* exec (Agent* agent, Table* params);
 };
 
+/**
+ * class PrintFunction
+ *
+ *\brief A class printing on the standard output.
+ *
+ *\author Adrien Plazas
+**/
+class PrintFunction : public Function {
+	public:
+		PrintFunction ();
+		virtual Value* exec (Agent* agent, Table* params);
+};
+
+/**
+ * class PrintlnFunction
+ *
+ *\brief A class printing a new line on the standard output.
+ *
+ *\author Adrien Plazas
+**/
+class PrintlnFunction : public Function {
+	public:
+		PrintlnFunction ();
+		virtual Value* exec (Agent* agent, Table* params);
+};
+
 }
 
 /*
