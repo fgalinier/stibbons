@@ -25,6 +25,8 @@ class WorldView : public QWidget {
 		void setWorld(World *world);
 		World *getWorld();
 
+		virtual QSize sizeHint() const;
+
 	protected:
 		virtual void paintEvent(QPaintEvent *event);
 

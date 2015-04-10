@@ -23,8 +23,20 @@ inline QPen pen(Color c) {
 	return QPen(color(c));
 }
 
-WorldView::WorldView(QWidget *parent) : QWidget(parent) {
+WorldView::WorldView(QWidget *parent) : QWidget(parent), world(nullptr) {
 	connect(this, SIGNAL(changed()), this, SLOT(update()));
+}
+
+QSize WorldView::sizeHint() const {
+	if (world) {
+		auto worldSize = world->getWorldSize();
+		auto zoneSize = world->getZoneSize();
+		int w = worldSize.getValue(0) * zoneSize.getValue(0);
+		int h = worldSize.getValue(1) * zoneSize.getValue(1);
+		return QSize(w, h);
+	}
+
+	return QSize();
 }
 
 void WorldView::paintEvent(QPaintEvent *event) {
@@ -42,13 +54,8 @@ void WorldView::paintEvent(QPaintEvent *event) {
 void WorldView::setWorld(World *world) {
 	this->world = world;
 
-	if (world) {
-		auto worldSize = world->getWorldSize();
-		auto zoneSize = world->getZoneSize();
-		int w = worldSize.getValue(0) * zoneSize.getValue(0);
-		int h = worldSize.getValue(1) * zoneSize.getValue(1);
-		resize(w, h);
-	}
+	resize(sizeHint());
+	updateGeometry();
 
 	world->onChanged([this]() {
 		emit changed();
