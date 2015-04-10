@@ -1,58 +1,70 @@
 /**
  * \file function.h
  * \brief A class representing a function
- * \author Julia Bassoumi
+ * \author Adrien Plazas
  * \version 0.3
- * \date 28/03/2015
+ * \date 10/04/2015
  */
 
 #pragma once
 
+#include "agent.h"
+#include "table.h"
 #include "value.h"
-#include "simple-value.h"
-#include "../interpreter/tree.h"
-#include <iostream>
-#include <vector>
-#include <string>
 #include <mutex>
+#include <string>
+#include <vector>
+
+using namespace std;
 
 namespace stibbons {
 
 /**
  * class Function
  *
- *\brief A class representing a function.
+ * \brief A class representing a function.
  *
- *\author Julia Bassoumi
-**/
-
-class Function : public GenericValue<Type::FUNCTION>, public SimpleValue<Tree*>{
+ *\author Adrien Plazas
+ */
+class Function : public GenericValue<Type::FUNCTION> {
 	public:
-		using SimpleValue<Tree*>::SimpleValue;
+		/**
+		 * Constructor
+		 *
+		 * @param params the parameters that the function expect to be
+		 * executed with
+		 */
+		Function (vector<string> params = vector<string>());
 
 		/**
-		* Constructor
-		*/
-		Function (Tree* arbre = new Tree(0,nullptr),vector<string> l = vector<string>());
+		 * Destructor
+		 */
+		virtual ~Function () = default;
 
 		/**
-		* Destructor
-		*/
-		virtual ~Function ( ) = default;
+		 * Execute the function
+		 *
+		 * @param agent the agent to execute the function on
+		 * @param params the parameters to execute the function with
+		 * @return the returned value
+		 */
+		virtual Value* exec (Agent* agent, Table* params) = 0;
 
 		/**
-		* Set the value of argument
-		* @param r the new value of arg
-		*/
-		void setArg (string r);
+		 * Execute the function
+		 *
+		 * @param agent the agent to execute the function on
+		 * @param params the parameters to execute the function with
+		 * @return the returned value
+		 */
+		virtual Value* operator() (Agent* agent, Table* params);
 
 		/**
-		* Get the list of arg
-		* @return the list of nbarg
-		*/
-		vector<string> getArg ();
-
-		virtual void reset ();
+		 * Get the parameters of the function
+		 *
+		 * @return the parameters of the function
+		 */
+		vector<string> getParams ();
 
 		/**
 		 * Return a string corresponding to the value
@@ -60,13 +72,11 @@ class Function : public GenericValue<Type::FUNCTION>, public SimpleValue<Tree*>{
 		 */
 		virtual string toString ();
 
-	private:
-		vector<string> arguments;
+	protected:
+		vector<string> parameters;
 		mutex value_m;
-
-
-
 };
+
 }
 /*
  * Editor modelines  -  http://www.wireshark.org/tools/modelines.html

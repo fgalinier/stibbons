@@ -43,6 +43,7 @@ MODELSRC = \
 	src/model/table.cpp \
 	src/model/turtle.cpp \
 	src/model/type.cpp \
+	src/model/user-function.cpp \
 	src/model/world.cpp \
 	src/model/zone.cpp \
 	$(NULL)
@@ -66,6 +67,7 @@ FLEXTMP = \
 	$(NULL)
 
 INTERPETERSRC = \
+	src/model/user-function.cpp \
 	src/interpreter/interpreter.cpp \
 	src/interpreter/tree.cpp \
 	src/interpreter/interpreter-exception.cpp \
@@ -155,7 +157,7 @@ all: doc $(APP) $(TEST)
 $(APP): $(MODELOBJECTS) $(BISONOBJECTS) $(FLEXOBJECTS) $(INTERPRETEROBJECTS) $(QTOBJECTS)
 	$(CC) $^ -o $@ $(CFLAGS) $(QTINCDIRS) $(QTLIBS)
 
-$(TEST): $(MODELOBJECTS) $(TESTOBJECTS)
+$(TEST): $(MODELOBJECTS) $(BISONOBJECTS) $(FLEXOBJECTS) $(INTERPRETEROBJECTS) $(TESTOBJECTS)
 	$(CC) $^ -o $@ $(CFLAGS) $(TESTINCDIRS) $(TESTLIBS)
 
 $(BISONTMP): $(BISONSRC)
@@ -170,7 +172,7 @@ $(FLEXTMP): $(FLEXSRC)
 %.qrc.cpp: %.qrc
 	$(RCC) -name $(basename $(<F)) $< -o $@
 
-$(MODELOBJECTS): %.o: %.cpp
+$(MODELOBJECTS): %.o: %.cpp $(BISONTMP)
 	$(CC) $< -c -o $@ $(CFLAGS)
 
 $(BISONOBJECTS): %.o: %.c
@@ -179,7 +181,7 @@ $(BISONOBJECTS): %.o: %.c
 $(FLEXOBJECTS): %.o: %.c
 	$(CC) $< -c -o $@ $(CFLAGS)
 
-$(INTERPRETEROBJECTS): %.o: %.cpp
+$(INTERPRETEROBJECTS): %.o: %.cpp $(BISONTMP)
 	$(CC) $< -c -o $@ $(CFLAGS)
 
 $(TESTOBJECTS): %.o: %.cpp

@@ -4,6 +4,7 @@
 #include <cstring>
 #include <thread>
 
+#include "../model/user-function.h"
 #include "tree.h"
 #include "semantic-exception.h"
 #include "y.tab.h"
@@ -275,7 +276,7 @@ namespace stibbons {
 				const Tree* paramTree;
 				if(type == nullptr) {
 					id = "anonym agent";
-					auto function = new Function(tree->getSon(0),vector<std::string>());
+					auto function = new UserFunction(tree->getSon(0),vector<std::string>());
 					breed = turtle->getWorld()->createBreed(*function);
 					paramTree = nullptr;
 				}
@@ -321,6 +322,12 @@ namespace stibbons {
 		return &Nil::getInstance();
 	}
 
+	Value* Interpreter::interpret(Agent* agent,
+	                              const Tree* tree,
+	                              Table* hashTable) const {
+		return interpret(dynamic_cast<Turtle*>(agent), tree, hashTable);
+	}
+
 	Function* Interpreter::getFunctionFromTree(const Tree* tree) const {
 		auto fctTree = tree->getSon(0);
 		auto params = new std::vector<std::string>();
@@ -334,7 +341,7 @@ namespace stibbons {
 				  )->getValue()
 			);
 		}
-		return new Function(fctTree,*params);
+		return new UserFunction(fctTree,*params);
 	}
 
 	Value* Interpreter::interpretFunction(Function* fct,
@@ -345,7 +352,7 @@ namespace stibbons {
 		auto newHashTable = (!hashTable)?new Table():hashTable;
 
 		if(tree) {
-			if(fct->getArg().size() != tree->getSons()->size()) {
+			if(fct->getParams().size() != tree->getSons()->size()) {
 				std::ostringstream oss;
 				oss<<"No matching function for "
 				   <<id
@@ -356,13 +363,13 @@ namespace stibbons {
 										getPosition(tree));
 			}
 
-			for(size_t i=0;i<fct->getArg().size();i++) {
+			for(size_t i=0;i<fct->getParams().size();i++) {
 				auto val = this->interpret(turtle,tree->getSon(i),hashTable);
-				newHashTable->setValue(fct->getArg().at(i),val);
+				newHashTable->setValue(fct->getParams().at(i),val);
 			}
 		}
-		auto fctTree = fct->getValue();
-		return this->interpret(turtle, fctTree, newHashTable);
+
+		return (*fct)(turtle, newHashTable);
 	}
 }
 

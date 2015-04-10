@@ -1,34 +1,44 @@
 #include "function.h"
 
-#include <cstring>
+//#include <cstring>
 #include <sstream>
 
 namespace stibbons {
 
-Function::Function (Tree* arbre, vector<string> l){
-	arguments=l;
-	setValue(arbre);
+Function::Function (vector<string> params) : parameters(params) {}
+
+Value* Function::operator() (Agent* agent, Table* params) {
+	return exec (agent, params);
 }
 
-void Function::setArg (string r){
+vector<string> Function::getParams (){
 	lock_guard<mutex> lock(value_m);
-	arguments.push_back(r);
-}
 
-vector<string> Function::getArg (){
-	lock_guard<mutex> lock(value_m);
-	return arguments;
-}
-
-void Function::reset(){
+	return parameters;
 }
 
 string Function::toString () {
 	std::ostringstream oss;
 
-	oss << "function(" << getValue() << ")";
+	oss << "function(";
+	for (size_t i = 0 ; i < parameters.size() ; i++)
+		oss << (i == 0 ? "" : ", ") << parameters[i];
+	oss << ")";
 
 	return oss.str();
 }
 
 }
+
+/*
+ * Editor modelines  -  http://www.wireshark.org/tools/modelines.html
+ *
+ * Local variables:
+ * c-basic-offset: 4
+ * tab-width: 4
+ * indent-tabs-mode: t
+ * truncate-lines: 1
+ * End:
+ *
+ * vim:set ft=cpp ts=4 sw=4 sts=4
+ */

@@ -1,5 +1,7 @@
 #include "../model/world.h"
 
+#include "../model/user-function.h"
+
 #include <cppunit/TestCase.h>
 #include <cppunit/extensions/HelperMacros.h>
 
@@ -28,7 +30,7 @@ class TestWorld : public TestCase{
 			world=new stibbons::World(worldSize, zoneSize);
 			line=new Line();
 			turtle=new Turtle();
-			f=new Function();
+			f=new UserFunction(nullptr);
 		}
 
 		void testAjoutTurtle() {

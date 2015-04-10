@@ -39,7 +39,6 @@ namespace stibbons {
 		 */
 		Interpreter() = default;
 
-	protected:
 		/**
 		 * Interpret the tree and apply it to the turtle.
 		 * \param turtle The turtle to run the program on.
@@ -48,6 +47,9 @@ namespace stibbons {
 		 * \return An int equal to 0 if no error has occurred.
 		 */
 		virtual Value* interpret(Turtle* turtle,
+		                         const Tree*,
+		                         Table* hashTable=nullptr) const;
+		virtual Value* interpret(Agent* agent,
 		                         const Tree*,
 		                         Table* hashTable=nullptr) const;
 

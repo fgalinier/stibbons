@@ -6,6 +6,7 @@
 #include "../model/nil.h"
 #include "../model/number.h"
 #include "../model/string.h"
+#include "../model/user-function.h"
 
 #include <cppunit/TestCase.h>
 #include <cppunit/extensions/HelperMacros.h>
@@ -25,7 +26,7 @@ class TestBreed : public TestCase {
 
 		void setUp() {
 			cout << "TestBreed::" << endl;
-			f=new Function();
+			f=new UserFunction(nullptr);
 			breed=new Breed(f);
 		}
 

@@ -4,6 +4,7 @@
 #include "../model/number.h"
 #include "../model/string.h"
 #include "../model/color.h"
+#include "../model/user-function.h"
 
 #include <cppunit/TestCase.h>
 #include <cppunit/extensions/HelperMacros.h>
@@ -13,28 +14,21 @@ using namespace CppUnit;
 
 class TestFunction : public TestCase {
 	CPPUNIT_TEST_SUITE(TestFunction);
-	CPPUNIT_TEST(AjoutArg);
+	CPPUNIT_TEST(getParams);
 	CPPUNIT_TEST_SUITE_END();
 
 	public :
 		Function* f;
-		string nombre;
-		Tree *t;
 
 		void setUp() {
-			cout << "TestFunction::setup" << endl;
-			t=new Tree(2,nullptr);
-			nombre="nb";
-			f=new Function(t,vector<string>());
-}
+			f=new UserFunction(nullptr, {"nb", "val"});
+		}
 
-		void AjoutArg() {
-			cout << "TestFunction::AjoutArg" << endl;
-			f->setArg(nombre);
-			vector<string> vector=f->getArg();
-			for (auto i : vector){
-				CPPUNIT_ASSERT("nb" == i);
-			}
+		void getParams() {
+			cout << "TestFunction::getParams" << endl;
+			CPPUNIT_ASSERT (2 == f->getParams().size());
+			CPPUNIT_ASSERT ("nb" == f->getParams()[0]);
+			CPPUNIT_ASSERT ("val" == f->getParams()[1]);
 
 		}
 

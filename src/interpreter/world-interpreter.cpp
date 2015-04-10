@@ -3,6 +3,7 @@
 #include <cstring>
 
 #include "../model/turtle.h"
+#include "../model/user-function.h"
 
 extern FILE *yyin;
 
@@ -37,7 +38,7 @@ namespace stibbons {
 		zoneSize.setValue(1, 2);
 		world = new World(worldSize, zoneSize);
 
-		auto f = new Function();
+		auto f = new UserFunction(nullptr);
 		auto breed = world->createBreed(*f);
 		breed->createTurtle();
 	}
