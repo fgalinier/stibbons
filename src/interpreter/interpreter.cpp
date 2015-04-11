@@ -126,7 +126,7 @@ namespace stibbons {
 				auto id = dynamic_cast<String*>(std::get<1>(tree->getNode()))->getValue();
 				if(hashTable) {
 					auto got = hashTable->getValue(id);
-					if (got != nullptr)
+					if (got != &Nil::getInstance())
 						return hashTable->getValue(id);
 				}
 				return turtle->getProperty(id);
@@ -138,8 +138,9 @@ namespace stibbons {
 				pair<string,Value*> prop = {id,val};
 				if(hashTable) {
 					auto got = hashTable->getValue(id);
-					if (got != nullptr) {
+					if (got != &Nil::getInstance()) {
 						hashTable->setValue(id,val);
+						return val;
 					}
 				}
 				turtle->setProperty(prop);
@@ -276,7 +277,7 @@ namespace stibbons {
 					id = "anonym agent";
 					auto function = new Function(tree->getSon(0),vector<std::string>());
 					breed = turtle->getWorld()->createBreed(*function);
-					paramTree = new Tree();
+					paramTree = nullptr;
 				}
 				else {
 					id = dynamic_cast<String*>(type)->getValue();
@@ -284,7 +285,7 @@ namespace stibbons {
 					paramTree = tree;
 				}
 				auto fct = breed->getFunction();
-				auto newTurtle = breed->createTurtle();
+				auto newTurtle = breed->createTurtle(turtle);
 				auto inter = new Interpreter();
 				std::thread newThread(&Interpreter::interpretFunction,inter,fct,newTurtle,paramTree,hashTable,id);
 				newThread.detach();
@@ -316,7 +317,7 @@ namespace stibbons {
 		}
  
 		//Operations tokens : EQ NEQ GT GEQ LS LEQ
-		//Stibbons spécial tokens : DIE FCT_ID STRING COLOR NIL ID
+		//Stibbons spécial tokens : DIE STRING COLOR NIL
 		return &Nil::getInstance();
 	}
 
@@ -341,21 +342,24 @@ namespace stibbons {
 										  const Tree* tree,
 										  Table* hashTable,
 										  std::string id) const {
-		if(fct->getArg().size() != tree->getSons()->size()) {
-			std::ostringstream oss; 
-			oss<<"No matching function for "
-			   <<id
-			   <<" with "
-			   <<tree->getSons()->size()
-			   <<" parameters";
-			throw SemanticException(oss.str().c_str(),
-			                        getPosition(tree));
-		}	
-		
 		auto newHashTable = (!hashTable)?new Table():hashTable;
 
-		for(size_t i=0;i<fct->getArg().size();i++) {
-			newHashTable->setValue(fct->getArg().at(i),this->interpret(turtle,tree->getSon(i),hashTable));
+		if(tree) {
+			if(fct->getArg().size() != tree->getSons()->size()) {
+				std::ostringstream oss;
+				oss<<"No matching function for "
+				   <<id
+				   <<" with "
+				   <<tree->getSons()->size()
+				   <<" parameters";
+				throw SemanticException(oss.str().c_str(),
+										getPosition(tree));
+			}
+
+			for(size_t i=0;i<fct->getArg().size();i++) {
+				auto val = this->interpret(turtle,tree->getSon(i),hashTable);
+				newHashTable->setValue(fct->getArg().at(i),val);
+			}
 		}
 		auto fctTree = fct->getValue();
 		return this->interpret(turtle, fctTree, newHashTable);
