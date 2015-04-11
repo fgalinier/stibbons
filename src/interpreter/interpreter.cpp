@@ -136,15 +136,26 @@ namespace stibbons {
 			case '=': {
 				auto val = this->interpret(turtle,tree->getSon(0),hashTable);
 				auto id = dynamic_cast<String*>(std::get<1>(tree->getNode()))->getValue();
-				pair<string,Value*> prop = {id,val};
-				if(hashTable) {
-					auto got = hashTable->getValue(id);
-					if (got != &Nil::getInstance()) {
-						hashTable->setValue(id,val);
-						return val;
+				if (id == "color") {
+					if(val->getType() != Type::COLOR) {
+							throw SemanticException("color",
+					                        Type::COLOR,
+					                        val->getType(),
+											yy::position(nullptr,std::get<0>(tree->getPosition()),
+														 std::get<0>(tree->getPosition())));
 					}
+					turtle->setColor(*(dynamic_cast<Color*>(val)));
 				}
-				turtle->setProperty(prop);
+				else {
+					pair<string,Value*> prop = {id,val};
+					if(hashTable) {
+						auto got = hashTable->find(id);
+						if (got != hashTable->end()) {
+							(*hashTable)[id] = val;
+						}
+					}
+					turtle->setProperty(prop);
+				}
 				return val;
 			}
 				break;
@@ -154,6 +165,9 @@ namespace stibbons {
 			case yy::parser::token::COLOR:
 			case yy::parser::token::BOOLEAN:
 			case yy::parser::token::NIL:
+				return std::get<1>(tree->getNode());
+				break;
+			case yy::parser::token::COLOR:
 				return std::get<1>(tree->getNode());
 				break;
 		   	//Arithmetic cases:
