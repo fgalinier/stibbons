@@ -10,6 +10,17 @@ void Number::reset () {
 	value = 0.0;
 }
 
+int Number::compare (ValuePtr other) {
+	if (getType() != other->getType())
+		return Value::compare (other);
+
+	return compare (dynamic_pointer_cast<Number>(other));
+}
+
+int Number::compare(NumberPtr other) {
+	return other->getValue () - getValue ();
+}
+
 string Number::toString () {
 	std::ostringstream oss;
 

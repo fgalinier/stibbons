@@ -40,6 +40,17 @@ namespace stibbons {
 		return got->second;
 	}
 
+	int Table::compare (ValuePtr other) {
+		if (getType() != other->getType())
+			return Value::compare (other);
+
+		return compare (dynamic_pointer_cast<Table>(other));
+	}
+
+	int Table::compare(TablePtr other) {
+		return other.get() - this;
+	}
+
 	string Table::toString() {
 		lock_guard<mutex> lock(value_m);
 

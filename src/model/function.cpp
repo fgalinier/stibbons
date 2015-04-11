@@ -17,6 +17,17 @@ vector<string> Function::getParams (){
 	return parameters;
 }
 
+int Function::compare (ValuePtr other) {
+	if (getType() != other->getType())
+		return Value::compare (other);
+
+	return compare (dynamic_pointer_cast<Function>(other));
+}
+
+int Function::compare(FunctionPtr other) {
+	return other.get() - this;
+}
+
 string Function::toString () {
 	std::ostringstream oss;
 

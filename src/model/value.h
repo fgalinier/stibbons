@@ -30,6 +30,20 @@ class Value {
 		virtual Type getType() const=0;
 
 		/**
+		 * Return whether the comparison value of two values
+		 *
+		 * Return a negative number if this value is lower than the other,
+		 * return a negative number if this value is greater than the other,
+		 * return 0 if they are equal.
+		 *
+		 * @param other the other value
+		 * @return the comparison value of this and the other value
+		 */
+		virtual int compare (ValuePtr other) {
+			return ((long) getType()) - ((long) other->getType());
+		}
+
+		/**
 		 * Return a string corresponding to the value
 		 * @return a string corresponding to the value
 		 */

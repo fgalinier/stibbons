@@ -8,6 +8,21 @@ void String::reset () {
 	value = "";
 }
 
+int String::compare (ValuePtr other) {
+	if (getType() != other->getType())
+		return Value::compare (other);
+
+	return compare (dynamic_pointer_cast<String>(other));
+}
+
+int String::compare(StringPtr other) {
+	if (other->getValue () < getValue ())
+		return -1;
+	if (other->getValue () > getValue ())
+		return 1;
+	return 0;
+}
+
 string String::toString () {
 	return getValue();
 }

@@ -32,6 +32,30 @@ class String : public GenericValue<Type::STRING>, public SimpleValue<std::string
 		virtual void reset ();
 
 		/**
+		 * Return whether the comparison value of two values
+		 *
+		 * Return a negative number if this value is lower than the other,
+		 * return a negative number if this value is greater than the other,
+		 * return 0 if they are equal.
+		 *
+		 * @param other the other value
+		 * @return the comparison value of this and the other value
+		 */
+		virtual int compare (ValuePtr other);
+
+		/**
+		 * Return whether the comparison value of two values
+		 *
+		 * Return a negative number if this value is lower than the other,
+		 * return a negative number if this value is greater than the other,
+		 * return 0 if they are equal.
+		 *
+		 * @param other the other value
+		 * @return the comparison value of this and the other value
+		 */
+		virtual int compare (StringPtr other);
+
+		/**
 		 * Return a string corresponding to the value
 		 * @return a string corresponding to the value
 		 */

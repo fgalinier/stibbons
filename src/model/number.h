@@ -30,6 +30,30 @@ class Number : public GenericValue<Type::NUMBER>, public SimpleValue<double> {
 		virtual void reset ();
 
 		/**
+		 * Return whether the comparison value of two values
+		 *
+		 * Return a negative number if this value is lower than the other,
+		 * return a negative number if this value is greater than the other,
+		 * return 0 if they are equal.
+		 *
+		 * @param other the other value
+		 * @return the comparison value of this and the other value
+		 */
+		virtual int compare (ValuePtr other);
+
+		/**
+		 * Return whether the comparison value of two values
+		 *
+		 * Return a negative number if this value is lower than the other,
+		 * return a negative number if this value is greater than the other,
+		 * return 0 if they are equal.
+		 *
+		 * @param other the other value
+		 * @return the comparison value of this and the other value
+		 */
+		virtual int compare (NumberPtr other);
+
+		/**
 		 * Return a string corresponding to the value
 		 * @return a string corresponding to the value
 		 */

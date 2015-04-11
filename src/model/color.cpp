@@ -153,6 +153,29 @@ double Color::b () {
 	return blue;
 }
 
+int Color::compare (ValuePtr other) {
+	if (getType() != other->getType())
+		return Value::compare (other);
+
+	return compare (dynamic_pointer_cast<Color>(other));
+}
+
+int Color::compare (ColorPtr other) {
+	auto red = other->r() - r();
+	if (red < 0.0) return -1;
+	if (red > 0.0) return 1;
+
+	auto green = other->g() - g();
+	if (green < 0.0) return -1;
+	if (green > 0.0) return 1;
+
+	auto blue = other->b() - b();
+	if (blue < 0.0) return -1;
+	if (blue > 0.0) return 1;
+
+	return 0;
+}
+
 string Color::toString () {
 	std::ostringstream oss;
 

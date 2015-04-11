@@ -8,6 +8,17 @@ void Boolean::reset () {
 	value = false;
 }
 
+int Boolean::compare (ValuePtr other) {
+	if (getType() != other->getType())
+		return Value::compare (other);
+
+	return compare (dynamic_pointer_cast<Boolean>(other));
+}
+
+int Boolean::compare(BooleanPtr other) {
+	return other->getValue () - getValue ();
+}
+
 string Boolean::toString () {
 	return getValue() ? "true" : "false";
 }

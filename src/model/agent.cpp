@@ -105,6 +105,17 @@ ValuePtr Agent::getProperty(string p) {
 	return got->second;
 }
 
+int Agent::compare (ValuePtr other) {
+	if (getType() != other->getType())
+		return Value::compare (other);
+
+	return compare (dynamic_pointer_cast<Agent>(other));
+}
+
+int Agent::compare(AgentPtr other) {
+	return other.get() - this;
+}
+
 }
 
 /*
