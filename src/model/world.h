@@ -59,6 +59,16 @@ class World : public Changeable, public Agent {
 		vector<Line*> getLines ();
 
 		/**
+		 * Get the new lines since a certain state
+		 *
+		 * It also updates the sizes parameter to the current sizes
+		 *
+		 * @param sizes the previous sizes of the lines
+		 * @return the new lines
+		 */
+		vector<Line> getLinesSince (vector<size_t>& sizes);
+
+		/**
 		 * Get a named breed
 		 * @param name the name of the breed
 		 * @return the breed

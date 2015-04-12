@@ -66,6 +66,29 @@ vector<Line *> World::getLines () {
 	return lines;
 }
 
+vector<Line> World::getLinesSince (vector<size_t>& sizes) {
+	lock_guard<mutex> lock(value_m);
+
+	auto newLines = vector<Line>();
+
+	size_t actualSize = lines.size();
+	size_t previousSize = sizes.size();
+
+	for (size_t i = 0 ; i < actualSize ; i++) {
+		size_t actualLineSize = lines[i]->size();
+		size_t previousLineSize = (i >= previousSize) ? 0 : sizes[i];
+
+		newLines.push_back(Line(*lines[i], previousLineSize));
+
+		if (i >= previousSize)
+			sizes.push_back(actualLineSize);
+		else
+			sizes[i] = actualLineSize;
+	}
+
+	return newLines;
+}
+
 Breed* World::getBreed (string name) throw(out_of_range) {
 	lock_guard<mutex> lock(value_m);
 
