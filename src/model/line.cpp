@@ -2,14 +2,13 @@
 
 namespace stibbons {
 
-Line::Line(Line& other) {
+Line::Line(Line& other, size_t since) {
 	lock_guard<mutex> lock(other.value_m);
 
 	// Set this
 	color = other.color;
-	for (auto& p: other.points) {
-		points.push_back(Point(p));
-	}
+	for (size_t i = since ; i < other.points.size() ; i++)
+		points.push_back(Point(other.points[i]));
 }
 
 Line::Line (Line&& other) {

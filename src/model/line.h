@@ -32,8 +32,9 @@ class Line {
 		/**
 		 * Create a copy of a line
 		 * @param other the other line
+		 * @param since the point to copy the line from
 		 */
-		Line (Line &other);
+		Line (Line &other, size_t since = 0);
 
 		/**
 		 * Move a line
