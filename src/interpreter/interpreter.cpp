@@ -147,10 +147,11 @@ namespace stibbons {
 			}
 				break;
 		   	//Type cases:
-			case yy::parser::token::NUMBER:		
-				return std::get<1>(tree->getNode());
-				break;
+			case yy::parser::token::NUMBER:
+			case yy::parser::token::STRING:
+			case yy::parser::token::COLOR:
 			case yy::parser::token::BOOLEAN:
+			case yy::parser::token::NIL:
 				return std::get<1>(tree->getNode());
 				break;
 		   	//Arithmetic cases:
