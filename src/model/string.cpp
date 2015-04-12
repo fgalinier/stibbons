@@ -9,7 +9,7 @@ void String::reset () {
 }
 
 string String::toString () {
-	return string("\"") + getValue() + string("\"");
+	return getValue();
 }
 
 }
