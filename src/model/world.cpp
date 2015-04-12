@@ -1,5 +1,6 @@
 #include "world.h"
 
+#include "number.h"
 #include "standard-function.h"
 
 namespace stibbons {
@@ -25,6 +26,14 @@ World::World (Size worldSize, Size zoneSize) throw(domain_error) : Agent(nullptr
 	setProperty(pair<string,Value*>("print", new PrintFunction()));
 	setProperty(pair<string,Value*>("println", new PrintlnFunction()));
 	setProperty(pair<string,Value*>("rand", new RandFunction()));
+
+	// Set world's size
+	if (worldSize.getDimensions() >= 2) {
+		double w = worldSize.getValue(0) * zoneSize.getValue(0);
+		double h = worldSize.getValue(1) * zoneSize.getValue(1);
+		setProperty(pair<string,Value*>("max-x", new Number(w)));
+		setProperty(pair<string,Value*>("max-y", new Number(h)));
+	}
 
 	// Set default colors
 	setProperty(pair<string,Value*>("black", new Color(0.0, 0.0, 0.0)));
