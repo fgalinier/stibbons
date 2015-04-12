@@ -23,7 +23,12 @@ inline QPen pen(Color c) {
 	return QPen(color(c));
 }
 
-WorldView::WorldView(QWidget *parent) : QWidget(parent), world(nullptr) {
+WorldView::WorldView(QWidget *parent) :
+	QWidget(parent),
+	linesSizes(vector<size_t>()),
+	linesBuffer(QPixmap()),
+	world(nullptr) {
+	linesBuffer.fill(Qt::transparent);
 	connect(this, SIGNAL(changed()), this, SLOT(update()));
 }
 
@@ -57,6 +62,10 @@ void WorldView::setWorld(World *world) {
 	resize(sizeHint());
 	updateGeometry();
 
+	linesSizes = vector<size_t>();
+	linesBuffer = QPixmap(sizeHint());
+	linesBuffer.fill(Qt::transparent);
+
 	world->onChanged([this]() {
 		emit changed();
 	});
@@ -88,9 +97,13 @@ void WorldView::paint(QPainter &p, World &world, int xt, int yt) {
 		p.fillRect(x, y, w, h, color(world.getZone(i)->getColor()));
 	}
 
-	for (auto& line : world.getLines())
-		paint(p, *line, xt, yt);
+	// Draw the lines
+	QPainter lp(&linesBuffer);
+	for (auto& line : world.getLinesSince(linesSizes))
+		paint(lp, line, xt, yt);
+	p.drawPixmap(0, 0, linesBuffer);
 
+	// Draw the turtles
 	for (auto& turtle : world.getTurtles())
 		paint(p, *turtle, xt, yt);
 }

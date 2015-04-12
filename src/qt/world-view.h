@@ -41,6 +41,9 @@ class WorldView : public QWidget {
 		void paint(QPainter &p, QPolygon &polygon, double x, double y, double angle, double size = 1.0);
 		QPolygon getTriangle();
 
+		vector<size_t> linesSizes;
+		QPixmap linesBuffer;
+
 		World *world;
 };
 
