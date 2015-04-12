@@ -61,11 +61,29 @@ Type Zone::getType() const {
 void Zone::setColor (Color color) {
 	lock_guard<mutex> lock(value_m);
 	this->color = color;
+
+	changed();
 }
 
 Color Zone::getColor () {
 	lock_guard<mutex> lock(value_m);
 	return color;
+}
+
+World* Zone::getWorld () {
+	for (Agent *world = getParent() ; world != nullptr ; world = world->getParent())
+		if (world->getType() == Type::WORLD)
+			return dynamic_cast<World *>(world);
+
+	return nullptr;
+}
+
+void Zone::changed() {
+	lock_guard<mutex> lock(value_m);
+	auto world = getWorld();
+
+	if (world)
+		world->changed();
 }
 
 string Zone::toString () {

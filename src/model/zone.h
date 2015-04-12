@@ -64,6 +64,14 @@ class Zone : public Agent{
 		Color getColor ();
 
 		/**
+		 * Get the value of world
+		 * @return the value of world
+		 */
+		World* getWorld ();
+
+		void changed ();
+
+		/**
 		 * Return a string corresponding to the value
 		 * @return a string corresponding to the value
 		 */
