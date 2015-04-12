@@ -47,10 +47,10 @@ namespace stibbons {
 		 * \return An int equal to 0 if no error has occurred.
 		 */
 		virtual Value* interpret(Turtle* turtle,
-		                         const Tree*,
+		                         const TreePtr,
 		                         Table* hashTable=nullptr) const;
 		virtual Value* interpret(Agent* agent,
-		                         const Tree*,
+		                         const TreePtr,
 		                         Table* hashTable=nullptr) const;
 
 	private:
@@ -60,7 +60,7 @@ namespace stibbons {
 		 * \param tree A tree with the FCT or AGT root node. 
 		 * \return The function corresponding to the tree
 		 */
-		virtual Function* getFunctionFromTree(const Tree*) const;
+		virtual Function* getFunctionFromTree(const TreePtr) const;
 
 		/**
 		 * Interpret a function (or function of a breed)
@@ -73,11 +73,11 @@ namespace stibbons {
 		 */
 		virtual	Value* interpretFunction(Function*,
 		                                 Turtle*,
-										 const Tree*,
+										 const TreePtr,
 										 Table*, 
 										 std::string) const;
 
-		static inline yy::position getPosition(const Tree* tree);
+		static inline yy::position getPosition(const TreePtr tree);
 	};
 }
 /*

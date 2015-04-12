@@ -4,7 +4,7 @@
 
 namespace stibbons {
 
-UserFunction::UserFunction (Tree* tree, vector<string> params) :
+UserFunction::UserFunction (TreePtr tree, vector<string> params) :
 	Function(params),
 	tree(tree) {}
 

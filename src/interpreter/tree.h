@@ -13,6 +13,7 @@
 #pragma once
 
 #include <iostream>
+#include <memory>
 #include <vector>
 #include <utility>
 #include <tuple>
@@ -20,6 +21,10 @@
 
 
 namespace stibbons {
+
+	class Tree;
+
+	typedef std::shared_ptr<Tree> TreePtr;
 
 	/**
 	  * \class Tree
@@ -34,7 +39,7 @@ namespace stibbons {
 	class Tree {
 	private:
 		std::pair<int,Value*> node;
-		std::vector<Tree*>* sons;
+		std::vector<TreePtr > sons;
 		std::pair<int,int> position;
 	public:
 		/**
@@ -68,14 +73,14 @@ namespace stibbons {
 		 *
 		 * \param t A Tree with root node equal to current Tree root node.
 		 */ 
-		void mergeTree(Tree*);
+		void mergeTree(TreePtr );
 
 		/**
 		 * Append the sons of t to the current node.
 		 *
 		 * \param t A Tree.
 		 */ 
-		void appendSons(Tree*);
+		void appendSons(TreePtr );
 
 		/**
 		 * Create and append a son to current tree.
@@ -88,20 +93,20 @@ namespace stibbons {
 		 * Append a tree son to current tree.
 		 * \param t The tree to append
 		 */
-		virtual void addSon(Tree*);
+		virtual void addSon(TreePtr );
 
 		/**
 		 * Return all sons of current tree
 		 * \return a vector that contains all sons of the Tree
 		 */
-		virtual std::vector<Tree*>* getSons() const;
+		virtual const std::vector<TreePtr >& getSons() const;
 
 		/**
 		 * Return a son identify by his position
 		 * \param pos the position of the needed son
-		 * \return the requested son (Tree* type)
+		 * \return the requested son (TreePtr  type)
 		 */
-		virtual Tree* getSon(size_t pos=0) const;
+		virtual TreePtr  getSon(size_t pos=0) const;
 
 		/**
 		 * Set the position of the token in file

@@ -1,54 +1,52 @@
 #include "tree.h"
 
+using namespace std;
+
 namespace stibbons {
 
-	Tree::Tree(int token,Value* val): node(token,val),sons(new std::vector<Tree*>()) {}
+	Tree::Tree(int token,Value* val): node(token,val),sons(std::vector<TreePtr >()) {}
 
 	Tree::~Tree() {
 		if(std::get<1>(node) != nullptr) delete std::get<1>(node);
-		for(auto t : *sons) {
-			delete t;
-		}
-		delete sons;
 	}
 
 	bool Tree::isLeaf() const {
-		return sons->empty();
+		return sons.empty();
 	}
 
 	std::pair<int,Value*> Tree::getNode() const {
 		return node;
 	}
 
-	void Tree::mergeTree(Tree* t) {
+	void Tree::mergeTree(TreePtr  t) {
 		if(t == nullptr || std::get<0>(t->getNode()) != std::get<0>(this->getNode())) {
 			throw std::exception(); 
 		}
-		sons->insert(sons->end(),t->getSons()->begin(),t->getSons()->end());
+		sons.insert(sons.end(),t->getSons().begin(),t->getSons().end());
 	}
 
-	void Tree::appendSons(Tree* t) {
+	void Tree::appendSons(TreePtr  t) {
 		if(t != nullptr) {
-			sons->insert(sons->end(),t->getSons()->begin(),t->getSons()->end());
+			sons.insert(sons.end(),t->getSons().begin(),t->getSons().end());
 		}
 	}
 
-	void Tree::addSon(Tree* t) {
+	void Tree::addSon(TreePtr  t) {
 		if(t) {
-			sons->push_back(t);
+			sons.push_back(t);
 		}
 	}
 
 	void Tree::addSon(int token,Value* val) {
-		sons->push_back(new Tree(token,val));
+		sons.push_back(make_shared<Tree>(token,val));
 	}
 
-	std::vector<Tree*>* Tree::getSons() const {
+	const std::vector<TreePtr >& Tree::getSons() const {
 		return sons;
 	}
 
-	Tree* Tree::getSon(size_t pos) const {
-		return sons->at(pos);
+	TreePtr  Tree::getSon(size_t pos) const {
+		return sons.at(pos);
 	}
 
 
@@ -62,7 +60,7 @@ namespace stibbons {
 
 	void Tree::output(std::ostream& os,std::string dec) const {
 		os<<dec<<" "<<std::get<0>(node)<<std::endl;
-		for(auto t : *sons) {
+		for(auto t : sons) {
 			t->output(os, dec+"-");
 		}
 	}

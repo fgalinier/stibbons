@@ -35,7 +35,7 @@ class UserFunction : public Function {
 		 * @param params the parameters that the function expect to be
 		 * executed with
 		 */
-		UserFunction (Tree* tree, vector<string> params = vector<string>());
+		UserFunction (TreePtr tree, vector<string> params = vector<string>());
 
 		/**
 		* Destructor
@@ -52,7 +52,7 @@ class UserFunction : public Function {
 		virtual Value* exec (Agent* agent, Table* params);
 
 	private:
-		Tree* tree;
+		TreePtr tree;
 };
 
 }

@@ -13,14 +13,14 @@ extern FILE *yyin;
 
 namespace stibbons {
 
-	yy::position Interpreter::getPosition(const Tree* tree) {
+	yy::position Interpreter::getPosition(const TreePtr tree) {
 		return yy::position(nullptr,
 		                    std::get<0>(tree->getPosition()),
 		                    std::get<0>(tree->getPosition()));
 	}
 
 	Value* Interpreter::interpret(Turtle* turtle,
-	                              const Tree* tree,
+	                              const TreePtr tree,
 								  Table* hashTable) const {
 		if(tree != nullptr) {
 			switch(std::get<0>(tree->getNode())) {
@@ -29,7 +29,7 @@ namespace stibbons {
 				Value* res;
 				if(!tree->isLeaf()) {
 					auto sons = tree->getSons();
-					for(auto son : *sons) res = interpret(turtle,son,hashTable);
+					for(auto son : sons) res = interpret(turtle,son,hashTable);
 					return res;
 				}
 				break;
@@ -312,12 +312,11 @@ namespace stibbons {
 				auto type = std::get<1>(tree->getNode());
 				std::string id;
 				Breed* breed;
-				const Tree* paramTree;
+				TreePtr paramTree;
 				if(type == nullptr) {
 					id = "anonym agent";
 					auto function = new UserFunction(tree->getSon(0),vector<std::string>());
 					breed = turtle->getWorld()->createBreed(*function);
-					paramTree = nullptr;
 				}
 				else {
 					id = dynamic_cast<String*>(type)->getValue();
@@ -362,20 +361,20 @@ namespace stibbons {
 	}
 
 	Value* Interpreter::interpret(Agent* agent,
-	                              const Tree* tree,
+	                              const TreePtr tree,
 	                              Table* hashTable) const {
 		return interpret(dynamic_cast<Turtle*>(agent), tree, hashTable);
 	}
 
-	Function* Interpreter::getFunctionFromTree(const Tree* tree) const {
+	Function* Interpreter::getFunctionFromTree(const TreePtr tree) const {
 		auto fctTree = tree->getSon(0);
 		auto params = new std::vector<std::string>();
 		auto sons = tree->getSons();
-		for(size_t i=1;i<sons->size();i++) {
+		for(size_t i=1;i<sons.size();i++) {
 			params->push_back(
 				dynamic_cast<String*>(
 					std::get<1>(
-						sons->at(i)->getNode()
+						sons.at(i)->getNode()
 					)
 				  )->getValue()
 			);
@@ -385,18 +384,18 @@ namespace stibbons {
 
 	Value* Interpreter::interpretFunction(Function* fct,
 	                                      Turtle* turtle,
-										  const Tree* tree,
+										  const TreePtr tree,
 										  Table* hashTable,
 										  std::string id) const {
 		auto newHashTable = (!hashTable)?new Table():hashTable;
 
 		if(tree) {
-			if(fct->getParams().size() != tree->getSons()->size()) {
+			if(fct->getParams().size() != tree->getSons().size()) {
 				std::ostringstream oss;
 				oss<<"No matching function for "
 				   <<id
 				   <<" with "
-				   <<tree->getSons()->size()
+				   <<tree->getSons().size()
 				   <<" parameters";
 				throw SemanticException(oss.str().c_str(),
 										getPosition(tree));

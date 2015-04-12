@@ -21,7 +21,7 @@ namespace stibbons {
 		yyin = file;
 
 		// Parse the program
-		tree = new Tree(0,nullptr);
+		tree = make_shared<Tree>(0,nullptr);
 		yy::parser* pparser = new yy::parser(tree);
 		pparser->parse();
 

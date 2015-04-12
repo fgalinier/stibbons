@@ -55,7 +55,7 @@ class WorldInterpreter : public virtual Interpreter {
 
 	private:
 		World* world;
-		Tree* tree;
+		TreePtr tree;
 };
 
 }
