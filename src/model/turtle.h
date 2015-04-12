@@ -47,6 +47,11 @@ class Turtle : public Point, public Agent{
 		 */
 		Turtle (Agent *parent, turtle_id id = 0);
 
+		/**
+		 * Initialize the default attributes
+		 */
+		void initAttributes ();
+
 		virtual Type getType() const;
 
 		/**

@@ -3,6 +3,8 @@
 #include <cmath>
 #include <sstream>
 
+#include "standard-function.h"
+
 namespace stibbons {
 
 error_code ec (errno,std::generic_category());
@@ -21,7 +23,9 @@ Turtle::Turtle () :
 	breed(nullptr),
 	angle(0.0),
 	color(Color()),
-	line(nullptr) {}
+	line(nullptr) {
+		initAttributes();
+	}
 
 Turtle::Turtle (Agent* parent, turtle_id id) :
 	Agent(parent),
@@ -29,7 +33,9 @@ Turtle::Turtle (Agent* parent, turtle_id id) :
 	breed(nullptr),
 	angle(0.0),
 	color(Color()),
-	line(nullptr) {}
+	line(nullptr) {
+		initAttributes();
+	}
 
 Turtle::Turtle (Breed *breed) :
 	Agent(breed->getWorld()),
@@ -37,7 +43,9 @@ Turtle::Turtle (Breed *breed) :
 	breed(breed),
 	angle(0.0),
 	color(Color()),
-	line(nullptr) {}
+	line(nullptr) {
+		initAttributes();
+	}
 
 Turtle::Turtle (Turtle *parent) :
 	Agent(parent),
@@ -45,7 +53,13 @@ Turtle::Turtle (Turtle *parent) :
 	breed(parent->breed),
 	angle(parent->angle),
 	color(parent->color),
-	line(nullptr) {}
+	line(nullptr) {
+		initAttributes();
+	}
+
+void Turtle::initAttributes () {
+	setProperty(pair<string,Value*>("teleport", new TeleportFunction()));
+}
 
 void Turtle::setId (turtle_id new_var) {
 	lock_guard<mutex> lock(value_m);

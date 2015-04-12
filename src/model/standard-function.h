@@ -50,6 +50,19 @@ class PrintlnFunction : public Function {
 		virtual Value* exec (Agent* agent, Table* params);
 };
 
+/**
+ * class TeleportFunction
+ *
+ *\brief A class teleporting a turtle to another location.
+ *
+ *\author Adrien Plazas
+ **/
+class TeleportFunction : public Function {
+	public:
+		TeleportFunction ();
+		virtual Value* exec (Agent* agent, Table* params);
+};
+
 }
 
 /*
