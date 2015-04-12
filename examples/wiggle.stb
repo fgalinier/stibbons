@@ -1,0 +1,17 @@
+agent ant () {
+	teleport(rand() % max-x, rand() % max-y, rand())
+
+	function wiggle() {
+		rt rand() % 60
+		lt rand() % 60
+		fd 1
+	}
+
+	pd
+	while (true) {
+		wiggle()
+	}
+}
+
+5 new ant()
+
