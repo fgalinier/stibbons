@@ -1,5 +1,6 @@
 #pragma once
 
+#include "world.h"
 #include "color.h"
 #include "agent.h"
 #include <stdexcept>
@@ -9,6 +10,8 @@
 #include <mutex>
 
 namespace stibbons {
+
+class World;
 
 /**
  * \class Zone

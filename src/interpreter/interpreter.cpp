@@ -149,12 +149,40 @@ namespace stibbons {
 				else {
 					pair<string,Value*> prop = {id,val};
 					if(hashTable) {
-						auto got = hashTable->find(id);
-						if (got != hashTable->end()) {
-							(*hashTable)[id] = val;
+						auto got = hashTable->getValue(id);
+						if (got->getType() != Type::NIL) {
+							hashTable->setValue(id,val);
 						}
 					}
 					turtle->setProperty(prop);
+				}
+				return val;
+			}
+				break;
+			//Zone cases:
+			case yy::parser::token::ZID: {
+				auto id = dynamic_cast<String*>(std::get<1>(tree->getNode()))->getValue();
+				auto zone = turtle->getZone();
+				return zone->getProperty(id);
+			}
+				break;
+			case yy::parser::token::ZONE: {
+				auto val = this->interpret(turtle,tree->getSon(0),hashTable);
+				auto id = dynamic_cast<String*>(std::get<1>(tree->getNode()))->getValue();
+				auto zone = turtle->getZone();
+				if (id == "color") {
+					if(val->getType() != Type::COLOR) {
+							throw SemanticException("color",
+					                        Type::COLOR,
+					                        val->getType(),
+											yy::position(nullptr,std::get<0>(tree->getPosition()),
+														 std::get<0>(tree->getPosition())));
+					}
+					zone->setColor(*(dynamic_cast<Color*>(val)));
+				}
+				else {
+					pair<string,Value*> prop = {id,val};
+					zone->setProperty(prop);
 				}
 				return val;
 			}
@@ -165,9 +193,6 @@ namespace stibbons {
 			case yy::parser::token::COLOR:
 			case yy::parser::token::BOOLEAN:
 			case yy::parser::token::NIL:
-				return std::get<1>(tree->getNode());
-				break;
-			case yy::parser::token::COLOR:
 				return std::get<1>(tree->getNode());
 				break;
 		   	//Arithmetic cases:
@@ -332,7 +357,7 @@ namespace stibbons {
 		}
  
 		//Operations tokens : EQ NEQ GT GEQ LS LEQ
-		//Stibbons spécial tokens : DIE STRING COLOR NIL
+		//Stibbons spécial tokens : DIE STRING NIL
 		return &Nil::getInstance();
 	}
 

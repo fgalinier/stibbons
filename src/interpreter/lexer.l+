@@ -28,6 +28,8 @@
 %option noyywrap nounput
 %option case-insensitive
 
+id [_a-z][\-_a-z0-9]*
+
  /*Rules*/
 %%
 
@@ -91,7 +93,9 @@ function {return yy::parser::token::FCT;}
 
 #([a-f0-9]{6}|[a-f0-9]{3}) {pyylval->v=new stibbons::Color(yytext); return yy::parser::token::COLOR;}
 
-[_a-z][\-_a-z0-9]* {pyylval->v=new stibbons::String(yytext); return yy::parser::token::ID;}
+zone\.{id} {pyylval->v=new stibbons::String(yytext+5); return yy::parser::token::ZID;}
+
+{id} {pyylval->v=new stibbons::String(yytext); return yy::parser::token::ID;}
 
 "//"[^\n]*\n* { loc->lines(countNewLine(yytext)); loc->step(); return yy::parser::token_type('\n');}
 

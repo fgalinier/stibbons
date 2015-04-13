@@ -59,9 +59,10 @@ Type Zone::getType() const {
 }
 
 void Zone::setColor (Color color) {
-	lock_guard<mutex> lock(value_m);
-	this->color = color;
-
+	{
+		lock_guard<mutex> lock(value_m);
+		this->color = color;
+	}
 	changed();
 }
 

@@ -27,13 +27,14 @@ using namespace std;
 %{
   YY_DECL;
 %}
-%token FD LT RT PU PD DIE AND OR XOR NOT EQ NEQ GT GEQ LS LEQ LB RB LP RP CALL RPT WHL END IF ELSE FCT NEW AGT
+%token FD LT RT PU PD DIE AND OR XOR NOT EQ NEQ GT GEQ LS LEQ LB RB LP RP CALL RPT WHL END IF ELSE FCT NEW AGT ZONE
 %token <v> NUMBER
 %token <v> STRING
 %token <v> COLOR
 %token <v> BOOLEAN 
 %token <v> NIL
 %token <v> ID
+%token <v> ZID
 %type <tr> instr
 %type <tr> instr_list
 %type <tr> instr_turtle
@@ -217,6 +218,7 @@ expr : LP expr RP { $$ = $2; }
 | lit { $$ = $1; }
 | fct_call { $$ = $1; }
 | ID { $$ = new stibbons::Tree(yy::parser::token::ID,$1); }
+| ZID { $$ = new stibbons::Tree(yy::parser::token::ZID,$1); }
 | '-' expr %prec MOINSUNAIRE 
 {
   stibbons::Tree *t1 = new stibbons::Tree('-',nullptr);
@@ -345,6 +347,12 @@ expr : LP expr RP { $$ = $2; }
 affect : ID '=' expr
 {
   stibbons::Tree *t1 = new stibbons::Tree('=',$1);
+  t1->addSon($3);
+  $$ = t1;
+}
+| ZID '=' expr
+{
+  stibbons::Tree *t1 = new stibbons::Tree(yy::parser::token::ZONE,$1);
   t1->addSon($3);
   $$ = t1;
 }; 

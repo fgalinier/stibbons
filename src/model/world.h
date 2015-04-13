@@ -26,6 +26,8 @@ class Function;
 
 typedef unsigned long turtle_id;
 
+class Zone;
+
 /**
  * \class World
  *

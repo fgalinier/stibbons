@@ -4,6 +4,7 @@
 #include "color.h"
 #include "point.h"
 #include "world.h"
+#include "zone.h"
 #include "line.h"
 #include "agent.h"
 #include "breed.h"
@@ -19,6 +20,7 @@ using namespace std;
 namespace stibbons {
 
 class World;
+class Zone;
 class Breed;
 
 typedef unsigned long turtle_id;
