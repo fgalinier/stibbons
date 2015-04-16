@@ -1,23 +1,29 @@
 #include "../model/turtle.h"
+#include "../model/value.h"
+#include "../model/number.h"
 
 #include <cppunit/TestCase.h>
 #include <cppunit/extensions/HelperMacros.h>
 
 using namespace std;
 using namespace CppUnit;
+using namespace stibbons;
 
 class TestTurtle : public TestCase{
 	CPPUNIT_TEST_SUITE(TestTurtle);
 	CPPUNIT_TEST(testAngle);
 	CPPUNIT_TEST(testForward);
+	CPPUNIT_TEST(testCommunication);
 	CPPUNIT_TEST_SUITE_END();
 
 	public :
 /*Explication : pas de constructeur vide ds tortue, donc on ne peux pas laisser turtle, et seg fault si redefinit dans le setUp => pointeur ou constructeur vide dans tortue*/
 		stibbons::TurtlePtr turtle;// stibbons::Turtle(0, nullptr);
+     	stibbons::TurtlePtr t2;
 
 		void setUp(){
 			turtle = stibbons::Turtle::construct();
+			t2 = stibbons::Turtle::construct();
 		}
 
 		void testAngle() {
@@ -43,6 +49,17 @@ class TestTurtle : public TestCase{
 			CPPUNIT_ASSERT_EQUAL (1.0, turtle->getValue(0));
 			CPPUNIT_ASSERT_EQUAL (1.0, turtle->getValue(1));
 		}
+
+		void testCommunication(){
+			cout << "TestTurtle::testCommunication" << endl;
+			Value* v=new Number(2);
+			turtle->send(t2,v);
+			pair<Turtle*,Value*>  r=t2->recv();
+			Number* n=dynamic_cast<Number*>(r.second);
+			Number* n2=dynamic_cast<Number*>(v);
+			CPPUNIT_ASSERT_EQUAL(n->getValue(),n2->getValue());
+
+}
 };
 
 CPPUNIT_TEST_SUITE_NAMED_REGISTRATION(TestTurtle, "TestTurtle" );

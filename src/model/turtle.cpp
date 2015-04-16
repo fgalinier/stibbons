@@ -23,7 +23,8 @@ Turtle::Turtle () :
 	breed(nullptr),
 	angle(0.0),
 	color(Color()),
-	line(nullptr) {
+	line(nullptr),
+	messages(deque<pair<TurtlePtr,ValuePtr>>()){
 		initAttributes();
 	}
 
@@ -33,7 +34,8 @@ Turtle::Turtle (AgentPtr parent, turtle_id id) :
 	breed(nullptr),
 	angle(0.0),
 	color(Color()),
-	line(nullptr) {
+	line(nullptr),
+	messages(deque<pair<TurtlePtr,ValuePtr>>()) {
 		initAttributes();
 	}
 
@@ -43,7 +45,8 @@ Turtle::Turtle (Breed *breed) :
 	breed(breed),
 	angle(0.0),
 	color(Color()),
-	line(nullptr) {
+	line(nullptr),
+	messages(deque<pair<TurtlePtr,ValuePtr>>()) {
 		initAttributes();
 	}
 
@@ -53,7 +56,8 @@ Turtle::Turtle (TurtlePtr parent) :
 	breed(parent->breed),
 	angle(parent->angle),
 	color(parent->color),
-	line(nullptr) {
+	line(nullptr),
+	messages(deque<pair<TurtlePtr,ValuePtr>>())  {
 		initAttributes();
 	}
 
@@ -222,6 +226,52 @@ void Turtle::changed() {
 
 	if (world)
 		world->changed();
+}
+
+pair<TurtlePtr,ValuePtr> Turtle::getFirstMessage(){
+	lock_guard<mutex> lock(value_m);
+	auto result=messages.front();
+	messages.pop_front();
+	return result;
+}
+
+pair<TurtlePtr,ValuePtr> Turtle::getLastMessage(){
+	lock_guard<mutex> lock(value_m);
+	auto result=messages.back();
+	messages.pop_back();
+	return result;
+}
+
+void Turtle::send(TurtlePtr t, ValuePtr v){
+	t->addMessage(shared_ptr<Turtle>(this),v);
+}
+
+void Turtle::send(vector<TurtlePtr> t, ValuePtr v){
+	for (auto tt : t)
+	{
+		tt->addMessage(shared_ptr<Turtle>(this),v);
+	}
+}
+
+void Turtle::sendAll(ValuePtr v){
+	auto turtles=getWorld()->getTurtles();
+	for (auto t : turtles)
+		t->addMessage(shared_ptr<Turtle>(this),v);
+}
+
+pair<TurtlePtr,ValuePtr> Turtle::recv(){
+	return getFirstMessage();
+}
+
+int Turtle::checkMessage(){
+	lock_guard<mutex> lock(value_m);
+	return messages.size();
+}
+
+void Turtle::addMessage(TurtlePtr exp,ValuePtr v){
+	lock_guard<mutex> lock(value_m);
+    auto p=make_pair(exp,v);
+	messages.push_back(p);
 }
 
 string Turtle::toString () {

@@ -11,6 +11,7 @@
 #include "value.h"
 #include <future>
 #include <cmath>
+#include <deque>
 #include <stdexcept>
 #include <system_error>
 #include <unordered_map>
@@ -161,6 +162,49 @@ class Turtle : public Point, public Agent {
 		void changed ();
 
 		/**
+		 * Get the first message receive
+		 * @return the first Message 
+		 */
+		pair<TurtlePtr,ValuePtr> getFirstMessage();
+
+		/**
+		 * Get the last message receive
+		 * @return the last Message 
+		 */
+		pair<TurtlePtr,ValuePtr> getLastMessage();
+
+		/**
+		 * Send a message to the Turtle t
+		 * @param a turtle t and the message
+		 */
+		void send(TurtlePtr t, ValuePtr);
+
+		/**
+		 * Send a message to all the turtle  in t
+		 * @param a vector of turtle t and the message
+		 */
+		void send(vector<TurtlePtr> t, ValuePtr);
+
+		/**
+		 * Send a message to all turtles
+		 * @param the message a Value
+		 */
+		void sendAll(ValuePtr);
+
+		/**
+		 * Read the first message of the deque and delete it from the deque
+		 * @param the etiquette
+		 * @return Value, the first message receive
+		 */
+		pair<TurtlePtr,ValuePtr> recv();
+
+		/**
+		 * Check if you have receve some messages
+		 * @return the number of message available
+		 */
+		int checkMessage();
+
+		/**
 		 * Return a string corresponding to the value
 		 * @return a string corresponding to the value
 		 */
@@ -194,12 +238,19 @@ class Turtle : public Point, public Agent {
 		void init ();
 
 	private:
+		/**
+		 * Add a message to the deque
+		 * @param the expediteur and the message
+		 */
+		void addMessage(TurtlePtr exp, ValuePtr v);
+
 		turtle_id id;
 		Breed *breed;
 		double angle;
 		Color color;
 		Line* line;
 		mutex value_m;
+		deque<pair<TurtlePtr,ValuePtr>> messages;
 	};
 }
 
