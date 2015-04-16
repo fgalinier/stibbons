@@ -197,67 +197,51 @@ namespace stibbons {
 				return std::get<1>(tree->getNode());
 				break;
 		   	//Arithmetic cases:
-			case '+': {
-				auto val1 = this->interpret(turtle,tree->getSon(0),hashTable);
-				auto val2 = this->interpret(turtle,tree->getSon(1),hashTable);
-				if(val1->getType() != Type::NUMBER || val2->getType() != Type::NUMBER) 
-					throw SemanticException("+",
-					                        Type::NUMBER, Type::NUMBER,
-					                        val1->getType(), val2->getType(),
-					                        getPosition(tree));
-				return make_shared<Number>((dynamic_pointer_cast<Number>(val1)->getValue())+(dynamic_pointer_cast<Number>(val2)->getValue()));
-			}
-				break;
-			case '-': {
-				auto val1 = this->interpret(turtle,tree->getSon(0),hashTable);
-				auto val2 = this->interpret(turtle,tree->getSon(1),hashTable);
-				if(val1->getType() != Type::NUMBER || val2->getType() != Type::NUMBER) 
-					throw SemanticException("-",
-					                        Type::NUMBER, Type::NUMBER,
-					                        val1->getType(), val2->getType(),
-					                        getPosition(tree));
-				return make_shared<Number>((dynamic_pointer_cast<Number>(val1)->getValue())-(dynamic_pointer_cast<Number>(val2)->getValue()));
-			}
-				break;
-			case '*': {
-				auto val1 = this->interpret(turtle,tree->getSon(0),hashTable);
-				auto val2 = this->interpret(turtle,tree->getSon(1),hashTable);
-				if(val1->getType() != Type::NUMBER || val2->getType() != Type::NUMBER) 
-					throw SemanticException("*",
-					                        Type::NUMBER, Type::NUMBER,
-					                        val1->getType(), val2->getType(),
-					                        getPosition(tree));
-				return make_shared<Number>((dynamic_pointer_cast<Number>(val1)->getValue())*(dynamic_pointer_cast<Number>(val2)->getValue()));
-			}
-				break;
-			case '/': {
-				auto val1 = this->interpret(turtle,tree->getSon(0),hashTable);
-				auto val2 = this->interpret(turtle,tree->getSon(1),hashTable);
-				if(val1->getType() != Type::NUMBER || val2->getType() != Type::NUMBER) 
-					throw SemanticException("/",
-					                        Type::NUMBER, Type::NUMBER,
-					                        val1->getType(), val2->getType(),
-					                        getPosition(tree));
-				if(dynamic_pointer_cast<Number>(val2)->getValue() == 0) 
-					throw SemanticException("/: Cannot divide by 0",
-					                        getPosition(tree));
-				return make_shared<Number>((dynamic_pointer_cast<Number>(val1)->getValue())/(dynamic_pointer_cast<Number>(val2)->getValue()));
-			}
-				break;
-			case '%': {
-				auto val1 = this->interpret(turtle,tree->getSon(0),hashTable);
-				auto val2 = this->interpret(turtle,tree->getSon(1),hashTable);
-				if(val1->getType() != Type::NUMBER || val2->getType() != Type::NUMBER) 
-					throw SemanticException("%",
-					                        Type::NUMBER, Type::NUMBER,
-					                        val1->getType(), val2->getType(),
-					                        getPosition(tree));
-				if(dynamic_pointer_cast<Number>(val2)->getValue() == 0) 
-					throw SemanticException("%: Cannot divide by 0",
-					                        getPosition(tree));
-				return make_shared<Number>(((int) dynamic_pointer_cast<Number>(val1)->getValue())%((int) dynamic_pointer_cast<Number>(val2)->getValue()));
-			}
-				break;
+			case '+':
+				try {
+					auto val1 = this->interpret(turtle,tree->getSon(0), hashTable);
+					auto val2 = this->interpret(turtle,tree->getSon(1), hashTable);
+					return val1->add(val2);
+				}
+				catch (std::domain_error e) {
+					throw SemanticException(e.what(), getPosition(tree));
+				}
+			case '-':
+				try {
+					auto val1 = this->interpret(turtle,tree->getSon(0), hashTable);
+					auto val2 = this->interpret(turtle,tree->getSon(1), hashTable);
+					return val1->substract(val2);
+				}
+				catch (std::domain_error e) {
+					throw SemanticException(e.what(), getPosition(tree));
+				}
+			case '*':
+				try {
+					auto val1 = this->interpret(turtle,tree->getSon(0), hashTable);
+					auto val2 = this->interpret(turtle,tree->getSon(1), hashTable);
+					return val1->multiply(val2);
+				}
+				catch (std::domain_error e) {
+					throw SemanticException(e.what(), getPosition(tree));
+				}
+			case '/':
+				try {
+					auto val1 = this->interpret(turtle,tree->getSon(0), hashTable);
+					auto val2 = this->interpret(turtle,tree->getSon(1), hashTable);
+					return val1->divide(val2);
+				}
+				catch (std::domain_error e) {
+					throw SemanticException(e.what(), getPosition(tree));
+				}
+			case '%':
+				try {
+					auto val1 = this->interpret(turtle,tree->getSon(0), hashTable);
+					auto val2 = this->interpret(turtle,tree->getSon(1), hashTable);
+					return val1->modulo(val2);
+				}
+				catch (std::domain_error e) {
+					throw SemanticException(e.what(), getPosition(tree));
+				}
 	   		//Boolean operation cases:
 			case yy::parser::token::AND: {
 				auto val1 = this->interpret(turtle,tree->getSon(0),hashTable);
