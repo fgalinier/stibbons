@@ -49,7 +49,7 @@ class UserFunction : public Function {
 		 * @param params the parameters to execute the function with
 		 * @return the returned value
 		 */
-		virtual Value* exec (Agent* agent, Table* params);
+		virtual ValuePtr exec (AgentPtr agent, TablePtr params);
 
 	private:
 		TreePtr tree;

@@ -36,14 +36,14 @@ namespace stibbons {
 		auto zoneSize = Size(2);
 		zoneSize.setValue(0, 2);
 		zoneSize.setValue(1, 2);
-		world = new World(worldSize, zoneSize);
+		world = World::construct(worldSize, zoneSize);
 
-		auto f = new UserFunction(nullptr);
-		auto breed = world->createBreed(*f);
+		auto f = make_shared<UserFunction>(nullptr);
+		auto breed = world->createBreed(f);
 		breed->createTurtle();
 	}
 
-	World* WorldInterpreter::getWorld() {
+	WorldPtr WorldInterpreter::getWorld() {
 		return world;
 	}
 
@@ -56,7 +56,7 @@ namespace stibbons {
 
 		auto turtles = world->getTurtles();
 		auto turtle_i = turtles.begin();
-		interpret(*turtle_i, tree,new Table());
+		interpret(*turtle_i, tree,make_shared<Table>());
 	}
 
 }

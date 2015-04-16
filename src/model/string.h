@@ -13,6 +13,8 @@
 
 #include <string>
 
+#include <memory>
+
 namespace stibbons {
 
 /**
@@ -35,6 +37,8 @@ class String : public GenericValue<Type::STRING>, public SimpleValue<std::string
 		 */
 		virtual string toString ();
 };
+
+typedef std::shared_ptr<String> StringPtr;
 
 }
 

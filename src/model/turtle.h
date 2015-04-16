@@ -21,6 +21,7 @@ namespace stibbons {
 
 class World;
 class Zone;
+typedef std::shared_ptr<World> WorldPtr;
 class Breed;
 
 typedef unsigned long turtle_id;
@@ -32,20 +33,20 @@ typedef unsigned long turtle_id;
  *
  *\author Julia Bassoumi
  */
-class Turtle : public Point, public Agent{
+class Turtle : public Point, public Agent {
 	friend Breed;
 
 	public:
 		/**
 		 * Create a turtle
 		 */
-		Turtle ();
+		static TurtlePtr construct ();
 
 		/**
 		 * Create a turtle
 		 *
 		 */
-		Turtle (Agent *parent, turtle_id id = 0);
+		static TurtlePtr construct (AgentPtr parent, turtle_id id = 0);
 
 		/**
 		 * Initialize the default attributes
@@ -82,13 +83,13 @@ class Turtle : public Point, public Agent{
 		 * Get the value of world
 		 * @return the value of world
 		 */
-		World* getWorld ();
+		WorldPtr getWorld ();
 
 		/**
 		 * Get the hovered zone
 		 * @return the hovered zone
 		 */
-		Zone* getZone ();
+		ZonePtr getZone ();
 
 		/**
 		 * Set the value for an axis
@@ -145,7 +146,37 @@ class Turtle : public Point, public Agent{
 		 *
 		 * @return the new child turtle
 		 */
-		Turtle *createChild();
+		TurtlePtr createChild();
+
+		/**
+		 * Special constructor for Breed
+		 */
+		static TurtlePtr construct (Breed *breed);
+
+		/**
+		 * Special constructor for Breed
+		 */
+		static TurtlePtr construct (TurtlePtr parent);
+
+		void changed ();
+
+		/**
+		 * Return a string corresponding to the value
+		 * @return a string corresponding to the value
+		 */
+		virtual string toString ();
+
+	protected:
+		/**
+		 * Create a turtle
+		 */
+		Turtle ();
+
+		/**
+		 * Create a turtle
+		 *
+		 */
+		Turtle (AgentPtr parent, turtle_id id = 0);
 
 		/**
 		 * Special constructor for Breed
@@ -155,15 +186,12 @@ class Turtle : public Point, public Agent{
 		/**
 		 * Special constructor for Breed
 		 */
-		Turtle (Turtle *parent);
-
-		void changed ();
+		Turtle (TurtlePtr parent);
 
 		/**
-		 * Return a string corresponding to the value
-		 * @return a string corresponding to the value
+		 * Initialize the world
 		 */
-		virtual string toString ();
+		void init ();
 
 	private:
 		turtle_id id;

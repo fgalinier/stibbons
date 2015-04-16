@@ -19,7 +19,7 @@ Runner::~Runner() {
 	delete interpreter;
 }
 
-World* Runner::getWorld() {
+WorldPtr Runner::getWorld() {
 	return interpreter->getWorld();
 }
 

@@ -17,13 +17,8 @@ namespace stibbons {
  *
  * \brief class Agent in stibbons 
  */
-class Agent : public Value {
+class Agent : public Value, public enable_shared_from_this<Agent> {
 	public:
-		/**
-		 * Empty Constructor
-		 */
-		Agent (Agent *parent = nullptr);
-
 		/**
 		 * Empty Destructor
 		 */
@@ -33,7 +28,7 @@ class Agent : public Value {
 		 * Get the parent of the agent
 		 * @return the parent of the agent
 		 */
-		Agent* getParent ();
+		AgentPtr getParent ();
 
 		/**
 		 * Reparent to the grand parent agent
@@ -49,27 +44,38 @@ class Agent : public Value {
 		 * Add a value in properties,
 		 * @param new_var the new value of properties, his type is pair<string,Value>
 		 */
-		virtual void setProperty (pair<string,Value*> &&new_var);
+		virtual void setProperty (pair<string,ValuePtr> &&new_var);
 
 		/**
 		 * Add a value in properties,
 		 * @param new_var the new value of properties, his type is pair<string,Value>
 		 */
-		virtual void setProperty (pair<string,Value*> &new_var);
+		virtual void setProperty (pair<string,ValuePtr> &new_var);
 
 		 /**
 		 * Get the value of the propertie p
 		 * @return the value of propertie p
 		 */
-		 virtual Value* getProperty(string p);
+		 virtual ValuePtr getProperty(string p);
+
+	protected:
+		/**
+		 * Empty Constructor
+		 * @param parent an unowned reference to the agent's parent
+		 */
+		Agent (AgentPtr parent = nullptr);
+
+		/**
+		 * Initialize the agent
+		 */
+		void init ();
 
 	private:
-		Agent *parent;
-		unordered_set<Agent *> children;
+		AgentPtr parent;
+		unordered_set<AgentPtr> children;
 
-		unordered_map<string,Value*> *properties;
+		unordered_map<string,ValuePtr> *properties;
 
-		void tryDelete (Value* value) throw (domain_error);
 protected :
 		mutex parent_m;
 };

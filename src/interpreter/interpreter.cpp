@@ -19,20 +19,21 @@ namespace stibbons {
 		                    std::get<0>(tree->getPosition()));
 	}
 
-	Value* Interpreter::interpret(Turtle* turtle,
+	ValuePtr Interpreter::interpret(TurtlePtr turtle,
 	                              const TreePtr tree,
-								  Table* hashTable) const {
+								  TablePtr hashTable) const {
 		if(tree != nullptr) {
 			switch(std::get<0>(tree->getNode())) {
 		   	//Sequence case:
-			case 0:
-				Value* res;
+			case 0: {
+				ValuePtr res = make_shared<Nil>();
 				if(!tree->isLeaf()) {
 					auto sons = tree->getSons();
 					for(auto son : sons) res = interpret(turtle,son,hashTable);
 					return res;
 				}
 				break;
+			}
 		  	//Basic cases:
 			case yy::parser::token::FD: {
 				auto val = this->interpret(turtle,tree->getSon(0),hashTable);
@@ -41,7 +42,7 @@ namespace stibbons {
 					                        Type::NUMBER,
 					                        val->getType(),
 					                        getPosition(tree));
-				turtle->forward(dynamic_cast<Number*>(val)->getValue());
+				turtle->forward(dynamic_pointer_cast<Number>(val)->getValue());
 			}
 				break;
 			case yy::parser::token::RT: {
@@ -51,7 +52,7 @@ namespace stibbons {
 					                        Type::NUMBER,
 					                        val->getType(),
 					                        getPosition(tree));
-				turtle->turnRight(dynamic_cast<Number*>(val)->getValue());
+				turtle->turnRight(dynamic_pointer_cast<Number>(val)->getValue());
 			}
 				break;
 			case yy::parser::token::LT: {
@@ -61,7 +62,7 @@ namespace stibbons {
 					                        Type::NUMBER,
 					                        val->getType(),
 					                        getPosition(tree));
-				turtle->turnLeft(dynamic_cast<Number*>(val)->getValue());
+				turtle->turnLeft(dynamic_pointer_cast<Number>(val)->getValue());
 			}
 				break;
 			case yy::parser::token::PU:
@@ -73,13 +74,13 @@ namespace stibbons {
 		   	//Loop cases:
 			case yy::parser::token::WHL: {
 				auto val = this->interpret(turtle,tree->getSon(0),hashTable);
-				Value* res;
+				ValuePtr res;
 				if(val->getType() != Type::BOOLEAN) 
 					throw SemanticException("WHILE",
 					                        Type::BOOLEAN,
 					                        val->getType(),
 					                        getPosition(tree));
-				while(dynamic_cast<Boolean*>(val)->getValue()) {
+				while(dynamic_pointer_cast<Boolean>(val)->getValue()) {
 					res = this->interpret(turtle,tree->getSon(1),hashTable);
 					auto val = this->interpret(turtle,tree->getSon(0));
 					if(val->getType() != Type::BOOLEAN)
@@ -93,8 +94,8 @@ namespace stibbons {
 				break;
 			case yy::parser::token::RPT: {
 				auto val = this->interpret(turtle,tree->getSon(0),hashTable);
-				auto nb = dynamic_cast<Number*>(val)->getValue();
-				Value* res;
+				auto nb = dynamic_pointer_cast<Number>(val)->getValue();
+				ValuePtr res;
 				if(val->getType() != Type::NUMBER)
 					throw SemanticException("REPEAT",
 					                        Type::NUMBER,
@@ -114,7 +115,7 @@ namespace stibbons {
 					                        Type::BOOLEAN,
 					                        cond->getType(),
 					                        getPosition(tree));
-				if(dynamic_cast<Boolean*>(cond)->getValue()){
+				if(dynamic_pointer_cast<Boolean>(cond)->getValue()){
 					return this->interpret(turtle,tree->getSon(1),hashTable);
 				}
 				else{
@@ -124,10 +125,10 @@ namespace stibbons {
 				break;
 			//Variable cases:
 			case yy::parser::token::ID: {
-				auto id = dynamic_cast<String*>(std::get<1>(tree->getNode()))->getValue();
+				auto id = dynamic_pointer_cast<String>(std::get<1>(tree->getNode()))->getValue();
 				if(hashTable) {
 					auto got = hashTable->getValue(id);
-					if (got != &Nil::getInstance())
+					if (got != make_shared<Nil>())
 						return hashTable->getValue(id);
 				}
 				return turtle->getProperty(id);
@@ -135,7 +136,7 @@ namespace stibbons {
 				break;
 			case '=': {
 				auto val = this->interpret(turtle,tree->getSon(0),hashTable);
-				auto id = dynamic_cast<String*>(std::get<1>(tree->getNode()))->getValue();
+				auto id = dynamic_pointer_cast<String>(std::get<1>(tree->getNode()))->getValue();
 				if (id == "color") {
 					if(val->getType() != Type::COLOR) {
 							throw SemanticException("color",
@@ -144,13 +145,13 @@ namespace stibbons {
 											yy::position(nullptr,std::get<0>(tree->getPosition()),
 														 std::get<0>(tree->getPosition())));
 					}
-					turtle->setColor(*(dynamic_cast<Color*>(val)));
+					turtle->setColor(*dynamic_pointer_cast<Color>(val));
 				}
 				else {
-					pair<string,Value*> prop = {id,val};
+					pair<string,ValuePtr> prop = {id,val};
 					if(hashTable) {
 						auto got = hashTable->getValue(id);
-						if (got->getType() != Type::NIL) {
+						if (got != make_shared<Nil>()) {
 							hashTable->setValue(id,val);
 						}
 					}
@@ -161,14 +162,14 @@ namespace stibbons {
 				break;
 			//Zone cases:
 			case yy::parser::token::ZID: {
-				auto id = dynamic_cast<String*>(std::get<1>(tree->getNode()))->getValue();
+				auto id = dynamic_pointer_cast<String>(std::get<1>(tree->getNode()))->getValue();
 				auto zone = turtle->getZone();
 				return zone->getProperty(id);
 			}
 				break;
 			case yy::parser::token::ZONE: {
 				auto val = this->interpret(turtle,tree->getSon(0),hashTable);
-				auto id = dynamic_cast<String*>(std::get<1>(tree->getNode()))->getValue();
+				auto id = dynamic_pointer_cast<String>(std::get<1>(tree->getNode()))->getValue();
 				auto zone = turtle->getZone();
 				if (id == "color") {
 					if(val->getType() != Type::COLOR) {
@@ -178,10 +179,10 @@ namespace stibbons {
 											yy::position(nullptr,std::get<0>(tree->getPosition()),
 														 std::get<0>(tree->getPosition())));
 					}
-					zone->setColor(*(dynamic_cast<Color*>(val)));
+					zone->setColor(*dynamic_pointer_cast<Color>(val));
 				}
 				else {
-					pair<string,Value*> prop = {id,val};
+					pair<string,ValuePtr> prop = {id,val};
 					zone->setProperty(prop);
 				}
 				return val;
@@ -204,7 +205,7 @@ namespace stibbons {
 					                        Type::NUMBER, Type::NUMBER,
 					                        val1->getType(), val2->getType(),
 					                        getPosition(tree));
-				return new Number((dynamic_cast<Number*>(val1)->getValue())+(dynamic_cast<Number*>(val2)->getValue()));
+				return make_shared<Number>((dynamic_pointer_cast<Number>(val1)->getValue())+(dynamic_pointer_cast<Number>(val2)->getValue()));
 			}
 				break;
 			case '-': {
@@ -215,7 +216,7 @@ namespace stibbons {
 					                        Type::NUMBER, Type::NUMBER,
 					                        val1->getType(), val2->getType(),
 					                        getPosition(tree));
-				return new Number((dynamic_cast<Number*>(val1)->getValue())-(dynamic_cast<Number*>(val2)->getValue()));
+				return make_shared<Number>((dynamic_pointer_cast<Number>(val1)->getValue())-(dynamic_pointer_cast<Number>(val2)->getValue()));
 			}
 				break;
 			case '*': {
@@ -226,7 +227,7 @@ namespace stibbons {
 					                        Type::NUMBER, Type::NUMBER,
 					                        val1->getType(), val2->getType(),
 					                        getPosition(tree));
-				return new Number((dynamic_cast<Number*>(val1)->getValue())*(dynamic_cast<Number*>(val2)->getValue()));
+				return make_shared<Number>((dynamic_pointer_cast<Number>(val1)->getValue())*(dynamic_pointer_cast<Number>(val2)->getValue()));
 			}
 				break;
 			case '/': {
@@ -237,10 +238,10 @@ namespace stibbons {
 					                        Type::NUMBER, Type::NUMBER,
 					                        val1->getType(), val2->getType(),
 					                        getPosition(tree));
-				if(dynamic_cast<Number*>(val2)->getValue() == 0) 
+				if(dynamic_pointer_cast<Number>(val2)->getValue() == 0) 
 					throw SemanticException("/: Cannot divide by 0",
 					                        getPosition(tree));
-				return new Number((dynamic_cast<Number*>(val1)->getValue())/(dynamic_cast<Number*>(val2)->getValue()));
+				return make_shared<Number>((dynamic_pointer_cast<Number>(val1)->getValue())/(dynamic_pointer_cast<Number>(val2)->getValue()));
 			}
 				break;
 			case '%': {
@@ -251,10 +252,10 @@ namespace stibbons {
 					                        Type::NUMBER, Type::NUMBER,
 					                        val1->getType(), val2->getType(),
 					                        getPosition(tree));
-				if(dynamic_cast<Number*>(val2)->getValue() == 0) 
+				if(dynamic_pointer_cast<Number>(val2)->getValue() == 0) 
 					throw SemanticException("%: Cannot divide by 0",
 					                        getPosition(tree));
-				return new Number(((int) dynamic_cast<Number*>(val1)->getValue())%((int) dynamic_cast<Number*>(val2)->getValue()));
+				return make_shared<Number>(((int) dynamic_pointer_cast<Number>(val1)->getValue())%((int) dynamic_pointer_cast<Number>(val2)->getValue()));
 			}
 				break;
 	   		//Boolean operation cases:
@@ -266,7 +267,7 @@ namespace stibbons {
 					                        Type::BOOLEAN, Type::BOOLEAN,
 					                        val1->getType(), val2->getType(),
 					                        getPosition(tree));
-				return new Boolean((dynamic_cast<Boolean*>(val1)->getValue()) && (dynamic_cast<Boolean*>(val2)->getValue()));
+				return make_shared<Boolean>((dynamic_pointer_cast<Boolean>(val1)->getValue()) && (dynamic_pointer_cast<Boolean>(val2)->getValue()));
 			}
 				break;
 			case yy::parser::token::OR: {
@@ -277,7 +278,7 @@ namespace stibbons {
 					                        Type::BOOLEAN, Type::BOOLEAN,
 					                        val1->getType(), val2->getType(),
 					                        getPosition(tree));
-				return new Boolean((dynamic_cast<Boolean*>(val1)->getValue()) || (dynamic_cast<Boolean*>(val2)->getValue()));
+				return make_shared<Boolean>((dynamic_pointer_cast<Boolean>(val1)->getValue()) || (dynamic_pointer_cast<Boolean>(val2)->getValue()));
 			}
 				break;
 			case yy::parser::token::XOR: {
@@ -288,7 +289,7 @@ namespace stibbons {
 					                        Type::BOOLEAN, Type::BOOLEAN,
 					                        val1->getType(), val2->getType(),
 					                        getPosition(tree));
-				return new Boolean((dynamic_cast<Boolean*>(val1)->getValue()) ^ (dynamic_cast<Boolean*>(val2)->getValue()));
+				return make_shared<Boolean>((dynamic_pointer_cast<Boolean>(val1)->getValue()) ^ (dynamic_pointer_cast<Boolean>(val2)->getValue()));
 			}
 				break;
 			case yy::parser::token::NOT: {
@@ -298,49 +299,55 @@ namespace stibbons {
 					                        Type::BOOLEAN,
 					                        val1->getType(),
 					                        getPosition(tree));
-				return new Boolean(!(dynamic_cast<Boolean*>(val1)->getValue()));
+				return make_shared<Boolean>(!(dynamic_pointer_cast<Boolean>(val1)->getValue()));
 			}
 				break;  
 			// New agent
 			case yy::parser::token::AGT: {
-				auto id = dynamic_cast<String*>(std::get<1>(tree->getNode()))->getValue();
+				auto id = dynamic_pointer_cast<String>(std::get<1>(tree->getNode()))->getValue();
 				auto function = this->getFunctionFromTree(tree);
-				turtle->getWorld()->createBreed(*function,id);
+				turtle->getWorld()->createBreed(function,id);
 			}
 				break;
 			case yy::parser::token::NEW: {
 				auto type = std::get<1>(tree->getNode());
 				std::string id;
-				Breed* breed;
+				ValuePtr breed_v = make_shared<Nil>();
 				TreePtr paramTree;
 				if(type == nullptr) {
 					id = "anonym agent";
-					auto function = new UserFunction(tree->getSon(0),vector<std::string>());
-					breed = turtle->getWorld()->createBreed(*function);
+					auto function = make_shared<UserFunction>(tree->getSon(0),vector<std::string>());
+					BreedPtr breed = turtle->getWorld()->createBreed(function);
+					paramTree = nullptr;
+					auto fct = breed->getFunction();
+					auto newTurtle = breed->createTurtle(turtle);
+					auto inter = new Interpreter();
+					std::thread newThread(&Interpreter::interpretFunction,inter,fct,newTurtle,paramTree,hashTable,id);
+					newThread.detach();
 				}
 				else {
-					id = dynamic_cast<String*>(type)->getValue();
-					breed = turtle->getWorld()->getBreed(id);
+					id = dynamic_pointer_cast<String>(type)->getValue();
+					BreedPtr breed = turtle->getWorld()->getBreed(id);
 					paramTree = tree;
+					auto fct = breed->getFunction();
+					auto newTurtle = breed->createTurtle(turtle);
+					auto inter = new Interpreter();
+					std::thread newThread(&Interpreter::interpretFunction,inter,fct,newTurtle,paramTree,hashTable,id);
+					newThread.detach();
 				}
-				auto fct = breed->getFunction();
-				auto newTurtle = breed->createTurtle(turtle);
-				auto inter = new Interpreter();
-				std::thread newThread(&Interpreter::interpretFunction,inter,fct,newTurtle,paramTree,hashTable,id);
-				newThread.detach();
 			}
 				break;
 			// Functions
 			case yy::parser::token::FCT: {
-				auto id = dynamic_cast<String*>(std::get<1>(tree->getNode()))->getValue();
+				auto id = dynamic_pointer_cast<String>(std::get<1>(tree->getNode()))->getValue();
 				auto fct = this->getFunctionFromTree(tree);
-				auto prop = std::pair<std::string,Value*>(id,fct);
+				auto prop = std::pair<std::string,ValuePtr>(id,fct);
 				turtle->setProperty(prop);
 			}
 				break;
 			case yy::parser::token::CALL: {
-				auto id = dynamic_cast<String*>(std::get<1>(tree->getNode()))->getValue();
-				auto fct = dynamic_cast<Function*>(turtle->getProperty(id));
+				auto id = dynamic_pointer_cast<String>(std::get<1>(tree->getNode()))->getValue();
+				auto fct = dynamic_pointer_cast<Function>(turtle->getProperty(id));
 				if(fct == nullptr)
 					throw SemanticException("Try to eval a non function value",
 			                                getPosition(tree));
@@ -357,37 +364,37 @@ namespace stibbons {
  
 		//Operations tokens : EQ NEQ GT GEQ LS LEQ
 		//Stibbons spécial tokens : DIE STRING NIL
-		return &Nil::getInstance();
+		return make_shared<Nil>();
 	}
 
-	Value* Interpreter::interpret(Agent* agent,
+	ValuePtr Interpreter::interpret(AgentPtr agent,
 	                              const TreePtr tree,
-	                              Table* hashTable) const {
-		return interpret(dynamic_cast<Turtle*>(agent), tree, hashTable);
+	                              TablePtr hashTable) const {
+		return interpret(dynamic_pointer_cast<Turtle>(agent), tree, hashTable);
 	}
 
-	Function* Interpreter::getFunctionFromTree(const TreePtr tree) const {
+	FunctionPtr Interpreter::getFunctionFromTree(const TreePtr tree) const {
 		auto fctTree = tree->getSon(0);
-		auto params = new std::vector<std::string>();
+		auto params = std::vector<std::string>();
 		auto sons = tree->getSons();
 		for(size_t i=1;i<sons.size();i++) {
-			params->push_back(
-				dynamic_cast<String*>(
+			params.push_back(
+				dynamic_pointer_cast<String>(
 					std::get<1>(
 						sons.at(i)->getNode()
 					)
 				  )->getValue()
 			);
 		}
-		return new UserFunction(fctTree,*params);
+		return make_shared<UserFunction>(fctTree,params);
 	}
 
-	Value* Interpreter::interpretFunction(Function* fct,
-	                                      Turtle* turtle,
+	ValuePtr Interpreter::interpretFunction(FunctionPtr fct,
+	                                      TurtlePtr turtle,
 										  const TreePtr tree,
-										  Table* hashTable,
+										  TablePtr hashTable,
 										  std::string id) const {
-		auto newHashTable = (!hashTable)?new Table():hashTable;
+		auto newHashTable = (!hashTable)?make_shared<Table>():hashTable;
 
 		if(tree) {
 			if(fct->getParams().size() != tree->getSons().size()) {

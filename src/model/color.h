@@ -14,6 +14,8 @@
 #include <string>
 #include <mutex>
 
+#include <memory>
+
 namespace stibbons {
 
 /**
@@ -114,6 +116,8 @@ class Color : public GenericValue<Type::COLOR> {
 		 */
 		virtual std::string toString ();
 };
+
+typedef std::shared_ptr<Color> ColorPtr;
 
 }
 

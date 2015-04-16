@@ -21,7 +21,7 @@ namespace stibbons {
 **/
 class RandFunction : public Function {
 	public:
-		virtual Value* exec (Agent* agent, Table* params);
+		virtual ValuePtr exec (AgentPtr agent, TablePtr params);
 };
 
 /**
@@ -34,7 +34,7 @@ class RandFunction : public Function {
 class PrintFunction : public Function {
 	public:
 		PrintFunction ();
-		virtual Value* exec (Agent* agent, Table* params);
+		virtual ValuePtr exec (AgentPtr agent, TablePtr params);
 };
 
 /**
@@ -47,7 +47,7 @@ class PrintFunction : public Function {
 class PrintlnFunction : public Function {
 	public:
 		PrintlnFunction ();
-		virtual Value* exec (Agent* agent, Table* params);
+		virtual ValuePtr exec (AgentPtr agent, TablePtr params);
 };
 
 /**

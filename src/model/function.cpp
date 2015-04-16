@@ -7,7 +7,7 @@ namespace stibbons {
 
 Function::Function (vector<string> params) : parameters(params) {}
 
-Value* Function::operator() (Agent* agent, Table* params) {
+ValuePtr Function::operator() (AgentPtr agent, TablePtr params) {
 	return exec (agent, params);
 }
 

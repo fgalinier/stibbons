@@ -18,8 +18,8 @@ class TestTable : public TestCase {
 		Table t;
 
 		void setUp() {
-			pair<string,Value*> paire("chasse", new Number(6.0));
-			pair<string,Value*> deuxieme("couleur", new String("chat"));
+			pair<string,ValuePtr> paire("chasse", make_shared<Number>(6.0));
+			pair<string,ValuePtr> deuxieme("couleur", make_shared<String>("chat"));
 
 			t.setValue(paire);
 			t.setValue(deuxieme);
@@ -30,22 +30,22 @@ class TestTable : public TestCase {
 
 			auto chasse = t.getValue("chasse");
 			CPPUNIT_ASSERT (Type::NUMBER == chasse->getType());
-			auto chasse_reel = dynamic_cast<Number*>(chasse);
+			auto chasse_reel = dynamic_pointer_cast<Number>(chasse);
 			CPPUNIT_ASSERT_EQUAL (6.0, chasse_reel->getValue());
 
 			auto couleur = t.getValue("couleur");
 			CPPUNIT_ASSERT (Type::STRING == couleur->getType());
-			auto couleur_reel = dynamic_cast<String*>(couleur);
+			auto couleur_reel = dynamic_pointer_cast<String>(couleur);
 			CPPUNIT_ASSERT_EQUAL (string("chat"), couleur_reel->getValue());
 		}
 
 		void changeValue(){
 			cout << "TestTable::changeValue" << endl;
 
-			t.setValue("chasse", new Number(7.7));
+			t.setValue("chasse", make_shared<Number>(7.7));
 			auto search = t.getValue("chasse");
 			CPPUNIT_ASSERT (Type::NUMBER == search->getType());
-			auto search_reel = dynamic_cast<Number*>(search);
+			auto search_reel = dynamic_pointer_cast<Number>(search);
 			CPPUNIT_ASSERT_EQUAL (7.7, search_reel->getValue());
 		}
 

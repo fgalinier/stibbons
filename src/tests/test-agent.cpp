@@ -20,15 +20,15 @@ class TestAgent : public TestCase {
 	CPPUNIT_TEST_SUITE_END();
 
 	public :
-		Turtle* t;
-		Zone* z;
-		World* w;
+		TurtlePtr t;
+		ZonePtr z;
+		WorldPtr w;
 
 		void setUp() {
-			pair<string,Value*> paire("chasse", new Number(6.0));
-			pair<string,Value*> deuxieme("couleur", new String("chat"));
-			pair<string,Value*> troisieme("tortue", new String("bleu"));
-			pair<string,Value*> quatrieme("color", new Color());
+			pair<string,ValuePtr> paire("chasse", make_shared<Number>(6.0));
+			pair<string,ValuePtr> deuxieme("couleur", make_shared<String>("chat"));
+			pair<string,ValuePtr> troisieme("tortue", make_shared<String>("bleu"));
+			pair<string,ValuePtr> quatrieme("color", make_shared<Color>());
 
 			auto worldSize = Size(2);
 			worldSize.setValue(0, 10);
@@ -36,14 +36,14 @@ class TestAgent : public TestCase {
 			auto zoneSize = Size(2);
 			zoneSize.setValue(0, 10);
 			zoneSize.setValue(1, 10);
-			w=new World(worldSize, zoneSize);
+			w=World::construct(worldSize, zoneSize);
 			w->setProperty(troisieme);
 			w->setProperty(quatrieme);
 
-			z=new Zone(w);
+			z = Zone::construct(w);
 			z->setProperty(deuxieme);
 
-			t=new Turtle(w, 0);
+			t=Turtle::construct(w, 0);
 			t->setProperty(paire);
 			t->setProperty(deuxieme);
 		}
@@ -52,19 +52,19 @@ class TestAgent : public TestCase {
 			cout << "TestAgent::getValuesT" << endl;
 			auto chasse = t->getProperty("chasse");
 			CPPUNIT_ASSERT (Type::NUMBER == chasse->getType());
-			auto chasse_reel = dynamic_cast<Number*>( chasse);
+			auto chasse_reel = dynamic_pointer_cast<Number>( chasse);
 			CPPUNIT_ASSERT_EQUAL (6.0, chasse_reel->getValue());
 		}
 
 		void changeValueT(){
 		cout << "TestAgent::changeValueT" << endl;
-		pair<string,Value*> paire("chasse", new Number(7.7));
+		pair<string,ValuePtr> paire("chasse", make_shared<Number>(7.7));
 		t->setProperty(paire);
 
 		auto search = t->getProperty(paire.first);
 		CPPUNIT_ASSERT (
 			search->getType() == Type::NUMBER &&
-			dynamic_cast<Number*>(search)->getValue() == 7.7
+			dynamic_pointer_cast<Number>(search)->getValue() == 7.7
 		);
 		}
 
@@ -72,7 +72,7 @@ class TestAgent : public TestCase {
 		cout << "TestAgent::getValuesZ" << endl;
 		auto couleur = z->getProperty("couleur");
 		CPPUNIT_ASSERT (Type::STRING == couleur->getType());
-		auto couleur_reel = dynamic_cast<String*> (couleur);
+		auto couleur_reel = dynamic_pointer_cast<String> (couleur);
 		CPPUNIT_ASSERT ("chat" == couleur_reel->getValue());
 		}
 
@@ -81,7 +81,7 @@ class TestAgent : public TestCase {
 		auto couleur = w->getProperty("color");
 		CPPUNIT_ASSERT (Type::COLOR == couleur->getType());
 		auto tortue = w->getProperty("tortue");
-		auto tt = dynamic_cast<String*> (tortue);
+		auto tt = dynamic_pointer_cast<String> (tortue);
 		CPPUNIT_ASSERT ("bleu" == tt->getValue());
 		}
 

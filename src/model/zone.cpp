@@ -4,7 +4,18 @@ using namespace std;
 
 namespace stibbons {
 
-Zone::Zone (Agent *parent) : Agent(parent), color(Color(1.0, 1.0, 1.0)) {}
+Zone::Zone (AgentPtr parent) : Agent(parent), color(Color(1.0, 1.0, 1.0)) {}
+
+ZonePtr Zone::construct (AgentPtr parent) {
+	auto self = shared_ptr<Zone>(new Zone (parent));
+	self->init();
+
+	return self;
+}
+
+void Zone::init () {
+	Agent::init();
+}
 
 Zone::Zone(Zone& other) {
 	lock_guard<mutex> lock(other.value_m);

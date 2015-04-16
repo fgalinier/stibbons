@@ -15,10 +15,10 @@ class TestWorld : public TestCase{
 	CPPUNIT_TEST_SUITE_END();
 
 	public :
-		World* world;
+		WorldPtr world;
 		Line* line;
-		Turtle* turtle;
-		Function* f;
+		TurtlePtr turtle;
+		FunctionPtr f;
 
 		void setUp(){
 			auto worldSize = Size(2);
@@ -27,15 +27,15 @@ class TestWorld : public TestCase{
 			auto zoneSize = Size(2);
 			zoneSize.setValue(0, 10);
 			zoneSize.setValue(1, 10);
-			world=new stibbons::World(worldSize, zoneSize);
+			world = stibbons::World::construct(worldSize, zoneSize);
 			line=new Line();
-			turtle=new Turtle();
-			f=new UserFunction(nullptr);
+			turtle=Turtle::construct();
+			f=make_shared<UserFunction>(nullptr);
 		}
 
 		void testAjoutTurtle() {
 			cout << "TestWorld::testAjoutTurtle" << endl;
-			world->createBreed(*f,"setup");
+			world->createBreed(f,"setup");
 		}
 
 };

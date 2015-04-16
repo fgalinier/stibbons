@@ -11,6 +11,8 @@
 #include "value.h"
 #include "simple-value.h"
 
+#include <memory>
+
 namespace stibbons {
 
 /**
@@ -33,6 +35,8 @@ class Number : public GenericValue<Type::NUMBER>, public SimpleValue<double> {
 		 */
 		virtual string toString ();
 };
+
+typedef std::shared_ptr<Number> NumberPtr;
 
 }
 

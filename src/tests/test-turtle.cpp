@@ -14,10 +14,10 @@ class TestTurtle : public TestCase{
 
 	public :
 /*Explication : pas de constructeur vide ds tortue, donc on ne peux pas laisser turtle, et seg fault si redefinit dans le setUp => pointeur ou constructeur vide dans tortue*/
-		stibbons::Turtle* turtle;// stibbons::Turtle(0, nullptr);
+		stibbons::TurtlePtr turtle;// stibbons::Turtle(0, nullptr);
 
 		void setUp(){
-			turtle=new stibbons::Turtle();
+			turtle = stibbons::Turtle::construct();
 		}
 
 		void testAngle() {

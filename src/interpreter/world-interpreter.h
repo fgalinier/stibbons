@@ -45,7 +45,7 @@ class WorldInterpreter : public virtual Interpreter {
 		 *
 		 * \return The world associated to given program.
 		 */
-		virtual World* getWorld();
+		virtual WorldPtr getWorld();
 
 		/**
 		 * Run the interpreter with the parsed program.
@@ -54,7 +54,7 @@ class WorldInterpreter : public virtual Interpreter {
 		virtual void run();
 
 	private:
-		World* world;
+		WorldPtr world;
 		TreePtr tree;
 };
 

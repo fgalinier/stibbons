@@ -20,7 +20,7 @@ class Runner : public QThread {
 	public:
 		Runner(std::string& program);
 		~Runner();
-		World* getWorld();
+		WorldPtr getWorld();
 		void run();
 
 	private:

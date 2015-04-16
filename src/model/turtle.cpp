@@ -27,7 +27,7 @@ Turtle::Turtle () :
 		initAttributes();
 	}
 
-Turtle::Turtle (Agent* parent, turtle_id id) :
+Turtle::Turtle (AgentPtr parent, turtle_id id) :
 	Agent(parent),
 	id(id),
 	breed(nullptr),
@@ -38,7 +38,7 @@ Turtle::Turtle (Agent* parent, turtle_id id) :
 	}
 
 Turtle::Turtle (Breed *breed) :
-	Agent(breed->getWorld()),
+	Agent(dynamic_pointer_cast<Agent>(breed->getWorld())),
 	id(0),
 	breed(breed),
 	angle(0.0),
@@ -47,7 +47,7 @@ Turtle::Turtle (Breed *breed) :
 		initAttributes();
 	}
 
-Turtle::Turtle (Turtle *parent) :
+Turtle::Turtle (TurtlePtr parent) :
 	Agent(parent),
 	id(0),
 	breed(parent->breed),
@@ -59,6 +59,38 @@ Turtle::Turtle (Turtle *parent) :
 
 void Turtle::initAttributes () {
 	setProperty(pair<string,Value*>("teleport", new TeleportFunction()));
+}
+
+TurtlePtr Turtle::construct () {
+	auto self = shared_ptr<Turtle>(new Turtle());
+	self->init();
+
+	return self;
+}
+
+TurtlePtr Turtle::construct (AgentPtr parent, turtle_id id) {
+	auto self = shared_ptr<Turtle>(new Turtle(parent, id));
+	self->init();
+
+	return self;
+}
+
+TurtlePtr Turtle::construct (Breed *breed) {
+	auto self = shared_ptr<Turtle>(new Turtle(breed));
+	self->init();
+
+	return self;
+}
+
+TurtlePtr Turtle::construct (TurtlePtr parent) {
+	auto self = shared_ptr<Turtle>(new Turtle(parent));
+	self->init();
+
+	return self;
+}
+
+void Turtle::init () {
+	Agent::init();
 }
 
 void Turtle::setId (turtle_id new_var) {
@@ -75,18 +107,18 @@ turtle_id Turtle::getId() {
 	return id;
 }
 
-World* Turtle::getWorld () {
+WorldPtr Turtle::getWorld () {
 	if (breed)
 		return breed->getWorld();
 
-	for (Agent *world = getParent() ; world != nullptr ; world = world->getParent())
+	for (AgentPtr world = getParent() ; world != nullptr ; world = world->getParent())
 		if (world->getType() == Type::WORLD)
-			return dynamic_cast<World *>(world);
+			return dynamic_pointer_cast<World>(world);
 
 	return nullptr;
 }
 
-Zone* Turtle::getZone () {
+ZonePtr Turtle::getZone () {
 	auto world = getWorld();
 
 	if (world == nullptr)
@@ -175,9 +207,9 @@ void Turtle::penUp() throw (future_error) {
 	line = nullptr;
 }
 
-Turtle *Turtle::createChild() {
+TurtlePtr Turtle::createChild() {
 	lock_guard<mutex> lock(value_m);
-	auto child = new Turtle(this);
+	auto child = Turtle::construct(shared_from_this());
 
 	breed->addTurtle (child);
 

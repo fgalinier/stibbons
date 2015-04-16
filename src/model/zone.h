@@ -25,7 +25,7 @@ class Zone : public Agent{
 		/**
 		 * Create a zone
 		 */
-		Zone (Agent *parent);
+		static ZonePtr construct (AgentPtr parent);
 
 		/**
 		 * Create a copy of a zone
@@ -79,6 +79,17 @@ class Zone : public Agent{
 		 * @return a string corresponding to the value
 		 */
 		virtual string toString ();
+
+	protected:
+		/**
+		 * Create a zone
+		 */
+		Zone (AgentPtr parent);
+
+		/**
+		 * Initialize the zone
+		 */
+		void init ();
 
 	private:
 		Color color;

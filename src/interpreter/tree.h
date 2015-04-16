@@ -38,7 +38,7 @@ namespace stibbons {
 	  */
 	class Tree {
 	private:
-		std::pair<int,Value*> node;
+		std::pair<int,ValuePtr> node;
 		std::vector<TreePtr > sons;
 		std::pair<int,int> position;
 	public:
@@ -47,13 +47,13 @@ namespace stibbons {
 		 * \param token The kind of token that is used to create the node
 		 * \param val The value (if needed) corresponding to the token
 		 */
-		Tree(int token = 0, Value* val=nullptr);
+		Tree(int token = 0, ValuePtr val=nullptr);
 
 		/**
 		 * Destroy a tree and his sons.
 		 *
 		 */
-		virtual ~Tree();
+		virtual ~Tree() = default;
 
 		/**
 		 * Test if the node is a leaf.
@@ -65,7 +65,7 @@ namespace stibbons {
 		 * Return current node.
 		 * \return A pair of <token_type,Value> corresponding to current node
 		 */
-		virtual std::pair<int,Value*> getNode() const;
+		virtual std::pair<int,ValuePtr> getNode() const;
 
 		/**
 		 * If current tree node is equal to t root node,
@@ -87,7 +87,7 @@ namespace stibbons {
 		 * \param token The kind of token that is used to create the son
 		 * \param val The value (if needed) corresponding to the son's token
 		 */
-		virtual void addSon(int,Value*);
+		virtual void addSon(int,ValuePtr);
 
 		/**
 		 * Append a tree son to current tree.

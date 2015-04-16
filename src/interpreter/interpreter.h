@@ -46,12 +46,12 @@ namespace stibbons {
 		 * \param hashTable A hashtable which contain parameters
 		 * \return An int equal to 0 if no error has occurred.
 		 */
-		virtual Value* interpret(Turtle* turtle,
+		virtual ValuePtr interpret(TurtlePtr turtle,
 		                         const TreePtr,
-		                         Table* hashTable=nullptr) const;
-		virtual Value* interpret(Agent* agent,
+		                         TablePtr hashTable=nullptr) const;
+		virtual ValuePtr interpret(AgentPtr agent,
 		                         const TreePtr,
-		                         Table* hashTable=nullptr) const;
+		                         TablePtr hashTable=nullptr) const;
 
 	private:
 		/**
@@ -60,7 +60,7 @@ namespace stibbons {
 		 * \param tree A tree with the FCT or AGT root node. 
 		 * \return The function corresponding to the tree
 		 */
-		virtual Function* getFunctionFromTree(const TreePtr) const;
+		virtual FunctionPtr getFunctionFromTree(const TreePtr) const;
 
 		/**
 		 * Interpret a function (or function of a breed)
@@ -71,10 +71,10 @@ namespace stibbons {
 		 * \param id The name of function for error message
 		 * \return The Value returned by the Function fct
 		 */
-		virtual	Value* interpretFunction(Function*,
-		                                 Turtle*,
+		virtual	ValuePtr interpretFunction(FunctionPtr,
+		                                 TurtlePtr,
 										 const TreePtr,
-										 Table*, 
+										 TablePtr, 
 										 std::string) const;
 
 		static inline yy::position getPosition(const TreePtr tree);

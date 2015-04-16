@@ -20,9 +20,6 @@
 
 namespace stibbons {
 
-class Turtle;
-class World;
-
 /**
  * class Breed
  *
@@ -43,9 +40,9 @@ class Breed {
 		 *
 		 * @param function the function of the breed
 		 */
-		Breed (Function *function);
+		Breed (FunctionPtr function);
 
-		virtual ~Breed ();
+		virtual ~Breed () = default;
 
 		/**
 		 * Create and add a new turtle to the breed
@@ -54,7 +51,7 @@ class Breed {
 		 *
 		 * @return a reference to the new turtle
 		 */
-		Turtle *createTurtle ();
+		TurtlePtr createTurtle ();
 
 		/**
 		 * Create and add a new turtle to the breed
@@ -62,36 +59,28 @@ class Breed {
 		 * @param parent the parent of the turtle
 		 * @return a reference to the new turtle
 		 */
-		Turtle *createTurtle (Turtle *parent);
-
-		/**
-		 * Remove a turtle from the breed and delete it
-		 *
-		 * @param turtle the turtle to remove and delete
-		 * @throw invalid_argument the breed doesn't contain the turtle
-		 */
-		void deleteTurtle (Turtle *turtle) throw(invalid_argument);
+		TurtlePtr createTurtle (TurtlePtr parent);
 
 		/**
 		 * Get the turtles
 		 *
 		 * @return a set containing the turtles of the breed
 		 */
-		unordered_set<Turtle*> getTurtles ();
+		unordered_set<TurtlePtr> getTurtles ();
 
 		/**
 		 * Get the world
 		 *
 		 * @return the world of the breed
 		 */
-		World *getWorld ();
+		WorldPtr getWorld ();
 
 		/**
 		 * Get the function
 		 *
 		 * @return the function of the breed
 		 */
-		Function *getFunction ();
+		FunctionPtr getFunction ();
 
 	private:
 		/**
@@ -105,14 +94,14 @@ class Breed {
 		 * @param world the world of the breed
 		 * @param function the function of the breed
 		 */
-		Breed (World *world, Function *function);
+		Breed (WorldPtr world, FunctionPtr function);
 
 		/**
 		 * Add a turtle to the breed
 		 *
 		 * @param turtle the turtle to add
 		 */
-		void addTurtle (Turtle *turtle);
+		void addTurtle (TurtlePtr turtle);
 
 		/**
 		 * Remove a turtle from the breed
@@ -120,12 +109,12 @@ class Breed {
 		 * @param turtle the turtle to remove
 		 * @throw invalid_argument the breed doesn't contain the turtle
 		 */
-		void removeTurtle (Turtle *turtle) throw(invalid_argument);
+		void removeTurtle (TurtlePtr turtle) throw(invalid_argument);
 
-		World *world;
-		Function *function;
+		WorldPtr world;
+		FunctionPtr function;
 		mutex value_m;
-		unordered_set<Turtle*> turtles;
+		unordered_set<TurtlePtr> turtles;
 };
 }
 /*

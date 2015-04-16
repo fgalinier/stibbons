@@ -24,7 +24,7 @@ class TestValue : public TestCase {
 	public:
 		stibbons::Boolean boolean;
 		stibbons::Color color;
-		stibbons::Nil& nil = stibbons::Nil::getInstance();
+		stibbons::Nil nil;
 		stibbons::Number number;
 		stibbons::String string;
 

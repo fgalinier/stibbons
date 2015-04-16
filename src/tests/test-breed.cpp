@@ -21,19 +21,19 @@ class TestBreed : public TestCase {
 	CPPUNIT_TEST_SUITE_END();
 
 	public:
-		Function* f;
-		Breed* breed;
+		FunctionPtr f;
+		BreedPtr breed;
 
 		void setUp() {
 			cout << "TestBreed::" << endl;
-			f=new UserFunction(nullptr);
-			breed=new Breed(f);
+			f=make_shared<UserFunction>(nullptr);
+			breed=make_shared<Breed>(f);
 		}
 
 		void ajout() {
 			cout << "TestBreed::ajout" << endl;
-			Turtle* t=breed->createTurtle();
-			World* w=breed->getWorld();
+			TurtlePtr t=breed->createTurtle();
+			WorldPtr w=breed->getWorld();
 			if (w != nullptr)
 			CPPUNIT_ASSERT(w->getType() == Type::WORLD);
 			CPPUNIT_ASSERT(t->getType() == Type::TURTLE);

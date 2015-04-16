@@ -12,7 +12,7 @@ using namespace std;
 
 namespace stibbons {
 
-	void Table::setValue (pair<string, Value*> pair) {
+	void Table::setValue (pair<string, ValuePtr> pair) {
 		lock_guard<mutex> lock(value_m);
 
 		auto search = values.find (pair.first);
@@ -25,17 +25,17 @@ namespace stibbons {
 		}
 	}
 
-	void Table::setValue (string key, Value* value) {
-		setValue (pair<string, Value*>(key, value));
+	void Table::setValue (string key, ValuePtr value) {
+		setValue (pair<string, ValuePtr>(key, value));
 	}
 
-	Value* Table::getValue(string key) {
+	ValuePtr Table::getValue(string key) {
 		lock_guard<mutex> lock(value_m);
 
-		unordered_map<string,Value*>::const_iterator got = values.find(key);
+		unordered_map<string,ValuePtr>::const_iterator got = values.find(key);
 
 		if (got == values.end())
-			return &Nil::getInstance();
+			return make_shared<Nil>();
 
 		return got->second;
 	}

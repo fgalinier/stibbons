@@ -11,22 +11,22 @@ using namespace std;
 
 namespace stibbons {
 
-Value* RandFunction::exec (Agent* agent, Table* params) {
-	return new Number(rand());
+ValuePtr RandFunction::exec (AgentPtr agent, TablePtr params) {
+	return make_shared<Number>(rand());
 }
 
 PrintFunction::PrintFunction () : Function({"string"}) {}
 
-Value* PrintFunction::exec (Agent* agent, Table* params) {
+ValuePtr PrintFunction::exec (AgentPtr agent, TablePtr params) {
 	cout << params->getValue("string")->toString();
-	return &Nil::getInstance();
+	return make_shared<Nil>();
 }
 
 PrintlnFunction::PrintlnFunction () : Function({"string"}) {}
 
-Value* PrintlnFunction::exec (Agent* agent, Table* params) {
+ValuePtr PrintlnFunction::exec (AgentPtr agent, TablePtr params) {
 	cout << params->getValue("string")->toString() << endl;
-	return &Nil::getInstance();
+	return make_shared<Nil>();
 }
 
 TeleportFunction::TeleportFunction () : Function({"x", "y", "angle"}) {}

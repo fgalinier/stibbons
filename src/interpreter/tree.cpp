@@ -4,17 +4,13 @@ using namespace std;
 
 namespace stibbons {
 
-	Tree::Tree(int token,Value* val): node(token,val),sons(std::vector<TreePtr >()) {}
-
-	Tree::~Tree() {
-		if(std::get<1>(node) != nullptr) delete std::get<1>(node);
-	}
+	Tree::Tree(int token,ValuePtr val): node(token,val),sons(std::vector<TreePtr >()) {}
 
 	bool Tree::isLeaf() const {
 		return sons.empty();
 	}
 
-	std::pair<int,Value*> Tree::getNode() const {
+	std::pair<int,ValuePtr> Tree::getNode() const {
 		return node;
 	}
 
@@ -37,7 +33,7 @@ namespace stibbons {
 		}
 	}
 
-	void Tree::addSon(int token,Value* val) {
+	void Tree::addSon(int token,ValuePtr val) {
 		sons.push_back(make_shared<Tree>(token,val));
 	}
 

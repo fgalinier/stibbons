@@ -8,6 +8,17 @@ namespace stibbons {
 World::World (Size worldSize, Size zoneSize) throw(domain_error) : Agent(nullptr), worldSize(worldSize), zoneSize(zoneSize), id(0) {
 	if (worldSize.getDimensions() != zoneSize.getDimensions())
 		throw domain_error("Can't create a world with a dimension number different to its zones'");
+}
+
+WorldPtr World::construct (Size worldSize, Size zoneSize) throw(domain_error) {
+	auto self = shared_ptr<World>(new World (worldSize, zoneSize));
+	self->init();
+
+	return self;
+}
+
+void World::init () {
+	Agent::init();
 
 	// Count the number of zones
 	size_t zonesNb = worldSize.getDimensions() > 0 ? 1 : 0;
@@ -18,14 +29,14 @@ World::World (Size worldSize, Size zoneSize) throw(domain_error) : Agent(nullptr
 
 	// Create the zones
 	for (size_t i = 0 ; i < zonesNb ; i++) {
-		auto zone = new Zone(this);
+		auto zone = Zone::construct(shared_from_this());
 		zones.push_back(zone);
 	}
 
 	// Set standard functions
-	setProperty(pair<string,Value*>("print", new PrintFunction()));
-	setProperty(pair<string,Value*>("println", new PrintlnFunction()));
-	setProperty(pair<string,Value*>("rand", new RandFunction()));
+	setProperty(pair<string,ValuePtr>("print", make_shared<PrintFunction>()));
+	setProperty(pair<string,ValuePtr>("println", make_shared<PrintlnFunction>()));
+	setProperty(pair<string,ValuePtr>("rand", make_shared<RandFunction>()));
 
 	// Set world's size
 	if (worldSize.getDimensions() >= 2) {
@@ -36,32 +47,23 @@ World::World (Size worldSize, Size zoneSize) throw(domain_error) : Agent(nullptr
 	}
 
 	// Set default colors
-	setProperty(pair<string,Value*>("black", new Color(0.0, 0.0, 0.0)));
-	setProperty(pair<string,Value*>("white", new Color(1.0, 1.0, 1.0)));
+	setProperty(pair<string,ValuePtr>("black", make_shared<Color>(0.0, 0.0, 0.0)));
+	setProperty(pair<string,ValuePtr>("white", make_shared<Color>(1.0, 1.0, 1.0)));
 
-	setProperty(pair<string,Value*>("grey", new Color(0.5, 0.5, 0.5)));
+	setProperty(pair<string,ValuePtr>("grey", make_shared<Color>(0.5, 0.5, 0.5)));
 
-	setProperty(pair<string,Value*>("red", new Color(1.0, 0.0, 0.0)));
-	setProperty(pair<string,Value*>("green", new Color(0.0, 1.0, 0.0)));
-	setProperty(pair<string,Value*>("blue", new Color(0.0, 0.0, 1.0)));
+	setProperty(pair<string,ValuePtr>("red", make_shared<Color>(1.0, 0.0, 0.0)));
+	setProperty(pair<string,ValuePtr>("green", make_shared<Color>(0.0, 1.0, 0.0)));
+	setProperty(pair<string,ValuePtr>("blue", make_shared<Color>(0.0, 0.0, 1.0)));
 
-	setProperty(pair<string,Value*>("yellow", new Color(1.0, 1.0, 0.0)));
-	setProperty(pair<string,Value*>("cyan", new Color(0.0, 1.0, 1.0)));
-	setProperty(pair<string,Value*>("magenta", new Color(1.0, 0.0, 1.0)));
+	setProperty(pair<string,ValuePtr>("yellow", make_shared<Color>(1.0, 1.0, 0.0)));
+	setProperty(pair<string,ValuePtr>("cyan", make_shared<Color>(0.0, 1.0, 1.0)));
+	setProperty(pair<string,ValuePtr>("magenta", make_shared<Color>(1.0, 0.0, 1.0)));
 }
 
 World::~World () {
-	for (auto i : zones)
-		delete i;
-
 	for (auto i : lines)
 		delete i;
-
-	for (auto i : anonymousBreeds)
-		delete i;
-
-	for (auto i : namedBreeds)
-		delete i.second;
 }
 
 Type World::getType() const {
@@ -105,7 +107,7 @@ vector<Line> World::getLinesSince (vector<size_t>& sizes) {
 	return newLines;
 }
 
-Breed* World::getBreed (string name) throw(out_of_range) {
+BreedPtr World::getBreed (string name) throw(out_of_range) {
 	lock_guard<mutex> lock(value_m);
 
 	auto breed_i = namedBreeds.find(name);
@@ -116,10 +118,10 @@ Breed* World::getBreed (string name) throw(out_of_range) {
 	return breed_i->second;
 }
 
-unordered_set<Turtle *> World::getTurtles () {
+unordered_set<TurtlePtr> World::getTurtles () {
 	lock_guard<mutex> lock(value_m);
 
-	auto turtles = unordered_set<Turtle *>();
+	auto turtles = unordered_set<TurtlePtr>();
 
 	for (auto breed : namedBreeds)
 		for (auto turtle : (breed.second)->getTurtles())
@@ -132,7 +134,7 @@ unordered_set<Turtle *> World::getTurtles () {
 	return turtles;
 }
 
-Zone* World::getZone (Size& coordinates) throw(domain_error) {
+ZonePtr World::getZone (Size& coordinates) throw(domain_error) {
 	// If a point of different dimension number is passed, it's an error
 	if (worldSize.getDimensions() != coordinates.getDimensions())
 		throw domain_error("Can't get a zone for coordinates in a dimension different from the world's");
@@ -153,7 +155,7 @@ Zone* World::getZone (Size& coordinates) throw(domain_error) {
 	return zones[index];
 }
 
-Zone* World::getZone (Point& point) throw(domain_error) {
+ZonePtr World::getZone (Point& point) throw(domain_error) {
 	// If a point of different dimension number is passed, it's an error
 	if (worldSize.getDimensions() != point.getDimensions())
 		throw domain_error("Can't get a zone for a point which dimension is different from the world's");
@@ -178,11 +180,11 @@ Size World::getZoneSize () {
 	return Size(zoneSize);
 }
 
-Breed* World::createBreed (Function& function, string name) throw(invalid_argument) {
+BreedPtr World::createBreed (FunctionPtr function, string name) throw(invalid_argument) {
 	if (namedBreeds.find(name) != namedBreeds.end())
 		throw invalid_argument("Can't create a breed with an already used name");
 
-	Breed* breed = new Breed(this, &function);
+	auto breed = shared_ptr<Breed>(new Breed(dynamic_pointer_cast<World>(shared_from_this()), function));
 
 	lock_guard<mutex> lock(value_m);
 
@@ -191,8 +193,8 @@ Breed* World::createBreed (Function& function, string name) throw(invalid_argume
 	return breed;
 }
 
-Breed* World::createBreed (Function& function) {
-	Breed* breed = new Breed(this, &function);
+BreedPtr World::createBreed (FunctionPtr function) {
+	auto breed = shared_ptr<Breed>(new Breed(dynamic_pointer_cast<World>(shared_from_this()), function));
 
 	lock_guard<mutex> lock(value_m);
 

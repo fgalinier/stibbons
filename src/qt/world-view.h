@@ -22,8 +22,8 @@ class WorldView : public QWidget {
 	public:
 		WorldView(QWidget *parent = nullptr);
 
-		void setWorld(World *world);
-		World *getWorld();
+		void setWorld(WorldPtr world);
+		WorldPtr getWorld();
 
 		virtual QSize sizeHint() const;
 
@@ -44,7 +44,7 @@ class WorldView : public QWidget {
 		vector<size_t> linesSizes;
 		QPixmap linesBuffer;
 
-		World *world;
+		WorldPtr world;
 };
 
 }

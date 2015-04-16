@@ -10,7 +10,10 @@
 
 #include "type.h"
 
+#include <memory>
+
 namespace stibbons {
+
 /**
  * \class Value
  *
@@ -47,6 +50,8 @@ class GenericValue : public virtual Value {
 			return T;
 		}
 };
+
+typedef std::shared_ptr<Value> ValuePtr;
 
 }
 

@@ -56,7 +56,7 @@ void WorldView::paintEvent(QPaintEvent *event) {
 		paint(painter, *getWorld(), 0, 0);
 }
 
-void WorldView::setWorld(World *world) {
+void WorldView::setWorld(WorldPtr world) {
 	this->world = world;
 
 	resize(sizeHint());
@@ -71,7 +71,7 @@ void WorldView::setWorld(World *world) {
 	});
 }
 
-World *WorldView::getWorld() {
+WorldPtr WorldView::getWorld() {
 	return world;
 }
 

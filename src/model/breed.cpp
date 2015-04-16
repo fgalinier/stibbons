@@ -2,24 +2,16 @@
 
 namespace stibbons {
 
-Breed::Breed(World *world, Function *function) : world(world), function(function) {}
+Breed::Breed(WorldPtr world, FunctionPtr function) : world(world), function(function) {}
 
-Breed::Breed(Function *function) : world(nullptr), function(function) {}
+Breed::Breed(FunctionPtr function) : world(nullptr), function(function) {}
 
-Breed::~Breed () {
-	lock_guard<mutex> lock(value_m);
-	for (auto turtle : turtles)
-		delete turtle;
-
-	delete function;
-}
-
-void Breed::addTurtle (Turtle *turtle) {
+void Breed::addTurtle (TurtlePtr turtle) {
 	lock_guard<mutex> lock(value_m);
 	turtles.insert(turtle);
 }
 
-void Breed::removeTurtle (Turtle *turtle) throw(invalid_argument) {
+void Breed::removeTurtle (TurtlePtr turtle) throw(invalid_argument) {
 	lock_guard<mutex> lock(value_m);
 	if (turtles.find(turtle) == turtles.end())
 		throw invalid_argument("This breed doesn't contain this turtle");
@@ -27,39 +19,33 @@ void Breed::removeTurtle (Turtle *turtle) throw(invalid_argument) {
 	turtles.erase(turtle);
 }
 
-unordered_set<Turtle*> Breed::getTurtles ( ) {
+unordered_set<TurtlePtr> Breed::getTurtles ( ) {
 	lock_guard<mutex> lock(value_m);
-	return unordered_set<Turtle*>(turtles);
+	return unordered_set<TurtlePtr>(turtles);
 }
 
-Turtle* Breed::createTurtle () {
-	Turtle* turtle = new Turtle(this);
+TurtlePtr Breed::createTurtle () {
+	TurtlePtr turtle = Turtle::construct(this);
 
 	addTurtle(turtle);
 
 	return turtle;
 }
 
-Turtle* Breed::createTurtle (Turtle* parent) {
-	Turtle* turtle = new Turtle(parent);
+TurtlePtr Breed::createTurtle (TurtlePtr parent) {
+	TurtlePtr turtle = Turtle::construct(parent);
 
 	addTurtle(turtle);
 
 	return turtle;
 }
 
-void Breed::deleteTurtle (Turtle *turtle) throw(invalid_argument) {
-	removeTurtle(turtle);
-
-	delete turtle;
-}
-
-World *Breed::getWorld () {
+WorldPtr Breed::getWorld () {
 	lock_guard<mutex> lock(value_m);
 	return world;
 }
 
-Function *Breed::getFunction () {
+FunctionPtr Breed::getFunction () {
 	lock_guard<mutex> lock(value_m);
 	return function;
 }

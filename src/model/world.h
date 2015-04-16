@@ -10,6 +10,7 @@
 
 //#include <cstdarg>
 #include <vector>
+#include <memory>
 #include <mutex>
 //#include <stdlib.h>
 #include <unordered_map>
@@ -40,7 +41,7 @@ class World : public Changeable, public Agent {
 		/**
 		 * Create a world
 		 */
-		World (Size worldSize, Size zoneSize) throw(domain_error);
+		static WorldPtr construct (Size worldSize, Size zoneSize) throw(domain_error);
 
 		/**
 		 * Empty Destructor
@@ -75,7 +76,7 @@ class World : public Changeable, public Agent {
 		 * @param name the name of the breed
 		 * @return the breed
 		 */
-		Breed* getBreed(string name) throw(out_of_range);
+		BreedPtr getBreed(string name) throw(out_of_range);
 
 		/**
 		 * Create and add a new named breed
@@ -83,32 +84,32 @@ class World : public Changeable, public Agent {
 		 * @param name the name of the breed
 		 * @return a reference to the new breed
 		 */
-		Breed* createBreed (Function& function, string name) throw(invalid_argument);
+		BreedPtr createBreed (FunctionPtr function, string name) throw(invalid_argument);
 
 		/**
 		 * Create and add a new anonymous breed
 		 * @param function the function of the breed
 		 * @return a reference to the new breed
 		 */
-		Breed* createBreed (Function& function);
+		BreedPtr createBreed (FunctionPtr function);
 
 		/**
 		 * Get the turtles
 		 * @return the turtles
 		 */
-		unordered_set<Turtle *> getTurtles ();
+		unordered_set<TurtlePtr> getTurtles ();
 
 		/**
 		 * Get the zone at a given coordinates
 		 * @return the zone
 		 */
-		Zone* getZone (Size& coordinates) throw(domain_error);
+		ZonePtr getZone (Size& coordinates) throw(domain_error);
 
 		/**
 		 * Get the zone at a given point
 		 * @return the zone
 		 */
-		Zone* getZone (Point& point) throw(domain_error);
+		ZonePtr getZone (Point& point) throw(domain_error);
 
 		/**
 		 * Get the world's number of dimensions
@@ -137,20 +138,33 @@ class World : public Changeable, public Agent {
 		 */
 		virtual string toString ();
 
+	protected:
+		/**
+		 * Create a world
+		 */
+		World (Size worldSize, Size zoneSize) throw(domain_error);
+
+		/**
+		 * Initialize the world
+		 */
+		void init ();
+
 	private:
 		Size worldSize;
 		Size zoneSize;
 
-		vector<Zone*> zones;
+		vector<ZonePtr> zones;
 
 		vector<Line*> lines;
 
-		unordered_map<string, Breed*> namedBreeds;
-		unordered_set<Breed*> anonymousBreeds;
+		unordered_map<string, BreedPtr> namedBreeds;
+		unordered_set<BreedPtr> anonymousBreeds;
 
 		turtle_id id;
 		mutex value_m;
 };
+
+typedef std::shared_ptr<World> WorldPtr;
 
 }
 

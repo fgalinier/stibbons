@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include <memory>
 #include <string>
 
 namespace stibbons {
@@ -34,6 +35,34 @@ enum class Type {
 
 std::string toString(Type& type);
 std::string toString(Type&& type);
+
+class Agent;
+class Boolean;
+class Breed;
+class Color;
+class Function;
+class Nil;
+class Number;
+class String;
+class Table;
+class Turtle;
+class Value;
+class World;
+class Zone;
+
+typedef std::shared_ptr<Agent> AgentPtr;
+typedef std::shared_ptr<Boolean> BooleanPtr;
+typedef std::shared_ptr<Breed> BreedPtr;
+typedef std::shared_ptr<Color> ColorPtr;
+typedef std::shared_ptr<Function> FunctionPtr;
+typedef std::shared_ptr<Nil> NilPtr;
+typedef std::shared_ptr<Number> NumberPtr;
+typedef std::shared_ptr<String> StringPtr;
+typedef std::shared_ptr<Table> TablePtr;
+typedef std::shared_ptr<Turtle> TurtlePtr;
+typedef std::shared_ptr<Value> ValuePtr;
+typedef std::shared_ptr<World> WorldPtr;
+typedef std::shared_ptr<Zone> ZonePtr;
 
 }
 

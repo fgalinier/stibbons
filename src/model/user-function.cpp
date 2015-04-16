@@ -8,7 +8,7 @@ UserFunction::UserFunction (TreePtr tree, vector<string> params) :
 	Function(params),
 	tree(tree) {}
 
-Value* UserFunction::exec (Agent* agent, Table* params) {
+ValuePtr UserFunction::exec (AgentPtr agent, TablePtr params) {
 	return Interpreter().interpret (agent, tree, params);
 }
 

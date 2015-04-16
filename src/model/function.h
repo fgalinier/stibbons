@@ -48,7 +48,7 @@ class Function : public GenericValue<Type::FUNCTION> {
 		 * @param params the parameters to execute the function with
 		 * @return the returned value
 		 */
-		virtual Value* exec (Agent* agent, Table* params) = 0;
+		virtual ValuePtr exec (AgentPtr agent, TablePtr params) = 0;
 
 		/**
 		 * Execute the function
@@ -57,7 +57,7 @@ class Function : public GenericValue<Type::FUNCTION> {
 		 * @param params the parameters to execute the function with
 		 * @return the returned value
 		 */
-		virtual Value* operator() (Agent* agent, Table* params);
+		virtual ValuePtr operator() (AgentPtr agent, TablePtr params);
 
 		/**
 		 * Get the parameters of the function

@@ -24,21 +24,21 @@ class Table : public GenericValue<Type::TABLE> {
 		 * Add a value
 		 * @param pair the key-value pair to set
 		 */
-		virtual void setValue (pair<string, Value*> pair);
+		virtual void setValue (pair<string, ValuePtr> pair);
 
 		/**
 		 * Add a value
 		 * @param key the key of the value
 		 * @param value the value of the value
 		 */
-		virtual void setValue (string key, Value* value);
+		virtual void setValue (string key, ValuePtr value);
 
 		 /**
 		 * Get a value
 		 * @param key the key
 		 * @return the value
 		 */
-		 virtual Value* getValue(string key);
+		 virtual ValuePtr getValue(string key);
 
 		 /**
 		 * Get a string representing the table
@@ -50,9 +50,9 @@ class Table : public GenericValue<Type::TABLE> {
 		mutex value_m;
 
 	private:
-		unordered_map<string, Value*> values;
+		unordered_map<string, ValuePtr> values;
 
-		void tryDelete (Value* value) throw (domain_error);
+		void tryDelete (ValuePtr value) throw (domain_error);
 };
 }
 /*

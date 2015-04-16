@@ -19,10 +19,6 @@ Application::Application (int & argc, char ** argv) : QApplication (argc, argv) 
 	setWindowIcon(QIcon(":/images/stibbons.svg"));
 }
 
-Application::~Application () {
-	delete world;
-}
-
 int Application::exec () {
 	Window win;
 	win.show();
