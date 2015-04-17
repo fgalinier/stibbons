@@ -11,6 +11,7 @@
 #include "type.h"
 
 #include <memory>
+#include <stdexcept>
 
 namespace stibbons {
 
@@ -28,6 +29,51 @@ class Value {
 		 * @return a Type
 		 */
 		virtual Type getType() const=0;
+
+		/**
+		 * Add a value to another
+		 * @param other the other value
+		 * @return the resulting value
+		 */
+		virtual ValuePtr add (ValuePtr other) throw(std::domain_error) {
+			throw std::domain_error("Can't add a " + stibbons::toString(getType()) + " and a " + stibbons::toString(other->getType()));
+		}
+
+		/**
+		 * Substract a value to another
+		 * @param other the other value
+		 * @return the resulting value
+		 */
+		virtual ValuePtr substract (ValuePtr other) throw(std::domain_error) {
+			throw std::domain_error("Can't substract a " + stibbons::toString(getType()) + " and a " + stibbons::toString(other->getType()));
+		}
+
+		/**
+		 * Multiply a value to another
+		 * @param other the other value
+		 * @return the resulting value
+		 */
+		virtual ValuePtr multiply (ValuePtr other) throw(std::domain_error) {
+			throw std::domain_error("Can't multiply a " + stibbons::toString(getType()) + " and a " + stibbons::toString(other->getType()));
+		}
+
+		/**
+		 * Divide a value to another
+		 * @param other the other value
+		 * @return the resulting value
+		 */
+		virtual ValuePtr divide (ValuePtr other) throw(std::domain_error) {
+			throw std::domain_error("Can't divide a " + stibbons::toString(getType()) + " and a " + stibbons::toString(other->getType()));
+		}
+
+		/**
+		 * Get the remainder of the division of a value to another
+		 * @param other the other value
+		 * @return the resulting value
+		 */
+		virtual ValuePtr modulo (ValuePtr other) throw(std::domain_error) {
+			throw std::domain_error("Can't divide a " + stibbons::toString(getType()) + " and a " + stibbons::toString(other->getType()));
+		}
 
 		/**
 		 * Return whether the comparison value of two values
