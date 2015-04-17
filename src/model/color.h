@@ -111,6 +111,62 @@ class Color : public GenericValue<Type::COLOR> {
 		double b ();
 
 		/**
+		 * Add a value to another
+		 * @param other the other value
+		 * @return the resulting value
+		 */
+		virtual ValuePtr add (ValuePtr other) throw(std::domain_error);
+
+		/**
+		 * Add a value to another
+		 * @param other the other value
+		 * @return the resulting value
+		 */
+		virtual ColorPtr add (ColorPtr other);
+
+		/**
+		 * Substract a value to another
+		 * @param other the other value
+		 * @return the resulting value
+		 */
+		virtual ValuePtr substract (ValuePtr other) throw(std::domain_error);
+
+		/**
+		 * Substract a value to another
+		 * @param other the other value
+		 * @return the resulting value
+		 */
+		virtual ColorPtr substract (ColorPtr other);
+
+		/**
+		 * Multiply a value to another
+		 * @param other the other value
+		 * @return the resulting value
+		 */
+		virtual ValuePtr multiply (ValuePtr other) throw(std::domain_error);
+
+		/**
+		 * Multiply a value to another
+		 * @param other the other value
+		 * @return the resulting value
+		 */
+		virtual ColorPtr multiply (ColorPtr other);
+
+		/**
+		 * Divide a value to another
+		 * @param other the other value
+		 * @return the resulting value
+		 */
+		virtual ValuePtr divide (ValuePtr other) throw(std::domain_error);
+
+		/**
+		 * Divide a value to another
+		 * @param other the other value
+		 * @return the resulting value
+		 */
+		virtual ColorPtr divide (ColorPtr other);
+
+		/**
 		 * Return whether the comparison value of two values
 		 *
 		 * Return a negative number if this value is lower than the other,

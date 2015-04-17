@@ -153,6 +153,70 @@ double Color::b () {
 	return blue;
 }
 
+ValuePtr Color::add (ValuePtr other) throw(std::domain_error) {
+	switch (other->getType()) {
+		case Type::COLOR:
+			return add (dynamic_pointer_cast<Color>(other));
+		default:
+			return Value::add(other);
+	}
+}
+
+ColorPtr Color::add (ColorPtr other) {
+	return make_shared<Color>(r() + other->r(),
+	                          g() + other->g(),
+	                          b() + other->b());
+}
+
+ValuePtr Color::substract (ValuePtr other) throw(std::domain_error) {
+	switch (other->getType()) {
+		case Type::COLOR:
+			return substract (dynamic_pointer_cast<Color>(other));
+		default:
+			return Value::substract(other);
+	}
+}
+
+ColorPtr Color::substract (ColorPtr other) {
+	return make_shared<Color>(r() - other->r(),
+	                          g() - other->g(),
+	                          b() - other->b());
+}
+
+ValuePtr Color::multiply (ValuePtr other) throw(std::domain_error) {
+	switch (other->getType()) {
+		case Type::COLOR:
+			return multiply (dynamic_pointer_cast<Color>(other));
+		default:
+			return Value::multiply(other);
+	}
+}
+
+ColorPtr Color::multiply (ColorPtr other) {
+	return make_shared<Color>(r() * other->r(),
+	                          g() * other->g(),
+	                          b() * other->b());
+}
+
+ValuePtr Color::divide (ValuePtr other) throw(std::domain_error) {
+	switch (other->getType()) {
+		case Type::COLOR:
+			return divide (dynamic_pointer_cast<Color>(other));
+		default:
+			return Value::divide(other);
+	}
+}
+
+ColorPtr Color::divide (ColorPtr other) {
+	auto red   = other->r();
+	auto green = other->g();
+	auto blue  = other->b();
+
+	return make_shared<Color>(red   != 0.0 ? r() * red   : 1.0,
+	                          green != 0.0 ? r() * green : 1.0,
+	                          blue  != 0.0 ? r() * blue  : 1.0);
+}
+
 int Color::compare (ValuePtr other) {
 	if (getType() != other->getType())
 		return Value::compare (other);
