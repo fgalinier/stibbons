@@ -20,8 +20,8 @@ namespace stibbons {
 	}
 
 	ValuePtr Interpreter::interpret(TurtlePtr turtle,
-	                              const TreePtr tree,
-								  TablePtr hashTable) const {
+									const TreePtr tree,
+									TablePtr hashTable) const {
 		if(tree != nullptr) {
 			switch(std::get<0>(tree->getNode())) {
 		   	//Sequence case:
@@ -285,7 +285,139 @@ namespace stibbons {
 					                        getPosition(tree));
 				return make_shared<Boolean>(!(dynamic_pointer_cast<Boolean>(val1)->getValue()));
 			}
-				break;  
+				break;
+			case yy::parser::token::EQ: {
+				try{
+					auto val1 = this->interpret(turtle,tree->getSon(0),hashTable);
+					auto val2 = this->interpret(turtle,tree->getSon(1),hashTable);
+					Boolean *res;
+					if(val1->compare(val2) < 0 ){
+						return make_shared<Boolean>(res = new Boolean(false));
+					}
+					else{
+						if(val1->compare(val2) == 0 ){
+							return make_shared<Boolean>(res = new Boolean(true));
+						}
+						else{
+							return make_shared<Boolean>(res = new Boolean(false));
+						}
+					}
+				}
+				catch (std::domain_error e) {
+					throw SemanticException(e.what(), getPosition(tree));
+				}
+			}
+				break; 
+			case yy::parser::token::NEQ: {
+				try{
+					auto val1 = this->interpret(turtle,tree->getSon(0),hashTable);
+					auto val2 = this->interpret(turtle,tree->getSon(1),hashTable);
+					bool res;
+					if(val1->compare(val2) < 0 ){
+							return make_shared<Boolean>(res = new Boolean(true));
+					}
+					else{
+						if(val1->compare(val2) == 0 ){
+						return make_shared<Boolean>(res = new Boolean(false));
+						}
+						else{
+							return make_shared<Boolean>(res = new Boolean(true));
+						}
+					}					
+				}
+				catch (std::domain_error e) {
+					throw SemanticException(e.what(), getPosition(tree));
+				}			
+			}
+				break; 
+			case yy::parser::token::GT: {
+				try{
+					auto val1 = this->interpret(turtle,tree->getSon(0),hashTable);
+					auto val2 = this->interpret(turtle,tree->getSon(1),hashTable);
+					Boolean *res;
+					if(val1->compare(val2) < 0 ){
+						return make_shared<Boolean>(res = new Boolean(false));
+					}
+					else{
+						if(val1->compare(val2) == 0 ){
+							return make_shared<Boolean>(res = new Boolean(false));
+						}
+						else{
+							return make_shared<Boolean>(res = new Boolean(true));
+						}
+					}
+				}
+				catch (std::domain_error e) {
+					throw SemanticException(e.what(), getPosition(tree));
+				}
+			}
+				break; 
+			case yy::parser::token::GEQ: {
+				try{
+					auto val1 = this->interpret(turtle,tree->getSon(0),hashTable);
+					auto val2 = this->interpret(turtle,tree->getSon(1),hashTable);
+					Boolean *res;
+					if(val1->compare(val2) < 0 ){
+						return make_shared<Boolean>(res = new Boolean(false));
+					}
+					else{
+						if(val1->compare(val2) == 0 ){
+							return make_shared<Boolean>(res = new Boolean(true));
+						}
+						else{
+							return make_shared<Boolean>(res = new Boolean(true));
+						}
+					}
+				}
+				catch (std::domain_error e) {
+					throw SemanticException(e.what(), getPosition(tree));
+				}
+			}
+				break;   
+			case yy::parser::token::LS: {
+				try{
+					auto val1 = this->interpret(turtle,tree->getSon(0),hashTable);
+					auto val2 = this->interpret(turtle,tree->getSon(1),hashTable);
+					Boolean *res;
+					if(val1->compare(val2) < 0 ){
+						return make_shared<Boolean>(res = new Boolean(true));
+					}
+					else{
+						if(val1->compare(val2) == 0 ){
+							return make_shared<Boolean>(res = new Boolean(false));
+						}
+						else{
+							return make_shared<Boolean>(res = new Boolean(true));
+						}
+					}
+				}
+				catch (std::domain_error e) {
+					throw SemanticException(e.what(), getPosition(tree));
+				}
+			}
+				break; 
+			case yy::parser::token::LEQ: {
+				try{
+					auto val1 = this->interpret(turtle,tree->getSon(0),hashTable);
+					auto val2 = this->interpret(turtle,tree->getSon(1),hashTable);
+					Boolean *res;
+					if(val1->compare(val2) < 0 ){
+						return make_shared<Boolean>(res = new Boolean(true));
+					}
+					else{
+						if(val1->compare(val2) == 0 ){
+							return make_shared<Boolean>(res = new Boolean(true));
+						}
+						else{
+							return make_shared<Boolean>(res = new Boolean(false));
+						}
+					}
+				}
+				catch (std::domain_error e) {
+					throw SemanticException(e.what(), getPosition(tree));
+				}
+			}
+				break;
 			// New agent
 			case yy::parser::token::AGT: {
 				auto id = dynamic_pointer_cast<String>(std::get<1>(tree->getNode()))->getValue();
@@ -346,8 +478,7 @@ namespace stibbons {
 			}
 		}
  
-		//Operations tokens : EQ NEQ GT GEQ LS LEQ
-		//Stibbons spécial tokens : DIE STRING NIL
+		//Stibbons spécial tokens : DIE
 		return make_shared<Nil>();
 	}
 
