@@ -58,7 +58,7 @@ Turtle::Turtle (TurtlePtr parent) :
 	}
 
 void Turtle::initAttributes () {
-	setProperty(pair<string,Value*>("teleport", new TeleportFunction()));
+	setProperty(pair<string,ValuePtr>("teleport", make_shared<TeleportFunction>()));
 }
 
 TurtlePtr Turtle::construct () {

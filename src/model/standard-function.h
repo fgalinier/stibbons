@@ -60,7 +60,7 @@ class PrintlnFunction : public Function {
 class TeleportFunction : public Function {
 	public:
 		TeleportFunction ();
-		virtual Value* exec (Agent* agent, Table* params);
+		virtual ValuePtr exec (AgentPtr agent, TablePtr params);
 };
 
 }

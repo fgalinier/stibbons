@@ -10,11 +10,11 @@
 
 namespace stibbons {
 
-Agent::Agent (AgentPtr parent) : parent(parent) {}
+Agent::Agent (AgentPtr parent) : parent(parent) {
+	properties=new unordered_map<string,ValuePtr>();
+}
 
 void Agent::init () {
-	properties=new unordered_map<string,ValuePtr>();
-
 	if (parent != nullptr)
 		parent->children.insert(shared_from_this());
 }

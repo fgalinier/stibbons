@@ -82,10 +82,10 @@ Color Zone::getColor () {
 	return color;
 }
 
-World* Zone::getWorld () {
-	for (Agent *world = getParent() ; world != nullptr ; world = world->getParent())
+WorldPtr Zone::getWorld () {
+	for (AgentPtr world = getParent() ; world != nullptr ; world = world->getParent())
 		if (world->getType() == Type::WORLD)
-			return dynamic_cast<World *>(world);
+			return dynamic_pointer_cast<World>(world);
 
 	return nullptr;
 }

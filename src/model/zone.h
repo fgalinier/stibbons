@@ -70,7 +70,7 @@ class Zone : public Agent{
 		 * Get the value of world
 		 * @return the value of world
 		 */
-		World* getWorld ();
+		WorldPtr getWorld ();
 
 		void changed ();
 

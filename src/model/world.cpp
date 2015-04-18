@@ -42,8 +42,8 @@ void World::init () {
 	if (worldSize.getDimensions() >= 2) {
 		double w = worldSize.getValue(0) * zoneSize.getValue(0);
 		double h = worldSize.getValue(1) * zoneSize.getValue(1);
-		setProperty(pair<string,Value*>("max-x", new Number(w)));
-		setProperty(pair<string,Value*>("max-y", new Number(h)));
+		setProperty(pair<string,ValuePtr>("max-x", make_shared<Number>(w)));
+		setProperty(pair<string,ValuePtr>("max-y", make_shared<Number>(h)));
 	}
 
 	// Set default colors
