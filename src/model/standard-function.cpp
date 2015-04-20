@@ -84,6 +84,18 @@ ValuePtr RecvFunction::exec (AgentPtr agent, TablePtr params) {
 	return turtle->recv().second;
 }
 
+DistanceToFunction::DistanceToFunction () : Function({"turtle"}) {}
+
+ValuePtr DistanceToFunction::exec (AgentPtr agent, TablePtr params) {
+	auto other = params->getValue("turtle");
+
+	auto turtle = dynamic_pointer_cast<Turtle>(agent);
+
+	auto d = turtle->getDistanceTo(*dynamic_pointer_cast<Turtle>(other));
+
+	return make_shared<Number>(d);
+}
+
 FaceFunction::FaceFunction () : Function({"turtle"}) {}
 
 ValuePtr FaceFunction::exec (AgentPtr agent, TablePtr params) {

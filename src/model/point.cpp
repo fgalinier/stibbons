@@ -93,6 +93,16 @@ unsigned Point::getDimensions () const {
 	return dimensions;
 }
 
+double Point::getDistanceTo (Point& other) {
+	lock_guard<recursive_mutex> self_lock(value_m);
+	lock_guard<recursive_mutex> other_lock(other.value_m);
+
+	double x = other.getValue(0) - getValue(0);
+	double y = other.getValue(1) - getValue(1);
+
+	return sqrt (x * x + y * y);
+}
+
 double Point::getAngleTo (Point& other) {
 	lock_guard<recursive_mutex> self_lock(value_m);
 	lock_guard<recursive_mutex> other_lock(other.value_m);

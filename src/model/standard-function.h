@@ -102,6 +102,19 @@ class RecvFunction : public Function {
 };
 
 /**
+ * class DistanceToFunction
+ *
+ *\brief A class returning the distance to another turtle.
+ *
+ *\author Adrien Plazas
+ **/
+class DistanceToFunction : public Function {
+	public:
+		DistanceToFunction ();
+		virtual ValuePtr exec (AgentPtr agent, TablePtr params);
+};
+
+/**
  * class FaceFunction
  *
  *\brief A class making a turtle face another.

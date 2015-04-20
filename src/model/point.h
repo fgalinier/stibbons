@@ -74,6 +74,13 @@ class Point {
 		unsigned getDimensions () const;
 
 		/**
+		 * Get the distance to another point
+		 * @param other the other point
+		 * @return the distance to the other point
+		 */
+		double getDistanceTo (Point& other);
+
+		/**
 		 * Get the angle with the horizontal axis to another point in radian
 		 * @param other the other point
 		 * @return the angle with the horizontal axis to another point
