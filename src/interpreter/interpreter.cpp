@@ -128,8 +128,9 @@ namespace stibbons {
 				auto id = dynamic_pointer_cast<String>(std::get<1>(tree->getNode()))->getValue();
 				if(hashTable) {
 					auto got = hashTable->getValue(id);
-					if (got != make_shared<Nil>())
+					if (got->getType() != Type::NIL) {
 						return hashTable->getValue(id);
+					}
 				}
 				return turtle->getProperty(id);
 			}
@@ -151,7 +152,7 @@ namespace stibbons {
 					pair<string,ValuePtr> prop = {id,val};
 					if(hashTable) {
 						auto got = hashTable->getValue(id);
-						if (got != make_shared<Nil>()) {
+						if (got->getType() != Type::NIL) {
 							hashTable->setValue(id,val);
 						}
 					}
