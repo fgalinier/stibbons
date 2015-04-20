@@ -6,7 +6,7 @@
 #include "number.h"
 #include "string.h"
 
-//#include <cmath>
+#include <sstream>
 
 using namespace std;
 
@@ -15,13 +15,13 @@ namespace stibbons {
 	void Table::setValue (pair<string, ValuePtr> pair) {
 		lock_guard<mutex> lock(value_m);
 
-		auto search = values.find (pair.first);
-		if ( search == values.end())
-			values.insert(pair);
+		auto search = namedValues.find (pair.first);
+		if ( search == namedValues.end())
+			namedValues.insert(pair);
 		else {
 			//tryDelete (search->second);
-			values.erase(pair.first);
-			values.insert(pair);
+			namedValues.erase(pair.first);
+			namedValues.insert(pair);
 		}
 	}
 
@@ -32,9 +32,45 @@ namespace stibbons {
 	ValuePtr Table::getValue(string key) {
 		lock_guard<mutex> lock(value_m);
 
-		unordered_map<string,ValuePtr>::const_iterator got = values.find(key);
+		auto got = namedValues.find(key);
 
-		if (got == values.end())
+		if (got == namedValues.end())
+			return make_shared<Nil>();
+
+		return got->second;
+	}
+
+	void Table::setValue (pair<long, ValuePtr> pair) {
+		lock_guard<mutex> lock(value_m);
+
+		auto search = indexedValues.find (pair.first);
+		if ( search == indexedValues.end())
+			indexedValues.insert(pair);
+		else {
+			//tryDelete (search->second);
+			indexedValues.erase(pair.first);
+			indexedValues.insert(pair);
+		}
+	}
+
+	void Table::setValue (long key, ValuePtr value) {
+		setValue (pair<long, ValuePtr>(key, value));
+	}
+
+	void Table::append (ValuePtr value) {
+		lock_guard<mutex> lock(value_m);
+
+		long key = indexedValues.rbegin()->first + 1;
+
+		indexedValues.insert(pair<long, ValuePtr>(key, value));
+	}
+
+	ValuePtr Table::getValue(long key) {
+		lock_guard<mutex> lock(value_m);
+
+		auto got = indexedValues.find(key);
+
+		if (got == indexedValues.end())
 			return make_shared<Nil>();
 
 		return got->second;
@@ -54,14 +90,19 @@ namespace stibbons {
 	string Table::toString() {
 		lock_guard<mutex> lock(value_m);
 
-		string str = "{\n";
+		std::ostringstream oss;
 
-		for (auto value : values)
-			str += "\t" + value.first + ": " + value.second->toString() + "\n";
+		oss << "{\n";
 
-		str += "}\n";
+		for (auto value : indexedValues)
+			oss << "\t" << value.first << ": " << value.second->toString() << "\n";
 
-		return str;
+		for (auto value : namedValues)
+			oss << "\t" << value.first << ": " << value.second->toString() << "\n";
+
+		oss << "}\n";
+
+		return oss.str();
 	}
 
 }

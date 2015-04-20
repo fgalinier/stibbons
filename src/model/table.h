@@ -1,5 +1,6 @@
 #pragma once
 #include "value.h"
+#include <map>
 #include <stdexcept>
 #include <unordered_map>
 #include <string>
@@ -41,6 +42,32 @@ class Table : public GenericValue<Type::TABLE> {
 		 virtual ValuePtr getValue(string key);
 
 		/**
+		 * Add a value
+		 * @param pair the key-value pair to set
+		 */
+		virtual void setValue (pair<long, ValuePtr> pair);
+
+		/**
+		 * Add a value
+		 * @param key the key of the value
+		 * @param value the value of the value
+		 */
+		virtual void setValue (long key, ValuePtr value);
+
+		/**
+		 * Add a value to the end
+		 * @param value the value of the value
+		 */
+		virtual void append (ValuePtr value);
+
+		 /**
+		 * Get a value
+		 * @param key the key
+		 * @return the value
+		 */
+		 virtual ValuePtr getValue(long key);
+
+		/**
 		 * Return whether the comparison value of two values
 		 *
 		 * Return a negative number if this value is lower than the other,
@@ -74,7 +101,8 @@ class Table : public GenericValue<Type::TABLE> {
 		mutex value_m;
 
 	private:
-		unordered_map<string, ValuePtr> values;
+		unordered_map<string, ValuePtr> namedValues;
+		map<long, ValuePtr> indexedValues;
 
 		void tryDelete (ValuePtr value) throw (domain_error);
 };
