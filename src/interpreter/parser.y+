@@ -341,7 +341,13 @@ expr : LP expr RP { $$ = $2; }
   $$ = t1;
 };
 
-affect : ID '=' expr
+affect : ID '=' breed_creat
+{
+  stibbons::TreePtr t1 = make_shared<stibbons::Tree>('=',$1);
+  t1->addSon($3);
+  $$ = t1;
+}
+| ID '=' expr
 {
   stibbons::TreePtr t1 = make_shared<stibbons::Tree>('=',$1);
   t1->addSon($3);

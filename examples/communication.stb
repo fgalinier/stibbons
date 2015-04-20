@@ -1,8 +1,16 @@
-5 new agent {
+agent listener (name) {
+	println("Hello, I am " + name)
 	message = recv ()
-	println (message)
+	println ("I am " + name + " and someone told me " + message)
 }
+
+new listener ("Denis")
+new listener ("Bjarne")
+new listener ("Linus")
 
 new agent {
 	send-all ("Hello, agents!")
+	michel = new listener ("Michel")
+	send (michel,"Hello, Michel!")
 }
+
