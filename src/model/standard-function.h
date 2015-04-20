@@ -127,6 +127,19 @@ class FaceFunction : public Function {
 		virtual ValuePtr exec (AgentPtr agent, TablePtr params);
 };
 
+/**
+ * class InRadiusFunction
+ *
+ *\brief A class making a turtle face another.
+ *
+ *\author Adrien Plazas
+ **/
+class InRadiusFunction : public Function {
+	public:
+		InRadiusFunction ();
+		virtual ValuePtr exec (AgentPtr agent, TablePtr params);
+};
+
 }
 
 /*
