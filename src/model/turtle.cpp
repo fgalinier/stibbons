@@ -62,6 +62,9 @@ Turtle::Turtle (TurtlePtr parent) :
 	}
 
 void Turtle::initAttributes () {
+	setProperty(pair<string,ValuePtr>("recv", make_shared<RecvFunction>()));
+	setProperty(pair<string,ValuePtr>("send", make_shared<SendFunction>()));
+	setProperty(pair<string,ValuePtr>("send-all", make_shared<SendAllFunction>()));
 	setProperty(pair<string,ValuePtr>("teleport", make_shared<TeleportFunction>()));
 }
 
@@ -243,20 +246,20 @@ pair<TurtlePtr,ValuePtr> Turtle::getLastMessage(){
 }
 
 void Turtle::send(TurtlePtr t, ValuePtr v){
-	t->addMessage(shared_ptr<Turtle>(this),v);
+	t->addMessage(dynamic_pointer_cast<Turtle>(shared_from_this()),v);
 }
 
 void Turtle::send(vector<TurtlePtr> t, ValuePtr v){
 	for (auto tt : t)
 	{
-		tt->addMessage(shared_ptr<Turtle>(this),v);
+		tt->addMessage(dynamic_pointer_cast<Turtle>(shared_from_this()),v);
 	}
 }
 
 void Turtle::sendAll(ValuePtr v){
 	auto turtles=getWorld()->getTurtles();
 	for (auto t : turtles)
-		t->addMessage(shared_ptr<Turtle>(this),v);
+		t->addMessage(dynamic_pointer_cast<Turtle>(shared_from_this()),v);
 }
 
 pair<TurtlePtr,ValuePtr> Turtle::recv(){

@@ -63,6 +63,44 @@ class TeleportFunction : public Function {
 		virtual ValuePtr exec (AgentPtr agent, TablePtr params);
 };
 
+/**
+ * class SendFunction
+ *
+ *\brief A class sending a message from a turtle to another.
+ *
+ *\author Adrien Plazas
+ **/
+class SendFunction : public Function {
+	public:
+		SendFunction ();
+		virtual ValuePtr exec (AgentPtr agent, TablePtr params);
+};
+
+/**
+ * class SendAllFunction
+ *
+ *\brief A class sending a message from a turtle to all others.
+ *
+ *\author Adrien Plazas
+ **/
+class SendAllFunction : public Function {
+	public:
+		SendAllFunction ();
+		virtual ValuePtr exec (AgentPtr agent, TablePtr params);
+};
+
+/**
+ * class RecvFunction
+ *
+ *\brief A class retreiving the first new message of the turtle.
+ *
+ *\author Adrien Plazas
+ **/
+class RecvFunction : public Function {
+	public:
+		virtual ValuePtr exec (AgentPtr agent, TablePtr params);
+};
+
 }
 
 /*

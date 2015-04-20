@@ -6,6 +6,7 @@
 
 #include <cstdlib>
 #include <iostream>
+#include <thread>
 
 using namespace std;
 
@@ -43,6 +44,40 @@ ValuePtr TeleportFunction::exec (AgentPtr agent, TablePtr params) {
 	turtle->setAngle(dynamic_pointer_cast<Number>(angle)->getValue());
 
 	return make_shared<Nil>();
+}
+
+SendFunction::SendFunction () : Function({"recipient", "message"}) {}
+
+ValuePtr SendFunction::exec (AgentPtr agent, TablePtr params) {
+	auto recipient = params->getValue("recipient");
+	auto message = params->getValue("message");
+
+	auto turtle = dynamic_pointer_cast<Turtle>(agent);
+
+	turtle->send(dynamic_pointer_cast<Turtle>(recipient), message);
+
+	return make_shared<Nil>();
+}
+
+SendAllFunction::SendAllFunction () : Function({"message"}) {}
+
+ValuePtr SendAllFunction::exec (AgentPtr agent, TablePtr params) {
+	auto message = params->getValue("message");
+
+	auto turtle = dynamic_pointer_cast<Turtle>(agent);
+
+	turtle->sendAll(message);
+
+	return make_shared<Nil>();
+}
+
+ValuePtr RecvFunction::exec (AgentPtr agent, TablePtr params) {
+	auto turtle = dynamic_pointer_cast<Turtle>(agent);
+
+	while (turtle->checkMessage() <= 0)
+		this_thread::sleep_for(chrono::milliseconds(10));
+
+	return turtle->recv().second;
 }
 
 }

@@ -1,0 +1,8 @@
+5 new agent {
+	message = recv ()
+	println (message)
+}
+
+new agent {
+	send-all ("Hello, agents!")
+}
