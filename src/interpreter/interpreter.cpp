@@ -365,13 +365,14 @@ namespace stibbons {
 				std::string id;
 				ValuePtr breed_v = make_shared<Nil>();
 				TreePtr paramTree;
+				TurtlePtr newTurtle;
 				if(type == nullptr) {
 					id = "anonym agent";
 					auto function = make_shared<UserFunction>(tree->getSon(0),vector<std::string>());
 					BreedPtr breed = turtle->getWorld()->createBreed(function);
 					paramTree = nullptr;
 					auto fct = breed->getFunction();
-					auto newTurtle = breed->createTurtle(turtle);
+					newTurtle = breed->createTurtle(turtle);
 					auto inter = new Interpreter();
 					std::thread newThread(&Interpreter::interpretFunction,inter,fct,newTurtle,paramTree,hashTable,id);
 					newThread.detach();
@@ -381,11 +382,12 @@ namespace stibbons {
 					BreedPtr breed = turtle->getWorld()->getBreed(id);
 					paramTree = tree;
 					auto fct = breed->getFunction();
-					auto newTurtle = breed->createTurtle(turtle);
+					newTurtle = breed->createTurtle(turtle);
 					auto inter = new Interpreter();
 					std::thread newThread(&Interpreter::interpretFunction,inter,fct,newTurtle,paramTree,hashTable,id);
 					newThread.detach();
 				}
+				return newTurtle;
 			}
 				break;
 			// Functions
