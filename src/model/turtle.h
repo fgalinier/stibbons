@@ -69,6 +69,12 @@ class Turtle : public Point, public Agent {
 		double getAngle ();
 
 		/**
+		 * Face a point
+		 * @param point the point to face
+		 */
+		void face (Point& point);
+
+		/**
 		 * Set the value of id
 		 * @param new_var the new value of id
 		 */
@@ -256,7 +262,7 @@ class Turtle : public Point, public Agent {
 		double angle;
 		Color color;
 		Line* line;
-		mutex value_m;
+		recursive_mutex value_m;
 		deque<pair<TurtlePtr,ValuePtr>> messages;
 	};
 }

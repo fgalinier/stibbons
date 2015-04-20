@@ -74,6 +74,13 @@ class Point {
 		unsigned getDimensions () const;
 
 		/**
+		 * Get the angle with the horizontal axis to another point in radian
+		 * @param other the other point
+		 * @return the angle with the horizontal axis to another point
+		 */
+		double getAngleTo (Point& other);
+
+		/**
 		 * Get the value for an axis
 		 * @return the value for an axis
 		 */
@@ -83,7 +90,7 @@ class Point {
 		unsigned dimensions;
 		double* axes;
 
-		mutex value_m;
+		recursive_mutex value_m;
 };
 
 }

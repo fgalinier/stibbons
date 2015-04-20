@@ -1,5 +1,6 @@
 #include "standard-function.h"
 
+#include "math.h"
 #include "nil.h"
 #include "number.h"
 #include "turtle.h"
@@ -81,6 +82,18 @@ ValuePtr RecvFunction::exec (AgentPtr agent, TablePtr params) {
 		this_thread::sleep_for(chrono::milliseconds(10));
 
 	return turtle->recv().second;
+}
+
+FaceFunction::FaceFunction () : Function({"turtle"}) {}
+
+ValuePtr FaceFunction::exec (AgentPtr agent, TablePtr params) {
+	auto other = params->getValue("turtle");
+
+	auto turtle = dynamic_pointer_cast<Turtle>(agent);
+
+	turtle->face(*dynamic_pointer_cast<Turtle>(other));
+
+	return make_shared<Nil>();
 }
 
 }

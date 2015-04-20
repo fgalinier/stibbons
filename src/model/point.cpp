@@ -1,5 +1,6 @@
 #include "point.h"
 
+#include <cmath>
 #include <cstring>
 
 namespace stibbons {
@@ -11,7 +12,7 @@ Point::Point (unsigned dimensions) : dimensions(dimensions) {
 }
 
 Point::Point(Point& other) {
-	lock_guard<mutex> lock(other.value_m);
+	lock_guard<recursive_mutex> lock(other.value_m);
 
 	// Set this
 	dimensions = other.dimensions;
@@ -20,7 +21,7 @@ Point::Point(Point& other) {
 }
 
 Point::Point (Point&& other) {
-	lock_guard<mutex> lock(other.value_m);
+	lock_guard<recursive_mutex> lock(other.value_m);
 
 	// Set this
 	dimensions = move(other.dimensions);
@@ -38,8 +39,8 @@ Point& Point::operator= (Point& other) {
 		return *this;
 
 	lock(value_m, other.value_m);
-	lock_guard<mutex> self_lock(value_m, adopt_lock);
-	lock_guard<mutex> other_lock(other.value_m, adopt_lock);
+	lock_guard<recursive_mutex> self_lock(value_m, adopt_lock);
+	lock_guard<recursive_mutex> other_lock(other.value_m, adopt_lock);
 
 	// Set this
 	dimensions = other.dimensions;
@@ -54,8 +55,8 @@ Point& Point::operator= (Point&& other) {
 		return *this;
 
 	lock(value_m, other.value_m);
-	lock_guard<mutex> self_lock(value_m, adopt_lock);
-	lock_guard<mutex> other_lock(other.value_m, adopt_lock);
+	lock_guard<recursive_mutex> self_lock(value_m, adopt_lock);
+	lock_guard<recursive_mutex> other_lock(other.value_m, adopt_lock);
 
 	// Set this
 	dimensions = other.dimensions;
@@ -71,7 +72,7 @@ Point& Point::operator= (Point&& other) {
 }
 
 void Point::setValue (unsigned axis, double value) throw(out_of_range) {
-	lock_guard<mutex> lock(value_m);
+	lock_guard<recursive_mutex> lock(value_m);
 
 	if (axis >= dimensions)
 		throw out_of_range(invalidAxisMessage);
@@ -80,7 +81,7 @@ void Point::setValue (unsigned axis, double value) throw(out_of_range) {
 }
 
 double Point::getValue (unsigned axis) throw(out_of_range) {
-	lock_guard<mutex> lock(value_m);
+	lock_guard<recursive_mutex> lock(value_m);
 
 	if (axis >= dimensions)
 		throw out_of_range(invalidAxisMessage);
@@ -92,8 +93,18 @@ unsigned Point::getDimensions () const {
 	return dimensions;
 }
 
+double Point::getAngleTo (Point& other) {
+	lock_guard<recursive_mutex> self_lock(value_m);
+	lock_guard<recursive_mutex> other_lock(other.value_m);
+
+	double x = other.getValue(0) - getValue(0);
+	double y = other.getValue(1) - getValue(1);
+
+	return atan2 (y, x);
+}
+
 double Point::operator[] (unsigned axis) throw(out_of_range) {
-	lock_guard<mutex> lock(value_m);
+	lock_guard<recursive_mutex> lock(value_m);
 
 	if (axis >= dimensions)
 		throw out_of_range(invalidAxisMessage);

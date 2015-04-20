@@ -101,6 +101,19 @@ class RecvFunction : public Function {
 		virtual ValuePtr exec (AgentPtr agent, TablePtr params);
 };
 
+/**
+ * class FaceFunction
+ *
+ *\brief A class making a turtle face another.
+ *
+ *\author Adrien Plazas
+ **/
+class FaceFunction : public Function {
+	public:
+		FaceFunction ();
+		virtual ValuePtr exec (AgentPtr agent, TablePtr params);
+};
+
 }
 
 /*

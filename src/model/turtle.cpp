@@ -9,12 +9,12 @@ namespace stibbons {
 
 error_code ec (errno,std::generic_category());
 
-/**
- * Check whether a value is between 0 and 1 and put it truncated to fit
- * in these boundaries.
- */
 inline double radian (double degree) {
 	return degree * M_PI / 180;
+}
+
+inline double degree (double radian) {
+	return radian * 180 / M_PI;
 }
 
 Turtle::Turtle () :
@@ -62,6 +62,7 @@ Turtle::Turtle (TurtlePtr parent) :
 	}
 
 void Turtle::initAttributes () {
+	setProperty(pair<string,ValuePtr>("face", make_shared<FaceFunction>()));
 	setProperty(pair<string,ValuePtr>("recv", make_shared<RecvFunction>()));
 	setProperty(pair<string,ValuePtr>("send", make_shared<SendFunction>()));
 	setProperty(pair<string,ValuePtr>("send-all", make_shared<SendAllFunction>()));
@@ -101,7 +102,7 @@ void Turtle::init () {
 }
 
 void Turtle::setId (turtle_id new_var) {
-	lock_guard<mutex> lock(value_m);
+	lock_guard<recursive_mutex> lock(value_m);
 	id=new_var;
 }
 
@@ -110,7 +111,7 @@ Type Turtle::getType() const {
 }
 
 turtle_id Turtle::getId() {
-	lock_guard<mutex> lock(value_m);
+	lock_guard<recursive_mutex> lock(value_m);
 	return id;
 }
 
@@ -141,14 +142,14 @@ void Turtle::setValue (unsigned axis, double value) throw(out_of_range) {
 }
 
 void Turtle::setColor (Color color) {
-	lock_guard<mutex> lock(value_m);
+	lock_guard<recursive_mutex> lock(value_m);
 	this->color = color;
 
 	changed();
 }
 
 Color& Turtle::getColor () {
-	lock_guard<mutex> lock(value_m);
+	lock_guard<recursive_mutex> lock(value_m);
 	return color;
 }
 
@@ -157,14 +158,20 @@ const Color& Turtle::getColor () const{
 }
 
 void Turtle::setAngle(double new_var) {
-	lock_guard<mutex> lock(value_m);
+	lock_guard<recursive_mutex> lock(value_m);
 	auto times = floor(new_var / 360.0);
 	angle = new_var - (times * 360.0);
 }
 
 double Turtle::getAngle() {
-	lock_guard<mutex> lock(value_m);
+	lock_guard<recursive_mutex> lock(value_m);
 	return angle;
+}
+
+void Turtle::face(Point& point) {
+	lock_guard<recursive_mutex> lock(value_m);
+
+	setAngle(degree(getAngleTo(point)));
 }
 
 void Turtle::forward(double dist) {
@@ -210,7 +217,7 @@ void Turtle::penDown() throw (future_error) {
 }
 
 void Turtle::penUp() throw (future_error) {
-	lock_guard<mutex> lock(value_m);
+	lock_guard<recursive_mutex> lock(value_m);
 	auto world = getWorld();
 
 	if (!world)
@@ -223,7 +230,7 @@ void Turtle::penUp() throw (future_error) {
 }
 
 TurtlePtr Turtle::createChild() {
-	lock_guard<mutex> lock(value_m);
+	lock_guard<recursive_mutex> lock(value_m);
 	auto child = Turtle::construct(shared_from_this());
 
 	breed->addTurtle (child);
@@ -232,7 +239,7 @@ TurtlePtr Turtle::createChild() {
 }
 
 void Turtle::changed() {
-	lock_guard<mutex> lock(value_m);
+	lock_guard<recursive_mutex> lock(value_m);
 	auto world = getWorld();
 
 	if (world)
@@ -240,14 +247,14 @@ void Turtle::changed() {
 }
 
 pair<TurtlePtr,ValuePtr> Turtle::getFirstMessage(){
-	lock_guard<mutex> lock(value_m);
+	lock_guard<recursive_mutex> lock(value_m);
 	auto result=messages.front();
 	messages.pop_front();
 	return result;
 }
 
 pair<TurtlePtr,ValuePtr> Turtle::getLastMessage(){
-	lock_guard<mutex> lock(value_m);
+	lock_guard<recursive_mutex> lock(value_m);
 	auto result=messages.back();
 	messages.pop_back();
 	return result;
@@ -275,12 +282,12 @@ pair<TurtlePtr,ValuePtr> Turtle::recv(){
 }
 
 int Turtle::checkMessage(){
-	lock_guard<mutex> lock(value_m);
+	lock_guard<recursive_mutex> lock(value_m);
 	return messages.size();
 }
 
 void Turtle::addMessage(TurtlePtr exp,ValuePtr v){
-	lock_guard<mutex> lock(value_m);
+	lock_guard<recursive_mutex> lock(value_m);
     auto p=make_pair(exp,v);
 	messages.push_back(p);
 }
