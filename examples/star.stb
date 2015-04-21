@@ -1,11 +1,20 @@
 agent star () {
 	color = red
 	teleport(rand() % max-x, rand() % max-y, rand())
+
+	while (true) {
+		rt rand() % 60
+		lt rand() % 60
+		fd 1
+	}
 }
 
 marylin = new star()
 
 5 new agent {
 	teleport(rand() % max-x, rand() % max-y, rand())
-	face(marylin)
+
+	while (true) {
+		face(marylin)
+	}
 }
