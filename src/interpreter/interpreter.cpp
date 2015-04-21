@@ -365,6 +365,7 @@ namespace stibbons {
 				ValuePtr breed_v = make_shared<Nil>();
 				TreePtr paramTree;
 				TurtlePtr newTurtle;
+				
 				if(type == nullptr) {
 					id = "anonym agent";
 					auto function = make_shared<UserFunction>(tree->getSon(0),vector<std::string>());
@@ -373,7 +374,8 @@ namespace stibbons {
 					auto fct = breed->getFunction();
 					newTurtle = breed->createTurtle(turtle);
 					auto inter = new Interpreter();
-					std::thread newThread(&Interpreter::interpretFunction,inter,fct,newTurtle,paramTree,hashTable,id);
+					auto params = getParams(fct,newTurtle,paramTree,hashTable,id);
+					std::thread newThread(&Interpreter::interpretFunction,inter,fct,newTurtle,params);
 					newThread.detach();
 				}
 				else {
@@ -383,7 +385,8 @@ namespace stibbons {
 					auto fct = breed->getFunction();
 					newTurtle = breed->createTurtle(turtle);
 					auto inter = new Interpreter();
-					std::thread newThread(&Interpreter::interpretFunction,inter,fct,newTurtle,paramTree,hashTable,id);
+					auto params = getParams(fct,newTurtle,paramTree,hashTable,id);
+					std::thread newThread(&Interpreter::interpretFunction,inter,fct,newTurtle,params);
 					newThread.detach();
 				}
 				return newTurtle;
@@ -408,7 +411,8 @@ namespace stibbons {
 					                        Type::FUNCTION,
 					                        fct->getType(),
 			                                getPosition(tree));
-				return this->interpretFunction(fct,turtle,tree,hashTable,id);
+				auto params = getParams(fct,turtle,tree,hashTable,id);
+				return this->interpretFunction(fct,turtle,params);
 			}
 				break;
 			}
@@ -440,12 +444,13 @@ namespace stibbons {
 		return make_shared<UserFunction>(fctTree,params);
 	}
 
-	ValuePtr Interpreter::interpretFunction(FunctionPtr fct,
-	                                      TurtlePtr turtle,
-										  const TreePtr tree,
-										  TablePtr hashTable,
-										  std::string id) const {
-		auto newHashTable = (!hashTable)?make_shared<Table>():hashTable;
+	TablePtr Interpreter::getParams(FunctionPtr fct,
+	                                TurtlePtr turtle,
+	                                const TreePtr tree,
+	                                TablePtr hashTable,
+	                                std::string id) const {
+//		auto newHashTable = (!hashTable)?make_shared<Table>():hashTable;
+		auto newHashTable = make_shared<Table>();
 
 		if(tree) {
 			if(fct->getParams().size() != tree->getSons().size()) {
@@ -465,7 +470,13 @@ namespace stibbons {
 			}
 		}
 
-		return (*fct)(turtle, newHashTable);
+		return newHashTable;
+	}
+
+	ValuePtr Interpreter::interpretFunction(FunctionPtr fct,
+	                                        TurtlePtr turtle,
+	                                        TablePtr params) const {
+		return (*fct)(turtle, params);
 	}
 }
 

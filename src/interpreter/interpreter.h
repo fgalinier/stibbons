@@ -72,11 +72,24 @@ namespace stibbons {
 		 * \param id The name of function for error message
 		 * \return The Value returned by the Function fct
 		 */
+		virtual	TablePtr getParams(FunctionPtr,
+		                           TurtlePtr,
+		                           const TreePtr,
+		                           TablePtr, 
+		                           std::string) const;
+
+		/**
+		 * Interpret a function (or function of a breed)
+		 * \param fct A function that will be interpreted
+		 * \param turtle The turtle to run the program on
+		 * \param tree The Tree corresponding to function call
+		 * \param hashTable The hashtable that will contains parameters of the function
+		 * \param id The name of function for error message
+		 * \return The Value returned by the Function fct
+		 */
 		virtual	ValuePtr interpretFunction(FunctionPtr,
 		                                 TurtlePtr,
-										 const TreePtr,
-										 TablePtr, 
-										 std::string) const;
+										 TablePtr) const;
 
 		static inline yy::position getPosition(const TreePtr tree);
 	};
