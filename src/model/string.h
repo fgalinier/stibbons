@@ -32,6 +32,20 @@ class String : public GenericValue<Type::STRING>, public SimpleValue<std::string
 		virtual void reset ();
 
 		/**
+		 * Add a value to another
+		 * @param other the other value
+		 * @return the resulting value
+		 */
+		virtual ValuePtr add (ValuePtr other) throw(std::domain_error);
+
+		/**
+		 * Add a value to another
+		 * @param other the other value
+		 * @return the resulting value
+		 */
+		virtual StringPtr add (StringPtr other);
+
+		/**
 		 * Return whether the comparison value of two values
 		 *
 		 * Return a negative number if this value is lower than the other,

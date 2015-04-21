@@ -8,6 +8,19 @@ void String::reset () {
 	value = "";
 }
 
+ValuePtr String::add (ValuePtr other) throw(std::domain_error) {
+	switch (other->getType()) {
+		case Type::STRING:
+			return add (dynamic_pointer_cast<String>(other));
+		default:
+			return Value::add(other);
+	}
+}
+
+StringPtr String::add (StringPtr other) {
+	return make_shared<String>(getValue() + other->getValue());
+}
+
 int String::compare (ValuePtr other) {
 	if (getType() != other->getType())
 		return Value::compare (other);
