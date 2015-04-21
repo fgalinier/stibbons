@@ -94,6 +94,11 @@ ValuePtr Agent::getProperty(string p) {
 	return got->second;
 }
 
+unordered_map<string,ValuePtr>* Agent::getProperty() {
+	lock_guard<recursive_mutex> lock(parent_m);
+	return properties;
+}
+
 int Agent::compare (ValuePtr other) {
 	if (getType() != other->getType())
 		return Value::compare (other);
@@ -118,6 +123,21 @@ void Agent::initColors() {
 	setProperty("yellow", make_shared<Color>(1.0, 1.0, 0.0));
 	setProperty("cyan", make_shared<Color>(0.0, 1.0, 1.0));
 	setProperty("magenta", make_shared<Color>(1.0, 0.0, 1.0));
+}
+
+void Agent::exportProperties(Object& o){
+	unordered_map<string,ValuePtr>* properties=getProperty();
+	for (auto m : *properties)
+	{
+		if (m.second->getType() == Type::COLOR)
+			o.push_back(Pair(m.first,dynamic_pointer_cast<Color>(m.second)->toString()));
+		if (m.second->getType() == Type::NUMBER)
+			o.push_back(Pair(m.first,dynamic_pointer_cast<Color>(m.second)->toString()));
+		if (m.second->getType() == Type::STRING)
+			o.push_back(Pair(m.first,dynamic_pointer_cast<Color>(m.second)->toString()));
+		if (m.second->getType() == Type::BOOLEAN)
+			o.push_back(Pair(m.first,dynamic_pointer_cast<Color>(m.second)->toString()));
+	}
 }
 
 }

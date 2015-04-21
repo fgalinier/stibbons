@@ -12,6 +12,7 @@ using namespace stibbons;
 class TestWorld : public TestCase{
 	CPPUNIT_TEST_SUITE(TestWorld);
 	CPPUNIT_TEST(testAjoutTurtle);
+	CPPUNIT_TEST(testExporte);
 	CPPUNIT_TEST_SUITE_END();
 
 	public :
@@ -39,6 +40,17 @@ class TestWorld : public TestCase{
 		void testAjoutTurtle() {
 			cout << "TestWorld::testAjoutTurtle" << endl;
 			world->createBreed(f,"setup");
+		}
+
+		void testExporte() {
+			cout << "TestWorld::testExporte" << endl;
+			FunctionPtr function=nullptr;
+			//NumberPtr n=make_shared<Number>(4);
+			//paire<string,NumberPtr> p=make_pair<string,NumberPtr>("a",n);
+			TurtlePtr t=world->createBreed(function,"lila")->createTurtle();
+			TurtlePtr t2=world->createBreed(function)->createTurtle();
+			//cout << t->getId()<<" "<<t->getColor().toString() << endl;
+			world->exporte();
 		}
 
 };

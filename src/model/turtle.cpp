@@ -1,4 +1,5 @@
 #include "turtle.h"
+#include "type.h"
 
 #include <cmath>
 #include <sstream>
@@ -434,6 +435,29 @@ void Turtle::addMessage(TurtlePtr exp,ValuePtr v){
 	lock_guard<recursive_mutex> lock(value_m);
     auto p=make_pair(exp,v);
 	messages.push_back(p);
+}
+
+Object Turtle::exportTurtle(){
+	Object synthese;
+	synthese.push_back(Pair("id",getId()));
+	synthese.push_back(Pair("color",this->getColor().toString()));
+/*
+	unordered_map<string,ValuePtr>* properties=getProperty();
+	for (auto m : *properties)
+	{
+		if (m.second->getType() == Type::COLOR)
+			synthese.push_back(Pair(m.first,dynamic_pointer_cast<Color>(m.second)->toString()));
+	}
+*/
+	exportProperties(synthese);
+	auto parent=getParent();
+	if (parent->getType() == Type::WORLD)
+	{
+		synthese.push_back(Pair("parent","world"));
+	}
+	else synthese.push_back(Pair("parent",dynamic_pointer_cast<Turtle>(parent)->getId()));
+
+	return synthese;
 }
 
 string Turtle::toString () {

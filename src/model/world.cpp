@@ -233,6 +233,55 @@ string World::toString () {
 	return "world";
 }
 
+Object World::exportWorld (){
+	Object world;
+
+	Object sizeW;
+	Object sizeZ;
+	sizeW.push_back(Pair("dimensions",(int)(getWorldSize().getDimensions())));
+	//sizeW.push_back(Pair("axis",getWorldSize().getValue()));
+	world.push_back(Pair("WorldSize",sizeW));
+	sizeZ.push_back(Pair("dimensions",(int)(getZoneSize().getDimensions())));
+	//sizeZ.push_back(Pair("axis",getZoneSize().getValue()));
+	world.push_back(Pair("ZoneSize",sizeZ));
+
+	Object tortue;
+	for (auto t : anonymousBreeds)
+	{
+		auto turtles=t->getTurtles();
+		for (auto to : turtles)
+		{
+		     tortue.push_back(Pair("anonymous",to->exportTurtle()));
+		}
+	}
+	for (auto t : namedBreeds)
+	{
+		string nom=t.first;
+		for (auto to : t.second->getTurtles())
+		{
+		      tortue.push_back(Pair(nom,to->exportTurtle()));
+		}
+	}
+	world.push_back(Pair("Turtles",tortue));
+
+	return world;
+}
+
+bool World::exporte (){
+	ofstream fichier("./sauvegarde.json");
+
+	Object json;
+	time_t temps;
+	time(&temps);
+	json.push_back(Pair("time",ctime(&temps)));
+
+	Object w;
+	w.push_back(Pair("World",exportWorld()));
+		write(json,fichier,pretty_print);
+		write(w,fichier,pretty_print);
+	return true;
+}
+
 }
 
 /*

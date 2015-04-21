@@ -1,8 +1,8 @@
 NULL =
 
-CC = g++
-MOC = moc-qt5
-RCC = rcc-qt5
+CC = g++ 
+MOC = moc
+RCC = rcc
 
 INCDIR = /usr/include
 QTINCDIR = $(INCDIR)/qt5
@@ -24,7 +24,7 @@ QTLIBS = \
 	-lQt5Widgets \
 	$(NULL)
 
-CFLAGS = -fPIC -Wall -Wpedantic -std=c++11 -g
+CFLAGS = -fPIC -Wall -Wpedantic -std=c++11 -g -ljson_spirit
 
 MODELSRC = \
 	src/interpreter/tree.cpp \

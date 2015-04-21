@@ -7,8 +7,10 @@
 #include <iostream>
 #include <string>
 #include <mutex>
+#include "json_spirit.h"
+#include "json_spirit_writer_template.h"
 
-
+using namespace json_spirit;
 using namespace std;
 
 namespace stibbons {
@@ -59,6 +61,12 @@ class Agent : public Value, public enable_shared_from_this<Agent> {
 		 */
 		 virtual ValuePtr getProperty(string p);
 
+		 /**
+		 * Get the map of the properties
+		 * @return the map of properties
+		 */
+		 virtual unordered_map<string,ValuePtr>* getProperty();
+
 		/**
 		 * Return whether the comparison value of two values
 		 *
@@ -82,6 +90,12 @@ class Agent : public Value, public enable_shared_from_this<Agent> {
 		 * @return the comparison value of this and the other value
 		 */
 		virtual int compare (AgentPtr other);
+
+		/**
+		 * Export the agent's properties
+		 * @param the object where the properties will be
+		 **/
+		virtual void exportProperties(Object& o);
 
 	protected:
 		/**

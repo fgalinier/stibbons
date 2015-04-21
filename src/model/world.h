@@ -7,17 +7,19 @@
 #include "line.h"
 #include "breed.h"
 #include "function.h"
-
-//#include <cstdarg>
+#include "json_spirit.h"
+#include "json_spirit_writer_template.h"
+#include <ctime>
 #include <vector>
 #include <memory>
 #include <mutex>
-//#include <stdlib.h>
+#include <fstream>
 #include <unordered_map>
 #include <unordered_set>
 #include <stdexcept>
 
 using namespace std;
+using namespace json_spirit;
 
 namespace stibbons {
 
@@ -161,6 +163,18 @@ class World : public Changeable, public Agent {
 
 		turtle_id getId ();
 		void setId (turtle_id i);
+
+		/**
+		 * Export the model
+		 * @return true if sucess, else false
+		 */
+		bool exporte ();
+
+		/**
+		 * Export the world's model
+		 * @return the json object with the properties
+		 */
+		Object exportWorld ();
 
 		/**
 		 * Return a string corresponding to the value

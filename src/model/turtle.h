@@ -11,11 +11,16 @@
 #include "value.h"
 #include <future>
 #include <cmath>
+#include <fstream>
 #include <deque>
 #include <stdexcept>
 #include <system_error>
 #include <unordered_map>
 #include <mutex>
+#include "json_spirit.h"
+#include "json_spirit_writer_template.h"
+
+using namespace json_spirit;
 using namespace std;
 
 namespace stibbons {
@@ -241,6 +246,12 @@ class Turtle : public Agent {
 		 * @return the number of message available
 		 */
 		size_t checkMessage();
+
+		/**
+		 * Export turtle's state
+		 * @return 
+		 */
+		Object exportTurtle();
 
 		/**
 		 * Return a string corresponding to the value
