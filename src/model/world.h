@@ -50,8 +50,7 @@ class World : public Changeable, public Agent {
 
 		virtual Type getType() const;
 
-		/**
-		 * Add a property
+		/**		 * Add a property
 		 * @param key the key of the property
 		 * @param value the value of the property
 		 */
@@ -62,6 +61,12 @@ class World : public Changeable, public Agent {
 		 * @return the value of propertie p
 		 */
 		virtual ValuePtr getProperty(string p);
+
+		/**
+		 * Get the value of world
+		 * @return the value of world
+		 */
+		WorldPtr getWorld ();
 
 		/**
 		 * Add a line

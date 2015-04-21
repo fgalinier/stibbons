@@ -31,6 +31,12 @@ class Agent : public Value, public enable_shared_from_this<Agent> {
 		AgentPtr getParent ();
 
 		/**
+		 * Get the value of world
+		 * @return the value of world
+		 */
+		virtual WorldPtr getWorld ()=0;
+
+		/**
 		 * Reparent to the grand parent agent
 		 */
 		void reparent ();

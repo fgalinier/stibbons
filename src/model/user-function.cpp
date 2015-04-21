@@ -1,6 +1,6 @@
 #include "user-function.h"
 
-#include "../interpreter/interpreter.h"
+#include "../interpreter/turtle-interpreter.h"
 
 namespace stibbons {
 
@@ -9,7 +9,7 @@ UserFunction::UserFunction (TreePtr tree, vector<string> params) :
 	tree(tree) {}
 
 ValuePtr UserFunction::exec (AgentPtr agent, TablePtr params) {
-	return Interpreter().interpret (agent, tree, params);
+	return TurtleInterpreter().interpret (agent, tree, params);
 }
 
 }

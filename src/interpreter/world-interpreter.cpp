@@ -28,14 +28,30 @@ namespace stibbons {
 		warp.push_back(false);
 		warp.push_back(false);
 		world = World::construct(worldSize, zoneSize, warp);
-
-		auto f = make_shared<UserFunction>(nullptr);
-		auto breed = world->createBreed(f);
-		breed->createTurtle();
 	}
 
 	WorldPtr WorldInterpreter::getWorld() {
 		return world;
+	}
+
+	ValuePtr WorldInterpreter::interpret(AgentPtr agent,
+									   const TreePtr tree,
+									   TablePtr hashTable) {
+		if(agent->getType() == Type::WORLD)
+			return this->interpret(dynamic_pointer_cast<World>(agent),tree,hashTable);
+
+		throw SemanticException("Invalid action",getPosition(tree));
+	}
+
+	ValuePtr WorldInterpreter::interpret(WorldPtr agent,
+									   const TreePtr tree,
+									   TablePtr hashTable) {
+		ValuePtr start = Interpreter::interpret(agent,tree,hashTable);
+
+		if(start != nullptr)	
+			return start;
+
+		throw SemanticException("Invalid action",getPosition(tree));		
 	}
 
 	void WorldInterpreter::run() {
@@ -45,9 +61,7 @@ namespace stibbons {
 		if (tree == nullptr )
 			return;
 
-		auto turtles = world->getTurtles();
-		auto turtle_i = turtles.begin();
-		interpret(*turtle_i, tree,make_shared<Table>());
+		WorldInterpreter::start(world,tree);
 	}
 
 	void WorldInterpreter::halt() {

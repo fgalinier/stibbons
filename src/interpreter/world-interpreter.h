@@ -49,6 +49,27 @@ namespace stibbons {
 		virtual WorldPtr getWorld();
 
 		/**
+		 * Check if the agent is a world and call the interpret for a world
+		 * \param agent The agent to run the program on.
+		 * \param tree The syntaxic tree to interpret.
+		 * \param hashTable A hashtable which contain parameters
+		 * \return An int equal to 0 if no error has occurred.
+		 */
+		virtual ValuePtr interpret(AgentPtr agent,
+		                         const TreePtr,
+		                         TablePtr hashTable) ;
+		/**
+		 * Interpret the tree and apply it to the world.
+		 * \param agent The agent to run the program on.
+		 * \param tree The syntaxic tree to interpret.
+		 * \param hashTable A hashtable which contain parameters
+		 * \return An int equal to 0 if no error has occurred.
+		 */
+		virtual ValuePtr interpret(WorldPtr agent,
+		                         const TreePtr,
+		                         TablePtr hashTable) ;
+
+		/**
 		 * Run the interpreter with the parsed program.
 		 */
 		virtual void run();

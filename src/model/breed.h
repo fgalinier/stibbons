@@ -59,7 +59,7 @@ class Breed {
 		 * @param parent the parent of the turtle
 		 * @return a reference to the new turtle
 		 */
-		TurtlePtr createTurtle (TurtlePtr parent);
+		TurtlePtr createTurtle (AgentPtr parent);
 
 		/**
 		 * Get the turtles

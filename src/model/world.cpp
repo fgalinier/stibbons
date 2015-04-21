@@ -84,6 +84,10 @@ ValuePtr World::getProperty(string p) {
 	return Agent::getProperty(p);
 }
 
+WorldPtr World::getWorld () {
+	return dynamic_pointer_cast<World>(this->shared_from_this());
+}
+
 void World::addLine (Line* add_object) {
 	lock_guard<recursive_mutex> lock(value_m);
 

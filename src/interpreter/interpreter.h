@@ -22,6 +22,8 @@
 #include "../model/boolean.h"
 #include "../model/color.h"
 #include "../model/nil.h"
+#include <vector>
+#include <thread>
 
 namespace stibbons {
 	/**
@@ -34,38 +36,11 @@ namespace stibbons {
 	 * \author Clément Simon
 	 */
 	class Interpreter {
-	public:
-		/**
-		 * Create a new interpreter
-		 */
-		Interpreter() = default;
+	protected:
 
-		/**
-		 * Interpret the tree and apply it to the turtle.
-		 * \param turtle The turtle to run the program on.
-		 * \param tree The syntaxic tree to interpret.
-		 * \param hashTable A hashtable which contain parameters
-		 * \return An int equal to 0 if no error has occurred.
-		 */
-		virtual ValuePtr interpret(TurtlePtr turtle,
-		                         const TreePtr,
-		                         TablePtr hashTable=nullptr) const throw(SemanticException);
-		virtual ValuePtr interpret(AgentPtr agent,
-		                         const TreePtr,
-		                         TablePtr hashTable=nullptr) const throw(SemanticException);
+		vector<thread> sons;
 
-		static size_t waitTime;
-
-	private:
-		/**
-		 * Create a function from a tree with a
-		 * FCT or AGT node.
-		 * \param tree A tree with the FCT or AGT root node. 
-		 * \return The function corresponding to the tree
-		 */
-		virtual FunctionPtr getFunctionFromTree(const TreePtr) const;
-
-		/**
+        /**
 		 * Interpret a function (or function of a breed)
 		 * \param fct A function that will be interpreted
 		 * \param turtle The turtle to run the program on
@@ -75,7 +50,7 @@ namespace stibbons {
 		 * \return The Value returned by the Function fct
 		 */
 		virtual	TablePtr getParams(FunctionPtr,
-		                           TurtlePtr,
+		                           AgentPtr,
 		                           const TreePtr,
 		                           TablePtr, 
 		                           std::string) const;
@@ -90,10 +65,47 @@ namespace stibbons {
 		 * \return The Value returned by the Function fct
 		 */
 		virtual	ValuePtr interpretFunction(FunctionPtr,
-		                                 TurtlePtr,
-										 TablePtr) const;
+										   AgentPtr,
+										   TablePtr) const;
+		/**
+		 * Create a function from a tree with a
+		 * FCT or AGT node.
+		 * \param tree A tree with the FCT or AGT root node. 
+		 * \return The function corresponding to the tree
+		 */
+		virtual FunctionPtr getFunctionFromTree(const TreePtr) const;
 
 		static inline yy::position getPosition(const TreePtr tree);
+
+	public:
+
+		static size_t waitTime;
+
+		/**
+		 * Create a new interpreter
+		 */
+		Interpreter() = default;
+
+		/**
+		 * Interpret the tree and apply it to the turtle.
+		 * \param agent The agent to run the program on.
+		 * \param tree The syntaxic tree to interpret.
+		 * \param hashTable A hashtable which contain parameters
+		 * \return An int equal to 0 if no error has occurred.
+		 */
+		virtual ValuePtr interpret(AgentPtr agent,
+								   const TreePtr,
+								   TablePtr hashTable=nullptr) const throw(SemanticException);
+		/**
+		 * Start an interpreter on an agent
+		 * \param agent The agent to run the program on.
+		 * \param tree The syntaxic tree to interpret.
+		 * \param hashTable A hashtable which contain parameters
+		 * \return An int equal to 0 if no error has occurred.
+		 */
+		virtual void start(AgentPtr agent,
+						   const TreePtr);
+
 	};
 }
 /*
