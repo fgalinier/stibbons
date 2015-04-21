@@ -97,6 +97,13 @@ class Turtle : public Point, public Agent {
 		 * @param axis the axis
 		 * @param value the value
 		 */
+		void setValue (unsigned axis, double value) throw(out_of_range);
+
+		/**
+		 * Set the value for an axis
+		 * @param axis the axis
+		 * @param value the value
+		 */
 		void setColor (Color color);
 
 		/**

@@ -134,9 +134,17 @@ ZonePtr Turtle::getZone () {
 	return world->getZone(*this);
 }
 
+void Turtle::setValue (unsigned axis, double value) throw(out_of_range) {
+	Point::setValue (axis, value);
+
+	changed();
+}
+
 void Turtle::setColor (Color color) {
 	lock_guard<mutex> lock(value_m);
 	this->color = color;
+
+	changed();
 }
 
 Color& Turtle::getColor () {
