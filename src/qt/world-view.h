@@ -2,7 +2,7 @@
  * \file world-view.h
  * \brief The Stibbons world view
  * \author Adrien Plazas
- * \version 0.3
+ * \version 0.4
  * \date 28/02/2015
  */
 

@@ -2,7 +2,7 @@
  * \file syntax-exception.h
  * \brief SyntaxException class header.
  * \author Florian Galinier
- * \version 0.3
+ * \version 0.4
  * \date 28/03/15
  *
  * Declaration of SyntaxException class, used to prevent when parser find a

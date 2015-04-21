@@ -2,7 +2,7 @@
  * \file interpreter-exception.h
  * \brief InterpreterException class header.
  * \author Florian Galinier
- * \version 0.3
+ * \version 0.4
  * \date 28/03/15
  *
  * Declaration of InterpreterException class inherited by syntax and semantic

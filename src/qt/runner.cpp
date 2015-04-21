@@ -2,7 +2,7 @@
  * \file runner.cpp
  * \brief Run Stibbons code in its own thread
  * \author Adrien Plazas
- * \version 0.3
+ * \version 0.4
  * \date 25/03/2015
  */
 

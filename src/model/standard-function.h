@@ -2,7 +2,7 @@
  * \file standard-function.h
  * \brief Classes implementing standard functions
  * \author Adrien Plazas
- * \version 0.3
+ * \version 0.4
  * \date 10/04/2015
  */
 

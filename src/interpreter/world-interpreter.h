@@ -4,7 +4,7 @@
  * \author Florian Galinier
  * \author Clément Simon
  * \author Adrien Plazas
- * \version 0.3
+ * \version 0.4
  * \date 08/04/15
  *
  * Declaration of WorldInterpreter class.

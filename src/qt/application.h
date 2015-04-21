@@ -2,7 +2,7 @@
  * \file application.h
  * \brief The Stibbons application
  * \author Adrien Plazas
- * \version 0.3
+ * \version 0.4
  * \date 26/02/2015
  */
 

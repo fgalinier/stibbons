@@ -2,7 +2,7 @@
  * \file window.h
  * \brief The Stibbons main window
  * \author Adrien Plazas
- * \version 0.3
+ * \version 0.4
  * \date 26/02/2015
  */
 
