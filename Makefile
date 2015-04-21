@@ -132,21 +132,26 @@ TEST = test
 
 DOCDIR = doc
 REPDIR = $(DOCDIR)/report
+RAILDIR = $(REPDIR)/rail
 PDFDIR = $(DOCDIR)
+
+RAILBIN = $(RAILDIR)/rail
+
+REPTEX = $(REPDIR)/report.tex
+REPRAI = $(DOCDIR)/report
 
 REPDEPS = \
 	$(REPDIR)/*.tex \
 	$(NULL)
 
-PDF = \
-	$(PDFDIR)/report.pdf \
-	$(NULL)
+PDF = $(PDFDIR)/report.pdf
 
 PDFCLN = \
 	$(PDF) \
 	$(PDF:%.pdf=%.aux) \
 	$(PDF:%.pdf=%.log) \
 	$(PDF:%.pdf=%.toc) \
+	$(REPRAI).rai \
 	$(NULL)
 
 # Tout compiler
@@ -195,14 +200,22 @@ $(QTOBJECTS): %.o: %.cpp
 
 doc: $(PDF)
 
-$(PDFDIR)/%.pdf: $(REPDIR)/%.tex
+$(PDFDIR)/%.pdf: $(REPDIR)/%.tex $(RAILBIN)
 	# Compile pour générer la TOC
-	pdflatex -output-directory $(@D) $^
+	TEXINPUTS=.//:$$TEXINPUTS pdflatex -output-directory $(@D) $<
+	# Compile les diagrammes de syntaxe
+	if [ -a $(REPRAI).rai ] ; \
+	then \
+		$(RAILBIN) $(REPRAI) ; \
+	fi;
 	# Compile avec la TOC
-	pdflatex -output-directory $(@D) $^
+	TEXINPUTS=.//:$$TEXINPUTS pdflatex -output-directory $(@D) $<
 
 $(REPDIR)/report.tex: $(REPDEPS)
 	touch $@
+
+$(RAILBIN): $(RAILDIR)/Makefile
+	make -C $(<D) -f $(<F)
 
 clean:
 	rm -Rf $(APP) $(TEST) \
@@ -218,6 +231,7 @@ clean:
 	$(QTOBJECTS) \
 	$(PDFCLN)\
 	$(NULL)
+	make clean -C $(RAILDIR) -f Makefile
 
 .PHONY: all doc clean
 
