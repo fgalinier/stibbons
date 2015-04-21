@@ -23,6 +23,10 @@ inline QPen pen(Color c) {
 	return QPen(color(c));
 }
 
+inline QBrush brush(Color c) {
+	return QBrush(color(c));
+}
+
 WorldView::WorldView(QWidget *parent) :
 	QWidget(parent),
 	linesSizes(vector<size_t>()),
@@ -133,12 +137,15 @@ void WorldView::paint(QPainter &p, Line &line, int xt, int yt) {
 
 void WorldView::paint(QPainter &p, Turtle &turtle, int xt, int yt) {
 	auto oldPen = p.pen();
+	auto oldBrush = p.brush();
 	p.setPen(pen(turtle.getColor()));
+	p.setBrush(brush(turtle.getColor()));
 
 	auto triangle = getTriangle();
 	paint(p, triangle, turtle[0] + xt, turtle[1] + yt, turtle.getAngle(), 5.0);
 
 	p.setPen(oldPen);
+	p.setBrush(oldBrush);
 }
 
 void WorldView::paint(QPainter &p, QPolygon &polygon, double x, double y, double angle, double size) {
