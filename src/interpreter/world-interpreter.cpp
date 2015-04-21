@@ -31,11 +31,11 @@ namespace stibbons {
 
 		// Create a new world depending on the program's parameters
 		auto worldSize = Size(2);
-		worldSize.setValue(0, 100);
-		worldSize.setValue(1, 100);
+		worldSize.setValue(0, 50);
+		worldSize.setValue(1, 50);
 		auto zoneSize = Size(2);
-		zoneSize.setValue(0, 2);
-		zoneSize.setValue(1, 2);
+		zoneSize.setValue(0, 10);
+		zoneSize.setValue(1, 10);
 		world = World::construct(worldSize, zoneSize);
 
 		auto f = make_shared<UserFunction>(nullptr);
