@@ -25,7 +25,7 @@ int Function::compare (ValuePtr other) {
 }
 
 int Function::compare(FunctionPtr other) {
-	return other.get() - this;
+	return this - other.get();
 }
 
 string Function::toString () {

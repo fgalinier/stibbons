@@ -16,7 +16,7 @@ int Boolean::compare (ValuePtr other) {
 }
 
 int Boolean::compare(BooleanPtr other) {
-	return other->getValue () - getValue ();
+	return getValue () - other->getValue ();
 }
 
 string Boolean::toString () {

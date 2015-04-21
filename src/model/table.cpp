@@ -84,7 +84,7 @@ namespace stibbons {
 	}
 
 	int Table::compare(TablePtr other) {
-		return other.get() - this;
+		return this - other.get() ;
 	}
 
 	string Table::toString() {

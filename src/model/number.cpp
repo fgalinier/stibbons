@@ -92,7 +92,7 @@ int Number::compare (ValuePtr other) {
 }
 
 int Number::compare(NumberPtr other) {
-	return other->getValue () - getValue ();
+	return getValue () - other->getValue ();
 }
 
 string Number::toString () {

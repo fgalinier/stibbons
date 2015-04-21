@@ -225,15 +225,15 @@ int Color::compare (ValuePtr other) {
 }
 
 int Color::compare (ColorPtr other) {
-	auto red = other->r() - r();
+	auto red = r() - other->r();
 	if (red < 0.0) return -1;
 	if (red > 0.0) return 1;
 
-	auto green = other->g() - g();
+	auto green = g() - other->g();
 	if (green < 0.0) return -1;
 	if (green > 0.0) return 1;
 
-	auto blue = other->b() - b();
+	auto blue = b() - other->b();
 	if (blue < 0.0) return -1;
 	if (blue > 0.0) return 1;
 

@@ -82,7 +82,7 @@ class Function : public GenericValue<Type::FUNCTION> {
 		 * Return whether the comparison value of two values
 		 *
 		 * Return a negative number if this value is lower than the other,
-		 * return a negative number if this value is greater than the other,
+		 * return a positive number if this value is greater than the other,
 		 * return 0 if they are equal.
 		 *
 		 * @param other the other value

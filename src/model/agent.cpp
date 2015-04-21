@@ -113,7 +113,7 @@ int Agent::compare (ValuePtr other) {
 }
 
 int Agent::compare(AgentPtr other) {
-	return other.get() - this;
+	return this - other.get();
 }
 
 }

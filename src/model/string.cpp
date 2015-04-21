@@ -29,9 +29,9 @@ int String::compare (ValuePtr other) {
 }
 
 int String::compare(StringPtr other) {
-	if (other->getValue () < getValue ())
+	if (getValue () < other->getValue () )
 		return -1;
-	if (other->getValue () > getValue ())
+	if (getValue () > other->getValue () )
 		return 1;
 	return 0;
 }
