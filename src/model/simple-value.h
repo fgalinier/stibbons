@@ -25,15 +25,6 @@ template<typename T>
 class SimpleValue {
 	public:
 		/**
-		 * Set the value of value
-		 * @param value the new value of value
-		 */
-		void setValue (const T& value) {
-			lock_guard<mutex> lock(value_m);
-			this->value = value;
-		}
-
-		/**
 		 * Get the value of value
 		 * @return the value of value
 		 */
