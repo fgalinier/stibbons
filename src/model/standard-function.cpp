@@ -6,6 +6,7 @@
 
 #include <cstdlib>
 #include <iostream>
+#include <sstream>
 #include <thread>
 
 using namespace std;
@@ -26,7 +27,9 @@ ValuePtr PrintFunction::exec (AgentPtr agent, TablePtr params) {
 PrintlnFunction::PrintlnFunction () : Function({"string"}) {}
 
 ValuePtr PrintlnFunction::exec (AgentPtr agent, TablePtr params) {
-	cout << params->getValue("string")->toString() << endl;
+	std::ostringstream oss;
+	oss << params->getValue("string")->toString() << endl;
+	cout << oss.str();
 	return make_shared<Nil>();
 }
 
