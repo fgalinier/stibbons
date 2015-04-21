@@ -9,18 +9,31 @@ using namespace CppUnit;
 class TestNumber : public TestCase {
 	CPPUNIT_TEST_SUITE(TestNumber);
 	CPPUNIT_TEST(getValue);
+	CPPUNIT_TEST(compare);
 	CPPUNIT_TEST_SUITE_END();
 
 	public:
-		stibbons::Number two;
+		stibbons::NumberPtr two;
+		stibbons::NumberPtr three;
 
 		void setUp() {
-			two.setValue(2.0);
+			two = make_shared<stibbons::Number>(2.0);
+			three = make_shared<stibbons::Number>(3.0);
 		}
 
 		void getValue() {
 			cout << "TestNumber::getValue" << endl;
-			CPPUNIT_ASSERT_EQUAL (2.0, two.getValue());
+			CPPUNIT_ASSERT_EQUAL (2.0, two->getValue());
+		}
+
+		void compare() {
+			cout << "TestNumber::compare" << endl;
+			CPPUNIT_ASSERT (!two->isEqual(three));
+			CPPUNIT_ASSERT (two->isDifferent(three));
+			CPPUNIT_ASSERT (!two->isLower(three));
+			CPPUNIT_ASSERT (two->isGreater(three));
+			CPPUNIT_ASSERT (!two->isLowerOrEqual(three));
+			CPPUNIT_ASSERT (two->isGreaterOrEqual(three));
 		}
 };
 

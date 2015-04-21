@@ -90,6 +90,66 @@ class Value {
 		}
 
 		/**
+		 * Return whether this value is equal to the other
+		 *
+		 * @param other the other value
+		 * @return whether this value is equal to the other
+		 */
+		virtual bool isEqual (ValuePtr other) {
+			return compare(other) == 0;
+		}
+
+		/**
+		 * Return whether this value is different from the other
+		 *
+		 * @param other the other value
+		 * @return whether this value is different from the other
+		 */
+		virtual bool isDifferent (ValuePtr other) {
+			return compare(other) != 0;
+		}
+
+		/**
+		 * Return whether this value is lower than the other
+		 *
+		 * @param other the other value
+		 * @return whether this value is lower than the other
+		 */
+		virtual bool isLower (ValuePtr other) {
+			return compare(other) < 0;
+		}
+
+		/**
+		 * Return whether this value is greater than the other
+		 *
+		 * @param other the other value
+		 * @return whether this value is greater than the other
+		 */
+		virtual bool isGreater (ValuePtr other) {
+			return compare(other) > 0;
+		}
+
+		/**
+		 * Return whether this value is lower than or equal to the other
+		 *
+		 * @param other the other value
+		 * @return whether this value is lower than or equal to the other
+		 */
+		virtual bool isLowerOrEqual (ValuePtr other) {
+			return compare(other) <= 0;
+		}
+
+		/**
+		 * Return whether this value is greater than or equal to the other
+		 *
+		 * @param other the other value
+		 * @return whether this value is greater than or equal to the other
+		 */
+		virtual bool isGreaterOrEqual (ValuePtr other) {
+			return compare(other) >= 0;
+		}
+
+		/**
 		 * Return a string corresponding to the value
 		 * @return a string corresponding to the value
 		 */

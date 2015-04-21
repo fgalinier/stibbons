@@ -290,8 +290,7 @@ namespace stibbons {
 				try{
 					auto val1 = this->interpret(turtle,tree->getSon(0),hashTable);
 					auto val2 = this->interpret(turtle,tree->getSon(1),hashTable);
-					auto res = val1->compare(val2);
-					return make_shared<Boolean>(res == 0);
+					return make_shared<Boolean>(val1->isEqual(val2));
 				}
 				catch (std::domain_error e) {
 					throw SemanticException(e.what(), getPosition(tree));
@@ -302,8 +301,7 @@ namespace stibbons {
 				try{
 					auto val1 = this->interpret(turtle,tree->getSon(0),hashTable);
 					auto val2 = this->interpret(turtle,tree->getSon(1),hashTable);
-					auto res = val1->compare(val2);
-					return make_shared<Boolean>(res != 0);					
+					return make_shared<Boolean>(val1->isDifferent(val2));
 				}
 				catch (std::domain_error e) {
 					throw SemanticException(e.what(), getPosition(tree));
@@ -314,8 +312,7 @@ namespace stibbons {
 				try{
 					auto val1 = this->interpret(turtle,tree->getSon(0),hashTable);
 					auto val2 = this->interpret(turtle,tree->getSon(1),hashTable);
-					auto res = val1->compare(val2);
-					return make_shared<Boolean>(res > 0);
+					return make_shared<Boolean>(val1->isGreater(val2));
 				}
 				catch (std::domain_error e) {
 					throw SemanticException(e.what(), getPosition(tree));
@@ -326,8 +323,7 @@ namespace stibbons {
 				try{
 					auto val1 = this->interpret(turtle,tree->getSon(0),hashTable);
 					auto val2 = this->interpret(turtle,tree->getSon(1),hashTable);
-					auto res = val1->compare(val2);
-					return make_shared<Boolean>(res >= 0);
+					return make_shared<Boolean>(val1->isGreaterOrEqual(val2));
 				}
 				catch (std::domain_error e) {
 					throw SemanticException(e.what(), getPosition(tree));
@@ -338,8 +334,7 @@ namespace stibbons {
 				try{
 					auto val1 = this->interpret(turtle,tree->getSon(0),hashTable);
 					auto val2 = this->interpret(turtle,tree->getSon(1),hashTable);
-					auto res = val1->compare(val2);
-					return make_shared<Boolean>(res < 0);
+					return make_shared<Boolean>(val1->isLower(val2));
 				}
 				catch (std::domain_error e) {
 					throw SemanticException(e.what(), getPosition(tree));
@@ -350,8 +345,7 @@ namespace stibbons {
 				try{
 					auto val1 = this->interpret(turtle,tree->getSon(0),hashTable);
 					auto val2 = this->interpret(turtle,tree->getSon(1),hashTable);
-					auto res = val1->compare(val2);
-					return make_shared<Boolean>(res <= 0);
+					return make_shared<Boolean>(val1->isLowerOrEqual(val2));
 				}
 				catch (std::domain_error e) {
 					throw SemanticException(e.what(), getPosition(tree));
