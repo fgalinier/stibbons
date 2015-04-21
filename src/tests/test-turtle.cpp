@@ -52,14 +52,13 @@ class TestTurtle : public TestCase{
 
 		void testCommunication(){
 			cout << "TestTurtle::testCommunication" << endl;
-			Value* v=new Number(2);
+			auto v=make_shared<Number>(2);
 			turtle->send(t2,v);
-			pair<Turtle*,Value*>  r=t2->recv();
-			Number* n=dynamic_cast<Number*>(r.second);
-			Number* n2=dynamic_cast<Number*>(v);
+			auto r=t2->recv();
+			auto n=dynamic_pointer_cast<Number>(r.second);
+			auto n2=dynamic_pointer_cast<Number>(v);
 			CPPUNIT_ASSERT_EQUAL(n->getValue(),n2->getValue());
-
-}
+	}
 };
 
 CPPUNIT_TEST_SUITE_NAMED_REGISTRATION(TestTurtle, "TestTurtle" );
