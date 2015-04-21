@@ -30,10 +30,10 @@ class TestNumber : public TestCase {
 			cout << "TestNumber::compare" << endl;
 			CPPUNIT_ASSERT (!two->isEqual(three));
 			CPPUNIT_ASSERT (two->isDifferent(three));
-			CPPUNIT_ASSERT (!two->isLower(three));
-			CPPUNIT_ASSERT (two->isGreater(three));
-			CPPUNIT_ASSERT (!two->isLowerOrEqual(three));
-			CPPUNIT_ASSERT (two->isGreaterOrEqual(three));
+			CPPUNIT_ASSERT (two->isLower(three));
+			CPPUNIT_ASSERT (!two->isGreater(three));
+			CPPUNIT_ASSERT (two->isLowerOrEqual(three));
+			CPPUNIT_ASSERT (!two->isGreaterOrEqual(three));
 		}
 };
 
