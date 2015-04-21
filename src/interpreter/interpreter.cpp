@@ -417,7 +417,12 @@ namespace stibbons {
 					                        fct->getType(),
 			                                getPosition(tree));
 				auto params = getParams(fct,agent,tree,hashTable,id);
-				return this->interpretFunction(fct,agent,params);
+				try {
+					return this->interpretFunction(fct,agent,params);
+				}
+				catch (std::domain_error e) {
+					throw SemanticException(e.what(), getPosition(tree));
+				}
 			}
 				break;
 			default :

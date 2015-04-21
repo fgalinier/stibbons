@@ -14,22 +14,47 @@ using namespace std;
 
 namespace stibbons {
 
+inline void paramError (string name, Type expected) throw(domain_error) {
+	throw domain_error("Parameter " + name + " is expected to be of type " + toString(expected));
+}
+
+inline TurtlePtr asTurtle (AgentPtr agent) throw(domain_error) {
+	auto turtle = dynamic_pointer_cast<Turtle>(agent);
+	if (!turtle)
+		throw domain_error("The agent is expected to be of type " + toString(Type::TURTLE));
+	return turtle;
+}
+
+inline NumberPtr asNumber (ValuePtr value, string param) throw(domain_error) {
+	auto casted = dynamic_pointer_cast<Number>(value);
+	if (!casted)
+		paramError (param, Type::NUMBER);
+	return casted;
+}
+
+inline TurtlePtr asTurtle (ValuePtr value, string param) throw(domain_error) {
+	auto casted = dynamic_pointer_cast<Turtle>(value);
+	if (!casted)
+		paramError (param, Type::TURTLE);
+	return casted;
+}
+
 ValuePtr RandFunction::exec (AgentPtr agent, TablePtr params) {
 	return make_shared<Number>(rand());
 }
 
-PrintFunction::PrintFunction () : Function({"string"}) {}
+PrintFunction::PrintFunction () : Function({"value"}) {}
 
 ValuePtr PrintFunction::exec (AgentPtr agent, TablePtr params) {
-	cout << params->getValue("string")->toString();
+	cout << params->getValue("value")->toString();
 	return Nil::getInstance();
 }
 
-PrintlnFunction::PrintlnFunction () : Function({"string"}) {}
+PrintlnFunction::PrintlnFunction () : Function({"value"}) {}
 
 ValuePtr PrintlnFunction::exec (AgentPtr agent, TablePtr params) {
 	std::ostringstream oss;
-	oss << params->getValue("string")->toString() << endl;
+	oss << params->getValue("value")->toString() << endl;
 	cout << oss.str();
 	return Nil::getInstance();
 }
@@ -37,18 +62,18 @@ ValuePtr PrintlnFunction::exec (AgentPtr agent, TablePtr params) {
 TeleportFunction::TeleportFunction () : Function({"x", "y", "angle"}) {}
 
 ValuePtr TeleportFunction::exec (AgentPtr agent, TablePtr params) {
-	auto x = params->getValue("x");
-	auto y = params->getValue("y");
-	auto angle = params->getValue("angle");
+	auto turtle = asTurtle(agent);
 
-	auto turtle = dynamic_pointer_cast<Turtle>(agent);
+	auto x = asNumber(params->getValue("x"), "x")->getValue();
+	auto y = asNumber(params->getValue("y"), "y")->getValue();
+	auto angle = asNumber(params->getValue("angle"), "angle")->getValue();
 
 	auto position = Point(2);
-	position.setValue(0, dynamic_pointer_cast<Number>(x)->getValue());
-	position.setValue(1, dynamic_pointer_cast<Number>(y)->getValue());
+	position.setValue(0, x);
+	position.setValue(1, y);
 
 	turtle->setPosition(position);
-	turtle->setAngle(dynamic_pointer_cast<Number>(angle)->getValue());
+	turtle->setAngle(angle);
 
 	return Nil::getInstance();
 }
@@ -56,12 +81,12 @@ ValuePtr TeleportFunction::exec (AgentPtr agent, TablePtr params) {
 SendFunction::SendFunction () : Function({"recipient", "message"}) {}
 
 ValuePtr SendFunction::exec (AgentPtr agent, TablePtr params) {
-	auto recipient = params->getValue("recipient");
+	auto turtle = asTurtle(agent);
+
+	auto recipient = asTurtle(params->getValue("recipient"), "recipient");
 	auto message = params->getValue("message");
 
-	auto turtle = dynamic_pointer_cast<Turtle>(agent);
-
-	turtle->send(dynamic_pointer_cast<Turtle>(recipient), message);
+	turtle->send(recipient, message);
 
 	return Nil::getInstance();
 }
@@ -69,9 +94,9 @@ ValuePtr SendFunction::exec (AgentPtr agent, TablePtr params) {
 SendAllFunction::SendAllFunction () : Function({"message"}) {}
 
 ValuePtr SendAllFunction::exec (AgentPtr agent, TablePtr params) {
-	auto message = params->getValue("message");
+	auto turtle = asTurtle(agent);
 
-	auto turtle = dynamic_pointer_cast<Turtle>(agent);
+	auto message = params->getValue("message");
 
 	turtle->sendAll(message);
 
@@ -79,7 +104,7 @@ ValuePtr SendAllFunction::exec (AgentPtr agent, TablePtr params) {
 }
 
 ValuePtr RecvFunction::exec (AgentPtr agent, TablePtr params) {
-	auto turtle = dynamic_pointer_cast<Turtle>(agent);
+	auto turtle = asTurtle(agent);
 
 	while (turtle->checkMessage() <= 0)
 		this_thread::sleep_for(chrono::milliseconds(10));
@@ -88,7 +113,7 @@ ValuePtr RecvFunction::exec (AgentPtr agent, TablePtr params) {
 }
 
 ValuePtr InboxFunction::exec (AgentPtr agent, TablePtr params) {
-	auto turtle = dynamic_pointer_cast<Turtle>(agent);
+	auto turtle = asTurtle(agent);
 
 	return make_shared<Number>(turtle->checkMessage());
 }
@@ -96,11 +121,11 @@ ValuePtr InboxFunction::exec (AgentPtr agent, TablePtr params) {
 DistanceToFunction::DistanceToFunction () : Function({"turtle"}) {}
 
 ValuePtr DistanceToFunction::exec (AgentPtr agent, TablePtr params) {
-	auto other = params->getValue("turtle");
+	auto turtle = asTurtle(agent);
 
-	auto turtle = dynamic_pointer_cast<Turtle>(agent);
-	auto point = dynamic_pointer_cast<Turtle>(other)->getPosition();
+	auto other = asTurtle(params->getValue("turtle"), "turtle");
 
+	auto point = other->getPosition();
 	auto d = turtle->getDistanceTo(point);
 
 	return make_shared<Number>(d);
@@ -109,11 +134,11 @@ ValuePtr DistanceToFunction::exec (AgentPtr agent, TablePtr params) {
 FaceFunction::FaceFunction () : Function({"turtle"}) {}
 
 ValuePtr FaceFunction::exec (AgentPtr agent, TablePtr params) {
-	auto other = params->getValue("turtle");
+	auto turtle = asTurtle(agent);
 
-	auto turtle = dynamic_pointer_cast<Turtle>(agent);
-	auto point = dynamic_pointer_cast<Turtle>(other)->getPosition();
+	auto other = asTurtle(params->getValue("turtle"), "turtle");
 
+	auto point = other->getPosition();
 	turtle->face(point);
 
 	return Nil::getInstance();
@@ -122,10 +147,11 @@ ValuePtr FaceFunction::exec (AgentPtr agent, TablePtr params) {
 InRadiusFunction::InRadiusFunction () : Function({"distance"}) {}
 
 ValuePtr InRadiusFunction::exec (AgentPtr agent, TablePtr params) {
-	auto distance = params->getValue("distance");
-	double d = dynamic_pointer_cast<Number>(distance)->getValue();
+	auto turtle = asTurtle(agent);
 
-	auto turtle = dynamic_pointer_cast<Turtle>(agent);
+	auto distance = asNumber(params->getValue("distance"), "distance");
+
+	double d = distance->getValue();
 
 	auto turtles = make_shared<Table>();
 
