@@ -43,8 +43,11 @@ ValuePtr TeleportFunction::exec (AgentPtr agent, TablePtr params) {
 
 	auto turtle = dynamic_pointer_cast<Turtle>(agent);
 
-	turtle->setValue(0, dynamic_pointer_cast<Number>(x)->getValue());
-	turtle->setValue(1, dynamic_pointer_cast<Number>(y)->getValue());
+	auto position = Point(2);
+	position.setValue(0, dynamic_pointer_cast<Number>(x)->getValue());
+	position.setValue(1, dynamic_pointer_cast<Number>(y)->getValue());
+
+	turtle->setPosition(position);
 	turtle->setAngle(dynamic_pointer_cast<Number>(angle)->getValue());
 
 	return make_shared<Nil>();

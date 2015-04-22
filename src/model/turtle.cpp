@@ -137,32 +137,6 @@ ZonePtr Turtle::getZone () {
 	return world->getZone(position);
 }
 
-void Turtle::setValue (unsigned axis, double value) throw(out_of_range) {
-	lock_guard<recursive_mutex> lock(value_m);
-	auto world = getWorld();
-
-	if (world) {
-		auto warp = world->getWarp();
-
-		if (warp[axis]) {
-			size_t max = world->getSize().getValue(axis);
-			while (value >= max)
-				value -= max;
-			while (value < 0)
-				value += max;
-		}
-	}
-
-	position.setValue (axis, value);
-
-	changed();
-}
-
-double Turtle::getValue (unsigned axis) throw(out_of_range) {
-	lock_guard<recursive_mutex> lock(value_m);
-	return position.getValue(axis);
-}
-
 void Turtle::setColor (Color color) {
 	lock_guard<recursive_mutex> lock(value_m);
 	this->color = color;

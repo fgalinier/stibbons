@@ -39,15 +39,18 @@ class TestTurtle : public TestCase{
 
 		void testForward() {
 			cout << "TestTurtle::testForward" << endl;
-			CPPUNIT_ASSERT_EQUAL (0.0, turtle->getValue(0));
-			CPPUNIT_ASSERT_EQUAL (0.0, turtle->getValue(1));
+			auto position = turtle->getPosition();
+			CPPUNIT_ASSERT_EQUAL (0.0, position.getValue(0));
+			CPPUNIT_ASSERT_EQUAL (0.0, position.getValue(1));
 			turtle->forward(1.0);
-			CPPUNIT_ASSERT_EQUAL (1.0, turtle->getValue(0));
-			CPPUNIT_ASSERT_EQUAL (0.0, turtle->getValue(1));
+			position = turtle->getPosition();
+			CPPUNIT_ASSERT_EQUAL (1.0, position.getValue(0));
+			CPPUNIT_ASSERT_EQUAL (0.0, position.getValue(1));
 			turtle->turnRight(90.0);
 			turtle->forward(1.0);
-			CPPUNIT_ASSERT_EQUAL (1.0, turtle->getValue(0));
-			CPPUNIT_ASSERT_EQUAL (1.0, turtle->getValue(1));
+			position = turtle->getPosition();
+			CPPUNIT_ASSERT_EQUAL (1.0, position.getValue(0));
+			CPPUNIT_ASSERT_EQUAL (1.0, position.getValue(1));
 		}
 
 		void testCommunication(){
