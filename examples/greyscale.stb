@@ -1,0 +1,20 @@
+agent pen (y) {
+	teleport(0, y, 0)
+
+	c = #ffffff
+	a = #010101
+
+	pd
+	repeat 256 {
+		color = c
+		fd 1
+		c = c - a
+	}
+}
+
+i = 0
+
+repeat 256 {
+	new pen (i)
+	i = i + 1
+}

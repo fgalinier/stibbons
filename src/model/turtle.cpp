@@ -141,6 +141,13 @@ void Turtle::setColor (Color color) {
 	lock_guard<recursive_mutex> lock(value_m);
 	this->color = color;
 
+	if (line) {
+		line = new Line();
+		line->setColor(getColor());
+		getWorld()->addLine(line);
+		line->push_back(Point(position));
+	}
+
 	changed();
 }
 
