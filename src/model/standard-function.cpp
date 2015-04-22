@@ -90,8 +90,9 @@ ValuePtr DistanceToFunction::exec (AgentPtr agent, TablePtr params) {
 	auto other = params->getValue("turtle");
 
 	auto turtle = dynamic_pointer_cast<Turtle>(agent);
+	auto point = dynamic_pointer_cast<Turtle>(other)->getPosition();
 
-	auto d = turtle->getDistanceTo(*dynamic_pointer_cast<Turtle>(other));
+	auto d = turtle->getDistanceTo(point);
 
 	return make_shared<Number>(d);
 }
@@ -102,8 +103,9 @@ ValuePtr FaceFunction::exec (AgentPtr agent, TablePtr params) {
 	auto other = params->getValue("turtle");
 
 	auto turtle = dynamic_pointer_cast<Turtle>(agent);
+	auto point = dynamic_pointer_cast<Turtle>(other)->getPosition();
 
-	turtle->face(*dynamic_pointer_cast<Turtle>(other));
+	turtle->face(point);
 
 	return make_shared<Nil>();
 }
@@ -118,9 +120,11 @@ ValuePtr InRadiusFunction::exec (AgentPtr agent, TablePtr params) {
 
 	auto turtles = make_shared<Table>();
 
-	for (auto other : turtle->getWorld()->getTurtles())
-		if (turtle->getDistanceTo(*other) <= d)
+	for (auto other : turtle->getWorld()->getTurtles()) {
+		auto point = other->getPosition();
+		if (turtle->getDistanceTo(point) <= d)
 			turtles->append(other);
+	}
 
 	return turtles;
 }

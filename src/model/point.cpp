@@ -142,6 +142,25 @@ double Point::getAngleTo (Point& other) {
 	return atan2 (y, x);
 }
 
+bool Point::warp (Size& environment, vector<bool> warp) {
+	bool warped = false;
+
+	for (size_t axis = 0 ; axis < getDimensions() ; axis++)
+		if (warp[axis]) {
+			size_t max = environment.getValue(axis);
+			auto value = getValue(axis);
+			if (value >= max | value < 0)
+				warped = true;
+			while (value >= max)
+				value -= max;
+			while (value < 0)
+				value += max;
+			setValue(axis, value);
+		}
+
+	return warped;
+}
+
 double Point::operator[] (unsigned axis) throw(out_of_range) {
 	lock_guard<recursive_mutex> lock(value_m);
 

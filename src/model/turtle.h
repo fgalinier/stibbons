@@ -34,7 +34,7 @@ typedef unsigned long turtle_id;
  *
  *\author Julia Bassoumi
  */
-class Turtle : private Point, public Agent {
+class Turtle : public Agent {
 	friend Breed;
 
 	public:
@@ -55,6 +55,18 @@ class Turtle : private Point, public Agent {
 		void initAttributes ();
 
 		virtual Type getType() const;
+
+		/**
+		 * Set the position of the turtle
+		 * @param position the new position of the turtle
+		 */
+		void setPosition (Point position);
+
+		/**
+		 * Get the position of the turtle
+		 * @return the position of the turtle
+		 */
+		Point getPosition ();
 
 		/**
 		 * Set the value of angle
@@ -111,6 +123,13 @@ class Turtle : private Point, public Agent {
 		 * @param value the value
 		 */
 		void setValue (unsigned axis, double value) throw(out_of_range);
+
+		/**
+		 * Get the value for an axis
+		 * @param axis the axis
+		 * @return the value
+		 */
+		double getValue (unsigned axis) throw(out_of_range);
 
 		/**
 		 * Set the value for an axis
@@ -263,6 +282,8 @@ class Turtle : private Point, public Agent {
 		 * @param the expediteur and the message
 		 */
 		void addMessage(TurtlePtr exp, ValuePtr v);
+
+		Point position;
 
 		turtle_id id;
 		Breed *breed;

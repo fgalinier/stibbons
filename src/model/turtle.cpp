@@ -134,10 +134,11 @@ ZonePtr Turtle::getZone () {
 	if (world == nullptr)
 		return nullptr;
 
-	return world->getZone(*this);
+	return world->getZone(position);
 }
 
 void Turtle::setValue (unsigned axis, double value) throw(out_of_range) {
+	lock_guard<recursive_mutex> lock(value_m);
 	auto world = getWorld();
 
 	if (world) {
@@ -152,9 +153,14 @@ void Turtle::setValue (unsigned axis, double value) throw(out_of_range) {
 		}
 	}
 
-	Point::setValue (axis, value);
+	position.setValue (axis, value);
 
 	changed();
+}
+
+double Turtle::getValue (unsigned axis) throw(out_of_range) {
+	lock_guard<recursive_mutex> lock(value_m);
+	return position.getValue(axis);
 }
 
 void Turtle::setColor (Color color) {
@@ -171,6 +177,47 @@ Color& Turtle::getColor () {
 
 const Color& Turtle::getColor () const{
 	return color;
+}
+
+void Turtle::setPosition(Point position) {
+	lock_guard<recursive_mutex> lock(value_m);
+
+	auto world = getWorld();
+	bool warped = false;
+
+	auto newPosition = Point(position);
+	if (world) {
+		auto size = world->getSize();
+		warped = newPosition.warp(size, world->getWarp());
+	}
+
+	if (line && warped) {
+		auto a = Point(this->position);
+		auto b = Point(position);
+		auto c = Point(a.getDimensions());
+		auto d = Point(newPosition);
+
+		for (size_t i = 0 ; i < a.getDimensions() ; i++) {
+			c.setValue(i, d.getValue(i) + a.getValue(i) - b.getValue(i));
+		}
+
+		line->push_back(b);
+
+		line = new Line();
+		line->setColor(getColor());
+		world->addLine(line);
+		line->push_back(c);
+		line->push_back(d);
+	}
+
+	this->position = newPosition;
+
+	changed();
+}
+
+Point Turtle::getPosition() {
+	lock_guard<recursive_mutex> lock(value_m);
+	return position;
 }
 
 void Turtle::setAngle(double new_var) {
@@ -191,9 +238,9 @@ void Turtle::face(Point& point) {
 	auto size = world->getSize();
 	auto warp = world->getWarp();
 
-	auto image = getClosestImage(point, size, warp);
+	auto image = position.getClosestImage(point, size, warp);
 
-	setAngle(degree(getAngleTo(image)));
+	setAngle(degree(position.getAngleTo(image)));
 }
 
 double Turtle::getDistanceTo(Point& point) {
@@ -203,9 +250,9 @@ double Turtle::getDistanceTo(Point& point) {
 	auto size = world->getSize();
 	auto warp = world->getWarp();
 
-	auto image = getClosestImage(point, size, warp);
+	auto image = position.getClosestImage(point, size, warp);
 
-	return Point::getDistanceTo(image);
+	return position.getDistanceTo(image);
 }
 
 void Turtle::forward(double dist) {
@@ -214,11 +261,13 @@ void Turtle::forward(double dist) {
 	double dx = cos(radians) * dist;
 	double dy = sin(radians) * dist;
 
-	setValue(0, getValue(0) + dx);
-	setValue(1, getValue(1) + dy);
+	auto newPosition = Point(position);
+	newPosition.setValue(0, newPosition.getValue(0) + dx);
+	newPosition.setValue(1, newPosition.getValue(1) + dy);
+	setPosition(newPosition);
 
 	if (line)
-		line->push_back(Point(*this));
+		line->push_back(Point(position));
 
 	changed();
 }
@@ -245,7 +294,7 @@ void Turtle::penDown() throw (future_error) {
 	line = new Line();
 	line->setColor(getColor());
 	world->addLine(line);
-	line->push_back(Point(*this));
+	line->push_back(Point(position));
 
 	changed();
 }

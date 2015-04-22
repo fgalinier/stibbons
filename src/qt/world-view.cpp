@@ -139,7 +139,8 @@ void WorldView::paint(QPainter &p, Turtle &turtle, int xt, int yt) {
 	p.setBrush(brush(turtle.getColor()));
 
 	auto triangle = getTriangle();
-	paint(p, triangle, turtle[0] + xt, turtle[1] + yt, turtle.getAngle(), 5.0);
+	auto position = turtle.getPosition();
+	paint(p, triangle, position.getValue(0) + xt, position.getValue(1) + yt, turtle.getAngle(), 5.0);
 
 	p.setPen(oldPen);
 	p.setBrush(oldBrush);

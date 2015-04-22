@@ -100,6 +100,14 @@ class Point {
 		double getAngleTo (Point& other);
 
 		/**
+		 * Warp the point in the environment
+		 * @param environment the size of the environment
+		 * @param warp whether the environment warps
+		 * @return whether the point have been warped or not
+		 */
+		bool warp (Size& environment, vector<bool> warp);
+
+		/**
 		 * Get the value for an axis
 		 * @return the value for an axis
 		 */
