@@ -13,7 +13,7 @@ namespace stibbons {
 
   ValuePtr TurtleInterpreter::interpret(AgentPtr agent,
 					const TreePtr tree,
-					TablePtr hashTable) {
+					TablePtr hashTable) throw(SemanticException) {
 
     if(agent->getType() == Type::TURTLE)
       return this->interpret(dynamic_pointer_cast<Turtle>(agent),tree,hashTable);
@@ -24,7 +24,7 @@ namespace stibbons {
 
   ValuePtr TurtleInterpreter::interpret(TurtlePtr agent,
 					const TreePtr tree,
-					TablePtr hashTable) {
+					TablePtr hashTable) throw(SemanticException) {
     ValuePtr start = Interpreter::interpret(agent,tree,hashTable);
 	std::cerr<<"ti"<<std::endl;
 
@@ -71,7 +71,10 @@ namespace stibbons {
 	break;
       case yy::parser::token::PD:
 	agent->penDown();
-	break;	
+	break;
+	default :
+	  throw SemanticException("invalid action for a turtle",
+				  getPosition(tree));	
       }
     }
   }

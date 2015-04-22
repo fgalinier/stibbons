@@ -42,7 +42,7 @@ namespace stibbons {
      */
     virtual ValuePtr interpret(AgentPtr agent,
 			     const TreePtr,
-			     TablePtr hashTable) ;
+			     TablePtr hashTable) throw(SemanticException) ;
 
 
     /**
@@ -54,7 +54,7 @@ namespace stibbons {
      */
     virtual ValuePtr interpret(TurtlePtr agent,
 			     const TreePtr,
-			     TablePtr hashTable) ;
+			     TablePtr hashTable) throw(SemanticException) ;
 
   };
 }

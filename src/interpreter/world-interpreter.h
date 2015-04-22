@@ -57,7 +57,7 @@ namespace stibbons {
 		 */
 		virtual ValuePtr interpret(AgentPtr agent,
 		                         const TreePtr,
-		                         TablePtr hashTable) ;
+		                         TablePtr hashTable) throw(SemanticException) ;
 		/**
 		 * Interpret the tree and apply it to the world.
 		 * \param agent The agent to run the program on.
@@ -67,7 +67,7 @@ namespace stibbons {
 		 */
 		virtual ValuePtr interpret(WorldPtr agent,
 		                         const TreePtr,
-		                         TablePtr hashTable) ;
+		                         TablePtr hashTable) throw(SemanticException) ;
 
 		/**
 		 * Run the interpreter with the parsed program.

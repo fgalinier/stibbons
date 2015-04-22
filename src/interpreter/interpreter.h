@@ -53,7 +53,7 @@ namespace stibbons {
 		                           AgentPtr,
 		                           const TreePtr,
 		                           TablePtr, 
-		                           std::string) const;
+		                           std::string);
 
 		/**
 		 * Interpret a function (or function of a breed)
@@ -66,14 +66,14 @@ namespace stibbons {
 		 */
 		virtual	ValuePtr interpretFunction(FunctionPtr,
 										   AgentPtr,
-										   TablePtr) const;
+										   TablePtr);
 		/**
 		 * Create a function from a tree with a
 		 * FCT or AGT node.
 		 * \param tree A tree with the FCT or AGT root node. 
 		 * \return The function corresponding to the tree
 		 */
-		virtual FunctionPtr getFunctionFromTree(const TreePtr) const;
+		virtual FunctionPtr getFunctionFromTree(const TreePtr);
 
 		static inline yy::position getPosition(const TreePtr tree);
 
@@ -95,7 +95,7 @@ namespace stibbons {
 		 */
 		virtual ValuePtr interpret(AgentPtr agent,
 								   const TreePtr,
-								   TablePtr hashTable=nullptr) const throw(SemanticException);
+								   TablePtr hashTable=nullptr) throw(SemanticException);
 		/**
 		 * Start an interpreter on an agent
 		 * \param agent The agent to run the program on.

@@ -33,6 +33,7 @@ namespace stibbons {
 	ValuePtr Interpreter::interpret(AgentPtr agent,
 									const TreePtr tree,
 									TablePtr hashTable) const throw(SemanticException) {
+		
 		this_thread::sleep_for(chrono::microseconds(waitTime));
 
 		if(tree != nullptr) {
@@ -387,9 +388,13 @@ namespace stibbons {
 					newTurtle = breed->createTurtle(agent);					
 				auto params = getParams(fct,newTurtle,paramTree,hashTable,id);
 				auto inter = new Interpreter();
-				std::thread newThread(&Interpreter::interpretFunction,inter,fct,newTurtle,params);
+				
+				sons.push_back(thread (&Interpreter::interpretFunction,
+										inter,
+										fct,
+										newTurtle,
+										params));
 
-				newThread.detach();				
 				return newTurtle;
 			}
 				break;
@@ -422,7 +427,7 @@ namespace stibbons {
 		return Nil::getInstance();
 	}
 
-	FunctionPtr Interpreter::getFunctionFromTree(const TreePtr tree) const {
+	FunctionPtr Interpreter::getFunctionFromTree(const TreePtr tree) {
 		auto fctTree = tree->getSon(0);
 		auto params = std::vector<std::string>();
 		auto sons = tree->getSons();
@@ -442,7 +447,7 @@ namespace stibbons {
 	                                AgentPtr agent,
 	                                const TreePtr tree,
 	                                TablePtr hashTable,
-	                                std::string id) const {
+	                                std::string id) {
 //		auto newHashTable = (!hashTable)?make_shared<Table>():hashTable;
 		auto newHashTable = make_shared<Table>();
 
@@ -469,7 +474,7 @@ namespace stibbons {
 
 	ValuePtr Interpreter::interpretFunction(FunctionPtr fct,
 	                                        AgentPtr agent,
-	                                        TablePtr params) const {
+	                                        TablePtr params) {
 		return (*fct)(agent, params);
 	}
 }

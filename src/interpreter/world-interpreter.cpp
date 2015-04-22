@@ -36,22 +36,22 @@ namespace stibbons {
 
 	ValuePtr WorldInterpreter::interpret(AgentPtr agent,
 									   const TreePtr tree,
-									   TablePtr hashTable) {
+									   TablePtr hashTable)  throw(SemanticException) {
 		if(agent->getType() == Type::WORLD)
 			return this->interpret(dynamic_pointer_cast<World>(agent),tree,hashTable);
 
-		throw SemanticException("Invalid action",getPosition(tree));
+		throw SemanticException("Invalid action for the world",getPosition(tree));
 	}
 
 	ValuePtr WorldInterpreter::interpret(WorldPtr agent,
 									   const TreePtr tree,
-									   TablePtr hashTable) {
+									   TablePtr hashTable)  throw(SemanticException) {
 		ValuePtr start = Interpreter::interpret(agent,tree,hashTable);
 
 		if(start != nullptr)	
 			return start;
 
-		throw SemanticException("Invalid action",getPosition(tree));		
+		throw SemanticException("Invalid action for the world",getPosition(tree));		
 	}
 
 	void WorldInterpreter::run() {
