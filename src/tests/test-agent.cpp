@@ -36,7 +36,10 @@ class TestAgent : public TestCase {
 			auto zoneSize = Size(2);
 			zoneSize.setValue(0, 10);
 			zoneSize.setValue(1, 10);
-			w=World::construct(worldSize, zoneSize);
+			auto warp = vector<bool>();
+			warp.push_back(false);
+			warp.push_back(false);
+			w=World::construct(worldSize, zoneSize, warp);
 			w->setProperty(troisieme);
 			w->setProperty(quatrieme);
 

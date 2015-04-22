@@ -27,7 +27,10 @@ class TestWorld : public TestCase{
 			auto zoneSize = Size(2);
 			zoneSize.setValue(0, 10);
 			zoneSize.setValue(1, 10);
-			world = stibbons::World::construct(worldSize, zoneSize);
+			auto warp = vector<bool>();
+			warp.push_back(false);
+			warp.push_back(false);
+			world = stibbons::World::construct(worldSize, zoneSize, warp);
 			line=new Line();
 			turtle=Turtle::construct();
 			f=make_shared<UserFunction>(nullptr);

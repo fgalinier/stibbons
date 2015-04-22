@@ -5,17 +5,20 @@
 
 namespace stibbons {
 
-World::World (Size worldSize, Size zoneSize) throw(domain_error) : Agent(nullptr), worldSize(worldSize), zoneSize(zoneSize), id(0) {
+World::World (Size worldSize, Size zoneSize, vector<bool> warp) throw(domain_error) : Agent(nullptr), worldSize(worldSize), zoneSize(zoneSize), warp(warp), id(0) {
 	if (worldSize.getDimensions() != zoneSize.getDimensions())
 		throw domain_error("Can't create a world with a dimension number different to its zones'");
+
+	if (worldSize.getDimensions() != warp.size())
+		throw domain_error("Can't create a world without a different number of warping values than there is dimensions");
 
 	for (size_t i = 0 ; i < getDimensions() ; i++)
 		size.setValue(i, worldSize.getValue(i) * zoneSize.getValue(i));
 
 }
 
-WorldPtr World::construct (Size worldSize, Size zoneSize) throw(domain_error) {
-	auto self = shared_ptr<World>(new World (worldSize, zoneSize));
+WorldPtr World::construct (Size worldSize, Size zoneSize, vector<bool> warp) throw(domain_error) {
+	auto self = shared_ptr<World>(new World (worldSize, zoneSize, warp));
 	self->init();
 
 	return self;
@@ -186,6 +189,10 @@ Size World::getWorldSize () {
 
 Size World::getZoneSize () {
 	return Size(zoneSize);
+}
+
+vector<bool> World::getWarp () {
+	return warp;
 }
 
 BreedPtr World::createBreed (FunctionPtr function, string name) throw(invalid_argument) {

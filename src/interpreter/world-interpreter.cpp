@@ -36,7 +36,10 @@ namespace stibbons {
 		auto zoneSize = Size(2);
 		zoneSize.setValue(0, 10);
 		zoneSize.setValue(1, 10);
-		world = World::construct(worldSize, zoneSize);
+		auto warp = vector<bool>();
+		warp.push_back(false);
+		warp.push_back(false);
+		world = World::construct(worldSize, zoneSize, warp);
 
 		auto f = make_shared<UserFunction>(nullptr);
 		auto breed = world->createBreed(f);

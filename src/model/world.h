@@ -41,7 +41,7 @@ class World : public Changeable, public Agent {
 		/**
 		 * Create a world
 		 */
-		static WorldPtr construct (Size worldSize, Size zoneSize) throw(domain_error);
+		static WorldPtr construct (Size worldSize, Size zoneSize, vector<bool> warp) throw(domain_error);
 
 		/**
 		 * Empty Destructor
@@ -135,6 +135,12 @@ class World : public Changeable, public Agent {
 		 */
 		Size getZoneSize ();
 
+		/**
+		 * Get the warping values of the world
+		 * @return the warping values
+		 */
+		vector<bool> getWarp ();
+
 		turtle_id getId ();
 		void setId (turtle_id i);
 
@@ -148,7 +154,7 @@ class World : public Changeable, public Agent {
 		/**
 		 * Create a world
 		 */
-		World (Size worldSize, Size zoneSize) throw(domain_error);
+		World (Size worldSize, Size zoneSize, vector<bool> warp) throw(domain_error);
 
 		/**
 		 * Initialize the world
@@ -159,6 +165,8 @@ class World : public Changeable, public Agent {
 		Size size;
 		Size worldSize;
 		Size zoneSize;
+
+		vector<bool> warp;
 
 		vector<ZonePtr> zones;
 
