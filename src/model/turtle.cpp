@@ -196,6 +196,18 @@ void Turtle::face(Point& point) {
 	setAngle(degree(getAngleTo(image)));
 }
 
+double Turtle::getDistanceTo(Point& point) {
+	lock_guard<recursive_mutex> lock(value_m);
+
+	auto world = getWorld();
+	auto size = world->getSize();
+	auto warp = world->getWarp();
+
+	auto image = getClosestImage(point, size, warp);
+
+	return Point::getDistanceTo(image);
+}
+
 void Turtle::forward(double dist) {
 	double radians = radian(getAngle());
 

@@ -34,7 +34,7 @@ typedef unsigned long turtle_id;
  *
  *\author Julia Bassoumi
  */
-class Turtle : public Point, public Agent {
+class Turtle : private Point, public Agent {
 	friend Breed;
 
 	public:
@@ -73,6 +73,13 @@ class Turtle : public Point, public Agent {
 		 * @param point the point to face
 		 */
 		void face (Point& point);
+
+		/**
+		 * Get the distance to another point
+		 * @param other the other point
+		 * @return the distance to the other point
+		 */
+		double getDistanceTo (Point& other);
 
 		/**
 		 * Set the value of id
