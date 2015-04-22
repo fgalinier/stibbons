@@ -8,6 +8,10 @@ namespace stibbons {
 World::World (Size worldSize, Size zoneSize) throw(domain_error) : Agent(nullptr), worldSize(worldSize), zoneSize(zoneSize), id(0) {
 	if (worldSize.getDimensions() != zoneSize.getDimensions())
 		throw domain_error("Can't create a world with a dimension number different to its zones'");
+
+	for (size_t i = 0 ; i < getDimensions() ; i++)
+		size.setValue(i, worldSize.getValue(i) * zoneSize.getValue(i));
+
 }
 
 WorldPtr World::construct (Size worldSize, Size zoneSize) throw(domain_error) {
@@ -170,6 +174,10 @@ ZonePtr World::getZone (Point& point) throw(domain_error) {
 
 unsigned World::getDimensions () const {
 	return worldSize.getDimensions();
+}
+
+Size World::getSize () {
+	return Size(size);
 }
 
 Size World::getWorldSize () {

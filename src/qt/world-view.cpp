@@ -38,11 +38,8 @@ WorldView::WorldView(QWidget *parent) :
 
 QSize WorldView::sizeHint() const {
 	if (world) {
-		auto worldSize = world->getWorldSize();
-		auto zoneSize = world->getZoneSize();
-		int w = worldSize.getValue(0) * zoneSize.getValue(0);
-		int h = worldSize.getValue(1) * zoneSize.getValue(1);
-		return QSize(w, h);
+		auto size = world->getSize();
+		return QSize(size.getValue(0), size.getValue(1));
 	}
 
 	return QSize();

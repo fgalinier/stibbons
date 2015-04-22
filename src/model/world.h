@@ -118,6 +118,12 @@ class World : public Changeable, public Agent {
 		unsigned getDimensions () const;
 
 		/**
+		 * Get the world's full size
+		 * @return the world's full size
+		 */
+		Size getSize ();
+
+		/**
 		 * Get the world's size
 		 * @return the world's size
 		 */
@@ -150,6 +156,7 @@ class World : public Changeable, public Agent {
 		void init ();
 
 	private:
+		Size size;
 		Size worldSize;
 		Size zoneSize;
 
