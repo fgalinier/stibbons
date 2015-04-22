@@ -8,8 +8,11 @@
 
 #pragma once
 
+#include "size.h"
+
 #include <stdexcept>
 #include <mutex>
+#include <vector>
 
 using namespace std;
 
@@ -72,6 +75,15 @@ class Point {
 		 * @return the number of dimensions
 		 */
 		unsigned getDimensions () const;
+
+		/**
+		 * Get the closest image of another point in a warped environment
+		 * @param other the other point
+		 * @param environment the size of the environment
+		 * @param warp whether the environment warps
+		 * @return the closest image of the other point
+		 */
+		Point getClosestImage (Point& other, Size& environment, vector<bool> warp);
 
 		/**
 		 * Get the distance to another point

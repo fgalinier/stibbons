@@ -93,6 +93,35 @@ unsigned Point::getDimensions () const {
 	return dimensions;
 }
 
+Point Point::getClosestImage (Point& other, Size& environment, vector<bool> warp) {
+	auto dimensions = other.getDimensions();
+
+	auto image = Point(dimensions);
+
+	for (size_t i = 0 ; i < dimensions ; i++) {
+		double value = other.getValue(i);
+
+		// If a warp is possible, get the image's value
+		if (warp[i]) {
+			// Compute the images' values deltas to this point's
+			double c = getValue(i) - other.getValue(i);
+			double l = c + environment[i];
+			double r = c - environment[i];
+
+			// Keep the smallest delta
+			double delta = abs(l) < abs(r) ? l : r;
+			delta = abs(c) < abs(delta) ? c : delta;
+
+			// Update the image's value
+			value = getValue(i) - delta;
+		}
+
+		image.setValue(i, value);
+	}
+
+	return image;
+}
+
 double Point::getDistanceTo (Point& other) {
 	lock_guard<recursive_mutex> self_lock(value_m);
 	lock_guard<recursive_mutex> other_lock(other.value_m);
