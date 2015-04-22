@@ -138,6 +138,20 @@ ZonePtr Turtle::getZone () {
 }
 
 void Turtle::setValue (unsigned axis, double value) throw(out_of_range) {
+	auto world = getWorld();
+
+	if (world) {
+		auto warp = world->getWarp();
+
+		if (warp[axis]) {
+			size_t max = world->getSize().getValue(axis);
+			while (value >= max)
+				value -= max;
+			while (value < 0)
+				value += max;
+		}
+	}
+
 	Point::setValue (axis, value);
 
 	changed();
@@ -173,7 +187,13 @@ double Turtle::getAngle() {
 void Turtle::face(Point& point) {
 	lock_guard<recursive_mutex> lock(value_m);
 
-	setAngle(degree(getAngleTo(point)));
+	auto world = getWorld();
+	auto size = world->getSize();
+	auto warp = world->getWarp();
+
+	auto image = getClosestImage(point, size, warp);
+
+	setAngle(degree(getAngleTo(image)));
 }
 
 void Turtle::forward(double dist) {
