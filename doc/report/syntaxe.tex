@@ -1,0 +1,86 @@
+\section{Syntaxe}
+
+\subsection{Flex}
+
+\begin{rail}
+	instructions: instruction *
+\end{rail}
+
+\begin{rail}
+	value: id | nil | number | boolean | string | color | table | function | agent | functioncall
+\end{rail}
+
+\begin{rail}
+	id: 'a-z' ( ( 'a-z'  | '-' | '0-9' ) * )
+\end{rail}
+
+\begin{rail}
+	nil: 'null'
+\end{rail}
+
+\begin{rail}
+	number: (( '0-9' + ) ( dot ? )) | dot ( '0-9' + )
+\end{rail}
+
+\begin{rail}
+	boolean: 'true' | 'false'
+\end{rail}
+
+\begin{rail}
+	string:
+\end{rail}
+
+\begin{rail}
+	color: sharp ( 'a-f' | '0-9' ) ( 'a-f' | '0-9' ) ( 'a-f' | '0-9' ) \\
+	       ( ( 'a-f' | '0-9' ) ( 'a-f' | '0-9' ) ( 'a-f' | '0-9' ) ) ?
+\end{rail}
+
+\begin{rail}
+	table:
+\end{rail}
+
+\begin{rail}
+	function: 'function' id lpar (params) rpar lbrace instructions rbrace
+\end{rail}
+
+\begin{rail}
+	params: id * comma
+\end{rail}
+
+\begin{rail}
+	instructions: instruction *
+\end{rail}
+
+\begin{rail}
+	functioncall: id lpar ( value * comma ) rpar
+\end{rail}
+
+\begin{rail}
+	instruction:
+\end{rail}
+
+\begin{rail}
+	agent:
+\end{rail}
+
+\begin{rail}
+	while:
+\end{rail}
+
+\begin{rail}
+	repeat:
+\end{rail}
+
+\begin{rail}
+	agenttype: 'agent' id lpar (params) rpar lbrace instructions rbrace
+\end{rail}
+
+\begin{rail}
+	untypedagent: number ? 'new' 'agent' lbrace instructions rbrace
+\end{rail}
+
+\begin{rail}
+	typedagent: number ? 'new' id lpar ( value * comma ) rpar
+\end{rail}
+
+

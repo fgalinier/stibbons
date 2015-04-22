@@ -7,6 +7,15 @@
 \usepackage[nottoc, notlof, notlot]{tocbibind}
 \usepackage{rail}
 
+\railalias{lbrace}{\{}
+\railalias{rbrace}{\}}
+\railalias{lpar}{(}
+\railalias{rpar}{)}
+\railalias{dot}{.}
+\railalias{comma}{,}
+\railalias{sharp}{\#}
+\railterm{lbrace,rbrace,lpar,rpar,dot,comma,sharp}
+
 \title{Stibbons}
 \author{Julia Bassoumi\\Florian Galinier\\Adrien Plazas\\Clément Simon}
 
@@ -35,6 +44,7 @@
 
 \chapter{Documentation}
 
+\input{doc/report/syntaxe}
 \input{doc/report/standard}
 
 \chapter{Résumés des réunions}
