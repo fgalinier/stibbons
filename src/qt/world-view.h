@@ -35,6 +35,7 @@ class WorldView : public QWidget {
 
 	private:
 		void paint(QPainter &p, World &world, int xt, int yt);
+		void paintWarped(QPainter &p, Line &line, int xt, int yt);
 		void paint(QPainter &p, Line &line, int xt, int yt);
 		void paint(QPainter &p, Turtle &turtle, int xt, int yt);
 

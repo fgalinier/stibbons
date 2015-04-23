@@ -171,23 +171,16 @@ void Turtle::setPosition(Point position) {
 		warped = newPosition.warp(size, world->getWarp());
 	}
 
-	if (line && warped) {
-		auto a = Point(this->position);
-		auto b = Point(position);
-		auto c = Point(a.getDimensions());
-		auto d = Point(newPosition);
+	if (line)
+		if (warped) {
+			line->push_back(Point(position));
 
-		for (size_t i = 0 ; i < a.getDimensions() ; i++) {
-			c.setValue(i, d.getValue(i) + a.getValue(i) - b.getValue(i));
+			line = new Line(Point(newPosition));
+			line->setColor(getColor());
+			world->addLine(line);
 		}
-
-		line->push_back(b);
-
-		line = new Line(c);
-		line->setColor(getColor());
-		world->addLine(line);
-		line->push_back(d);
-	}
+		else
+			line->push_back(Point(newPosition));
 
 	this->position = newPosition;
 
@@ -244,9 +237,6 @@ void Turtle::forward(double dist) {
 	newPosition.setValue(0, newPosition.getValue(0) + dx);
 	newPosition.setValue(1, newPosition.getValue(1) + dy);
 	setPosition(newPosition);
-
-	if (line)
-		line->push_back(Point(position));
 
 	changed();
 }

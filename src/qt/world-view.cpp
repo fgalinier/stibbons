@@ -101,12 +101,39 @@ void WorldView::paint(QPainter &p, World &world, int xt, int yt) {
 	// Draw the lines
 	QPainter lp(&linesBuffer);
 	for (auto& line : world.getLinesSince(linesSizes))
-		paint(lp, line, xt, yt);
+		paintWarped(lp, line, xt, yt);
 	p.drawPixmap(0, 0, linesBuffer);
 
 	// Draw the turtles
 	for (auto& turtle : world.getTurtles())
 		paint(p, *turtle, xt, yt);
+}
+
+void WorldView::paintWarped(QPainter &p, Line &line, int xt, int yt) {
+	if (line.size() == 0)
+		return;
+
+	Point begin, end;
+	line.getBox(begin, end);
+
+	auto ws = world->getSize();
+	long w = ws.getValue(0);
+	long h = ws.getValue(1);
+
+	auto warp = world->getWarp();
+
+	long x = warp[0] ? w * (1 - ((long) floor(begin.getValue(0)) / w)) :
+	                   w;
+
+	do {
+		long y = warp[1] ? h * (1 - ((long) floor(begin.getValue(1)) / h)) :
+		                   h;
+		do {
+			paint(p, line, xt + x-w, yt + y-h);
+			y -= h;
+		} while (end.getValue(1)+y > h && warp[1]);
+		x -= w;
+	} while (end.getValue(0)+x > w && warp[0]);
 }
 
 void WorldView::paint(QPainter &p, Line &line, int xt, int yt) {
