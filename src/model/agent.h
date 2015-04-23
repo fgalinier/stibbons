@@ -91,12 +91,6 @@ class Agent : public Value, public enable_shared_from_this<Agent> {
 		 */
 		virtual int compare (AgentPtr other);
 
-		/**
-		 * Export the agent's properties
-		 * @param the object where the properties will be
-		 **/
-		virtual void exportProperties(Object& o);
-
 	protected:
 		/**
 		 * Empty Constructor

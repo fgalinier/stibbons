@@ -7,6 +7,8 @@
 #include "line.h"
 #include "breed.h"
 #include "function.h"
+#include "number.h"
+#include "standard-function.h"
 #include "json_spirit.h"
 #include "json_spirit_writer_template.h"
 #include <ctime>
@@ -27,6 +29,7 @@ class Turtle;
 class Breed;
 class Function;
 
+typedef unsigned long zone_id;
 typedef unsigned long turtle_id;
 
 class Zone;
@@ -120,6 +123,12 @@ class World : public Changeable, public Agent {
 		unordered_set<TurtlePtr> getTurtles ();
 
 		/**
+		 * Get the list of all the zone in the world
+		 * @return a vector of zone
+		 */
+		vector<ZonePtr> getZone ();
+
+		/**
 		 * Get the zone at a given coordinates
 		 * @return the zone
 		 */
@@ -161,8 +170,39 @@ class World : public Changeable, public Agent {
 		 */
 		vector<bool> getWarp ();
 
-		turtle_id getId ();
-		void setId (turtle_id i);
+		/**
+		 * Return the global variable Tid
+		 * @return Tid, type turtle_id
+		 */
+		turtle_id getTurtleId ();
+
+		/**
+		 * Increment the Tid variable
+		 */
+		void nextTurtleId ();
+
+		/**
+		 * Return the id for a turtle and increment the world's variable Tid
+		 * @return Tid, type turtle_id
+		 */
+		turtle_id putTurtleId();
+
+		/**
+		 * Return the global variable Zid
+		 * @return Zid, type zone_id
+		 */
+		zone_id getZoneId ();
+
+		/**
+		 * Increment the Zid variable
+		 */
+		void nextZoneId ();
+
+		/**
+		 * Return the id for a zone and increment the world's variable Zid
+		 * @return Zid, type zone_id
+		 */
+		zone_id putZoneId();
 
 		/**
 		 * Export the model
@@ -207,7 +247,9 @@ class World : public Changeable, public Agent {
 		unordered_map<string, BreedPtr> namedBreeds;
 		unordered_set<BreedPtr> anonymousBreeds;
 
-		turtle_id id;
+		turtle_id Tid;
+		zone_id Zid;
+		recursive_mutex value_m;
 };
 
 typedef std::shared_ptr<World> WorldPtr;

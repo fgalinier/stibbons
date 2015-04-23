@@ -233,7 +233,8 @@ clean:
 	$(QRCSRC) \
 	$(QTOBJECTS) \
 	$(PDFCLN)\
-	$(NULL)
+	$(NULL)\
+	sauvegarde.json
 	make clean -C $(RAILDIR) -f Makefile
 
 .PHONY: all doc clean

@@ -1,6 +1,9 @@
 #include "turtle.h"
 #include "type.h"
-
+#include "number.h"
+#include "string.h"
+#include "boolean.h"
+#include "color.h"
 #include <cmath>
 #include <sstream>
 
@@ -39,11 +42,14 @@ Turtle::Turtle (AgentPtr parent, turtle_id id) :
 	line(nullptr),
 	messages(deque<pair<TurtlePtr,ValuePtr>>()) {
 		initAttributes();
+		if (parent->getType() == Type::WORLD)
+			setId(dynamic_pointer_cast<World>(parent)->putTurtleId());
+		else setId(dynamic_pointer_cast<Turtle>(parent)->getWorld()->putTurtleId());
 	}
 
 Turtle::Turtle (Breed *breed) :
 	Agent(dynamic_pointer_cast<Agent>(breed->getWorld())),
-	id(0),
+	id(breed->getWorld()->putTurtleId()),
 	breed(breed),
 	angle(0.0),
 	color(Color()),
@@ -54,12 +60,12 @@ Turtle::Turtle (Breed *breed) :
 
 Turtle::Turtle (TurtlePtr parent) :
 	Agent(parent),
-	id(0),
+	id(parent->getWorld()->putTurtleId()),
 	breed(parent->breed),
 	angle(parent->angle),
 	color(parent->color),
 	line(nullptr),
-	messages(deque<pair<TurtlePtr,ValuePtr>>())  {
+	messages(deque<pair<TurtlePtr,ValuePtr>>()) {
 		initAttributes();
 	}
 
@@ -441,15 +447,20 @@ Object Turtle::exportTurtle(){
 	Object synthese;
 	synthese.push_back(Pair("id",getId()));
 	synthese.push_back(Pair("color",this->getColor().toString()));
-/*
-	unordered_map<string,ValuePtr>* properties=getProperty();
+
+unordered_map<string,ValuePtr>* properties=Agent::getProperty();
 	for (auto m : *properties)
 	{
 		if (m.second->getType() == Type::COLOR)
 			synthese.push_back(Pair(m.first,dynamic_pointer_cast<Color>(m.second)->toString()));
+		if (m.second->getType() == Type::NUMBER)
+			synthese.push_back(Pair(m.first,dynamic_pointer_cast<Number>(m.second)->getValue()));
+		if (m.second->getType() == Type::STRING)
+			synthese.push_back(Pair(m.first,dynamic_pointer_cast<String>(m.second)->toString()));
+		if (m.second->getType() == Type::BOOLEAN)
+			synthese.push_back(Pair(m.first,dynamic_pointer_cast<Boolean>(m.second)->toString()));
 	}
-*/
-	exportProperties(synthese);
+
 	auto parent=getParent();
 	if (parent->getType() == Type::WORLD)
 	{

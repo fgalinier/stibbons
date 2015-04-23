@@ -4,7 +4,7 @@ using namespace std;
 
 namespace stibbons {
 
-Zone::Zone (AgentPtr parent) : Agent(parent), color(Color(1.0, 1.0, 1.0)) {}
+Zone::Zone (AgentPtr parent) : Agent(parent), color(Color(1.0, 1.0, 1.0)),id(dynamic_pointer_cast<World>(parent)->putZoneId()) {}
 
 ZonePtr Zone::construct (AgentPtr parent) {
 	auto self = shared_ptr<Zone>(new Zone (parent));
@@ -114,6 +114,15 @@ WorldPtr Zone::getWorld () {
 	return nullptr;
 }
 
+zone_id Zone::getId (){
+	lock_guard<recursive_mutex> lock(value_m);
+	return id;
+}
+
+void Zone::setId (zone_id z){
+	 id=z;
+}
+
 void Zone::changed() {
 	lock_guard<recursive_mutex> lock(value_m);
 	auto world = getWorld();
@@ -124,6 +133,27 @@ void Zone::changed() {
 
 string Zone::toString () {
 	return "zone";
+}
+
+Object Zone::exportZone() {
+	Object synthese;
+	synthese.push_back(Pair("id",getId()));
+	synthese.push_back(Pair("color",this->getColor().toString()));
+
+unordered_map<string,ValuePtr>* properties=Agent::getProperty();
+	for (auto m : *properties)
+	{
+		if (m.second->getType() == Type::COLOR)
+			synthese.push_back(Pair(m.first,dynamic_pointer_cast<Color>(m.second)->toString()));
+		if (m.second->getType() == Type::NUMBER)
+			synthese.push_back(Pair(m.first,dynamic_pointer_cast<Number>(m.second)->getValue()));
+		if (m.second->getType() == Type::STRING)
+			synthese.push_back(Pair(m.first,dynamic_pointer_cast<String>(m.second)->toString()));
+		if (m.second->getType() == Type::BOOLEAN)
+			synthese.push_back(Pair(m.first,dynamic_pointer_cast<Boolean>(m.second)->toString()));
+	}
+
+	return synthese;
 }
 
 }

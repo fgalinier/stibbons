@@ -1,11 +1,9 @@
 #include "world.h"
 
-#include "number.h"
-#include "standard-function.h"
-
 namespace stibbons {
 
-World::World (Size worldSize, Size zoneSize, vector<bool> warp) throw(domain_error) : Agent(nullptr), worldSize(worldSize), zoneSize(zoneSize), warp(warp), id(0) {
+
+World::World (Size worldSize, Size zoneSize,vector<bool> warp) throw(domain_error) : Agent(nullptr), worldSize(worldSize), zoneSize(zoneSize), Tid(0),Zid(0) {
 	if (worldSize.getDimensions() != zoneSize.getDimensions())
 		throw domain_error("Can't create a world with a dimension number different to its zones'");
 
@@ -152,6 +150,11 @@ unordered_set<TurtlePtr> World::getTurtles () {
 	return turtles;
 }
 
+vector<ZonePtr> World::getZone (){
+	lock_guard<recursive_mutex> lock(value_m);
+	return zones;
+}
+
 ZonePtr World::getZone (Size& coordinates) throw(domain_error) {
 	// If a point of different dimension number is passed, it's an error
 	if (worldSize.getDimensions() != coordinates.getDimensions())
@@ -239,10 +242,8 @@ Object World::exportWorld (){
 	Object sizeW;
 	Object sizeZ;
 	sizeW.push_back(Pair("dimensions",(int)(getWorldSize().getDimensions())));
-	//sizeW.push_back(Pair("axis",getWorldSize().getValue()));
 	world.push_back(Pair("WorldSize",sizeW));
 	sizeZ.push_back(Pair("dimensions",(int)(getZoneSize().getDimensions())));
-	//sizeZ.push_back(Pair("axis",getZoneSize().getValue()));
 	world.push_back(Pair("ZoneSize",sizeZ));
 
 	Object tortue;
@@ -259,27 +260,63 @@ Object World::exportWorld (){
 		string nom=t.first;
 		for (auto to : t.second->getTurtles())
 		{
-		      tortue.push_back(Pair(nom,to->exportTurtle()));
+		   tortue.push_back(Pair(nom,to->exportTurtle()));
 		}
 	}
 	world.push_back(Pair("Turtles",tortue));
+
+	Object zones;
+	Array p;
+	for (auto t : getZone())
+	{	Object zone=t->exportZone();
+		p.push_back(zone);
+	}
+	world.push_back(Pair("Zones",p));
 
 	return world;
 }
 
 bool World::exporte (){
 	ofstream fichier("./sauvegarde.json");
-
 	Object json;
 	time_t temps;
 	time(&temps);
 	json.push_back(Pair("time",ctime(&temps)));
+	Object res=exportWorld();
+	json.push_back(Pair("World",res));
+	write(json,fichier,pretty_print);
 
-	Object w;
-	w.push_back(Pair("World",exportWorld()));
-		write(json,fichier,pretty_print);
-		write(w,fichier,pretty_print);
 	return true;
+}
+
+turtle_id World::getTurtleId (){
+	lock_guard<recursive_mutex> lock(value_m);
+	return Tid;
+}
+
+void World::nextTurtleId (){
+	lock_guard<recursive_mutex> lock(value_m);
+	Tid=Tid+1;
+}
+
+zone_id World::getZoneId (){
+	lock_guard<recursive_mutex> lock(value_m);
+	return Zid;
+}
+
+turtle_id World::putTurtleId(){
+	turtle_id i=getTurtleId();
+	nextTurtleId();
+	return i;
+}
+zone_id World::putZoneId(){
+	zone_id i=getZoneId();
+	nextZoneId();
+	return i;
+}
+void World::nextZoneId (){
+	lock_guard<recursive_mutex> lock(value_m);
+	Zid++;
 }
 
 }

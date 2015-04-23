@@ -1,5 +1,6 @@
 #include "../model/world.h"
-
+#include "../model/number.h"
+#include "../model/agent.h"
 #include "../model/user-function.h"
 
 #include <cppunit/TestCase.h>
@@ -45,11 +46,20 @@ class TestWorld : public TestCase{
 		void testExporte() {
 			cout << "TestWorld::testExporte" << endl;
 			FunctionPtr function=nullptr;
-			//NumberPtr n=make_shared<Number>(4);
-			//paire<string,NumberPtr> p=make_pair<string,NumberPtr>("a",n);
+
+			NumberPtr n=make_shared<Number>(4);
+			pair<string,NumberPtr> p("a",n);
+			BooleanPtr find=make_shared<Boolean>(true);
+			pair<string,BooleanPtr> bo("find",find);
+			StringPtr str=make_shared<String>("Kelly");
+			pair<string,StringPtr> strin("name",str);
+
 			TurtlePtr t=world->createBreed(function,"lila")->createTurtle();
 			TurtlePtr t2=world->createBreed(function)->createTurtle();
-			//cout << t->getId()<<" "<<t->getColor().toString() << endl;
+			t->setProperty("a",n);
+			t->setProperty("find",find);
+			t->setProperty("name",str);
+
 			world->exporte();
 		}
 

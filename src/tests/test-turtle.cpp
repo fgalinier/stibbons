@@ -20,10 +20,22 @@ class TestTurtle : public TestCase{
 /*Explication : pas de constructeur vide ds tortue, donc on ne peux pas laisser turtle, et seg fault si redefinit dans le setUp => pointeur ou constructeur vide dans tortue*/
 		stibbons::TurtlePtr turtle;// stibbons::Turtle(0, nullptr);
      	stibbons::TurtlePtr t2;
+		WorldPtr world;
+		
 
 		void setUp(){
-			turtle = stibbons::Turtle::construct();
-			t2 = stibbons::Turtle::construct();
+			auto worldSize = Size(2);
+			worldSize.setValue(0, 10);
+			worldSize.setValue(1, 10);
+			auto zoneSize = Size(2);
+			zoneSize.setValue(0, 10);
+			zoneSize.setValue(1, 10);
+			auto warp = vector<bool>();
+			warp.push_back(false);
+			warp.push_back(false);
+			world = stibbons::World::construct(worldSize, zoneSize, warp);
+			turtle = stibbons::Turtle::construct(world);
+			t2 = stibbons::Turtle::construct(world);
 		}
 
 		void testAngle() {

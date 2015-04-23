@@ -2,16 +2,25 @@
 
 #include "world.h"
 #include "color.h"
+#include "number.h"
+#include "string.h"
+#include "boolean.h"
+#include "type.h"
 #include "agent.h"
 #include <stdexcept>
 #include <system_error>
 #include <unordered_map>
-
 #include <mutex>
+#include "json_spirit.h"
+#include "json_spirit_writer_template.h"
+
+using namespace json_spirit;
+
 
 namespace stibbons {
 
 class World;
+typedef unsigned long zone_id;
 
 /**
  * \class Zone
@@ -85,6 +94,18 @@ class Zone : public Agent{
 		 */
 		WorldPtr getWorld ();
 
+		/**
+		 * Set the value of id
+		 * @param the id
+		 */
+		void setId (zone_id z);
+
+		/**
+		 * Get the value of id
+		 * @return the value of id
+		 */
+		zone_id getId ();
+
 		void changed ();
 
 		/**
@@ -92,6 +113,12 @@ class Zone : public Agent{
 		 * @return a string corresponding to the value
 		 */
 		virtual string toString ();
+
+		/**
+		 * Return an object which contain the zone's properties
+		 * @return an json Object
+		 */
+		Object exportZone();
 
 	protected:
 		/**
@@ -106,6 +133,9 @@ class Zone : public Agent{
 
 	private:
 		Color color;
+
+		zone_id id;
+		recursive_mutex value_m;
 };
 
 }
