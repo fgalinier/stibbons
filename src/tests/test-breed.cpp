@@ -45,7 +45,6 @@ class TestBreed : public TestCase {
 			cout << "TestBreed::ajout" << endl;
 			breed=world->createBreed(f);
 			TurtlePtr t=breed->createTurtle();
-			//WorldPtr w=breed->getWorld();
 			if (world != nullptr)
 			CPPUNIT_ASSERT(world->getType() == Type::WORLD);
 			CPPUNIT_ASSERT(t->getType() == Type::TURTLE);
