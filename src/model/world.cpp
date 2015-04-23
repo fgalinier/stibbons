@@ -100,15 +100,15 @@ vector<Line> World::getLinesSince (vector<size_t>& sizes) {
 	size_t previousSize = sizes.size();
 
 	for (size_t i = 0 ; i < actualSize ; i++) {
-		size_t actualLineSize = lines[i]->size();
-		size_t previousLineSize = (i >= previousSize) ? 0 : sizes[i];
+		size_t startPoint = lines[i]->size() - 1;
+		size_t previousStartPoint = (i >= previousSize) ? 0 : sizes[i];
 
-		newLines.push_back(Line(*lines[i], previousLineSize));
+		newLines.push_back(Line(*lines[i], previousStartPoint));
 
 		if (i >= previousSize)
-			sizes.push_back(actualLineSize);
+			sizes.push_back(startPoint);
 		else
-			sizes[i] = actualLineSize;
+			sizes[i] = startPoint;
 	}
 
 	return newLines;
