@@ -2,6 +2,10 @@
 
 namespace stibbons {
 
+Line::Line(Point point) {
+	push_back(point);
+}
+
 Line::Line(Line& other, size_t since) {
 	lock_guard<mutex> lock(other.value_m);
 

@@ -27,7 +27,11 @@ namespace stibbons {
  */
 class Line {
 	public:
-		Line() = default;
+		/**
+		 * Create a line
+		 * @param point the initial point
+		 */
+		Line(Point point);
 
 		/**
 		 * Create a copy of a line

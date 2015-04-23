@@ -142,10 +142,9 @@ void Turtle::setColor (Color color) {
 	this->color = color;
 
 	if (line) {
-		line = new Line();
+		line = new Line(Point(position));
 		line->setColor(getColor());
 		getWorld()->addLine(line);
-		line->push_back(Point(position));
 	}
 
 	changed();
@@ -184,10 +183,9 @@ void Turtle::setPosition(Point position) {
 
 		line->push_back(b);
 
-		line = new Line();
+		line = new Line(c);
 		line->setColor(getColor());
 		world->addLine(line);
-		line->push_back(c);
 		line->push_back(d);
 	}
 
@@ -272,10 +270,9 @@ void Turtle::penDown() throw (future_error) {
 	if (line)
 		throw future_error(ec);
 
-	line = new Line();
+	line = new Line(Point(position));
 	line->setColor(getColor());
 	world->addLine(line);
-	line->push_back(Point(position));
 
 	changed();
 }

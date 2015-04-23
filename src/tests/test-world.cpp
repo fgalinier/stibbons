@@ -31,7 +31,7 @@ class TestWorld : public TestCase{
 			warp.push_back(false);
 			warp.push_back(false);
 			world = stibbons::World::construct(worldSize, zoneSize, warp);
-			line=new Line();
+			line=new Line(Point());
 			turtle=Turtle::construct();
 			f=make_shared<UserFunction>(nullptr);
 		}
