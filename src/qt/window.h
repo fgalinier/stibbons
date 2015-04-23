@@ -32,8 +32,10 @@ class Window : public QMainWindow {
 
 	private slots:
 		void open();
+		void reset();
 		void run();
 		void halt();
+		void next();
 		void about();
 
 	private:
@@ -45,8 +47,10 @@ class Window : public QMainWindow {
 		void loadFile(const QString &fileName);
 
 		QAction *openAct;
+		QAction *resetAct;
 		QAction *runAct;
 		QAction *haltAct;
+		QAction *nextAct;
 		QAction *quitAct;
 		QAction *aboutAct;
 

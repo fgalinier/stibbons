@@ -51,6 +51,12 @@ void Window::createActions() {
 	openAct->setStatusTip(tr("Open an existing file"));
 	connect(openAct, SIGNAL(triggered()), this, SLOT(open()));
 
+	icon = QApplication::style()->standardIcon (QStyle::SP_BrowserReload);
+	resetAct = new QAction(icon, tr("&Reset..."), this);
+	resetAct->setShortcuts(QKeySequence::Refresh);
+	resetAct->setStatusTip(tr("Reset the world..."));
+	connect(resetAct, SIGNAL(triggered()), this, SLOT(reset()));
+
 	icon = QApplication::style()->standardIcon (QStyle::SP_MediaPlay);
 	runAct = new QAction(icon, tr("&Run..."), this);
 //	runAct->setShortcuts(QKeySequence::Play);
@@ -62,6 +68,11 @@ void Window::createActions() {
 //	haltAct->setShortcuts(QKeySequence::Pause);
 	haltAct->setStatusTip(tr("Halt the execution of the program"));
 	connect(haltAct, SIGNAL(triggered()), this, SLOT(halt()));
+
+	icon = QApplication::style()->standardIcon (QStyle::SP_MediaSkipForward);
+	nextAct = new QAction(icon, tr("Nest &Step..."), this);
+	nextAct->setStatusTip(tr("Execute the program for one step"));
+	connect(nextAct, SIGNAL(triggered()), this, SLOT(next()));
 
 	quitAct = new QAction(tr("&Quit"), this);
 	quitAct->setShortcuts(QKeySequence::Quit);
@@ -80,8 +91,10 @@ void Window::createToolBars() {
 
 	// Boutons
 	toolbar->addAction(openAct);
+	toolbar->addAction(resetAct);
 	toolbar->addAction(runAct);
 	toolbar->addAction(haltAct);
+	toolbar->addAction(nextAct);
 
 	// Extenseur
 	QWidget* empty = new QWidget();
@@ -139,6 +152,10 @@ void Window::loadFile(const QString &fileName) {
 	scrollArea->setWidget(worldView);
 }
 
+void Window::reset() {
+	// TODO stoppe l'exécution du programme si nécessaire et réinitialise son état
+}
+
 void Window::run() {
 	if (runner == nullptr)
 		return;
@@ -148,6 +165,10 @@ void Window::run() {
 
 void Window::halt() {
 	// TODO suspend l'exécution du programme
+}
+
+void Window::next() {
+	// TODO exécute une étape du programme
 }
 
 void Window::about() {
