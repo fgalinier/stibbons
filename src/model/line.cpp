@@ -87,6 +87,23 @@ size_t Line::size () {
 	return points.size();
 }
 
+void Line::getBox (Point& begin, Point& end) {
+	lock_guard<mutex> lock(value_m);
+
+	auto dimensions = points[0].getDimensions();
+	begin = Point(points[0]);
+	end = Point(points[0]);
+
+	for (auto p : points)
+		for (size_t i = 0 ; i < dimensions ; i++) {
+			auto v = p.getValue(i);
+			auto b =  begin.getValue(i);
+			auto e =  end.getValue(i);
+			begin.setValue(i, v < b ? v : b);
+			end.setValue(i, v > e ? v : e);
+		}
+}
+
 void Line::for_each (std::function<void(Point)> foreachFunc) {
 	lock_guard<mutex> lock(value_m);
 

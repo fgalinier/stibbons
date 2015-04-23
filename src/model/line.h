@@ -90,6 +90,13 @@ class Line {
 		size_t size ();
 
 		/**
+		 * Get the points of the box containing the line
+		 * @param begin the first corner of the box
+		 * @param end the last corner of the box
+		 */
+		void getBox (Point& begin, Point& end);
+
+		/**
 		 * Do something for a copy of each point
 		 * @param foreachFunc the fonction to call for each point
 		 */
