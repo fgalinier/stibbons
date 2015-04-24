@@ -1,9 +1,4 @@
-pd
-
-fd 30
-rt 90
-
-49 new agent {
+2 new agent {
 	while true { fd 20 
 		rt 20
 	}

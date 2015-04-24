@@ -3,8 +3,10 @@
 #include <cstdio>
 #include <cstring>
 #include <thread>
+#include <unistd.h>
 
 #include "../model/user-function.h"
+#include "turtle-interpreter.h"
 #include "tree.h"
 #include "y.tab.h"
 
@@ -21,7 +23,7 @@ namespace stibbons {
 	}
 
 	void Interpreter::start(AgentPtr agent,
-						  const TreePtr tree) {
+							const TreePtr tree) {
 
 		this->interpret(agent,tree,make_shared<Table>());
 
@@ -32,13 +34,13 @@ namespace stibbons {
 
 	ValuePtr Interpreter::interpret(AgentPtr agent,
 									const TreePtr tree,
-									TablePtr hashTable) const throw(SemanticException) {
+									TablePtr hashTable) throw(SemanticException) {
 		
 		this_thread::sleep_for(chrono::microseconds(waitTime));
 
 		if(tree != nullptr) {
 			switch(std::get<0>(tree->getNode())) {
-		   	//Sequence case:
+				//Sequence case:
 			case 0: {
 				ValuePtr res = Nil::getInstance();
 				if(!tree->isLeaf()) {
@@ -48,7 +50,7 @@ namespace stibbons {
 				}
 				break;
 			}
-		   	//Loop cases:
+				//Loop cases:
 			case yy::parser::token::WHL: {
 				auto val = this->interpret(agent,tree->getSon(0),hashTable);
 				ValuePtr res;
@@ -61,10 +63,10 @@ namespace stibbons {
 					res = this->interpret(agent,tree->getSon(1),hashTable);
 					val = this->interpret(agent,tree->getSon(0));
 					if(val->getType() != Type::BOOLEAN)
-					throw SemanticException("WHILE",
-					                        Type::BOOLEAN,
-					                        val->getType(),
-					                        getPosition(tree));
+						throw SemanticException("WHILE",
+												Type::BOOLEAN,
+												val->getType(),
+												getPosition(tree));
 				}
 				return res;
 			}
@@ -84,7 +86,7 @@ namespace stibbons {
 				return res;
 			}
 				break;
-		   	//Conditionnal cases:
+				//Conditionnal cases:
 			case yy::parser::token::IF: {
 				auto cond = this->interpret(agent,tree->getSon(0),hashTable);
 				if(cond->getType() != Type::BOOLEAN) 
@@ -100,7 +102,7 @@ namespace stibbons {
 				}
 			}
 				break;
-			//Variable cases:
+				//Variable cases:
 			case yy::parser::token::ID: {
 				auto id = dynamic_pointer_cast<String>(std::get<1>(tree->getNode()))->getValue();
 				if(hashTable) {
@@ -159,7 +161,7 @@ namespace stibbons {
 				return target->getProperty(id);
 			}
 				break;
-		   	//Type cases:
+				//Type cases:
 			case yy::parser::token::NUMBER:
 			case yy::parser::token::STRING:
 			case yy::parser::token::COLOR:
@@ -167,7 +169,7 @@ namespace stibbons {
 			case yy::parser::token::NIL:
 				return std::get<1>(tree->getNode());
 				break;
-		   	//Arithmetic cases:
+				//Arithmetic cases:
 			case '+':
 				try {
 					auto val1 = this->interpret(agent,tree->getSon(0), hashTable);
@@ -213,7 +215,7 @@ namespace stibbons {
 				catch (std::domain_error e) {
 					throw SemanticException(e.what(), getPosition(tree));
 				}
-	   		//Boolean operation cases:
+				//Boolean operation cases:
 			case yy::parser::token::AND: {
 				auto val1 = this->interpret(agent,tree->getSon(0),hashTable);
 				auto val2 = this->interpret(agent,tree->getSon(1),hashTable);
@@ -265,7 +267,7 @@ namespace stibbons {
 						throw SemanticException("==",
 												val1->getType(),val1->getType(),
 												val1->getType(),val2->getType(),
-					                        getPosition(tree));
+												getPosition(tree));
 
 					return make_shared<Boolean>(val1->isEqual(val2));
 				}
@@ -282,7 +284,7 @@ namespace stibbons {
 						throw SemanticException("!=",
 												val1->getType(),val1->getType(),
 												val1->getType(),val2->getType(),
-					                        getPosition(tree));
+												getPosition(tree));
 					return make_shared<Boolean>(val1->isDifferent(val2));
 				}
 				catch (std::domain_error e) {
@@ -298,7 +300,7 @@ namespace stibbons {
 						throw SemanticException(">",
 												val1->getType(),val1->getType(),
 												val1->getType(),val2->getType(),
-					                        getPosition(tree));
+												getPosition(tree));
 					return make_shared<Boolean>(val1->isGreater(val2));
 				}
 				catch (std::domain_error e) {
@@ -314,7 +316,7 @@ namespace stibbons {
 						throw SemanticException(">=",
 												val1->getType(),val1->getType(),
 												val1->getType(),val2->getType(),
-					                        getPosition(tree));
+												getPosition(tree));
 					return make_shared<Boolean>(val1->isGreaterOrEqual(val2));
 				}
 				catch (std::domain_error e) {
@@ -330,7 +332,7 @@ namespace stibbons {
 						throw SemanticException("<",
 												val1->getType(),val1->getType(),
 												val1->getType(),val2->getType(),
-					                        getPosition(tree));
+												getPosition(tree));
 					return make_shared<Boolean>(val1->isLower(val2));
 				}
 				catch (std::domain_error e) {
@@ -346,7 +348,7 @@ namespace stibbons {
 						throw SemanticException("<=",
 												val1->getType(),val1->getType(),
 												val1->getType(),val2->getType(),
-					                        getPosition(tree));
+												getPosition(tree));
 					return make_shared<Boolean>(val1->isLowerOrEqual(val2));
 				}
 				catch (std::domain_error e) {
@@ -354,7 +356,7 @@ namespace stibbons {
 				}
 			}
 				break;
-			// New agent
+				// New agent
 			case yy::parser::token::AGT: {
 				auto id = dynamic_pointer_cast<String>(std::get<1>(tree->getNode()))->getValue();
 				auto function = this->getFunctionFromTree(tree);
@@ -387,18 +389,18 @@ namespace stibbons {
 				else
 					newTurtle = breed->createTurtle(agent);					
 				auto params = getParams(fct,newTurtle,paramTree,hashTable,id);
-				auto inter = new Interpreter();
-				
-				sons.push_back(thread (&Interpreter::interpretFunction,
-										inter,
-										fct,
-										newTurtle,
-										params));
+				auto inter = new TurtleInterpreter();
 
+				sons.push_back(thread (&TurtleInterpreter::interpretFunction,
+									   inter,
+									   fct,
+									   newTurtle,
+									   params));
+			
 				return newTurtle;
 			}
 				break;
-			// Functions
+				// Functions
 			case yy::parser::token::FCT: {
 				auto id = dynamic_pointer_cast<String>(std::get<1>(tree->getNode()))->getValue();
 				auto fct = this->getFunctionFromTree(tree);
@@ -433,12 +435,12 @@ namespace stibbons {
 		auto sons = tree->getSons();
 		for(size_t i=1;i<sons.size();i++) {
 			params.push_back(
-				dynamic_pointer_cast<String>(
-					std::get<1>(
-						sons.at(i)->getNode()
-					)
-				  )->getValue()
-			);
+							 dynamic_pointer_cast<String>(
+														  std::get<1>(
+																	  sons.at(i)->getNode()
+																	  )
+														  )->getValue()
+							 );
 		}
 		return make_shared<UserFunction>(fctTree,params);
 	}
@@ -448,7 +450,7 @@ namespace stibbons {
 	                                const TreePtr tree,
 	                                TablePtr hashTable,
 	                                std::string id) {
-//		auto newHashTable = (!hashTable)?make_shared<Table>():hashTable;
+		//		auto newHashTable = (!hashTable)?make_shared<Table>():hashTable;
 		auto newHashTable = make_shared<Table>();
 
 		if(tree) {

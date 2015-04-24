@@ -1,8 +1,8 @@
 NULL =
 
 CC = g++
-MOC = moc-qt5
-RCC = rcc-qt5
+MOC = moc
+RCC = rcc
 
 INCDIR = /usr/include
 QTINCDIR = $(INCDIR)/qt5
@@ -76,6 +76,7 @@ INTERPETERSRC = \
 	src/interpreter/interpreter-exception.cpp \
 	src/interpreter/syntax-exception.cpp \
 	src/interpreter/semantic-exception.cpp \
+	src/interpreter/turtle-interpreter.cpp \
 	src/interpreter/world-interpreter.cpp \
 	$(NULL)
 
