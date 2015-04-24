@@ -37,6 +37,7 @@ class Window : public QMainWindow {
 		void halt();
 		void next();
 		void about();
+		void updateInterpreterWaitTime(int waitTime);
 
 	private:
 		void createActions();

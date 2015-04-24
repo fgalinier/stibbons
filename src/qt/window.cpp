@@ -74,6 +74,11 @@ void Window::createActions() {
 	nextAct->setStatusTip(tr("Execute the program for one step"));
 	connect(nextAct, SIGNAL(triggered()), this, SLOT(next()));
 
+	icon = QApplication::style()->standardIcon (QStyle::SP_MediaSkipForward);
+	nextAct = new QAction(icon, tr("Nest &Step..."), this);
+	nextAct->setStatusTip(tr("Execute the program for one step"));
+	connect(nextAct, SIGNAL(triggered()), this, SLOT(next()));
+
 	quitAct = new QAction(tr("&Quit"), this);
 	quitAct->setShortcuts(QKeySequence::Quit);
 	quitAct->setStatusTip(tr("Quit the application"));
@@ -100,6 +105,16 @@ void Window::createToolBars() {
 	QWidget* empty = new QWidget();
 	empty->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
 	toolbar->addWidget(empty);
+
+	// Slider
+	QSlider* slider = new QSlider(Qt::Horizontal);
+	slider->setTickInterval(100);
+	slider->setTickPosition(QSlider::TicksBothSides);
+	slider->setMaximum(400);
+	slider->setInvertedAppearance(true);
+	connect(slider, SIGNAL(valueChanged(int)), this, SLOT(updateInterpreterWaitTime(int)));
+	slider->setValue(200);
+	toolbar->addWidget(slider);
 
 	// Bouton menu
 	QMenu *menu = new QMenu(tr("Menu"));
@@ -183,6 +198,10 @@ void Window::about() {
 				"Copyright © 2015 <a href=\"mailto://clem.simon.sc@gmail.com\">Clement Simon</a>"
 			"</small></p>"
 		));
+}
+
+void Window::updateInterpreterWaitTime(int waitTime) {
+	Interpreter::waitTime = pow(10.0, (double) waitTime / 100.0) - 1;
 }
 
 void Window::readSettings() {
