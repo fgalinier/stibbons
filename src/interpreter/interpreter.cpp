@@ -12,6 +12,8 @@ extern FILE *yyin;
 
 namespace stibbons {
 
+	size_t Interpreter::waitTime = 0;
+
 	yy::position Interpreter::getPosition(const TreePtr tree) {
 		return yy::position(nullptr,
 		                    std::get<0>(tree->getPosition()),
@@ -21,6 +23,7 @@ namespace stibbons {
 	ValuePtr Interpreter::interpret(TurtlePtr turtle,
 									const TreePtr tree,
 									TablePtr hashTable) const throw(SemanticException) {
+		this_thread::sleep_for(chrono::microseconds(waitTime));
 		if(tree != nullptr) {
 			switch(std::get<0>(tree->getNode())) {
 		   	//Sequence case:

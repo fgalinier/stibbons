@@ -54,6 +54,8 @@ namespace stibbons {
 		                         const TreePtr,
 		                         TablePtr hashTable=nullptr) const throw(SemanticException);
 
+		static size_t waitTime;
+
 	private:
 		/**
 		 * Create a function from a tree with a
