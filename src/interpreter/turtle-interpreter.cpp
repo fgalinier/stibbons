@@ -25,8 +25,7 @@ namespace stibbons {
 										  TablePtr hashTable) throw(SemanticException) {
 		
 		ValuePtr start = Interpreter::interpret(agent,tree,hashTable);
-
-		if(start != nullptr) {
+		if(start != nullptr || std::get<0>(tree->getNode()) == 0 ) {
 			return start;
 		}
 		else{

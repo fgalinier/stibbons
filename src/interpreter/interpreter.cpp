@@ -391,7 +391,7 @@ namespace stibbons {
 				auto params = getParams(fct,newTurtle,paramTree,hashTable,id);
 				auto inter = new TurtleInterpreter();
 
-				sons.push_back(thread (&TurtleInterpreter::interpretFunction,
+				sons.push_back(thread (&Interpreter::interpretFunction,
 									   inter,
 									   fct,
 									   newTurtle,
