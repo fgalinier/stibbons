@@ -1,0 +1,222 @@
+\section{Tutoriel}
+
+\subsection{Salut, monde !}
+
+Commençons par imprimer du texte.
+
+\begin{verbatim}
+println("Salut, monde !")
+\end{verbatim}
+
+Ici l'agent par défaut, le monde, appelle la fonction println avec pour paramètre la chaîne de caractères "Salut, monde !", ce qui a pour effet d'imprimer ce texte dnas une nouvelle ligne sur la sortie standard.
+
+\subsection{Les premiers agents}
+
+Créons maintenant des agents.
+
+\begin{verbatim}
+new agent {
+    println("Salut, humain !")
+}
+\end{verbatim}
+
+Le monde crée un nouvel agent mobile, une tortue, qui apparaîtra alors dans le monde et exécutera le code passé entre accolades.
+
+Il est possible de créer plusieur tortues exécutant le même code en spécifiant leur nombre.
+
+\begin{verbatim}
+5 new agent {
+    println("Salut, humain !")
+}
+\end{verbatim}
+
+Ainsi, cinq tortues sont créés et chacune d'elles imprime "Salut, humain !".
+
+\subsection{Dessiner un carré}
+
+Les tortues peuvent se déplacer sur le monde en avançant et en tournant à gauche ou à droite. Elles ont également un stylo qu'elles peuvent abaisser ou relever afin de tracer des lignes sur le monde.
+
+\begin{verbatim}
+new agent {
+    pd
+    fd 50
+    rt 90
+    fd 50
+    rt 90
+    fd 50
+    rt 90
+    fd 50
+    println("Voici un beau carré !")
+}
+\end{verbatim}
+
+Ici, pd demande à la tortue d'abaisser son stylo (pen down), fd demande à la tortue d'avancer (forward) d'une certaine distance, et rt demande à la tortue de tourner d'un certain nombre de degrés.
+
+\subsection{Répéter}
+
+Afin d'éviter de se répéter, on peut demander à l'interprète de le faire un certain nombre de fois pour nous.
+
+\begin{verbatim}
+new agent {
+    pd
+    repeat 4 {
+        fd 50
+        rt 90
+    }
+    println("Voici qui est mieux. =)")
+}
+\end{verbatim}
+
+\subsection{Boucler}
+
+Il est également possible de boucler tant qu'une condition est vraie.
+
+\begin{verbatim}
+new agent {
+    println("Je vais faire ma ronde.")
+    while true {
+        fd 50
+        rt 90
+    }
+}
+\end{verbatim}
+
+\subsection{Agents typés}
+
+Il est possible de définir un type d'agent sans en créer, afin d'en créer plus tard.
+
+\begin{verbatim}
+agent personne (nom) {
+    println("Je m'appelle " + nom + ".")
+}
+
+new personne("Mathieu")
+new personne("Michel")
+\end{verbatim}
+
+Ici, le type d'agent personne a été définit. Un type d'agent peut prendre des paramètres exactement de la même manière qu'une fonction.
+
+Ainsi on a pu créer deux tortues de type personne, chacune ayant son propre nom.
+
+\subsection{Fonctions}
+
+Il est possible de définir des fontions. Les fonctions sont définies dans l'espace de nom des propriétés de l'agent.
+
+\begin{verbatim}
+agent fourmi () {
+    function gigoter () {
+        rt rand() % 60
+        lt rand() % 60
+        fd 1
+    }
+
+    while true {
+        gigoter()
+    }
+}
+
+new fourmi()
+\end{verbatim}
+
+On définit ici la fonction gigoter pour les agents de type fourmi, qui est utilisée un peu plus bas dans le code.
+
+\subsection{Couleurs}
+
+Les tortues ont une couleur qui peut être modifiée. C'est également cette couleur qu'elles utilisent pour dessiner sur le monde.
+
+\begin{verbatim}
+agent fourmi (couleur) {
+    function gigoter () {
+        rt rand() % 60
+        lt rand() % 60
+        fd 1
+    }
+
+    color = couleur
+    pd
+
+    while true {
+        gigoter()
+    }
+}
+
+new fourmi(red)
+new fourmi(blue)
+\end{verbatim}
+
+\subsection{Zones}
+
+Le monde est constitué de zones, qui sont eux aussi des agents. Les zones ont tout comme les tortues une couleur qui peut être modifiée.
+
+\begin{verbatim}
+agent fourmi (couleur) {
+    function gigoter () {
+        rt rand() % 60
+        lt rand() % 60
+        fd 1
+    }
+
+    color = couleur
+    pd
+
+    while true {
+        gigoter()
+        zone.color = couleur
+    }
+}
+
+new fourmi(red)
+new fourmi(blue)
+\end{verbatim}
+
+Ici, les fourmis changent la couleur des zones sur lesquelles elles passent.
+
+\subsection{Messages}
+
+Les tortues peuvent s'envoyer des messages. Les messages peuvent être envoyés à un destinataire précis ou à toutes les tortues.
+
+\begin{verbatim}
+destinataire = new agent {
+    message = recv()
+
+    println("Quelqu'un m'a dit : " + message)
+}
+
+new agent {
+    send (destinataire, "Coucou !")
+}
+\end{verbatim}
+
+\begin{verbatim}
+5 new agent {
+    message = recv()
+
+    println("Quelqu'un m'a dit : " + message)
+}
+
+new agent {
+    send-all ("Oyez, agents !")
+}
+\end{verbatim}
+
+S'il n'y a aucun message dans sa boîte à messages, une tortue demandant la lecture d'un message sera bloquée jusqu'à réception d'un message à lire. Pour éviter un bloquage, il est possible de vérifier le nombre de messages présents dans la boîte.
+
+\begin{verbatim}
+new agent {
+    new agent {
+        send (parent, "Bonjour, parent !")
+    }
+
+    while true {
+        if (inbox() > 0) {
+            message = recv()
+
+            println("Quelqu'un m'a dit : " + message)
+        }
+
+        rt 1
+        fd 1
+    }
+}
+\end{verbatim}
+
