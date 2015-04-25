@@ -9,30 +9,11 @@
 #include "semantic-exception.h"
 
 namespace stibbons {
-	TurtleInterpreter::TurtleInterpreter(){
-		std::cout<<"turtle construct"<<std::endl;
-	sleep(5);
-}
-
-	/*
-	TurtleInterpreter::TurtleInterpreter(TurtlePtr agent,
-										 const TreePtr tree,
-										 TablePtr hashTable) {
-		std::cout<<"construct : turtleinterpreter"<<std::endl;
-		sleep(5);
-
-		this->interpret(agent,tree,hashTable);
-		}*/
-
 	ValuePtr TurtleInterpreter::interpret(AgentPtr agent,
 										  const TreePtr tree,
 										  TablePtr hashTable) throw(SemanticException) {
 
-		std::cout<<"turtleinterpreter(agent)"<<std::endl;
-		sleep(5);
 		if(agent->getType() == Type::TURTLE){
-		std::cout<<"turtleinterpreter(turtle)"<<std::endl;
-		sleep(5);
 			return this->interpret(dynamic_pointer_cast<Turtle>(agent),tree,hashTable);
 		}
 		return nullptr;
@@ -43,10 +24,8 @@ namespace stibbons {
 										  const TreePtr tree,
 										  TablePtr hashTable) throw(SemanticException) {
 		
-		std::cout<<"turtleinterpreter"<<std::endl;
-		sleep(5);
 		ValuePtr start = Interpreter::interpret(agent,tree,hashTable);
-		
+
 		if(start != nullptr) {
 			return start;
 		}
@@ -60,7 +39,6 @@ namespace stibbons {
 											Type::NUMBER,
 											val->getType(),
 											getPosition(tree));
-				std::cout<<"fd !!!"<<std::endl;
 				agent->forward(dynamic_pointer_cast<Number>(val)->getValue());
 			}
 				break;

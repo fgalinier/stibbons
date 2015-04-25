@@ -31,12 +31,8 @@ namespace stibbons {
     /**
      * Create a new interpreter for a turtle
      */
-	  TurtleInterpreter();
-	  
-	  /*TurtleInterpreter(AgentPtr agent,
-						const TreePtr tree,
-					  TablePtr hashTable=nullptr);
-	  */
+	  TurtleInterpreter() = default;
+
     /**
      * Check if the agent is a world and call the interpret for a turtle
      * \param agent The agent to run the program on.

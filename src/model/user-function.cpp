@@ -14,12 +14,8 @@ UserFunction::UserFunction (TreePtr tree, vector<string> params) :
 
 ValuePtr UserFunction::exec (AgentPtr agent, TablePtr params) {
 	if(agent->getType() == Type::TURTLE){
-		std::cout<<"type tortue"<<std::endl;
-		sleep(5);
 		return TurtleInterpreter().interpret(agent, tree, params);
 	}
-		std::cout<<"type pas tortue"<<std::endl;
-		sleep(5);
 	return Interpreter().interpret (agent, tree, params);
 		
 }

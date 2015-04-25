@@ -1,3 +1,4 @@
+new agent {
 pd
 fd 50
 rt 20 + 25
@@ -9,3 +10,4 @@ rt 45
 pd
 fd 50
 pu
+}
