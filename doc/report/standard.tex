@@ -1,0 +1,199 @@
+\section{Propriétés standard}
+
+Les agents possèdent certaines propriétés par défaut. Ces propriétés varient selon leur type, et peuvent être de simples attributs prédéfinis, des fonctions prédéfinies, ou encore des propriétés spéciales ayant une sémantique particulière.
+
+Les prorpiétés spéciales ont une sémantique particulière et peuvent par conséquent être en lecture seule ou avoir certaines requêtes quant au valeurs qui lui sont affectées.
+
+\subsection{Attributs communs aux tortues et au monde}
+
+\begin{description}
+	\item[black] $\rightarrow$ \#000000
+	\item[white] $\rightarrow$ \#ffffff
+	\item[grey] $\rightarrow$ \#7f7f7f
+	\item[red] $\rightarrow$ \#ff0000
+	\item[green] $\rightarrow$ \#00ff00
+	\item[blue] $\rightarrow$ \#0000ff
+	\item[yellow] $\rightarrow$ \#ffff00
+	\item[cyan] $\rightarrow$ \#00ffff
+	\item[magenta] $\rightarrow$ \#ff00ff
+\end{description}
+
+\subsection{Fonctions communes aux tortues et au monde}
+
+\begin{description}
+	\item[print] (value) $\rightarrow$ null
+
+	Imprime une valeur sur la sortie standard.
+
+	\begin{description}
+		\item[value] La valeur à imprimer
+		\item[Retourne] null
+	\end{description}
+
+	\item[println] (value) $\rightarrow$ null
+
+	Imprime une valeur dans une nouvelle ligne sur la sortie standard.
+
+	\begin{description}
+		\item[value] La valeur à imprimer
+		\item[Retourne] null
+	\end{description}
+
+	\item[rand] () $\rightarrow$ number
+
+	Retourne un entier positif au hazard.
+
+	\begin{description}
+		\item[Retourne] un entier positif au hazard
+	\end{description}
+\end{description}
+
+\subsection{Attributs du monde}
+
+\begin{description}
+	\item[max-x] $\rightarrow$ number
+
+	L'abscisse maximale du monde.
+
+	\emph{Attribut en lecture seule.}
+
+	\item[max-y] $\rightarrow$ number
+
+	L'ordonnée maximale du monde.
+
+	\emph{Attribut en lecture seule.}
+\end{description}
+
+\subsection{Attributs des tortues}
+
+\begin{description}
+	\item[color] $\rightarrow$ \#000000
+
+	La couleur de la tortue.
+
+	\emph{Requiert une valeur de type color.}
+
+	\item[parent] $\rightarrow$ agent
+
+	L'agent qui a créé la tortue.
+
+	\emph{Attribut en lecture seule.}
+
+	\item[pos-x] $\rightarrow$ number
+
+	L'abscisse de la position de la tortue.
+
+	\emph{Requiert une valeur de type number.}
+
+	\item[pos-y] $\rightarrow$ number
+
+	L'ordonnée de la position de la tortue.
+
+	\emph{Requiert une valeur de type number.}
+
+	\item[pos-angle] $\rightarrow$ number
+
+	L'angle de la tortue.
+
+	\emph{Requiert une valeur de type number.}
+
+	\item[world] $\rightarrow$ world
+
+	Le monde.
+
+	\emph{Attribut en lecture seule.}
+
+	\item[zone] $\rightarrow$ zone
+
+	La zone dans laquelle est la tortue.
+
+	\emph{Attribut en lecture seule.}
+\end{description}
+
+\subsection{Fonctions de tortues}
+
+\begin{description}
+	\item[distance-to] (turtle) $\rightarrow$ number
+
+	Retourne la distance la plus courte vers une autre tortue.
+
+	\begin{description}
+		\item[turtle] La tortue vers laquelle obtenir la distance
+		\item[Retourne] null
+	\end{description}
+
+	\item[face] (turtle) $\rightarrow$ null
+
+	Tourne la tortue pour qu'elle fasse face à une autre par le chemin le plus court.
+
+	\begin{description}
+		\item[turtle] La tortue à laquelle faire face
+		\item[Retourne] null
+	\end{description}
+
+	\item[in-radius] (distance) $\rightarrow$ table
+
+	Retourne l' ensemble de tortues dans le rayon donné autour de la tortue.
+
+	\begin{description}
+		\item[distance] Le rayon autour de la tortue à sonder
+		\item[Retourne] Une table contenant les tortues dans le rayon
+	\end{description}
+
+	\item[inbox] () $\rightarrow$ number
+
+	Retourne le nombre de message non lus.
+
+	\begin{description}
+		\item[Retourne] Le nombre de messages non lus
+	\end{description}
+
+	\item[recv] () $\rightarrow$ value
+
+	Reçoit le message le plus vieux reçu. Si aucun message n'a été reçu, la tortue attendra d'en recevoir un.
+
+	\begin{description}
+		\item[Retourne] La valeur représentant le message
+	\end{description}
+
+	\item[send] (recipient, message) $\rightarrow$ null
+
+	Envoie un message à une tortue.
+
+	\begin{description}
+		\item[recipient] Le destinataire du message
+		\item[message] La valeur représentant le message
+		\item[Retourne] null
+	\end{description}
+
+	\item[send-all] (message) $\rightarrow$ null
+
+	Envoie un message à toutes les tortues.
+
+	\begin{description}
+		\item[message] La valeur représentant le message
+		\item[Retourne] null
+	\end{description}
+
+	\item[teleport] (x, y, angle) $\rightarrow$ null
+
+	Téléporte une tortue à une certaine coordonnée et avec un certain angle.
+
+	\begin{description}
+		\item[x] L'abscisse où téléporter la tortue
+		\item[y] L'ordonnée où téléporter la tortue
+		\item[angle] L'angle à donner à la tortue
+		\item[Retourne] null
+	\end{description}
+\end{description}
+
+\subsection{Attributs des zones}
+
+\begin{description}
+	\item[color] $\rightarrow$ \#000000
+
+	La couleur de la zone.
+
+	\emph{Requiert une valeur de type color.}
+\end{description}
+
