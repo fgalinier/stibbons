@@ -1,0 +1,85 @@
+%x-warp true
+%y-warp true
+
+agent termite () {
+	function go () {
+		search-for-chip ()
+		find-new-pile ()
+		put-down-chip ()
+	}
+
+	function search-for-chip () {
+		if (zone.color == yellow) {
+			zone.color = black
+			color = red
+			fd 20
+		}
+		else {
+			wiggle()
+			search-for-chip()
+		}
+	}
+
+	function find-new-pile () {
+		if (zone.color != yellow) {
+			wiggle()
+			find-new-pile()
+		}
+	}
+
+	function put-down-chip () {
+		if (zone.color == black) {
+			zone.color = yellow
+			color = white
+			get-away()
+		}
+		else {
+			rt rand()
+			fd 1
+			put-down-chip()
+		}
+	}
+
+	function get-away () {
+		rt rand()
+		fd 20
+		if (zone.color != black) {
+			get-away()
+		}
+	}
+
+	function wiggle () {
+		fd 1
+		rt rand() % 50
+		lt rand() % 50
+	}
+
+	teleport(rand() % world.max-x, rand() % world.max-y, rand())
+
+	while (true) {
+		go()
+	}
+}
+
+agent setter (line) {
+	teleport(0, line, 0)
+	repeat 50 {
+		test = rand() % 3
+		if (test == 0) {
+			zone.color = yellow
+		}
+		else {
+			zone.color = black
+		}
+		fd 10
+	}
+}
+
+y = 0
+
+repeat 50 {
+	new setter(y)
+	y = y + 10
+}
+
+5 new termite()
