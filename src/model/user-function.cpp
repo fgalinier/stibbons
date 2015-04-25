@@ -3,9 +3,7 @@
 #include "type.h"
 #include "../interpreter/interpreter.h"
 #include "../interpreter/turtle-interpreter.h"
-#include "../interpreter/world-interpreter.h"
 
-#include <unistd.h>
 namespace stibbons {
 
 UserFunction::UserFunction (TreePtr tree, vector<string> params) :

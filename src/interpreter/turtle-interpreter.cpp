@@ -2,7 +2,6 @@
 
 #include <cstdio>
 #include <cstring>
-#include <unistd.h>
 
 #include "../model/user-function.h"
 #include "../model/type.h"
@@ -24,54 +23,59 @@ namespace stibbons {
 										  const TreePtr tree,
 										  TablePtr hashTable) throw(SemanticException) {
 		
-		ValuePtr start = Interpreter::interpret(agent,tree,hashTable);
-		if(start != nullptr || std::get<0>(tree->getNode()) == 0 ) {
-			return start;
+		if(tree != nullptr) {
+		
+			ValuePtr start = Interpreter::interpret(agent,tree,hashTable);
+			if(start != nullptr || std::get<0>(tree->getNode()) == 0 ) {
+				return start;
+			}
+			else{
+				switch(std::get<0>(tree->getNode())) {
+					//Turtle cases:
+				case yy::parser::token::FD: {
+					auto val = this->interpret(agent,tree->getSon(0),hashTable);
+					if(val->getType() != Type::NUMBER) 
+						throw SemanticException("FD",
+												Type::NUMBER,
+												val->getType(),
+												getPosition(tree));
+					agent->forward(dynamic_pointer_cast<Number>(val)->getValue());
+				}
+					break;
+				case yy::parser::token::RT: {
+					auto val = this->interpret(agent,tree->getSon(0),hashTable);
+					if(val->getType() != Type::NUMBER) 
+						throw SemanticException("RT",
+												Type::NUMBER,
+												val->getType(),
+												getPosition(tree));
+					agent->turnRight(dynamic_pointer_cast<Number>(val)->getValue());
+				}
+					break;
+				case yy::parser::token::LT: {
+					auto val = this->interpret(agent,tree->getSon(0),hashTable);
+					if(val->getType() != Type::NUMBER) 
+						throw SemanticException("LT",
+												Type::NUMBER,
+												val->getType(),
+												getPosition(tree));
+					agent->turnLeft(dynamic_pointer_cast<Number>(val)->getValue());
+				}
+					break;
+				case yy::parser::token::PU:
+					agent->penUp();
+					break;
+				case yy::parser::token::PD:
+					agent->penDown();
+					break;
+				default :
+					throw SemanticException("invalid action for a turtle",
+											getPosition(tree));	
+				}
+			}
 		}
-		else{
-			switch(std::get<0>(tree->getNode())) {
-				//Turtle cases:
-			case yy::parser::token::FD: {
-				auto val = this->interpret(agent,tree->getSon(0),hashTable);
-				if(val->getType() != Type::NUMBER) 
-					throw SemanticException("FD",
-											Type::NUMBER,
-											val->getType(),
-											getPosition(tree));
-				agent->forward(dynamic_pointer_cast<Number>(val)->getValue());
-			}
-				break;
-			case yy::parser::token::RT: {
-				auto val = this->interpret(agent,tree->getSon(0),hashTable);
-				if(val->getType() != Type::NUMBER) 
-					throw SemanticException("RT",
-											Type::NUMBER,
-											val->getType(),
-											getPosition(tree));
-				agent->turnRight(dynamic_pointer_cast<Number>(val)->getValue());
-			}
-				break;
-			case yy::parser::token::LT: {
-				auto val = this->interpret(agent,tree->getSon(0),hashTable);
-				if(val->getType() != Type::NUMBER) 
-					throw SemanticException("LT",
-											Type::NUMBER,
-											val->getType(),
-											getPosition(tree));
-				agent->turnLeft(dynamic_pointer_cast<Number>(val)->getValue());
-			}
-				break;
-			case yy::parser::token::PU:
-				agent->penUp();
-				break;
-			case yy::parser::token::PD:
-				agent->penDown();
-				break;
-			default :
-				throw SemanticException("invalid action for a turtle",
-										getPosition(tree));	
-			}
-		}
+		
+		return nullptr;
 	}
 }
 

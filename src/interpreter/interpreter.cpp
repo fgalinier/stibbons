@@ -3,11 +3,9 @@
 #include <cstdio>
 #include <cstring>
 #include <thread>
-#include <unistd.h>
 
 #include "../model/user-function.h"
 #include "turtle-interpreter.h"
-#include "tree.h"
 #include "y.tab.h"
 
 extern FILE *yyin;
@@ -422,6 +420,8 @@ namespace stibbons {
 				return this->interpretFunction(fct,agent,params);
 			}
 				break;
+			default :
+				return nullptr;
 			}
 		}
  
