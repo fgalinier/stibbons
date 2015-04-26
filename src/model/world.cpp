@@ -241,10 +241,18 @@ Object World::exportWorld (){
 
 	Object sizeW;
 	Object sizeZ;
-	sizeW.push_back(Pair("dimensions",(int)(getWorldSize().getDimensions())));
-	world.push_back(Pair("WorldSize",sizeW));
-	sizeZ.push_back(Pair("dimensions",(int)(getZoneSize().getDimensions())));
-	world.push_back(Pair("ZoneSize",sizeZ));
+
+	Array size;
+	unsigned dimension=getWorldSize().getDimensions();
+	for (unsigned i=0;i<dimension;i++)
+		size.push_back(getWorldSize().getValue(i));
+	world.push_back(Pair("WorldSize",size));
+
+	size.clear();
+	unsigned dimensionZ=getZoneSize().getDimensions();
+	for (unsigned i=0;i<dimensionZ;i++)
+		size.push_back(getZoneSize().getValue(i));
+	world.push_back(Pair("ZoneSize",size));
 
 	Object tortue;
 	for (auto t : anonymousBreeds)
