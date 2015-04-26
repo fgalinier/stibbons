@@ -1,15 +1,15 @@
 /**
- * \file tree.h
- * \brief WorldInterpreter class header.
- * \author Florian Galinier
- * \author Clément Simon
- * \author Adrien Plazas
- * \version 0.4
- * \date 08/04/15
- *
- * Declaration of WorldInterpreter class.
- *
- */
+  * \file tree.h
+  * \brief WorldInterpreter class header.
+  * \author Florian Galinier
+  * \author Clément Simon
+  * \author Adrien Plazas
+  * \version 0.4
+  * \date 08/04/15
+  *
+  * Declaration of WorldInterpreter class.
+  *
+  */
 
 #pragma once
 
@@ -21,16 +21,16 @@
 
 namespace stibbons {
 
-/**
- * \class WorldInterpreter
- * \brief Class that will interpret stibbons language.
- *
- * This class will parse the standart input, generate a syntaxic tree and interpret it.
- *
- * \author Florian Galinier
- * \author Clément Simon
- */
-class WorldInterpreter : public virtual Interpreter {
+	/**
+	 * \class WorldInterpreter
+	 * \brief Class that will interpret stibbons language.
+	 *
+	 * This class will parse the standart input, generate a syntaxic tree and interpret it.
+	 *
+	 * \author Florian Galinier
+	 * \author Clément Simon
+	 */
+	class WorldInterpreter : public virtual Interpreter {
 	public:
 		/**
 		 * Create a new interpreter
@@ -39,7 +39,7 @@ class WorldInterpreter : public virtual Interpreter {
 		 *
 		 * \param program The Stibbons program to parse.
 		 */
-		WorldInterpreter(const char *program) throw(SyntaxException);
+		WorldInterpreter(std::string program) throw(SyntaxException);
 
 		/**
 		 * Get the world.
@@ -57,7 +57,7 @@ class WorldInterpreter : public virtual Interpreter {
 	private:
 		WorldPtr world;
 		TreePtr tree;
-};
+	};
 
 }
 

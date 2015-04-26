@@ -1,29 +1,40 @@
-%{
-#include <iostream>
-#include <exception>
-#include <string>
-#include <fstream>
-#include "tree.h"
-#include "../model/value.h"
-#include "syntax-exception.h"
-
-using namespace std;
-%}
-
 %skeleton "lalr1.cc"
+%defines
 %locations
-%error-verbose
+%parse-param { stibbons::FlexScanner &scanner }
+%parse-param { stibbons::TreePtr t }
+%lex-param   { stibbons::FlexScanner &scanner }
 
 %code requires {
+	namespace stibbons {
+		class FlexScanner;
+	}
 #include "tree.h"
-#define YY_DECL yy::parser::token_type yylex (yy::parser::semantic_type* pyylval, yy::parser::location_type* loc)
-
 #define YYSTYPE struct { stibbons::ValuePtr v; stibbons::TreePtr tr; }
-}
+ }
 
-%{
-  YY_DECL;
-%}
+%code {
+#include "flex-scanner.h"
+#include "syntax-exception.h"
+	using namespace std;
+
+	static int yylex(yy::parser::semantic_type* pyylval, 
+					 yy::parser::location_type* loc, 
+					 stibbons::FlexScanner &scanner);
+
+	void yy::parser::error(const location& loc,string const& s) { 
+		throw stibbons::SyntaxException(s.c_str(),loc.begin);
+	}
+
+	static int yylex(yy::parser::semantic_type* pyylval, 
+					 yy::parser::location_type* loc, 
+					 stibbons::FlexScanner &scanner) {
+		return scanner.yylex(pyylval,loc);
+
+	}
+
+ }
+
 %token FD LT RT PU PD DIE AND OR XOR NOT EQ NEQ GT GEQ LS LEQ LB RB LP RP CALL RPT WHL END IF ELSE FCT NEW AGT ZONE
 %token <v> NUMBER
 %token <v> STRING
@@ -59,7 +70,6 @@ using namespace std;
 %left '*' '/' '%'
 %right MOINSUNAIRE NOT
 %nonassoc LB RB LP RP
-%parse-param {stibbons::TreePtr t}
 %%
 code : instr_list {t->addSon($1);}
 | '\n' instr_list {t->addSon($2);};
@@ -471,6 +481,16 @@ condi : IF expr statement
 
 %%
 
-void yy::parser::error(const location& loc,string const& s) { 
-  throw stibbons::SyntaxException(s.c_str(),loc.begin);
-}
+  /*
+   * Editor modelines  -  http://www.wireshark.org/tools/modelines.html
+   *
+   * Local variables:
+   * mode: c++
+   * c-basic-offset: 4
+   * tab-width: 4
+   * indent-tabs-mode: t
+   * truncate-lines: 1
+   * End:
+   *
+   * vim:set ft=cpp ts=4 sw=4 sts=4
+   */

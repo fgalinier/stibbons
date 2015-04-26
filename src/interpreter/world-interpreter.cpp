@@ -1,33 +1,25 @@
 #include "world-interpreter.h"
+#include "parser.h"
 
 #include <cstring>
+#include <fstream>
 
 #include "../model/turtle.h"
 #include "../model/user-function.h"
 
-extern FILE *yyin;
-
 namespace stibbons {
 
-	WorldInterpreter::WorldInterpreter(const char *program) throw(SyntaxException) {
-		size_t size = strlen(program);
-
-		// Copy the string to make it non-constant
-		void *buffer = malloc(size);
-		memcpy(buffer, program, size);
-
-		// Create a new file stream for the program string
-		FILE *file = fmemopen(buffer, size, "r+");
-		yyin = file;
+	WorldInterpreter::WorldInterpreter(std::string program) throw(SyntaxException) {
+		string cpy(program);
+		std::ifstream ifs(cpy.c_str(),ifstream::in);
+		if (ifs.good()) std::cout<<"Ok"<<std::endl;
 
 		// Parse the program
-		tree = make_shared<Tree>(0,nullptr);
-		yy::parser* pparser = new yy::parser(tree);
+		auto tree = make_shared<Tree>(0,nullptr);
+		Parser* pparser = new Parser(tree, &ifs);
 		pparser->parse();
 
-		// Destroy the file stream and the buffer
-		fclose(file);
-		free(buffer);
+		delete pparser;
 
 		// Create a new world depending on the program's parameters
 		auto worldSize = Size(2);

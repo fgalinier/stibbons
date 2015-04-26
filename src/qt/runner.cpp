@@ -16,7 +16,7 @@ namespace stibbons {
 
 Runner::Runner(std::string& program) {
 	try {
-		interpreter = new WorldInterpreter(program.c_str());
+		interpreter = new WorldInterpreter(program);
 	}
 	catch (SyntaxException e) {
 		cerr << "Syntax error: " << e.what() << endl;
