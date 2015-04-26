@@ -55,6 +55,8 @@ BISONSRC = \
 
 BISONTMP = \
 	src/interpreter/stack.hh \
+	src/interpreter/location.hh \
+	src/interpreter/position.hh \
 	src/interpreter/y.tab.c \
 	src/interpreter/y.tab.h \
 	$(NULL)
