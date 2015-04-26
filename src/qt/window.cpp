@@ -135,16 +135,6 @@ void Window::open() {
 }
 
 void Window::loadFile(const QString &fileName) {
-	/*QFile file(fileName);
-	if (!file.open(QFile::ReadOnly | QFile::Text)) {
-		QMessageBox::warning(this, tr("Application"),
-		                     tr("Cannot read file %1:\n%2.")
-		                     .arg(fileName)
-		                     .arg(file.errorString()));
-		return;
-	}
-
-	QTextStream in(&file);*/
 	auto program = fileName.toStdString();
  
 	if (runner != nullptr) {
