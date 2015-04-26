@@ -119,6 +119,21 @@ class RecvFunction : public Function, public Singleton<RecvFunction> {
 };
 
 /**
+ * class InboxFunction
+ *
+ *\brief A class returning the number of unread messages.
+ *
+ *\author Adrien Plazas
+ **/
+class InboxFunction : public Function, public Singleton<InboxFunction> {
+	friend Singleton<InboxFunction>;
+	protected:
+		InboxFunction () = default;
+	public:
+		virtual ValuePtr exec (AgentPtr agent, TablePtr params);
+};
+
+/**
  * class DistanceToFunction
  *
  *\brief A class returning the distance to another turtle.

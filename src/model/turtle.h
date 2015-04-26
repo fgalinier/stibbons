@@ -227,7 +227,7 @@ class Turtle : public Agent {
 		 * Check if you have receve some messages
 		 * @return the number of message available
 		 */
-		int checkMessage();
+		size_t checkMessage();
 
 		/**
 		 * Return a string corresponding to the value

@@ -71,6 +71,7 @@ void Turtle::initAttributes () {
 	setProperty(pair<string,ValuePtr>("distance-to", DistanceToFunction::getInstance()));
 	setProperty(pair<string,ValuePtr>("face", FaceFunction::getInstance()));
 	setProperty(pair<string,ValuePtr>("in-radius", InRadiusFunction::getInstance()));
+	setProperty(pair<string,ValuePtr>("inbox", InboxFunction::getInstance()));
 	setProperty(pair<string,ValuePtr>("recv", RecvFunction::getInstance()));
 	setProperty(pair<string,ValuePtr>("send", SendFunction::getInstance()));
 	setProperty(pair<string,ValuePtr>("send-all", SendAllFunction::getInstance()));
@@ -338,7 +339,7 @@ pair<TurtlePtr,ValuePtr> Turtle::recv(){
 	return getFirstMessage();
 }
 
-int Turtle::checkMessage(){
+size_t Turtle::checkMessage(){
 	lock_guard<recursive_mutex> lock(value_m);
 	return messages.size();
 }

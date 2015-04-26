@@ -87,6 +87,12 @@ ValuePtr RecvFunction::exec (AgentPtr agent, TablePtr params) {
 	return turtle->recv().second;
 }
 
+ValuePtr InboxFunction::exec (AgentPtr agent, TablePtr params) {
+	auto turtle = dynamic_pointer_cast<Turtle>(agent);
+
+	return make_shared<Number>(turtle->checkMessage());
+}
+
 DistanceToFunction::DistanceToFunction () : Function({"turtle"}) {}
 
 ValuePtr DistanceToFunction::exec (AgentPtr agent, TablePtr params) {
