@@ -9,6 +9,7 @@
 #pragma once
 
 #include "function.h"
+#include "singleton.h"
 
 namespace stibbons {
 
@@ -19,7 +20,10 @@ namespace stibbons {
  *
  *\author Adrien Plazas
 **/
-class RandFunction : public Function {
+class RandFunction : public Function, public Singleton<RandFunction> {
+	friend Singleton<RandFunction>;
+	protected:
+		RandFunction () = default;
 	public:
 		virtual ValuePtr exec (AgentPtr agent, TablePtr params);
 };
@@ -31,9 +35,11 @@ class RandFunction : public Function {
  *
  *\author Adrien Plazas
 **/
-class PrintFunction : public Function {
-	public:
+class PrintFunction : public Function, public Singleton<PrintFunction> {
+	friend Singleton<PrintFunction>;
+	protected:
 		PrintFunction ();
+	public:
 		virtual ValuePtr exec (AgentPtr agent, TablePtr params);
 };
 
@@ -44,9 +50,11 @@ class PrintFunction : public Function {
  *
  *\author Adrien Plazas
 **/
-class PrintlnFunction : public Function {
-	public:
+class PrintlnFunction : public Function, public Singleton<PrintlnFunction> {
+	friend Singleton<PrintlnFunction>;
+	protected:
 		PrintlnFunction ();
+	public:
 		virtual ValuePtr exec (AgentPtr agent, TablePtr params);
 };
 
@@ -57,9 +65,11 @@ class PrintlnFunction : public Function {
  *
  *\author Adrien Plazas
  **/
-class TeleportFunction : public Function {
-	public:
+class TeleportFunction : public Function, public Singleton<TeleportFunction> {
+	friend Singleton<TeleportFunction>;
+	protected:
 		TeleportFunction ();
+	public:
 		virtual ValuePtr exec (AgentPtr agent, TablePtr params);
 };
 
@@ -70,9 +80,11 @@ class TeleportFunction : public Function {
  *
  *\author Adrien Plazas
  **/
-class SendFunction : public Function {
-	public:
+class SendFunction : public Function, public Singleton<SendFunction> {
+	friend Singleton<SendFunction>;
+	protected:
 		SendFunction ();
+	public:
 		virtual ValuePtr exec (AgentPtr agent, TablePtr params);
 };
 
@@ -83,9 +95,11 @@ class SendFunction : public Function {
  *
  *\author Adrien Plazas
  **/
-class SendAllFunction : public Function {
-	public:
+class SendAllFunction : public Function, public Singleton<SendAllFunction> {
+	friend Singleton<SendAllFunction>;
+	protected:
 		SendAllFunction ();
+	public:
 		virtual ValuePtr exec (AgentPtr agent, TablePtr params);
 };
 
@@ -96,7 +110,10 @@ class SendAllFunction : public Function {
  *
  *\author Adrien Plazas
  **/
-class RecvFunction : public Function {
+class RecvFunction : public Function, public Singleton<RecvFunction> {
+	friend Singleton<RecvFunction>;
+	protected:
+		RecvFunction () = default;
 	public:
 		virtual ValuePtr exec (AgentPtr agent, TablePtr params);
 };
@@ -108,9 +125,11 @@ class RecvFunction : public Function {
  *
  *\author Adrien Plazas
  **/
-class DistanceToFunction : public Function {
-	public:
+class DistanceToFunction : public Function, public Singleton<DistanceToFunction> {
+	friend Singleton<DistanceToFunction>;
+	protected:
 		DistanceToFunction ();
+	public:
 		virtual ValuePtr exec (AgentPtr agent, TablePtr params);
 };
 
@@ -121,9 +140,11 @@ class DistanceToFunction : public Function {
  *
  *\author Adrien Plazas
  **/
-class FaceFunction : public Function {
-	public:
+class FaceFunction : public Function, public Singleton<FaceFunction> {
+	friend Singleton<FaceFunction>;
+	protected:
 		FaceFunction ();
+	public:
 		virtual ValuePtr exec (AgentPtr agent, TablePtr params);
 };
 
@@ -134,9 +155,11 @@ class FaceFunction : public Function {
  *
  *\author Adrien Plazas
  **/
-class InRadiusFunction : public Function {
-	public:
+class InRadiusFunction : public Function, public Singleton<InRadiusFunction> {
+	friend Singleton<InRadiusFunction>;
+	protected:
 		InRadiusFunction ();
+	public:
 		virtual ValuePtr exec (AgentPtr agent, TablePtr params);
 };
 

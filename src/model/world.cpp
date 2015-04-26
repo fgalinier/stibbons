@@ -40,10 +40,10 @@ void World::init () {
 		zones.push_back(zone);
 	}
 
-	// Set standard functions
-	setProperty(pair<string,ValuePtr>("print", make_shared<PrintFunction>()));
-	setProperty(pair<string,ValuePtr>("println", make_shared<PrintlnFunction>()));
-	setProperty(pair<string,ValuePtr>("rand", make_shared<RandFunction>()));
+	// General purpose standard functions
+	setProperty(pair<string,ValuePtr>("print", PrintFunction::getInstance()));
+	setProperty(pair<string,ValuePtr>("println", PrintlnFunction::getInstance()));
+	setProperty(pair<string,ValuePtr>("rand", RandFunction::getInstance()));
 
 	// Set world's size
 	if (worldSize.getDimensions() >= 2) {

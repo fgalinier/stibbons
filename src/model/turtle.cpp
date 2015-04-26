@@ -62,13 +62,19 @@ Turtle::Turtle (TurtlePtr parent) :
 	}
 
 void Turtle::initAttributes () {
-	setProperty(pair<string,ValuePtr>("distance-to", make_shared<DistanceToFunction>()));
-	setProperty(pair<string,ValuePtr>("face", make_shared<FaceFunction>()));
-	setProperty(pair<string,ValuePtr>("in-radius", make_shared<InRadiusFunction>()));
-	setProperty(pair<string,ValuePtr>("recv", make_shared<RecvFunction>()));
-	setProperty(pair<string,ValuePtr>("send", make_shared<SendFunction>()));
-	setProperty(pair<string,ValuePtr>("send-all", make_shared<SendAllFunction>()));
-	setProperty(pair<string,ValuePtr>("teleport", make_shared<TeleportFunction>()));
+	// General purpose standard functions
+	setProperty(pair<string,ValuePtr>("print", PrintFunction::getInstance()));
+	setProperty(pair<string,ValuePtr>("println", PrintlnFunction::getInstance()));
+	setProperty(pair<string,ValuePtr>("rand", RandFunction::getInstance()));
+
+	// Turtle specific standard functions
+	setProperty(pair<string,ValuePtr>("distance-to", DistanceToFunction::getInstance()));
+	setProperty(pair<string,ValuePtr>("face", FaceFunction::getInstance()));
+	setProperty(pair<string,ValuePtr>("in-radius", InRadiusFunction::getInstance()));
+	setProperty(pair<string,ValuePtr>("recv", RecvFunction::getInstance()));
+	setProperty(pair<string,ValuePtr>("send", SendFunction::getInstance()));
+	setProperty(pair<string,ValuePtr>("send-all", SendAllFunction::getInstance()));
+	setProperty(pair<string,ValuePtr>("teleport", TeleportFunction::getInstance()));
 }
 
 TurtlePtr Turtle::construct () {
