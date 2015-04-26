@@ -78,7 +78,6 @@ namespace stibbons {
 		static inline yy::position getPosition(const TreePtr tree);
 
 	public:
-
 		static size_t waitTime;
 
 		/**

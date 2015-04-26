@@ -387,7 +387,7 @@ namespace stibbons {
 				else
 					newTurtle = breed->createTurtle(agent);					
 				auto params = getParams(fct,newTurtle,paramTree,hashTable,id);
-				auto inter = new TurtleInterpreter();
+				auto inter = make_shared<TurtleInterpreter>();
 
 				sons.push_back(thread (&Interpreter::interpretFunction,
 									   inter,
