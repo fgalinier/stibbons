@@ -24,9 +24,13 @@ class TestValue : public TestCase {
 	public:
 		stibbons::Boolean boolean;
 		stibbons::Color color;
-		stibbons::Nil nil;
+		shared_ptr<stibbons::Nil> nil;
 		stibbons::Number number;
 		stibbons::String string;
+
+		void setUp() {
+			nil = stibbons::Nil::getInstance();
+		}
 
 		void checkBoolean() {
 			cout << "TestValue::checkBoolean" << endl;
@@ -40,7 +44,7 @@ class TestValue : public TestCase {
 
 		void checkNil() {
 			cout << "TestValue::checkNil" << endl;
-			CPPUNIT_ASSERT (stibbons::Type::NIL == nil.getType());
+			CPPUNIT_ASSERT (stibbons::Type::NIL == nil->getType());
 		}
 
 		void checkNumber() {

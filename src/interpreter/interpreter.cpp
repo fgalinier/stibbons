@@ -28,7 +28,7 @@ namespace stibbons {
 			switch(std::get<0>(tree->getNode())) {
 		   	//Sequence case:
 			case 0: {
-				ValuePtr res = make_shared<Nil>();
+				ValuePtr res = Nil::getInstance();
 				if(!tree->isLeaf()) {
 					auto sons = tree->getSons();
 					for(auto son : sons) res = interpret(turtle,son,hashTable);
@@ -396,7 +396,7 @@ namespace stibbons {
 			case yy::parser::token::NEW: {
 				auto type = std::get<1>(tree->getNode());
 				std::string id;
-				ValuePtr breed_v = make_shared<Nil>();
+				ValuePtr breed_v = Nil::getInstance();
 				TreePtr paramTree;
 				TurtlePtr newTurtle;
 				
@@ -453,7 +453,7 @@ namespace stibbons {
 		}
  
 		//Stibbons spécial tokens : DIE
-		return make_shared<Nil>();
+		return Nil::getInstance();
 	}
 
 	ValuePtr Interpreter::interpret(AgentPtr agent,

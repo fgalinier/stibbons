@@ -22,7 +22,7 @@ PrintFunction::PrintFunction () : Function({"string"}) {}
 
 ValuePtr PrintFunction::exec (AgentPtr agent, TablePtr params) {
 	cout << params->getValue("string")->toString();
-	return make_shared<Nil>();
+	return Nil::getInstance();
 }
 
 PrintlnFunction::PrintlnFunction () : Function({"string"}) {}
@@ -31,7 +31,7 @@ ValuePtr PrintlnFunction::exec (AgentPtr agent, TablePtr params) {
 	std::ostringstream oss;
 	oss << params->getValue("string")->toString() << endl;
 	cout << oss.str();
-	return make_shared<Nil>();
+	return Nil::getInstance();
 }
 
 TeleportFunction::TeleportFunction () : Function({"x", "y", "angle"}) {}
@@ -50,7 +50,7 @@ ValuePtr TeleportFunction::exec (AgentPtr agent, TablePtr params) {
 	turtle->setPosition(position);
 	turtle->setAngle(dynamic_pointer_cast<Number>(angle)->getValue());
 
-	return make_shared<Nil>();
+	return Nil::getInstance();
 }
 
 SendFunction::SendFunction () : Function({"recipient", "message"}) {}
@@ -63,7 +63,7 @@ ValuePtr SendFunction::exec (AgentPtr agent, TablePtr params) {
 
 	turtle->send(dynamic_pointer_cast<Turtle>(recipient), message);
 
-	return make_shared<Nil>();
+	return Nil::getInstance();
 }
 
 SendAllFunction::SendAllFunction () : Function({"message"}) {}
@@ -75,7 +75,7 @@ ValuePtr SendAllFunction::exec (AgentPtr agent, TablePtr params) {
 
 	turtle->sendAll(message);
 
-	return make_shared<Nil>();
+	return Nil::getInstance();
 }
 
 ValuePtr RecvFunction::exec (AgentPtr agent, TablePtr params) {
@@ -110,7 +110,7 @@ ValuePtr FaceFunction::exec (AgentPtr agent, TablePtr params) {
 
 	turtle->face(point);
 
-	return make_shared<Nil>();
+	return Nil::getInstance();
 }
 
 InRadiusFunction::InRadiusFunction () : Function({"distance"}) {}

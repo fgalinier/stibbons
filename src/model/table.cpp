@@ -35,7 +35,7 @@ namespace stibbons {
 		auto got = namedValues.find(key);
 
 		if (got == namedValues.end())
-			return make_shared<Nil>();
+			return Nil::getInstance();
 
 		return got->second;
 	}
@@ -71,7 +71,7 @@ namespace stibbons {
 		auto got = indexedValues.find(key);
 
 		if (got == indexedValues.end())
-			return make_shared<Nil>();
+			return Nil::getInstance();
 
 		return got->second;
 	}

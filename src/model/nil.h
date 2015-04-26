@@ -20,12 +20,16 @@ namespace stibbons {
  *
  * \author Julia Bassoumi, Adrien Plazas
  */
-class Nil : public GenericValue<Type::NIL>{
-	/**
-	 * Return a string corresponding to the value
-	 * @return a string corresponding to the value
-	 */
-	virtual std::string toString ();
+class Nil : public GenericValue<Type::NIL>, public Singleton<Nil> {
+	friend Singleton<Nil>;
+	protected:
+		Nil () = default;
+	public:
+		/**
+		 * Return a string corresponding to the value
+		 * @return a string corresponding to the value
+		 */
+		virtual std::string toString ();
 };
 
 typedef std::shared_ptr<Nil> NilPtr;
