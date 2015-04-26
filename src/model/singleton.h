@@ -10,6 +10,8 @@
 
 #include "value.h"
 
+using namespace std;
+
 namespace stibbons {
 
 /**
@@ -25,14 +27,8 @@ class Singleton {
 		Singleton (const Singleton<T>&) = delete;
 		Singleton& operator= (const Singleton<T>&) = delete;
 
-		void* operator new (std::size_t) = delete;
-		void* operator new[] (std::size_t) = delete;
-
-		void operator delete (void*) = delete;
-		void operator delete[] (void*) = delete;
-
-		static T& getInstance () {
-			static T instance;
+		static shared_ptr<T> getInstance () {
+			static shared_ptr<T> instance = shared_ptr<T>(new T());
 			return instance;
 		}
 
