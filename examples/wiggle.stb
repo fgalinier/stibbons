@@ -1,5 +1,5 @@
 agent ant () {
-	teleport(rand() % max-x, rand() % max-y, rand())
+	teleport(rand() % world.max-x, rand() % world.max-y, rand())
 
 	function wiggle() {
 		rt rand() % 60

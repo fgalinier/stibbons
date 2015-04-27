@@ -89,8 +89,7 @@ ValuePtr Agent::getProperty(string p) {
 	unordered_map<string,ValuePtr>::const_iterator got = properties->find(p);
 
 	if (got == properties->end())
-		return (parent == nullptr) ? Nil::getInstance() :
-		                             parent->getProperty(p);
+		return Nil::getInstance();
 
 	return got->second;
 }
