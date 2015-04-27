@@ -63,19 +63,19 @@ Turtle::Turtle (TurtlePtr parent) :
 
 void Turtle::initAttributes () {
 	// General purpose standard functions
-	setProperty(pair<string,ValuePtr>("print", PrintFunction::getInstance()));
-	setProperty(pair<string,ValuePtr>("println", PrintlnFunction::getInstance()));
-	setProperty(pair<string,ValuePtr>("rand", RandFunction::getInstance()));
+	setProperty("print", PrintFunction::getInstance());
+	setProperty("println", PrintlnFunction::getInstance());
+	setProperty("rand", RandFunction::getInstance());
 
 	// Turtle specific standard functions
-	setProperty(pair<string,ValuePtr>("distance-to", DistanceToFunction::getInstance()));
-	setProperty(pair<string,ValuePtr>("face", FaceFunction::getInstance()));
-	setProperty(pair<string,ValuePtr>("in-radius", InRadiusFunction::getInstance()));
-	setProperty(pair<string,ValuePtr>("inbox", InboxFunction::getInstance()));
-	setProperty(pair<string,ValuePtr>("recv", RecvFunction::getInstance()));
-	setProperty(pair<string,ValuePtr>("send", SendFunction::getInstance()));
-	setProperty(pair<string,ValuePtr>("send-all", SendAllFunction::getInstance()));
-	setProperty(pair<string,ValuePtr>("teleport", TeleportFunction::getInstance()));
+	setProperty("distance-to", DistanceToFunction::getInstance());
+	setProperty("face", FaceFunction::getInstance());
+	setProperty("in-radius", InRadiusFunction::getInstance());
+	setProperty("inbox", InboxFunction::getInstance());
+	setProperty("recv", RecvFunction::getInstance());
+	setProperty("send", SendFunction::getInstance());
+	setProperty("send-all", SendAllFunction::getInstance());
+	setProperty("teleport", TeleportFunction::getInstance());
 }
 
 TurtlePtr Turtle::construct () {

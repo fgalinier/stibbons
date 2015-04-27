@@ -52,6 +52,13 @@ class Agent : public Value, public enable_shared_from_this<Agent> {
 		 */
 		virtual void setProperty (pair<string,ValuePtr> &new_var);
 
+		/**
+		 * Add a property
+		 * @param key the key of the property
+		 * @param value the value of the property
+		 */
+		virtual void setProperty (string key, ValuePtr value);
+
 		 /**
 		 * Get the value of the propertie p
 		 * @return the value of propertie p

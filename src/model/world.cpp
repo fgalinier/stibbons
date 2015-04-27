@@ -41,31 +41,31 @@ void World::init () {
 	}
 
 	// General purpose standard functions
-	setProperty(pair<string,ValuePtr>("print", PrintFunction::getInstance()));
-	setProperty(pair<string,ValuePtr>("println", PrintlnFunction::getInstance()));
-	setProperty(pair<string,ValuePtr>("rand", RandFunction::getInstance()));
+	setProperty("print", PrintFunction::getInstance());
+	setProperty("println", PrintlnFunction::getInstance());
+	setProperty("rand", RandFunction::getInstance());
 
 	// Set world's size
 	if (worldSize.getDimensions() >= 2) {
 		double w = worldSize.getValue(0) * zoneSize.getValue(0);
 		double h = worldSize.getValue(1) * zoneSize.getValue(1);
-		setProperty(pair<string,ValuePtr>("max-x", make_shared<Number>(w)));
-		setProperty(pair<string,ValuePtr>("max-y", make_shared<Number>(h)));
+		setProperty("max-x", make_shared<Number>(w));
+		setProperty("max-y", make_shared<Number>(h));
 	}
 
 	// Set default colors
-	setProperty(pair<string,ValuePtr>("black", make_shared<Color>(0.0, 0.0, 0.0)));
-	setProperty(pair<string,ValuePtr>("white", make_shared<Color>(1.0, 1.0, 1.0)));
+		setProperty("black", make_shared<Color>(0.0, 0.0, 0.0));
+	setProperty("white", make_shared<Color>(1.0, 1.0, 1.0));
 
-	setProperty(pair<string,ValuePtr>("grey", make_shared<Color>(0.5, 0.5, 0.5)));
+	setProperty("grey", make_shared<Color>(0.5, 0.5, 0.5));
 
-	setProperty(pair<string,ValuePtr>("red", make_shared<Color>(1.0, 0.0, 0.0)));
-	setProperty(pair<string,ValuePtr>("green", make_shared<Color>(0.0, 1.0, 0.0)));
-	setProperty(pair<string,ValuePtr>("blue", make_shared<Color>(0.0, 0.0, 1.0)));
+	setProperty("red", make_shared<Color>(1.0, 0.0, 0.0));
+	setProperty("green", make_shared<Color>(0.0, 1.0, 0.0));
+	setProperty("blue", make_shared<Color>(0.0, 0.0, 1.0));
 
-	setProperty(pair<string,ValuePtr>("yellow", make_shared<Color>(1.0, 1.0, 0.0)));
-	setProperty(pair<string,ValuePtr>("cyan", make_shared<Color>(0.0, 1.0, 1.0)));
-	setProperty(pair<string,ValuePtr>("magenta", make_shared<Color>(1.0, 0.0, 1.0)));
+	setProperty("yellow", make_shared<Color>(1.0, 1.0, 0.0));
+	setProperty("cyan", make_shared<Color>(0.0, 1.0, 1.0));
+	setProperty("magenta", make_shared<Color>(1.0, 0.0, 1.0));
 }
 
 World::~World () {

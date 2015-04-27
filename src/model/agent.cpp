@@ -93,6 +93,10 @@ void Agent::setProperty (pair<string,ValuePtr> &new_var) {
 	}
 }
 
+void Agent::setProperty (string key, ValuePtr value) {
+	setProperty (pair<string, ValuePtr>(key, value));
+}
+
 ValuePtr Agent::getProperty(string p) {
 	lock_guard<mutex> lock(parent_m);
 
