@@ -120,6 +120,21 @@ int Agent::compare(AgentPtr other) {
 	return this - other.get();
 }
 
+void Agent::initColors() {
+	setProperty("black", make_shared<Color>(0.0, 0.0, 0.0));
+	setProperty("white", make_shared<Color>(1.0, 1.0, 1.0));
+
+	setProperty("grey", make_shared<Color>(0.5, 0.5, 0.5));
+
+	setProperty("red", make_shared<Color>(1.0, 0.0, 0.0));
+	setProperty("green", make_shared<Color>(0.0, 1.0, 0.0));
+	setProperty("blue", make_shared<Color>(0.0, 0.0, 1.0));
+
+	setProperty("yellow", make_shared<Color>(1.0, 1.0, 0.0));
+	setProperty("cyan", make_shared<Color>(0.0, 1.0, 1.0));
+	setProperty("magenta", make_shared<Color>(1.0, 0.0, 1.0));
+}
+
 }
 
 /*

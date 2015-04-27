@@ -27,6 +27,9 @@ WorldPtr World::construct (Size worldSize, Size zoneSize, vector<bool> warp) thr
 void World::init () {
 	Agent::init();
 
+	// Set the default colors
+	initColors();
+
 	// Count the number of zones
 	size_t zonesNb = worldSize.getDimensions() > 0 ? 1 : 0;
 
@@ -52,20 +55,6 @@ void World::init () {
 		setProperty("max-x", make_shared<Number>(w));
 		setProperty("max-y", make_shared<Number>(h));
 	}
-
-	// Set default colors
-		setProperty("black", make_shared<Color>(0.0, 0.0, 0.0));
-	setProperty("white", make_shared<Color>(1.0, 1.0, 1.0));
-
-	setProperty("grey", make_shared<Color>(0.5, 0.5, 0.5));
-
-	setProperty("red", make_shared<Color>(1.0, 0.0, 0.0));
-	setProperty("green", make_shared<Color>(0.0, 1.0, 0.0));
-	setProperty("blue", make_shared<Color>(0.0, 0.0, 1.0));
-
-	setProperty("yellow", make_shared<Color>(1.0, 1.0, 0.0));
-	setProperty("cyan", make_shared<Color>(0.0, 1.0, 1.0));
-	setProperty("magenta", make_shared<Color>(1.0, 0.0, 1.0));
 }
 
 World::~World () {

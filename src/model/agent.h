@@ -101,6 +101,8 @@ class Agent : public Value, public enable_shared_from_this<Agent> {
 		 */
 		void init ();
 
+		void initColors();
+
 	private:
 		AgentPtr parent;
 		unordered_set<AgentPtr> children;
