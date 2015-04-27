@@ -3,6 +3,7 @@
 #include <cmath>
 #include <sstream>
 
+#include "number.h"
 #include "standard-function.h"
 
 namespace stibbons {
@@ -111,6 +112,88 @@ TurtlePtr Turtle::construct (TurtlePtr parent) {
 
 void Turtle::init () {
 	Agent::init();
+}
+
+void Turtle::setProperty (string key, ValuePtr value) {
+	lock_guard<recursive_mutex> lock(value_m);
+
+	if (key == "color") {
+		if (value->getType() != Type::COLOR)
+			return;
+
+		auto val = dynamic_pointer_cast<Color>(value);
+		setColor(*val);
+		return;
+	}
+
+	if (key == "parent")
+		return;
+
+	if (key == "pos-x") {
+		if (value->getType() != Type::NUMBER)
+			return;
+
+		auto val = dynamic_pointer_cast<Number>(value);
+		auto pos = getPosition();
+		pos.setValue(0, val->getValue());
+		setPosition(pos);
+		return;
+	}
+
+	if (key == "pos-y") {
+		if (value->getType() != Type::NUMBER)
+			return;
+
+		auto val = dynamic_pointer_cast<Number>(value);
+		auto pos = getPosition();
+		pos.setValue(1, val->getValue());
+		setPosition(pos);
+		return;
+	}
+
+	if (key == "pos-angle") {
+		if (value->getType() != Type::NUMBER)
+			return;
+
+		auto val = dynamic_pointer_cast<Number>(value);
+		setAngle(val->getValue());
+		return;
+	}
+
+	if (key == "world")
+		return;
+
+	if (key == "zone")
+		return;
+
+	Agent::setProperty(key, value);
+}
+
+ValuePtr Turtle::getProperty(string p) {
+	lock_guard<recursive_mutex> lock(value_m);
+
+	if (p == "color")
+		return make_shared<Color>(getColor());
+
+	if (p == "parent")
+		return getParent();
+
+	if (p == "pos-x")
+		return make_shared<Number>(getPosition().getValue(0));
+
+	if (p == "pos-y")
+		return make_shared<Number>(getPosition().getValue(1));
+
+	if (p == "pos-angle")
+		return make_shared<Number>(getAngle());
+
+	if (p == "world")
+		return getWorld();
+
+	if (p == "zone")
+		return getZone();
+
+	return Agent::getProperty(p);
 }
 
 void Turtle::setId (turtle_id new_var) {
