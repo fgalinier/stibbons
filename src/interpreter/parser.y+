@@ -124,7 +124,6 @@
 %token GEQ   ">="
 %token LS    "<"
 %token LEQ   "<="
-%token CALL 
 %token RPT   "repeat"
 %token WHL   "while"
 %token END   "end of file"
@@ -133,7 +132,7 @@
 %token FCT   "function"
 %token NEW   "new"
 %token AGT   "agent"
-%token ZONE
+%token CALL
 %token <v> NUMBER
 %token <v> STRING
 %token <v> COLOR

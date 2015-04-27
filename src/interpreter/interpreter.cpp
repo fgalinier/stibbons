@@ -168,19 +168,20 @@ namespace stibbons {
 				return val;
 			}
 				break;
-			//Zone cases:
+			//Attribute cases:
 			case yy::parser::token::ATT_ID: {
+				auto t = this->interpret(turtle,tree->getSon(0),hashTable);	
+				AgentPtr target;
+				if(t->getType() != Type::TURTLE 
+					   && t->getType() != Type::WORLD 
+					   && t->getType() != Type::ZONE)
+						throw SemanticException(".",
+												Type::TURTLE,
+												t->getType(),
+												getPosition(tree));
+						target = dynamic_pointer_cast<Agent>(t);
 				auto id = dynamic_pointer_cast<String>(std::get<1>(tree->getNode()))->getValue();
-				auto zone = turtle->getZone();
-				return zone->getProperty(id);
-			}
-				break;
-			case yy::parser::token::ZONE: {
-				auto val = this->interpret(turtle,tree->getSon(0),hashTable);
-				auto id = dynamic_pointer_cast<String>(std::get<1>(tree->getNode()))->getValue();
-				auto zone = turtle->getZone();
-				zone->setProperty(id, val);
-				return val;
+				return target->getProperty(id);
 			}
 				break;
 		   	//Type cases:
