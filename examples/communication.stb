@@ -9,8 +9,12 @@ new listener ("Bjarne")
 new listener ("Linus")
 
 new agent {
+	println(1)
 	send-all ("Hello, agents!")
+	println(2)
 	michel = new listener ("Michel")
+	println(3)
 	send (michel,"Hello, Michel!")
+	println(4)
 }
 

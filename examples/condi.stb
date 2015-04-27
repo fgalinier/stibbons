@@ -8,11 +8,13 @@ else {
 	fd 20
 }
 
-if true rt 90 else fd 5
+if true rt 90 
+else fd 5
 
 if false fd 5
 else fd 50
 
 repeat 4 {
 	fd 50
-	if true rt 90 }
+	if true rt 90 
+}
