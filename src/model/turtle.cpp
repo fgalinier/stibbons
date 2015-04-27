@@ -448,7 +448,13 @@ Object Turtle::exportTurtle(){
 	synthese.push_back(Pair("id",getId()));
 	synthese.push_back(Pair("color",this->getColor().toString()));
 
-unordered_map<string,ValuePtr>* properties=Agent::getProperty();
+	Point Tposition=getPosition();
+	Array position;
+	for (unsigned i=0;i<Tposition.getDimensions();i++)
+		position.push_back(Tposition.getValue(i));
+	synthese.push_back(Pair("position",position));
+
+	unordered_map<string,ValuePtr>* properties=Agent::getProperty();
 	for (auto m : *properties)
 	{
 		if (m.second->getType() == Type::COLOR)
