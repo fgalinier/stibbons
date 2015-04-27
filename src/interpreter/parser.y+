@@ -384,7 +384,6 @@ primary_expr : ID
 }
 | ID '(' initializer_list ')'
 {
-  std::cout<<$1->toString()<<std::endl;
   stibbons::TreePtr t1 = make_shared<stibbons::Tree>(yy::parser::token::CALL,$1);
   t1->setPosition({@1.begin.line,@1.begin.column});
   t1->appendSons($3);
