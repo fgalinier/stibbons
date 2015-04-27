@@ -19,7 +19,6 @@
 #include <tuple>
 #include "../model/value.h"
 
-
 namespace stibbons {
 
 	class Tree;

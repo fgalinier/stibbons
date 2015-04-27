@@ -10,7 +10,9 @@
 		class FlexScanner;
 	}
 #include "tree.h"
-#define YYSTYPE struct { stibbons::ValuePtr v; stibbons::TreePtr tr; }
+#include "../model/number.h"
+#define YYSTYPE struct { stibbons::ValuePtr v; stibbons::TreePtr tr; int tok; }
+	std::string toString(const int& tok);
  }
 
 %code {
@@ -33,34 +35,132 @@
 
 	}
 
- }
+  std::string toString(const int& tok) {
+    switch(tok) {
+    case yy::parser::token::SEQ:
+      return "SEQ";
+    case yy::parser::token::FD:
+      return "FD";
+    case yy::parser::token::RT:
+      return "RT";
+    case yy::parser::token::LT:
+      return "LT";
+    case yy::parser::token::PU:
+      return "PU";
+    case yy::parser::token::PD:
+      return "PD";
+    case yy::parser::token::DIE:
+      return "DIE";
+    case yy::parser::token::AND:
+      return "AND";
+    case yy::parser::token::OR:
+      return "OR";
+    case yy::parser::token::XOR:
+      return "XOR";
+    case yy::parser::token::NOT:
+      return "NOT";
+    case yy::parser::token::EQ:
+      return "EQ";
+    case yy::parser::token::NEQ:
+      return "NEQ";
+    case yy::parser::token::GT:
+      return "GT";
+    case yy::parser::token::GEQ:
+      return "GEQ";
+    case yy::parser::token::LS:
+      return "LS";
+    case yy::parser::token::LEQ:
+      return "LEQ";
+    case yy::parser::token::CALL:
+      return "CALL";
+    case yy::parser::token::RPT:
+      return "RPT";
+    case yy::parser::token::WHL:
+      return "WHL";
+    case yy::parser::token::END:
+      return "END";
+    case yy::parser::token::IF:
+      return "IF";
+    case yy::parser::token::ELSE:
+      return "ELSE";
+    case yy::parser::token::FCT:
+      return "FCT";
+    case yy::parser::token::NEW:
+      return "NEW";
+    case yy::parser::token::AGT:
+      return "AGT";
+    case yy::parser::token::NUMBER:
+      return "NUMBER";
+    case yy::parser::token::STRING:
+      return "STRING";
+    case yy::parser::token::COLOR:
+      return "COLOR";
+    case yy::parser::token::BOOLEAN:
+      return "BOOLEAN";
+    case yy::parser::token::NIL:
+      return "NIL";
+    case yy::parser::token::ID:
+      return "ID";
+    default:
+      return std::string(1,static_cast<char>(tok));
+    }
+  }
+}
 
-%token FD LT RT PU PD DIE AND OR XOR NOT EQ NEQ GT GEQ LS LEQ LB RB LP RP CALL RPT WHL END IF ELSE FCT NEW AGT ZONE
+%token SEQ 0 "sequence"
+%token FD    "forward"
+%token LT    "turn-left"
+%token RT    "turn-right"
+%token PU    "pen-up"
+%token PD    "pen-down"
+%token DIE   "die"
+%token AND   "and"
+%token OR    "or"
+%token XOR   "xor"
+%token NOT   "not" 
+%token EQ    "=="
+%token NEQ   "!="
+%token GT    ">"
+%token GEQ   ">="
+%token LS    "<"
+%token LEQ   "<="
+%token CALL 
+%token RPT   "repeat"
+%token WHL   "while"
+%token END   "end of file"
+%token IF    "if"
+%token ELSE  "else" 
+%token FCT   "function"
+%token NEW   "new"
+%token AGT   "agent"
+%token ZONE
 %token <v> NUMBER
 %token <v> STRING
 %token <v> COLOR
 %token <v> BOOLEAN 
 %token <v> NIL
 %token <v> ID
-%token <v> ZID
-%type <tr> instr
-%type <tr> instr_list
+%token <v> ATT_ID
+%type <tr> nb_agt
+%type <tr> statement_list
+%type <tr> statement
 %type <tr> instr_turtle
+%type <tr> compl_statement
 %type <tr> bloc
 %type <tr> expr
 %type <tr> lit
-%type <tr> affect
-%type <tr> fct_call
-%type <tr> statement
-%type <tr> params
-%type <tr> struc
+%type <tr> assignment_expression
+%type <tr> expr_statement
+%type <tr> decl_statement
+%type <tr> creat_statement
+%type <tr> primary_expr
 %type <tr> loop
-%type <tr> condi
-%type <tr> creat
-%type <tr> fct_decl
-%type <tr> params_decl
-%type <tr> breed_creat
-%type <tr> agt_decl
+%type <tr> selection
+%type <tr> decl_list
+%type <tr> id_list
+%type <tr> initializer_list
+%type <tok> binary_operator
+%type <tok> decl_id
 
 %right '='
 %left AND OR XOR 
@@ -69,118 +169,260 @@
 %left '+' '-'  
 %left '*' '/' '%'
 %right MOINSUNAIRE NOT
-%nonassoc LB RB LP RP
+%nonassoc '{' '}' '(' ')'
 %%
-code : instr_list {t->addSon($1);}
-| '\n' instr_list {t->addSon($2);};
+code : statement_list { t->addSon($1); };
 
 // General languages struct
 
-instr_list : statement
+statement_list : statement
 {
   $$ = $1; 
 }
-| statement '\n' instr_list 
+| statement_list statement 
 {
   stibbons::TreePtr t1 = make_shared<stibbons::Tree>(0,nullptr);
-  t1->addSon($1);
   try {
-    t1->mergeTree($3);
+    t1->mergeTree($1);
   }
   catch(std::exception& e) {
-    t1->addSon($3);
+    t1->addSon($1);
   }
+  t1->addSon($2);
   $$ = t1; 
 }
-| struc instr_list 
-{ 
-  stibbons::TreePtr t1 = make_shared<stibbons::Tree>(0,nullptr);
-  t1->addSon($1);
-  try {
-    t1->mergeTree($2);
-  }
-  catch(std::exception& e) {
-    t1->addSon($2);    
-  }
-  $$ = t1;
-}
-| { $$ = nullptr;};
+| { $$ = nullptr; } 
+;
 
-statement : bloc { $$ = $1; }
-| instr { $$ = $1; }
-| statement '\n' { $$ = $1; }
+statement : expr_statement { $$ = $1; }
+| compl_statement { $$ = $1; }
+;
+
+compl_statement : bloc { $$ = $1; }
+| decl_statement { $$ = $1; }
+| selection { $$ = $1; }
+| loop { $$ = $1; }
+| compl_statement '\n' { $$ = $1; }
+;
+
+bloc : '{' '}' { $$ = nullptr; }
+| '{' statement_list '}' { $$ = $2; }
 ; 
 
-struc : condi { $$ = $1; }
-| loop { $$ = $1; }
-| creat { $$ = $1; }
-| expr creat 
+decl_statement : decl_id ID decl_list bloc {
+  stibbons::TreePtr t1 = make_shared<stibbons::Tree>($1,$2);
+  t1->setPosition({@1.begin.line,@1.begin.column});
+  t1->addSon($4);
+  t1->appendSons($3);
+  $$ = t1;  
+}
+;
+
+decl_id : AGT { $$ = yy::parser::token::AGT; }
+| FCT { $$ = yy::parser::token::FCT; }
+;
+
+decl_list : '(' ')' { $$ = nullptr; }
+| '(' id_list ')' { $$ = $2; }
+;
+
+id_list : ID 
+{ 
+  stibbons::TreePtr t1 = make_shared<stibbons::Tree>(yy::parser::token::ID,nullptr);
+  t1->addSon(make_shared<stibbons::Tree>(yy::parser::token::ID,$1));
+  $$ = t1;
+}
+| id_list ',' ID 
+{
+  stibbons::TreePtr t1 = make_shared<stibbons::Tree>(yy::parser::token::ID,nullptr);
+  t1->appendSons($1);
+  t1->addSon(make_shared<stibbons::Tree>(yy::parser::token::ID,$3));
+  $$ = t1;
+};
+
+selection : IF expr statement 
+{
+  stibbons::TreePtr t1 = make_shared<stibbons::Tree>(yy::parser::token::IF,nullptr);
+  t1->addSon($2);
+  t1->addSon($3);
+  t1->addSon(nullptr);
+  t1->setPosition({@1.begin.line,@1.begin.column});
+  $$ = t1;
+}
+| IF expr statement ELSE statement
+{
+  stibbons::TreePtr t1 = make_shared<stibbons::Tree>(yy::parser::token::IF,nullptr);
+  t1->addSon($2);
+  t1->addSon($3);
+  t1->addSon($5);
+  t1->setPosition({@1.begin.line,@1.begin.column});
+  $$ = t1;
+};
+
+loop : RPT expr statement
 {
   stibbons::TreePtr t1 = make_shared<stibbons::Tree>(yy::parser::token::RPT,nullptr);
-  t1->addSon($1);
   t1->addSon($2);
+  t1->addSon($3);
   t1->setPosition({@1.begin.line,@1.begin.column});
   $$ = t1;  
 }
-| fct_decl { $$ = $1; }
-| agt_decl { $$ = $1; }
-| struc '\n' { $$ = $1; };
-
-bloc : LB instr_list RB
-{ 
-  $$ = $2; 
-}; 
-
-instr : expr { $$ = $1; }
-| instr_turtle { $$ = $1; } 
-| breed_creat { $$ = $1; }
-| expr breed_creat 
+| WHL expr statement
 {
-  stibbons::TreePtr t1 = make_shared<stibbons::Tree>(yy::parser::token::RPT,nullptr);
-  t1->addSon($1);
+  stibbons::TreePtr t1 = make_shared<stibbons::Tree>(yy::parser::token::WHL,nullptr);
   t1->addSon($2);
+  t1->addSon($3);
   t1->setPosition({@1.begin.line,@1.begin.column});
   $$ = t1;  
 };
 
-// New agent
+expr_statement : '\n' { $$ = nullptr; }
+| expr '\n' { $$ = $1; }
+| instr_turtle '\n' { $$ = $1; }
+| creat_statement '\n' { $$ = $1; }
+;
 
-creat : NEW AGT statement 
+expr : assignment_expression { $$ = $1; }
+| '(' expr ')' { $$ = $2; }
+| expr binary_operator expr
 {
-  auto t1 = make_shared<stibbons::Tree>(yy::parser::token::NEW,nullptr);
+  stibbons::TreePtr t1 = make_shared<stibbons::Tree>($2,nullptr);
+  t1->addSon($1);
+  t1->addSon($3);
+  t1->setPosition({@1.begin.line,@1.begin.column});
+  $$ = t1;
+}
+| '-' expr %prec MOINSUNAIRE 
+{
+  stibbons::TreePtr t1 = make_shared<stibbons::Tree>('-',nullptr);
+  t1->addSon($2);
+  $$ = t1;
+}
+| NOT expr
+{
+  stibbons::TreePtr t1 = make_shared<stibbons::Tree>(yy::parser::token::NOT,nullptr);
+  t1->addSon($2);
+  $$ = t1;
+}
+| primary_expr { $$ = $1; }
+| lit { $$ = $1; }
+;
+
+binary_operator : '+' { $$ = '+'; }
+| '-' { $$ = '-'; }
+| '/' { $$ = '/'; }
+| '*' { $$ = '*'; }
+| '%' { $$ = '%'; }
+| AND { $$ = yy::parser::token::AND; }
+| OR { $$ = yy::parser::token::OR; }
+| XOR { $$ = yy::parser::token::XOR; }
+| EQ { $$ = yy::parser::token::EQ; }
+| NEQ { $$ = yy::parser::token::NEQ; }
+| GT { $$ = yy::parser::token::GT; }
+| GEQ { $$ = yy::parser::token::GEQ; }
+| LS { $$ = yy::parser::token::LS; }
+| LEQ { $$ = yy::parser::token::LEQ; }
+;
+
+assignment_expression : primary_expr '=' expr
+{
+  stibbons::TreePtr t1 = make_shared<stibbons::Tree>('=',nullptr);
+  t1->addSon($1);
   t1->addSon($3);
   $$ = t1;
-};
-
-breed_creat : NEW ID LP params RP
+}
+| primary_expr '=' creat_statement
 {
-  stibbons::TreePtr t1 = make_shared<stibbons::Tree>(yy::parser::token::NEW,$2);
-  t1->setPosition({@1.begin.line,@1.begin.column});
-  t1->appendSons($4);
+  stibbons::TreePtr t1 = make_shared<stibbons::Tree>('=',nullptr);
+  t1->addSon($1);
+  t1->addSon($3);
   $$ = t1;
 }
-| NEW ID LP RP 
+;
+
+primary_expr : ID
 {
-  auto t1 = make_shared<stibbons::Tree>(yy::parser::token::NEW,$2);
+  $$ = make_shared<stibbons::Tree>(yy::parser::token::ID,$1);
+}
+| ID '.' primary_expr
+{
+  auto t1 = make_shared<stibbons::Tree>(yy::parser::token::ATT_ID,$1);
+  t1->addSon($3);
+  $$ = t1;
+}
+| primary_expr '[' expr ']'
+{
+
+}
+| ID '(' ')'
+{
+  stibbons::TreePtr t1 = make_shared<stibbons::Tree>(yy::parser::token::CALL,$1);
   t1->setPosition({@1.begin.line,@1.begin.column});
   $$ = t1;
-};
-
-agt_decl : AGT ID LP params_decl RP statement
-{
-  stibbons::TreePtr t1 = make_shared<stibbons::Tree>(yy::parser::token::AGT,$2);
-  t1->setPosition({@1.begin.line,@1.begin.column});
-  t1->addSon($6);
-  t1->appendSons($4);
-  $$ = t1;  
 }
-| AGT ID LP RP statement
+| ID '(' initializer_list ')'
 {
-  stibbons::TreePtr t1 = make_shared<stibbons::Tree>(yy::parser::token::AGT,$2);
+  std::cout<<$1->toString()<<std::endl;
+  stibbons::TreePtr t1 = make_shared<stibbons::Tree>(yy::parser::token::CALL,$1);
   t1->setPosition({@1.begin.line,@1.begin.column});
-  t1->addSon($5);
-  $$ = t1;  
-};
+  t1->appendSons($3);
+  $$ = t1;
+}
+;
+
+initializer_list : expr
+{
+  stibbons::TreePtr t1 = make_shared<stibbons::Tree>(yy::parser::token::CALL,nullptr);
+  t1->addSon($1);
+  $$ = t1;
+}
+| initializer_list ',' expr
+{
+  stibbons::TreePtr t1 = make_shared<stibbons::Tree>(yy::parser::token::CALL,nullptr);
+  t1->appendSons($1);
+  t1->addSon($3);
+  $$ = t1;
+}
+;
+
+creat_statement : nb_agt NEW AGT bloc
+{
+  stibbons::TreePtr t1 = make_shared<stibbons::Tree>(yy::parser::token::RPT,nullptr);
+  t1->addSon($1);
+  t1->setPosition({@1.begin.line,@1.begin.column});
+  stibbons::TreePtr t2 = make_shared<stibbons::Tree>(yy::parser::token::NEW,nullptr);
+  t2->addSon($4);
+  t1->addSon(t2);
+  $$ = t1;
+}
+| nb_agt NEW ID '(' initializer_list ')'
+{
+  stibbons::TreePtr t1 = make_shared<stibbons::Tree>(yy::parser::token::RPT,nullptr);
+  t1->addSon($1);
+  t1->setPosition({@1.begin.line,@1.begin.column});
+  stibbons::TreePtr t2 = make_shared<stibbons::Tree>(yy::parser::token::NEW,$3);
+  t2->appendSons($5);
+  t1->addSon(t2);
+  $$ = t1;
+}
+| nb_agt NEW ID '(' ')'
+{
+  stibbons::TreePtr t1 = make_shared<stibbons::Tree>(yy::parser::token::RPT,nullptr);
+  t1->addSon($1);
+  t1->setPosition({@1.begin.line,@1.begin.column});
+  stibbons::TreePtr t2 = make_shared<stibbons::Tree>(yy::parser::token::NEW,$3);
+  t1->addSon(t2);
+  $$ = t1;
+}
+;
+
+nb_agt : expr { $$ = $1; }
+| 
+{ 
+  stibbons::ValuePtr nb = make_shared<stibbons::Number>(1.0);
+  $$ = make_shared<stibbons::Tree>(yy::parser::token::NUMBER,nb); 
+}
+;
 
 // Turtle instructions
 
@@ -218,266 +460,11 @@ instr_turtle : FD expr
   $$ = make_shared<stibbons::Tree>(yy::parser::token::DIE,nullptr);
 };
 
-// Expressions
-
-expr : LP expr RP { $$ = $2; }
-| affect { $$ = $1; }
-| lit { $$ = $1; }
-| fct_call { $$ = $1; }
-| ID { $$ = make_shared<stibbons::Tree>(yy::parser::token::ID,$1); }
-| ZID { $$ = make_shared<stibbons::Tree>(yy::parser::token::ZID,$1); }
-| '-' expr %prec MOINSUNAIRE 
-{
-  stibbons::TreePtr t1 = make_shared<stibbons::Tree>('-',nullptr);
-  t1->addSon($2);
-  $$ = t1;
-}
-| NOT expr
-{
-  stibbons::TreePtr t1 = make_shared<stibbons::Tree>(yy::parser::token::NOT,nullptr);
-  t1->addSon($2);
-  t1->setPosition({@1.begin.line,@1.begin.column});
-  $$ = t1;
-}
-| expr '+' expr
-{
-  stibbons::TreePtr t1 = make_shared<stibbons::Tree>('+',nullptr);
-  t1->addSon($1);
-  t1->addSon($3);
-  t1->setPosition({@1.begin.line,@1.begin.column});
-  $$ = t1;
-}
-| expr '*' expr
-{
-  stibbons::TreePtr t1 = make_shared<stibbons::Tree>('*',nullptr);
-  t1->addSon($1);
-  t1->addSon($3);
-  t1->setPosition({@1.begin.line,@1.begin.column});
-  $$ = t1;
-}
-| expr '-' expr
-{
-  stibbons::TreePtr t1 = make_shared<stibbons::Tree>('-',nullptr);
-  t1->addSon($1);
-  t1->addSon($3);
-  t1->setPosition({@1.begin.line,@1.begin.column});
-  $$ = t1;
-}
-| expr '/' expr
-{
-  stibbons::TreePtr t1 = make_shared<stibbons::Tree>('/',nullptr);
-  t1->addSon($1);
-  t1->addSon($3);
-  t1->setPosition({@1.begin.line,@1.begin.column});
-  $$ = t1;
-}
-| expr '%' expr
-{
-  stibbons::TreePtr t1 = make_shared<stibbons::Tree>('%',nullptr);
-  t1->addSon($1);
-  t1->addSon($3);
-  t1->setPosition({@1.begin.line,@1.begin.column});
-  $$ = t1;
-}
-| expr AND expr
-{
-  stibbons::TreePtr t1 = make_shared<stibbons::Tree>(yy::parser::token::AND,nullptr);
-  t1->addSon($1);
-  t1->addSon($3);
-  t1->setPosition({@1.begin.line,@1.begin.column});
-  $$ = t1;
-}
-| expr OR expr
-{
-  stibbons::TreePtr t1 = make_shared<stibbons::Tree>(yy::parser::token::OR,nullptr);
-  t1->addSon($1);
-  t1->addSon($3);
-  t1->setPosition({@1.begin.line,@1.begin.column});
-  $$ = t1;
-}
-| expr XOR expr
-{
-  stibbons::TreePtr t1 = make_shared<stibbons::Tree>(yy::parser::token::XOR,nullptr);
-  t1->addSon($1);
-  t1->addSon($3);
-  t1->setPosition({@1.begin.line,@1.begin.column});
-  $$ = t1;
-}
-| expr EQ expr
-{
-  stibbons::TreePtr t1 = make_shared<stibbons::Tree>(yy::parser::token::EQ,nullptr);
-  t1->addSon($1);
-  t1->addSon($3);
-  t1->setPosition({@1.begin.line,@1.begin.column});
-  $$ = t1;
-}
-| expr NEQ expr
-{
-  stibbons::TreePtr t1 = make_shared<stibbons::Tree>(yy::parser::token::NEQ,nullptr);
-  t1->addSon($1);
-  t1->addSon($3);
-  $$ = t1;
-}
-| expr GT expr
-{
-  stibbons::TreePtr t1 = make_shared<stibbons::Tree>(yy::parser::token::GT,nullptr);
-  t1->addSon($1);
-  t1->addSon($3);
-  t1->setPosition({@1.begin.line,@1.begin.column});
-  $$ = t1;
-}
-| expr GEQ expr
-{
-  stibbons::TreePtr t1 = make_shared<stibbons::Tree>(yy::parser::token::GEQ,nullptr);
-  t1->addSon($1);
-  t1->addSon($3);
-  t1->setPosition({@1.begin.line,@1.begin.column});
-  $$ = t1;
-}
-| expr LS expr
-{
-  stibbons::TreePtr t1 = make_shared<stibbons::Tree>(yy::parser::token::LS,nullptr);
-  t1->addSon($1);
-  t1->addSon($3);
-  t1->setPosition({@1.begin.line,@1.begin.column});
-  $$ = t1;
-}
-| expr LEQ expr 
-{
-  stibbons::TreePtr t1 = make_shared<stibbons::Tree>(yy::parser::token::LEQ,nullptr);
-  t1->addSon($1);
-  t1->addSon($3);
-  t1->setPosition({@1.begin.line,@1.begin.column});
-  $$ = t1;
-};
-
-affect : ID '=' breed_creat
-{
-  stibbons::TreePtr t1 = make_shared<stibbons::Tree>('=',$1);
-  t1->addSon($3);
-  $$ = t1;
-}
-| ID '=' expr
-{
-  stibbons::TreePtr t1 = make_shared<stibbons::Tree>('=',$1);
-  t1->addSon($3);
-  $$ = t1;
-}
-| ZID '=' expr
-{
-  stibbons::TreePtr t1 = make_shared<stibbons::Tree>(yy::parser::token::ZONE,$1);
-  t1->addSon($3);
-  $$ = t1;
-}; 
-
-// Functions
-
-fct_decl : FCT ID LP params_decl RP bloc
-{
-  stibbons::TreePtr t1 = make_shared<stibbons::Tree>(yy::parser::token::FCT,$2);
-  t1->setPosition({@1.begin.line,@1.begin.column});
-  t1->addSon($6);
-  t1->appendSons($4);
-  $$ = t1;  
-}
-| FCT ID LP RP bloc
-{
-  stibbons::TreePtr t1 = make_shared<stibbons::Tree>(yy::parser::token::FCT,$2);
-  t1->setPosition({@1.begin.line,@1.begin.column});
-  t1->addSon($5);
-  $$ = t1;  
-}
-;
-
-params_decl : params_decl ',' ID
-{
-  stibbons::TreePtr t1 = make_shared<stibbons::Tree>(yy::parser::token::FCT,nullptr);
-  t1->appendSons($1);
-  t1->addSon(make_shared<stibbons::Tree>(yy::parser::token::ID,$3));
-  $$ = t1;
-}
-| ID
-{
-  stibbons::TreePtr t1 = make_shared<stibbons::Tree>(yy::parser::token::FCT,nullptr);
-  t1->addSon(make_shared<stibbons::Tree>(yy::parser::token::ID,$1));
-  $$ = t1;
-};
-
-fct_call : ID LP params RP 
-{
-  stibbons::TreePtr t1 = make_shared<stibbons::Tree>(yy::parser::token::CALL,$1);
-  t1->setPosition({@1.begin.line,@1.begin.column});
-  t1->appendSons($3);
-  $$ = t1;
-}
-| ID LP RP 
-{
-  auto t1 = make_shared<stibbons::Tree>(yy::parser::token::CALL,$1);
-  t1->setPosition({@1.begin.line,@1.begin.column});
-  $$ = t1;
-};
-
-params : params ',' expr 
-{
-  stibbons::TreePtr t1 = make_shared<stibbons::Tree>(yy::parser::token::CALL,nullptr);
-  t1->appendSons($1);
-  t1->addSon($3);
-  $$ = t1;
-}
-| expr 
-{
-  stibbons::TreePtr t1 = make_shared<stibbons::Tree>(yy::parser::token::CALL,nullptr);
-  t1->addSon($1);
-  $$ = t1;
-};
-
-// Literals
-
 lit : NUMBER { $$ = make_shared<stibbons::Tree>(yy::parser::token::NUMBER,$1); }
 | STRING { $$ = make_shared<stibbons::Tree>(yy::parser::token::STRING,$1);}
 | BOOLEAN { $$ = make_shared<stibbons::Tree>(yy::parser::token::BOOLEAN,$1);}
 | COLOR { $$ = make_shared<stibbons::Tree>(yy::parser::token::COLOR,$1);}
 | NIL { $$ = make_shared<stibbons::Tree>(yy::parser::token::NIL,$1);};
-
-// Control struct
-
-loop : RPT expr statement
-{
-  stibbons::TreePtr t1 = make_shared<stibbons::Tree>(yy::parser::token::RPT,nullptr);
-  t1->addSon($2);
-  t1->addSon($3);
-  t1->setPosition({@1.begin.line,@1.begin.column});
-  $$ = t1;  
-}
-| WHL expr statement
-{
-  stibbons::TreePtr t1 = make_shared<stibbons::Tree>(yy::parser::token::WHL,nullptr);
-  t1->addSon($2);
-  t1->addSon($3);
-  t1->setPosition({@1.begin.line,@1.begin.column});
-  $$ = t1;  
-}
-;
-
-condi : IF expr statement 
-{
-  stibbons::TreePtr t1 = make_shared<stibbons::Tree>(yy::parser::token::IF,nullptr);
-  t1->addSon($2);
-  t1->addSon($3);
-  t1->addSon(nullptr);
-  t1->setPosition({@1.begin.line,@1.begin.column});
-  $$ = t1;
-}
-| IF expr statement ELSE statement
-{
-  stibbons::TreePtr t1 = make_shared<stibbons::Tree>(yy::parser::token::IF,nullptr);
-  t1->addSon($2);
-  t1->addSon($3);
-  t1->addSon($5);
-  t1->setPosition({@1.begin.line,@1.begin.column});
-  $$ = t1;
-}
-;
 
 %%
 

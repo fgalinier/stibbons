@@ -1,4 +1,5 @@
 #include "tree.h"
+#include "y.tab.h"
 
 using namespace std;
 
@@ -55,7 +56,7 @@ namespace stibbons {
 	}
 
 	void Tree::output(std::ostream& os,std::string dec) const {
-		os<<dec<<" "<<std::get<0>(node)<<std::endl;
+		os<<dec<<" "<<::toString(std::get<0>(node))<<std::endl;
 		for(auto t : sons) {
 			t->output(os, dec+"-");
 		}

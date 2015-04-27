@@ -50,7 +50,7 @@ id [_a-z][\-_a-z0-9]*
   loc->step();
 %}
 
-true|false {if(yytext[0] == 't' || yytext[0] == 'T') { pyylval->v = make_shared<stibbons::Boolean>(true); } else { pyylval->v = make_shared<stibbons::Boolean>(false); } return yy::parser::token::BOOLEAN;}
+true|false { if(yytext[0] == 't' || yytext[0] == 'T') { pyylval->v = make_shared<stibbons::Boolean>(true); } else { pyylval->v = make_shared<stibbons::Boolean>(false); } return yy::parser::token::BOOLEAN;}
 
 null {return yy::parser::token::NIL;}
 
@@ -106,8 +106,6 @@ function {return yy::parser::token::FCT;}
 
 #([a-f0-9]{6}|[a-f0-9]{3}) {pyylval->v=make_shared<stibbons::Color>(yytext); return yy::parser::token::COLOR;}
 
-zone\.{id} {pyylval->v=make_shared<stibbons::String>(yytext+5); return yy::parser::token::ZID;}
-
 {id} {pyylval->v=make_shared<stibbons::String>(yytext); return yy::parser::token::ID;}
 
 "//"[^\n]*\n* { loc->lines(countNewLine(yytext)); loc->step(); return yy::parser::token_type('\n');}
@@ -115,14 +113,6 @@ zone\.{id} {pyylval->v=make_shared<stibbons::String>(yytext+5); return yy::parse
 "/*"([^*]|"*"+[^*/])*"*"+"/" ;
 
 [ \r\t]+  {loc->step();}
-
-\{\n* {loc->lines(countNewLine(yytext)); loc->step();return yy::parser::token::LB;}
-
-\n*\} {return yy::parser::token::RB;}
-
-\(\n* {loc->lines(countNewLine(yytext)); loc->step();return yy::parser::token::LP;}
-
-\) {return yy::parser::token::RP;}
 
 \n\n* { loc->lines(yyleng); loc->step(); return yy::parser::token_type(yytext[0]);}
 

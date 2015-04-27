@@ -84,7 +84,7 @@ namespace stibbons {
 					                        getPosition(tree));
 				while(dynamic_pointer_cast<Boolean>(val)->getValue()) {
 					res = this->interpret(turtle,tree->getSon(1),hashTable);
-					auto val = this->interpret(turtle,tree->getSon(0));
+					val = this->interpret(turtle,tree->getSon(0));
 					if(val->getType() != Type::BOOLEAN)
 					throw SemanticException("WHILE",
 					                        Type::BOOLEAN,
@@ -138,8 +138,8 @@ namespace stibbons {
 			}
 				break;
 			case '=': {
-				auto val = this->interpret(turtle,tree->getSon(0),hashTable);
-				auto id = dynamic_pointer_cast<String>(std::get<1>(tree->getNode()))->getValue();
+				auto val = this->interpret(turtle,tree->getSon(1),hashTable);
+				auto id = dynamic_pointer_cast<String>(std::get<1>(tree->getSon(0)->getNode()))->getValue();
 				if (id == "color") {
 					if(val->getType() != Type::COLOR) {
 							throw SemanticException("color",
@@ -163,7 +163,7 @@ namespace stibbons {
 			}
 				break;
 			//Zone cases:
-			case yy::parser::token::ZID: {
+			case yy::parser::token::ATT_ID: {
 				auto id = dynamic_pointer_cast<String>(std::get<1>(tree->getNode()))->getValue();
 				auto zone = turtle->getZone();
 				return zone->getProperty(id);
