@@ -97,8 +97,9 @@ class Agent : public Value, public enable_shared_from_this<Agent> {
 
 		unordered_map<string,ValuePtr> *properties;
 
-protected :
-		mutex parent_m;
+	protected :
+		recursive_mutex value_m;
+		recursive_mutex parent_m;
 };
 }
 /*

@@ -289,7 +289,6 @@ class Turtle : public Agent {
 		double angle;
 		Color color;
 		Line* line;
-		recursive_mutex value_m;
 		deque<pair<TurtlePtr,ValuePtr>> messages;
 	};
 }

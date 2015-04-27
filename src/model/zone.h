@@ -106,8 +106,6 @@ class Zone : public Agent{
 
 	private:
 		Color color;
-
-		std::recursive_mutex value_m;
 };
 
 }

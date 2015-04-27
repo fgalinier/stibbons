@@ -189,7 +189,6 @@ class World : public Changeable, public Agent {
 		unordered_set<BreedPtr> anonymousBreeds;
 
 		turtle_id id;
-		recursive_mutex value_m;
 };
 
 typedef std::shared_ptr<World> WorldPtr;

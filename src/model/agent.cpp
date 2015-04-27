@@ -20,7 +20,7 @@ void Agent::init () {
 }
 
 Agent::~Agent () {
-	lock_guard<mutex> lock(parent_m);
+	lock_guard<recursive_mutex> lock(parent_m);
 
 	delete properties;
 }
@@ -30,12 +30,12 @@ AgentPtr Agent::getParent () {
 }
 
 void Agent::reparent () {
-	lock_guard<mutex> lock(parent_m);
+	lock_guard<recursive_mutex> lock(parent_m);
 
 	if (parent == nullptr)
 		return;
 
-	lock_guard<mutex> pLock(parent->parent_m);
+	lock_guard<recursive_mutex> pLock(parent->parent_m);
 
 	parent->children.erase(this->shared_from_this());
 
@@ -45,7 +45,7 @@ void Agent::reparent () {
 		parent = nullptr;
 	}
 	else {
-		lock_guard<mutex> gpLock(grandParent->parent_m);
+		lock_guard<recursive_mutex> gpLock(grandParent->parent_m);
 
 		grandParent->children.insert(this->shared_from_this());
 
@@ -54,12 +54,12 @@ void Agent::reparent () {
 }
 
 void Agent::unparent () {
-	lock_guard<mutex> lock(parent_m);
+	lock_guard<recursive_mutex> lock(parent_m);
 
 	if (parent == nullptr)
 		return;
 
-	lock_guard<mutex> pLock(parent->parent_m);
+	lock_guard<recursive_mutex> pLock(parent->parent_m);
 
 	parent->children.erase(this->shared_from_this());
 
@@ -70,7 +70,7 @@ void Agent::unparent () {
 }
 
 void Agent::setProperty (string key, ValuePtr value) {
-	lock_guard<mutex> lock(parent_m);
+	lock_guard<recursive_mutex> lock(parent_m);
 
 	auto prop = pair<string, ValuePtr>(key, value);
 
@@ -84,7 +84,7 @@ void Agent::setProperty (string key, ValuePtr value) {
 }
 
 ValuePtr Agent::getProperty(string p) {
-	lock_guard<mutex> lock(parent_m);
+	lock_guard<recursive_mutex> lock(parent_m);
 
 	unordered_map<string,ValuePtr>::const_iterator got = properties->find(p);
 
