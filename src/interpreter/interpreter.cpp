@@ -173,19 +173,7 @@ namespace stibbons {
 				auto val = this->interpret(turtle,tree->getSon(0),hashTable);
 				auto id = dynamic_pointer_cast<String>(std::get<1>(tree->getNode()))->getValue();
 				auto zone = turtle->getZone();
-				if (id == "color") {
-					if(val->getType() != Type::COLOR) {
-							throw SemanticException("color",
-					                        Type::COLOR,
-					                        val->getType(),
-											yy::position(nullptr,std::get<0>(tree->getPosition()),
-														 std::get<0>(tree->getPosition())));
-					}
-					zone->setColor(*dynamic_pointer_cast<Color>(val));
-				}
-				else {
-					zone->setProperty(id, val);
-				}
+				zone->setProperty(id, val);
 				return val;
 			}
 				break;

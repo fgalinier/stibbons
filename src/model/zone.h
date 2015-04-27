@@ -54,6 +54,19 @@ class Zone : public Agent{
 		virtual Type getType() const;
 
 		/**
+		 * Add a property
+		 * @param key the key of the property
+		 * @param value the value of the property
+		 */
+		virtual void setProperty (string key, ValuePtr value);
+
+		 /**
+		 * Get the value of the propertie p
+		 * @return the value of propertie p
+		 */
+		virtual ValuePtr getProperty(string p);
+
+		/**
 		 * Set the value for an axis
 		 * @param axis the axis
 		 * @param value the value
@@ -94,7 +107,7 @@ class Zone : public Agent{
 	private:
 		Color color;
 
-		std::mutex value_m;
+		std::recursive_mutex value_m;
 };
 
 }

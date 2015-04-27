@@ -18,14 +18,14 @@ void Zone::init () {
 }
 
 Zone::Zone(Zone& other) {
-	lock_guard<mutex> lock(other.value_m);
+	lock_guard<recursive_mutex> lock(other.value_m);
 
 	// Set this
 	color = other.color;
 }
 
 Zone::Zone (Zone&& other) {
-	lock_guard<mutex> lock(other.value_m);
+	lock_guard<recursive_mutex> lock(other.value_m);
 
 	// Set this
 	color = move(other.color);
@@ -39,8 +39,8 @@ Zone& Zone::operator= (Zone& other) {
 		return *this;
 
 	lock(value_m, other.value_m);
-	lock_guard<mutex> self_lock(value_m, adopt_lock);
-	lock_guard<mutex> other_lock(other.value_m, adopt_lock);
+	lock_guard<recursive_mutex> self_lock(value_m, adopt_lock);
+	lock_guard<recursive_mutex> other_lock(other.value_m, adopt_lock);
 
 	// Set this
 	color = other.color;
@@ -53,8 +53,8 @@ Zone& Zone::operator= (Zone&& other) {
 		return *this;
 
 	lock(value_m, other.value_m);
-	lock_guard<mutex> self_lock(value_m, adopt_lock);
-	lock_guard<mutex> other_lock(other.value_m, adopt_lock);
+	lock_guard<recursive_mutex> self_lock(value_m, adopt_lock);
+	lock_guard<recursive_mutex> other_lock(other.value_m, adopt_lock);
 
 	// Set this
 	color = move(other.color);
@@ -69,16 +69,40 @@ Type Zone::getType() const {
 	return Type::ZONE;
 }
 
+void Zone::setProperty (string key, ValuePtr value) {
+	lock_guard<recursive_mutex> lock(value_m);
+
+	if (key == "color") {
+		if (value->getType() != Type::COLOR)
+			return;
+
+		auto val = dynamic_pointer_cast<Color>(value);
+		setColor(*val);
+		return;
+	}
+
+	Agent::setProperty(key, value);
+}
+
+ValuePtr Zone::getProperty(string p) {
+	lock_guard<recursive_mutex> lock(value_m);
+
+	if (p == "color")
+		return make_shared<Color>(getColor());
+
+	return Agent::getProperty(p);
+}
+
 void Zone::setColor (Color color) {
 	{
-		lock_guard<mutex> lock(value_m);
+		lock_guard<recursive_mutex> lock(value_m);
 		this->color = color;
 	}
 	changed();
 }
 
 Color Zone::getColor () {
-	lock_guard<mutex> lock(value_m);
+	lock_guard<recursive_mutex> lock(value_m);
 	return color;
 }
 
@@ -91,7 +115,7 @@ WorldPtr Zone::getWorld () {
 }
 
 void Zone::changed() {
-	lock_guard<mutex> lock(value_m);
+	lock_guard<recursive_mutex> lock(value_m);
 	auto world = getWorld();
 
 	if (world)
