@@ -43,6 +43,8 @@
 
 id [_a-z][\-_a-z0-9]*
 
+%x comment
+
  /*Rules*/
 %%
 
@@ -110,7 +112,14 @@ function {return yy::parser::token::FCT;}
 
 "//"[^\n]*\n* { loc->lines(countNewLine(yytext)); loc->step(); return yy::parser::token_type('\n');}
 
-"/*"([^*]|"*"+[^*/])*"*"+"/" ;
+"/*" {BEGIN(comment);}
+
+<comment>[^*];
+<comment>"*"+[^*/]*
+<comment>\n\n* {loc->lines(yyleng); loc->step();}
+<comment>"*"+"/" {BEGIN(INITIAL);}
+
+"}" { return yy::parser::token_type(yytext[0]);}
 
 [ \r\t]+  {loc->step();}
 

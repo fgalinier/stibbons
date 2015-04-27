@@ -143,6 +143,7 @@
 %token <v> ATT_ID
 %type <tr> nb_agt
 %type <tr> statement_list
+%type <tr> statement_list_bloc
 %type <tr> statement
 %type <tr> instr_turtle
 %type <tr> compl_statement
@@ -151,6 +152,7 @@
 %type <tr> lit
 %type <tr> assignment_expression
 %type <tr> expr_statement
+%type <tr> expr_no_separator
 %type <tr> decl_statement
 %type <tr> creat_statement
 %type <tr> primary_expr
@@ -206,8 +208,22 @@ compl_statement : bloc { $$ = $1; }
 ;
 
 bloc : '{' '}' { $$ = nullptr; }
-| '{' statement_list '}' { $$ = $2; }
+| '{' statement_list_bloc '}' { $$ = $2; }
 ; 
+
+statement_list_bloc : statement_list { $$ = $1; }
+| statement_list expr_no_separator {
+  stibbons::TreePtr t1 = make_shared<stibbons::Tree>(0,nullptr);
+  try {
+    t1->mergeTree($1);
+  }
+  catch(std::exception& e) {
+    t1->addSon($1);
+  }
+  t1->addSon($2);
+  $$ = t1; 
+}
+;
 
 decl_statement : decl_id ID decl_list bloc {
   stibbons::TreePtr t1 = make_shared<stibbons::Tree>($1,$2);
@@ -281,6 +297,12 @@ expr_statement : '\n' { $$ = nullptr; }
 | instr_turtle '\n' { $$ = $1; }
 | creat_statement '\n' { $$ = $1; }
 ;
+
+expr_no_separator : expr { $$ = $1; }
+| instr_turtle { $$ = $1; }
+| creat_statement { $$ = $1; }
+;
+
 
 expr : assignment_expression { $$ = $1; }
 | '(' expr ')' { $$ = $2; }
