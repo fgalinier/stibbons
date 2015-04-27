@@ -139,7 +139,19 @@ namespace stibbons {
 				break;
 			case '=': {
 				auto val = this->interpret(turtle,tree->getSon(1),hashTable);
-				auto id = dynamic_pointer_cast<String>(std::get<1>(tree->getSon(0)->getNode()))->getValue();
+				auto son = tree->getSon(0)->getNode();
+				auto id = dynamic_pointer_cast<String>(std::get<1>(son))->getValue();
+				AgentPtr target;
+
+				switch (std::get<0>(son)) {
+				case yy::parser::token::ATT_ID:
+					target = turtle->getZone();
+					break;
+				default:
+					target = turtle;
+					break;
+				}
+				
 				if (id == "color") {
 					if(val->getType() != Type::COLOR) {
 							throw SemanticException("color",
@@ -148,7 +160,10 @@ namespace stibbons {
 											yy::position(nullptr,std::get<0>(tree->getPosition()),
 														 std::get<0>(tree->getPosition())));
 					}
-					turtle->setColor(*dynamic_pointer_cast<Color>(val));
+					if(target->getType() == Type::ZONE)
+						dynamic_pointer_cast<Zone>(target)->setColor(*dynamic_pointer_cast<Color>(val));
+					else
+						dynamic_pointer_cast<Turtle>(target)->setColor(*dynamic_pointer_cast<Color>(val));
 				}
 				else {
 					if(hashTable) {
@@ -157,7 +172,7 @@ namespace stibbons {
 							hashTable->setValue(id,val);
 						}
 					}
-					turtle->setProperty(id, val);
+					target->setProperty(id,val);
 				}
 				return val;
 			}

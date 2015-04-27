@@ -344,10 +344,10 @@ primary_expr : ID
 {
   $$ = make_shared<stibbons::Tree>(yy::parser::token::ID,$1);
 }
-| ID '.' primary_expr
+| primary_expr '.' ID
 {
-  auto t1 = make_shared<stibbons::Tree>(yy::parser::token::ATT_ID,$1);
-  t1->addSon($3);
+  auto t1 = make_shared<stibbons::Tree>(yy::parser::token::ATT_ID,$3);
+  t1->addSon($1);
   $$ = t1;
 }
 | primary_expr '[' expr ']'
