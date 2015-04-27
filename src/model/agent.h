@@ -41,18 +41,6 @@ class Agent : public Value, public enable_shared_from_this<Agent> {
 		void unparent ();
 
 		/**
-		 * Add a value in properties,
-		 * @param new_var the new value of properties, his type is pair<string,Value>
-		 */
-		virtual void setProperty (pair<string,ValuePtr> &&new_var);
-
-		/**
-		 * Add a value in properties,
-		 * @param new_var the new value of properties, his type is pair<string,Value>
-		 */
-		virtual void setProperty (pair<string,ValuePtr> &new_var);
-
-		/**
 		 * Add a property
 		 * @param key the key of the property
 		 * @param value the value of the property

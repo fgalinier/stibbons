@@ -25,11 +25,6 @@ class TestAgent : public TestCase {
 		WorldPtr w;
 
 		void setUp() {
-			pair<string,ValuePtr> paire("chasse", make_shared<Number>(6.0));
-			pair<string,ValuePtr> deuxieme("couleur", make_shared<String>("chat"));
-			pair<string,ValuePtr> troisieme("tortue", make_shared<String>("bleu"));
-			pair<string,ValuePtr> quatrieme("color", make_shared<Color>());
-
 			auto worldSize = Size(2);
 			worldSize.setValue(0, 10);
 			worldSize.setValue(1, 10);
@@ -40,15 +35,15 @@ class TestAgent : public TestCase {
 			warp.push_back(false);
 			warp.push_back(false);
 			w=World::construct(worldSize, zoneSize, warp);
-			w->setProperty(troisieme);
-			w->setProperty(quatrieme);
+			w->setProperty("tortue", make_shared<String>("bleu"));
+			w->setProperty("color", make_shared<Color>());
 
 			z = Zone::construct(w);
-			z->setProperty(deuxieme);
+			z->setProperty("couleur", make_shared<String>("chat"));
 
 			t=Turtle::construct(w, 0);
-			t->setProperty(paire);
-			t->setProperty(deuxieme);
+			t->setProperty("chasse", make_shared<Number>(6.0));
+			t->setProperty("couleur", make_shared<String>("chat"));
 		}
 
 		void getValuesT() {
@@ -61,10 +56,9 @@ class TestAgent : public TestCase {
 
 		void changeValueT(){
 		cout << "TestAgent::changeValueT" << endl;
-		pair<string,ValuePtr> paire("chasse", make_shared<Number>(7.7));
-		t->setProperty(paire);
+		t->setProperty("chasse", make_shared<Number>(7.7));
 
-		auto search = t->getProperty(paire.first);
+		auto search = t->getProperty("chasse");
 		CPPUNIT_ASSERT (
 			search->getType() == Type::NUMBER &&
 			dynamic_pointer_cast<Number>(search)->getValue() == 7.7

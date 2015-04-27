@@ -151,14 +151,13 @@ namespace stibbons {
 					turtle->setColor(*dynamic_pointer_cast<Color>(val));
 				}
 				else {
-					pair<string,ValuePtr> prop = {id,val};
 					if(hashTable) {
 						auto got = hashTable->getValue(id);
 						if (got->getType() != Type::NIL) {
 							hashTable->setValue(id,val);
 						}
 					}
-					turtle->setProperty(prop);
+					turtle->setProperty(id, val);
 				}
 				return val;
 			}
@@ -185,8 +184,7 @@ namespace stibbons {
 					zone->setColor(*dynamic_pointer_cast<Color>(val));
 				}
 				else {
-					pair<string,ValuePtr> prop = {id,val};
-					zone->setProperty(prop);
+					zone->setProperty(id, val);
 				}
 				return val;
 			}
@@ -430,8 +428,7 @@ namespace stibbons {
 			case yy::parser::token::FCT: {
 				auto id = dynamic_pointer_cast<String>(std::get<1>(tree->getNode()))->getValue();
 				auto fct = this->getFunctionFromTree(tree);
-				auto prop = std::pair<std::string,ValuePtr>(id,fct);
-				turtle->setProperty(prop);
+				turtle->setProperty(id, fct);
 			}
 				break;
 			case yy::parser::token::CALL: {

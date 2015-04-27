@@ -69,32 +69,18 @@ void Agent::unparent () {
 	parent = parent;
 }
 
-void Agent::setProperty (pair<string,ValuePtr> &&new_var) {
-	lock_guard<mutex> lock(parent_m);
-
-	auto search = properties->find (new_var.first);
-	if ( search == properties->end())
-		properties->insert(new_var);
-	else {
-		properties->erase(new_var.first);
-		properties->insert(new_var);
-	}
-}
-
-void Agent::setProperty (pair<string,ValuePtr> &new_var) {
-	lock_guard<mutex> lock(parent_m);
-
-	auto search = properties->find (new_var.first);
-	if ( search == properties->end())
-		properties->insert(new_var);
-	else {
-		properties->erase(new_var.first);
-		properties->insert(new_var);
-	}
-}
-
 void Agent::setProperty (string key, ValuePtr value) {
-	setProperty (pair<string, ValuePtr>(key, value));
+	lock_guard<mutex> lock(parent_m);
+
+	auto prop = pair<string, ValuePtr>(key, value);
+
+	auto search = properties->find (key);
+	if ( search == properties->end())
+		properties->insert(prop);
+	else {
+		properties->erase(key);
+		properties->insert(prop);
+	}
 }
 
 ValuePtr Agent::getProperty(string p) {
