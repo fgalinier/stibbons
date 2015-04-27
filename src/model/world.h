@@ -51,6 +51,19 @@ class World : public Changeable, public Agent {
 		virtual Type getType() const;
 
 		/**
+		 * Add a property
+		 * @param key the key of the property
+		 * @param value the value of the property
+		 */
+		virtual void setProperty (string key, ValuePtr value);
+
+		 /**
+		 * Get the value of the propertie p
+		 * @return the value of propertie p
+		 */
+		virtual ValuePtr getProperty(string p);
+
+		/**
 		 * Add a line
 		 */
 		void addLine (Line* add_object);
@@ -176,7 +189,7 @@ class World : public Changeable, public Agent {
 		unordered_set<BreedPtr> anonymousBreeds;
 
 		turtle_id id;
-		mutex value_m;
+		recursive_mutex value_m;
 };
 
 typedef std::shared_ptr<World> WorldPtr;
