@@ -143,37 +143,28 @@ namespace stibbons {
 				auto id = dynamic_pointer_cast<String>(std::get<1>(son))->getValue();
 				AgentPtr target;
 
-				switch (std::get<0>(son)) {
-				case yy::parser::token::ATT_ID:
-					target = turtle->getZone();
-					break;
-				default:
+				if (std::get<0>(son) == yy::parser::token::ATT_ID) {
+					auto t = this->interpret(turtle,tree->getSon(0)->getSon(0),hashTable);
+					if(t->getType() != Type::TURTLE 
+					   && t->getType() != Type::WORLD 
+					   && t->getType() != Type::ZONE)
+						throw SemanticException(".",
+												Type::TURTLE,
+												t->getType(),
+												getPosition(tree));
+						target = dynamic_pointer_cast<Agent>(t);
+				}
+				else
 					target = turtle;
-					break;
-				}
 				
-				if (id == "color") {
-					if(val->getType() != Type::COLOR) {
-							throw SemanticException("color",
-					                        Type::COLOR,
-					                        val->getType(),
-											yy::position(nullptr,std::get<0>(tree->getPosition()),
-														 std::get<0>(tree->getPosition())));
+				if(hashTable) {
+					auto got = hashTable->getValue(id);
+					if (got->getType() != Type::NIL) {
+						hashTable->setValue(id,val);
 					}
-					if(target->getType() == Type::ZONE)
-						dynamic_pointer_cast<Zone>(target)->setColor(*dynamic_pointer_cast<Color>(val));
-					else
-						dynamic_pointer_cast<Turtle>(target)->setColor(*dynamic_pointer_cast<Color>(val));
 				}
-				else {
-					if(hashTable) {
-						auto got = hashTable->getValue(id);
-						if (got->getType() != Type::NIL) {
-							hashTable->setValue(id,val);
-						}
-					}
-					target->setProperty(id,val);
-				}
+				target->setProperty(id,val);
+				
 				return val;
 			}
 				break;
