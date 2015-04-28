@@ -35,7 +35,6 @@ class Window : public QMainWindow {
 		void reset();
 		void run();
 		void halt();
-		void next();
 		void about();
 		void updateInterpreterWaitTime(int waitTime);
 
@@ -52,7 +51,6 @@ class Window : public QMainWindow {
 		QAction *resetAct;
 		QAction *runAct;
 		QAction *haltAct;
-		QAction *nextAct;
 		QAction *quitAct;
 		QAction *aboutAct;
 

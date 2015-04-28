@@ -69,16 +69,6 @@ void Window::createActions() {
 	haltAct->setStatusTip(tr("Halt the execution of the program"));
 	connect(haltAct, SIGNAL(triggered()), this, SLOT(halt()));
 
-	icon = QApplication::style()->standardIcon (QStyle::SP_MediaSkipForward);
-	nextAct = new QAction(icon, tr("Nest &Step..."), this);
-	nextAct->setStatusTip(tr("Execute the program for one step"));
-	connect(nextAct, SIGNAL(triggered()), this, SLOT(next()));
-
-	icon = QApplication::style()->standardIcon (QStyle::SP_MediaSkipForward);
-	nextAct = new QAction(icon, tr("Nest &Step..."), this);
-	nextAct->setStatusTip(tr("Execute the program for one step"));
-	connect(nextAct, SIGNAL(triggered()), this, SLOT(next()));
-
 	quitAct = new QAction(tr("&Quit"), this);
 	quitAct->setShortcuts(QKeySequence::Quit);
 	quitAct->setStatusTip(tr("Quit the application"));
@@ -99,7 +89,6 @@ void Window::createToolBars() {
 	toolbar->addAction(resetAct);
 	toolbar->addAction(runAct);
 	toolbar->addAction(haltAct);
-	toolbar->addAction(nextAct);
 
 	// Extenseur
 	QWidget* empty = new QWidget();
@@ -184,10 +173,6 @@ void Window::run() {
 void Window::halt() {
 	if (runner)
 		runner->halt();
-}
-
-void Window::next() {
-	// TODO exécute une étape du programme
 }
 
 void Window::about() {
