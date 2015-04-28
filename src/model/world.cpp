@@ -3,7 +3,7 @@
 namespace stibbons {
 
 
-World::World (Size worldSize, Size zoneSize,vector<bool> warp) throw(domain_error) : Agent(nullptr), worldSize(worldSize), zoneSize(zoneSize), Tid(0),Zid(0) {
+World::World (Size worldSize, Size zoneSize,vector<bool> warp) throw(domain_error) : Agent(nullptr), worldSize(worldSize), zoneSize(zoneSize),warp(warp), Tid(0),Zid(0) {
 	if (worldSize.getDimensions() != zoneSize.getDimensions())
 		throw domain_error("Can't create a world with a dimension number different to its zones'");
 
