@@ -111,12 +111,10 @@ Color::Color (string color) throw(domain_error) {
 			throw domain_error("Not a color: " + color);
 	}
 
-	auto value = strtol(str, NULL, 16);
-	auto error = errno;
-	if (error)
-		throw domain_error("Not a color: " + color);
-	// si erreur = EINVAL, exception
-	// ERANGE
+	unsigned long value = 0;
+	stringstream ss;
+	ss << hex << string(str);
+	ss >> value;
 
 	r(((value >> (2*bps)) & mask) / max);
 	g(((value >>    bps ) & mask) / max);
