@@ -1,8 +1,8 @@
 NULL =
 
 CC = g++
-MOC = moc
-RCC = rcc
+MOC = moc-qt5
+RCC = rcc-qt5
 
 INCDIR = /usr/include
 QTINCDIR = $(INCDIR)/qt5
