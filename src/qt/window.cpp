@@ -145,8 +145,12 @@ void Window::loadFile(const QString &fileName) {
 	}
 
 	QTextStream in(&file);
-	auto program = in.readAll().toStdString();
+	program = in.readAll().toStdString();
 
+	loadProgram();
+}
+
+void Window::loadProgram() {
 	if (runner != nullptr) {
 		delete runner;
 		runner = nullptr;
@@ -167,7 +171,7 @@ void Window::loadFile(const QString &fileName) {
 }
 
 void Window::reset() {
-	// TODO stoppe l'exécution du programme si nécessaire et réinitialise son état
+	loadProgram();
 }
 
 void Window::run() {

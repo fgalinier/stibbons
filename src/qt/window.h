@@ -46,6 +46,7 @@ class Window : public QMainWindow {
 		void writeSettings();
 
 		void loadFile(const QString &fileName);
+		void loadProgram();
 
 		QAction *openAct;
 		QAction *resetAct;
@@ -60,6 +61,8 @@ class Window : public QMainWindow {
 		QToolBar *toolbar;
 
 		Runner *runner;
+
+		std::string program;
 };
 
 }
