@@ -13,11 +13,23 @@ extern FILE *yyin;
 namespace stibbons {
 
 	size_t Interpreter::waitTime = 0;
+	bool Interpreter::suspendFlag = false;
+	condition_variable Interpreter::resumeCond;
 
 	yy::position Interpreter::getPosition(const TreePtr tree) {
 		return yy::position(nullptr,
 		                    std::get<0>(tree->getPosition()),
 		                    std::get<0>(tree->getPosition()));
+	}	
+
+	void Interpreter::checkHalt(){
+		std::unique_lock<std::mutex> lock(suspendMutex);	
+		while (suspendFlag != false){
+			std::cout<<"j'attend car "<<suspendFlag<<std::endl;
+			resumeCond.wait(lock);
+		}	
+		std::cout<<"j'attend pas car "<<suspendFlag<<std::endl;
+
 	}
 
 	void Interpreter::start(AgentPtr agent,
@@ -33,7 +45,7 @@ namespace stibbons {
 	ValuePtr Interpreter::interpret(AgentPtr agent,
 									const TreePtr tree,
 									TablePtr hashTable) throw(SemanticException) {
-		
+		checkHalt();
 		this_thread::sleep_for(chrono::microseconds(waitTime));
 
 		if(tree != nullptr) {

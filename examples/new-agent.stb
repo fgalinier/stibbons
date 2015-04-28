@@ -3,7 +3,3 @@
 		rt 20
 	}
 }
-
-while true {	fd 90
-	rt 25
-}

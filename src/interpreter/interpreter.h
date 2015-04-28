@@ -24,6 +24,7 @@
 #include "../model/nil.h"
 #include <vector>
 #include <thread>
+#include <condition_variable>
 
 namespace stibbons {
 	/**
@@ -38,6 +39,7 @@ namespace stibbons {
 	class Interpreter {
 	protected:
 
+		mutex suspendMutex;
 		vector<thread> sons;
 
         /**
@@ -77,7 +79,14 @@ namespace stibbons {
 
 		static inline yy::position getPosition(const TreePtr tree);
 
+		/**
+		 * If suspended, suspend until resumed. 
+		 */
+		virtual void checkHalt();
+
 	public:
+	    static condition_variable resumeCond;
+		static bool suspendFlag;
 		static size_t waitTime;
 
 		/**

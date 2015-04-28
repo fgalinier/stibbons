@@ -65,13 +65,15 @@ namespace stibbons {
 	}
 
 	void WorldInterpreter::halt() {
-		// TODO mettre en pause l'exécution
+		std::unique_lock<std::mutex> lock(suspendMutex);
+		  suspendFlag = true;
 	}
 
 	void WorldInterpreter::unhalt() {
-		// TODO reprend l'exécution
+		std::unique_lock<std::mutex> lock(suspendMutex);
+		suspendFlag = false;
+		resumeCond.notify_all();
 	}
-
 }
 
 /*
