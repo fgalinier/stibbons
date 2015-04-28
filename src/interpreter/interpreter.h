@@ -40,7 +40,7 @@ namespace stibbons {
 	protected:
 
 		mutex suspendMutex;
-		vector<thread> sons;
+		vector<thread*> sons;
 
         /**
 		 * Interpret a function (or function of a breed)

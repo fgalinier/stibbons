@@ -25,10 +25,9 @@ namespace stibbons {
 	void Interpreter::checkHalt(){
 		std::unique_lock<std::mutex> lock(suspendMutex);	
 		while (suspendFlag != false){
-			std::cout<<"j'attend car "<<suspendFlag<<std::endl;
-			resumeCond.wait(lock);
+			for(auto s : sons)
+				resumeCond.wait(lock);
 		}	
-		std::cout<<"j'attend pas car "<<suspendFlag<<std::endl;
 
 	}
 
@@ -38,7 +37,7 @@ namespace stibbons {
 		this->interpret(agent,tree,make_shared<Table>());
 
 		while(!sons.empty()){
-			sons[0].join();
+			sons[0]->join();
 		}
 	}
 
@@ -401,11 +400,12 @@ namespace stibbons {
 				auto params = getParams(fct,newTurtle,paramTree,hashTable,id);
 				auto inter = make_shared<TurtleInterpreter>();
 
-				sons.push_back(thread (&Interpreter::interpretFunction,
-									   inter,
-									   fct,
-									   newTurtle,
-									   params));
+				auto newThread = new thread (&Interpreter::interpretFunction,
+											 inter,
+											 fct,
+											 newTurtle,
+											 params);
+				sons.push_back(newThread);
 			
 				return newTurtle;
 			}
