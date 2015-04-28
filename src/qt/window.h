@@ -47,6 +47,8 @@ class Window : public QMainWindow {
 		void loadFile(const QString &fileName);
 		void loadProgram();
 
+		void updateToolbar();
+
 		QAction *openAct;
 		QAction *resetAct;
 		QAction *runAct;

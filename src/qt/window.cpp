@@ -33,6 +33,8 @@ Window::Window() : runner(nullptr) {
 	readSettings();
 
 	setUnifiedTitleAndToolBarOnMac(true);
+
+	updateToolbar();
 }
 
 Window::~Window() {
@@ -157,6 +159,8 @@ void Window::loadProgram() {
 
 	setCentralWidget(scrollArea);
 	scrollArea->setWidget(worldView);
+
+	updateToolbar();
 }
 
 void Window::reset() {
@@ -164,15 +168,17 @@ void Window::reset() {
 }
 
 void Window::run() {
-	if (runner == nullptr)
-		return;
+	if (runner)
+		runner->start();
 
-	runner->start();
+	updateToolbar();
 }
 
 void Window::halt() {
 	if (runner)
 		runner->halt();
+
+	updateToolbar();
 }
 
 void Window::about() {
@@ -205,6 +211,19 @@ void Window::writeSettings() {
 	QSettings settings;
 	settings.setValue("pos", pos());
 	settings.setValue("size", size());
+}
+
+void Window::updateToolbar() {
+	if (runner) {
+		resetAct->setVisible(true);
+		runAct->setVisible(!runner->isRunning());
+		haltAct->setVisible(runner->isRunning());
+	}
+	else {
+		resetAct->setVisible(false);
+		runAct->setVisible(false);
+		haltAct->setVisible(false);
+	}
 }
 
 }
