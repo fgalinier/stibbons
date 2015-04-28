@@ -50,6 +50,10 @@ namespace stibbons {
 		interpret(*turtle_i, tree,make_shared<Table>());
 	}
 
+	void WorldInterpreter::halt() {
+		// TODO mettre en pause l'exécution
+	}
+
 }
 
 /*

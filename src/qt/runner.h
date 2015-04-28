@@ -22,6 +22,7 @@ class Runner : public QThread {
 		~Runner();
 		WorldPtr getWorld();
 		void run();
+		void halt();
 
 	private:
 		WorldInterpreter* interpreter;

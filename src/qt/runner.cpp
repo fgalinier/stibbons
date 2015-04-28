@@ -46,6 +46,11 @@ void Runner::run() {
 	}
 }
 
+void Runner::halt() {
+	if (interpreter)
+		interpreter->halt();
+}
+
 }
 
 /*

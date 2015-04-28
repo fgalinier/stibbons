@@ -182,7 +182,8 @@ void Window::run() {
 }
 
 void Window::halt() {
-	// TODO suspend l'exécution du programme
+	if (runner)
+		runner->halt();
 }
 
 void Window::next() {

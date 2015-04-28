@@ -50,9 +50,13 @@ namespace stibbons {
 
 		/**
 		 * Run the interpreter with the parsed program.
-		 * \param world The world to run the program on.
 		 */
 		virtual void run();
+
+		/**
+		 * Halt the execution of the interpreter.
+		 */
+		virtual void halt();
 
 	private:
 		WorldPtr world;
