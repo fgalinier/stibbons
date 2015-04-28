@@ -21,11 +21,20 @@ class Runner : public QThread {
 		Runner(std::string& program);
 		~Runner();
 		WorldPtr getWorld();
+
+		void start();
+
 		void run();
 		void halt();
 
+		bool isRunning();
+
 	private:
+		void unhalt();
+
 		WorldInterpreter* interpreter;
+		bool started;
+		bool running;
 };
 
 }

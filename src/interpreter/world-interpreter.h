@@ -58,6 +58,11 @@ namespace stibbons {
 		 */
 		virtual void halt();
 
+		/**
+		 * Un-halt the execution of the interpreter.
+		 */
+		virtual void unhalt();
+
 	private:
 		WorldPtr world;
 		TreePtr tree;

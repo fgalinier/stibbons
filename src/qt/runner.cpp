@@ -14,7 +14,7 @@ using namespace std;
 
 namespace stibbons {
 
-Runner::Runner(std::string& program) {
+Runner::Runner(std::string& program) : started(false), running(false) {
 	try {
 		interpreter = new WorldInterpreter(program);
 	}
@@ -34,21 +34,48 @@ WorldPtr Runner::getWorld() {
 	return interpreter->getWorld();
 }
 
-void Runner::run() {
-	try {
-		interpreter->run();
-	}
-	catch (SemanticException e) {
-		cerr << "Semantic error: " << e.what() << endl;
-	}
-	catch (exception e) {
-		cerr << e.what() << endl;
+void Runner::start() {
+	if (started)
+		unhalt();
+	else {
+		started = true;
+		running = true;
+		QThread::start();
 	}
 }
 
+void Runner::run() {
+	try {
+		interpreter->run();
+		started = true;
+		running = true;
+	}
+	catch (SemanticException e) {
+		cerr << "Semantic error: " << e.what() << endl;
+		running = false;
+	}
+	catch (exception e) {
+		cerr << e.what() << endl;
+		running = false;
+	}
+}
+
+bool Runner::isRunning() {
+	return running;
+}
+
 void Runner::halt() {
-	if (interpreter)
+	if (interpreter) {
 		interpreter->halt();
+		running = false;
+	}
+}
+
+void Runner::unhalt() {
+	if (interpreter) {
+		interpreter->unhalt();
+		running = true;
+	}
 }
 
 }

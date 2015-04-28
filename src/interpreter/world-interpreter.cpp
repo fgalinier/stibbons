@@ -54,6 +54,10 @@ namespace stibbons {
 		// TODO mettre en pause l'exécution
 	}
 
+	void WorldInterpreter::unhalt() {
+		// TODO reprend l'exécution
+	}
+
 }
 
 /*
