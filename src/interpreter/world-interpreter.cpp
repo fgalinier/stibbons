@@ -2,7 +2,7 @@
 #include "parser.h"
 
 #include <cstring>
-#include <fstream>
+#include <sstream>
 
 #include "../model/turtle.h"
 #include "../model/user-function.h"
@@ -10,31 +10,28 @@
 namespace stibbons {
 
 	WorldInterpreter::WorldInterpreter(std::string program) throw(SyntaxException) {
-		string cpy(program);
-		std::ifstream ifs(cpy.c_str(),ifstream::in);
-		if (ifs.good()) {
-			// Parse the program
-			tree = make_shared<Tree>(0,nullptr);
-			Parser* pparser = new Parser(tree, &ifs);
-			pparser->parse();
-			delete pparser;
-		   
-			// Create a new world depending on the program's parameters
-			auto worldSize = Size(2);
-			worldSize.setValue(0, 50);
-			worldSize.setValue(1, 50);
-			auto zoneSize = Size(2);
-			zoneSize.setValue(0, 10);
-			zoneSize.setValue(1, 10);
-			auto warp = vector<bool>();
-			warp.push_back(false);
-			warp.push_back(false);
-			world = World::construct(worldSize, zoneSize, warp);
+		std::istringstream iss(program, ios_base::in);
 
-			auto f = make_shared<UserFunction>(nullptr);
-			auto breed = world->createBreed(f);
-			breed->createTurtle();
-		}
+		// Parse the program
+		tree = make_shared<Tree>(0,nullptr);
+		Parser pparser(tree, &iss);
+		pparser.parse();
+
+		// Create a new world depending on the program's parameters
+		auto worldSize = Size(2);
+		worldSize.setValue(0, 50);
+		worldSize.setValue(1, 50);
+		auto zoneSize = Size(2);
+		zoneSize.setValue(0, 10);
+		zoneSize.setValue(1, 10);
+		auto warp = vector<bool>();
+		warp.push_back(false);
+		warp.push_back(false);
+		world = World::construct(worldSize, zoneSize, warp);
+
+		auto f = make_shared<UserFunction>(nullptr);
+		auto breed = world->createBreed(f);
+		breed->createTurtle();
 	}
 
 	WorldPtr WorldInterpreter::getWorld() {

@@ -135,15 +135,24 @@ void Window::open() {
 }
 
 void Window::loadFile(const QString &fileName) {
-	auto program = fileName.toStdString();
- 
+	QFile file(fileName);
+	if (!file.open(QFile::ReadOnly | QFile::Text)) {
+		QMessageBox::warning(this, tr("Application"),
+		                     tr("Cannot read file %1:\n%2.")
+		                     .arg(fileName)
+		                     .arg(file.errorString()));
+		return;
+	}
+
+	QTextStream in(&file);
+	auto program = in.readAll().toStdString();
+
 	if (runner != nullptr) {
 		delete runner;
 		runner = nullptr;
 	}
 
 	runner = new Runner(program);
-
 
 	auto scrollArea = new QScrollArea();
 	scrollArea->setAlignment(Qt::AlignCenter);
