@@ -107,18 +107,8 @@ agent {return yy::parser::token::AGT;}
 function {return yy::parser::token::FCT;}
 
 [0-9]+\.?[0-9]*|\.[0-9]+ {std::istringstream iss(yytext); double n; iss >> n; pyylval->v=make_shared<stibbons::Number>(n); return yy::parser::token::NUMBER;}
- 
-\' { BEGIN(spl_quote); }
 
-<spl_quote>[^\\\n\']+ { tmp += yytext; }
-<spl_quote>\\\' { tmp += yytext[1]; }
-<spl_quote>\\\\ { tmp += yytext[1]; }
-<spl_quote>\n { throw stibbons::SyntaxException("New line in a 'string'",loc->begin); }
-<spl_quote>\' { BEGIN(INITIAL);
-	pyylval->v=make_shared<stibbons::String>(tmp); 
-	return yy::parser::token::STRING;}
-
-\"\"\" { BEGIN(tpl_quote); }
+\"\"\" { tmp = std::string(); BEGIN(tpl_quote); }
 
 <tpl_quote>\"\"\" { BEGIN(INITIAL);
 	pyylval->v=make_shared<stibbons::String>(tmp); 
@@ -127,15 +117,31 @@ function {return yy::parser::token::FCT;}
 <tpl_quote>\"[^\"] { tmp += yytext; }
 <tpl_quote>\"\"[^\"] { tmp += yytext; }
 
-\" { BEGIN(dbl_quote); }
+\" { tmp = std::string(); BEGIN(dbl_quote); }
 
 <dbl_quote>[^\\\n\"]+ { tmp += yytext; }
 <dbl_quote>\\\" { tmp += yytext[1]; }
-<dbl_quote>\\\\ { tmp += yytext[1]; }
 <dbl_quote>\n { throw stibbons::SyntaxException("New line in a \"string\"",loc->begin); }
 <dbl_quote>\" { BEGIN(INITIAL);
 	pyylval->v=make_shared<stibbons::String>(tmp); 
 	return yy::parser::token::STRING;}
+ 
+\' { tmp = std::string(); BEGIN(spl_quote); }
+
+<spl_quote>[^\\\n\']+ { tmp += yytext; }
+<spl_quote>\\\' { tmp += yytext[1]; }
+<spl_quote>\n { throw stibbons::SyntaxException("New line in a 'string'",loc->begin); }
+<spl_quote>\' { BEGIN(INITIAL);
+	pyylval->v=make_shared<stibbons::String>(tmp); 
+	return yy::parser::token::STRING;}
+
+<spl_quote,dbl_quote>\\\\ { tmp += yytext[1]; }
+<spl_quote,dbl_quote>{
+    \\n { tmp += '\n'; }
+    \\r { tmp += '\r'; }
+    \\f { tmp += '\f'; }
+    \\0 { tmp += '\0'; }
+}
 
 #([a-f0-9]{6}|[a-f0-9]{3}) {pyylval->v=make_shared<stibbons::Color>(yytext); return yy::parser::token::COLOR;}
 
