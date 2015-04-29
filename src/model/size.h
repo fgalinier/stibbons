@@ -88,7 +88,7 @@ class Size {
 		unsigned dimensions;
 		size_t* axes;
 
-		mutex value_m;
+		recursive_mutex value_m;
 };
 
 }

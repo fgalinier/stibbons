@@ -113,7 +113,7 @@ class Breed {
 
 		WorldPtr world;
 		FunctionPtr function;
-		mutex value_m;
+		recursive_mutex value_m;
 		unordered_set<TurtlePtr> turtles;
 };
 }

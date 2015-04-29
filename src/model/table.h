@@ -98,7 +98,7 @@ class Table : public GenericValue<Type::TABLE> {
 		 virtual string toString();
 
 	protected :
-		mutex value_m;
+		recursive_mutex value_m;
 
 	private:
 		unordered_map<string, ValuePtr> namedValues;

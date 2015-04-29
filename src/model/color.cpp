@@ -30,7 +30,7 @@ Color::Color(double red, double green, double blue) {
 }
 
 Color::Color(Color& other) {
-	lock_guard<mutex> lock(other.value_m);
+	lock_guard<recursive_mutex> lock(other.value_m);
 
 	// Set this
 	red   = other.red;
@@ -39,7 +39,7 @@ Color::Color(Color& other) {
 }
 
 Color::Color (Color&& other) {
-	lock_guard<mutex> lock(other.value_m);
+	lock_guard<recursive_mutex> lock(other.value_m);
 
 	// Set this
 	red   = other.red;
@@ -57,8 +57,8 @@ Color& Color::operator= (Color& other) {
 		return *this;
 
 	lock(value_m, other.value_m);
-	lock_guard<mutex> self_lock(value_m, adopt_lock);
-	lock_guard<mutex> other_lock(other.value_m, adopt_lock);
+	lock_guard<recursive_mutex> self_lock(value_m, adopt_lock);
+	lock_guard<recursive_mutex> other_lock(other.value_m, adopt_lock);
 
 	// Set this
 	red   = other.red;
@@ -73,8 +73,8 @@ Color& Color::operator= (Color&& other) {
 		return *this;
 
 	lock(value_m, other.value_m);
-	lock_guard<mutex> self_lock(value_m, adopt_lock);
-	lock_guard<mutex> other_lock(other.value_m, adopt_lock);
+	lock_guard<recursive_mutex> self_lock(value_m, adopt_lock);
+	lock_guard<recursive_mutex> other_lock(other.value_m, adopt_lock);
 
 	// Set this
 	red   = other.red;
@@ -122,32 +122,32 @@ Color::Color (string color) throw(domain_error) {
 }
 
 void Color::r (double r){
-	lock_guard<mutex> lock(value_m);
+	lock_guard<recursive_mutex> lock(value_m);
 	red = truncate(r);
 }
 
 void Color::g (double g){
-	lock_guard<mutex> lock(value_m);
+	lock_guard<recursive_mutex> lock(value_m);
 	green = truncate(g);
 }
 
 void Color::b (double b){
-	lock_guard<mutex> lock(value_m);
+	lock_guard<recursive_mutex> lock(value_m);
 	blue = truncate(b);
 }
 
 double Color::r () {
-	lock_guard<mutex> lock(value_m);
+	lock_guard<recursive_mutex> lock(value_m);
 	return red;
 }
 
 double Color::g () {
-	lock_guard<mutex> lock(value_m);
+	lock_guard<recursive_mutex> lock(value_m);
 	return green;
 }
 
 double Color::b () {
-	lock_guard<mutex> lock(value_m);
+	lock_guard<recursive_mutex> lock(value_m);
 	return blue;
 }
 

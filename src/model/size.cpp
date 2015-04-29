@@ -11,7 +11,7 @@ Size::Size (unsigned dimensions) : dimensions(dimensions) {
 }
 
 Size::Size(Size& other) {
-	lock_guard<mutex> lock(other.value_m);
+	lock_guard<recursive_mutex> lock(other.value_m);
 
 	// Set this
 	dimensions = other.dimensions;
@@ -20,7 +20,7 @@ Size::Size(Size& other) {
 }
 
 Size::Size (Size&& other) {
-	lock_guard<mutex> lock(other.value_m);
+	lock_guard<recursive_mutex> lock(other.value_m);
 
 	// Set this
 	dimensions = move(other.dimensions);
@@ -38,8 +38,8 @@ Size& Size::operator= (Size& other) {
 		return *this;
 
 	lock(value_m, other.value_m);
-	lock_guard<mutex> self_lock(value_m, adopt_lock);
-	lock_guard<mutex> other_lock(other.value_m, adopt_lock);
+	lock_guard<recursive_mutex> self_lock(value_m, adopt_lock);
+	lock_guard<recursive_mutex> other_lock(other.value_m, adopt_lock);
 
 	// Set this
 	dimensions = other.dimensions;
@@ -54,8 +54,8 @@ Size& Size::operator= (Size&& other) {
 		return *this;
 
 	lock(value_m, other.value_m);
-	lock_guard<mutex> self_lock(value_m, adopt_lock);
-	lock_guard<mutex> other_lock(other.value_m, adopt_lock);
+	lock_guard<recursive_mutex> self_lock(value_m, adopt_lock);
+	lock_guard<recursive_mutex> other_lock(other.value_m, adopt_lock);
 
 	// Set this
 	dimensions = other.dimensions;
@@ -75,7 +75,7 @@ Size::~Size () {
 }
 
 void Size::setValue (unsigned axis, size_t value) throw(out_of_range) {
-	lock_guard<mutex> lock(value_m);
+	lock_guard<recursive_mutex> lock(value_m);
 
 	if (axis >= dimensions)
 		throw out_of_range(invalidAxisMessage);
@@ -84,7 +84,7 @@ void Size::setValue (unsigned axis, size_t value) throw(out_of_range) {
 }
 
 size_t Size::getValue (unsigned axis) throw(out_of_range) {
-	lock_guard<mutex> lock(value_m);
+	lock_guard<recursive_mutex> lock(value_m);
 
 	if (axis >= dimensions)
 		throw out_of_range(invalidAxisMessage);
@@ -97,7 +97,7 @@ unsigned Size::getDimensions () const {
 }
 
 size_t Size::operator[] (unsigned axis) throw(out_of_range) {
-	lock_guard<mutex> lock(value_m);
+	lock_guard<recursive_mutex> lock(value_m);
 
 	if (axis >= dimensions)
 		throw out_of_range(invalidAxisMessage);

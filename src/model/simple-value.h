@@ -29,7 +29,7 @@ class SimpleValue {
 		 * @return the value of value
 		 */
 		T getValue () {
-			lock_guard<mutex> lock(value_m);
+			lock_guard<recursive_mutex> lock(value_m);
 			return value;
 		}
 
@@ -38,7 +38,7 @@ class SimpleValue {
 
 		// Move initialization
 		SimpleValue (SimpleValue&& other) {
-			lock_guard<mutex> lock(other.value_m);
+			lock_guard<recursive_mutex> lock(other.value_m);
 
 			// Set this
 			value = move(other.value);
@@ -49,7 +49,7 @@ class SimpleValue {
 
 		// Copy initialization
 		SimpleValue(SimpleValue& other) {
-			lock_guard<mutex> lock(other.value_m);
+			lock_guard<recursive_mutex> lock(other.value_m);
 
 			// Set this
 			value = other.value;
@@ -61,8 +61,8 @@ class SimpleValue {
 				return *this;
 
 			lock(value_m, other.value_m);
-			lock_guard<mutex> self_lock(value_m, adopt_lock);
-			lock_guard<mutex> other_lock(other.value_m, adopt_lock);
+			lock_guard<recursive_mutex> self_lock(value_m, adopt_lock);
+			lock_guard<recursive_mutex> other_lock(other.value_m, adopt_lock);
 
 			// Set this
 			value = move(other.value);
@@ -79,8 +79,8 @@ class SimpleValue {
 				return *this;
 
 			lock(value_m, other.value_m);
-			lock_guard<mutex> self_lock(value_m, adopt_lock);
-			lock_guard<mutex> other_lock(other.value_m, adopt_lock);
+			lock_guard<recursive_mutex> self_lock(value_m, adopt_lock);
+			lock_guard<recursive_mutex> other_lock(other.value_m, adopt_lock);
 
 			// Set this
 			value = other.value;
@@ -95,7 +95,7 @@ class SimpleValue {
 		virtual void reset () =0;
 
 		T value;
-		mutex value_m;
+		recursive_mutex value_m;
 };
 
 }

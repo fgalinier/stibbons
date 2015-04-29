@@ -98,7 +98,6 @@ class Function : public GenericValue<Type::FUNCTION> {
 
 	protected:
 		vector<string> parameters;
-		mutex value_m;
 };
 
 }

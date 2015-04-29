@@ -12,8 +12,6 @@ ValuePtr Function::operator() (AgentPtr agent, TablePtr params) {
 }
 
 vector<string> Function::getParams (){
-	lock_guard<mutex> lock(value_m);
-
 	return parameters;
 }
 

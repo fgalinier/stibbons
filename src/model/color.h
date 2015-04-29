@@ -31,7 +31,7 @@ class Color : public GenericValue<Type::COLOR> {
 		double green;
 		double blue;
 
-		std::mutex value_m;
+		std::recursive_mutex value_m;
 
 	public:
 		/**

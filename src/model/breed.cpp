@@ -7,12 +7,12 @@ Breed::Breed(WorldPtr world, FunctionPtr function) : world(world), function(func
 Breed::Breed(FunctionPtr function) : world(nullptr), function(function) {}
 
 void Breed::addTurtle (TurtlePtr turtle) {
-	lock_guard<mutex> lock(value_m);
+	lock_guard<recursive_mutex> lock(value_m);
 	turtles.insert(turtle);
 }
 
 void Breed::removeTurtle (TurtlePtr turtle) throw(invalid_argument) {
-	lock_guard<mutex> lock(value_m);
+	lock_guard<recursive_mutex> lock(value_m);
 	if (turtles.find(turtle) == turtles.end())
 		throw invalid_argument("This breed doesn't contain this turtle");
 
@@ -20,7 +20,7 @@ void Breed::removeTurtle (TurtlePtr turtle) throw(invalid_argument) {
 }
 
 unordered_set<TurtlePtr> Breed::getTurtles ( ) {
-	lock_guard<mutex> lock(value_m);
+	lock_guard<recursive_mutex> lock(value_m);
 	return unordered_set<TurtlePtr>(turtles);
 }
 
@@ -41,12 +41,12 @@ TurtlePtr Breed::createTurtle (AgentPtr parent) {
 }
 
 WorldPtr Breed::getWorld () {
-	lock_guard<mutex> lock(value_m);
+	lock_guard<recursive_mutex> lock(value_m);
 	return world;
 }
 
 FunctionPtr Breed::getFunction () {
-	lock_guard<mutex> lock(value_m);
+	lock_guard<recursive_mutex> lock(value_m);
 	return function;
 }
 

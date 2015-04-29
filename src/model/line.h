@@ -106,7 +106,7 @@ class Line {
 		Color color;
 		vector<Point> points;
 
-		mutex value_m;
+		recursive_mutex value_m;
 };
 
 }

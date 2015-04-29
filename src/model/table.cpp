@@ -13,7 +13,7 @@ using namespace std;
 namespace stibbons {
 
 	void Table::setValue (pair<string, ValuePtr> pair) {
-		lock_guard<mutex> lock(value_m);
+		lock_guard<recursive_mutex> lock(value_m);
 
 		auto search = namedValues.find (pair.first);
 		if ( search == namedValues.end())
@@ -30,7 +30,7 @@ namespace stibbons {
 	}
 
 	ValuePtr Table::getValue(string key) {
-		lock_guard<mutex> lock(value_m);
+		lock_guard<recursive_mutex> lock(value_m);
 
 		auto got = namedValues.find(key);
 
@@ -41,7 +41,7 @@ namespace stibbons {
 	}
 
 	void Table::setValue (pair<long, ValuePtr> pair) {
-		lock_guard<mutex> lock(value_m);
+		lock_guard<recursive_mutex> lock(value_m);
 
 		auto search = indexedValues.find (pair.first);
 		if ( search == indexedValues.end())
@@ -58,7 +58,7 @@ namespace stibbons {
 	}
 
 	void Table::append (ValuePtr value) {
-		lock_guard<mutex> lock(value_m);
+		lock_guard<recursive_mutex> lock(value_m);
 
 		long key = indexedValues.rbegin()->first + 1;
 
@@ -66,7 +66,7 @@ namespace stibbons {
 	}
 
 	ValuePtr Table::getValue(long key) {
-		lock_guard<mutex> lock(value_m);
+		lock_guard<recursive_mutex> lock(value_m);
 
 		auto got = indexedValues.find(key);
 
@@ -88,7 +88,7 @@ namespace stibbons {
 	}
 
 	string Table::toString() {
-		lock_guard<mutex> lock(value_m);
+		lock_guard<recursive_mutex> lock(value_m);
 
 		std::ostringstream oss;
 

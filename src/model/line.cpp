@@ -7,7 +7,7 @@ Line::Line(Point point) {
 }
 
 Line::Line(Line& other, size_t since) {
-	lock_guard<mutex> lock(other.value_m);
+	lock_guard<recursive_mutex> lock(other.value_m);
 
 	// Set this
 	color = other.color;
@@ -16,7 +16,7 @@ Line::Line(Line& other, size_t since) {
 }
 
 Line::Line (Line&& other) {
-	lock_guard<mutex> lock(other.value_m);
+	lock_guard<recursive_mutex> lock(other.value_m);
 
 	// Set this
 	color = move(other.color);
@@ -32,8 +32,8 @@ Line& Line::operator= (Line& other) {
 		return *this;
 
 	lock(value_m, other.value_m);
-	lock_guard<mutex> self_lock(value_m, adopt_lock);
-	lock_guard<mutex> other_lock(other.value_m, adopt_lock);
+	lock_guard<recursive_mutex> self_lock(value_m, adopt_lock);
+	lock_guard<recursive_mutex> other_lock(other.value_m, adopt_lock);
 
 	// Set this
 	color = other.color;
@@ -49,8 +49,8 @@ Line& Line::operator= (Line&& other) {
 		return *this;
 
 	lock(value_m, other.value_m);
-	lock_guard<mutex> self_lock(value_m, adopt_lock);
-	lock_guard<mutex> other_lock(other.value_m, adopt_lock);
+	lock_guard<recursive_mutex> self_lock(value_m, adopt_lock);
+	lock_guard<recursive_mutex> other_lock(other.value_m, adopt_lock);
 
 	// Set this
 	color = move(other.color);
@@ -76,19 +76,19 @@ const Color& Line::getColor () const {
 }
 
 void Line::push_back (Point point) {
-	lock_guard<mutex> lock(value_m);
+	lock_guard<recursive_mutex> lock(value_m);
 
 	points.push_back(Point(point));
 }
 
 size_t Line::size () {
-	lock_guard<mutex> lock(value_m);
+	lock_guard<recursive_mutex> lock(value_m);
 
 	return points.size();
 }
 
 void Line::getBox (Point& begin, Point& end) {
-	lock_guard<mutex> lock(value_m);
+	lock_guard<recursive_mutex> lock(value_m);
 
 	auto dimensions = points[0].getDimensions();
 	begin = Point(points[0]);
@@ -105,7 +105,7 @@ void Line::getBox (Point& begin, Point& end) {
 }
 
 void Line::for_each (std::function<void(Point)> foreachFunc) {
-	lock_guard<mutex> lock(value_m);
+	lock_guard<recursive_mutex> lock(value_m);
 
 	for (auto& point : points)
 		foreachFunc(point);
