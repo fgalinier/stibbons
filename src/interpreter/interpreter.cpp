@@ -6,6 +6,7 @@
 
 #include "../model/user-function.h"
 #include "turtle-interpreter.h"
+#include "world-interpreter.h"
 #include "y.tab.h"
 
 extern FILE *yyin;
@@ -358,7 +359,7 @@ namespace stibbons {
 				TurtlePtr newTurtle;
 				TreePtr paramTree;
 				BreedPtr breed;
-				
+
 				if(type == nullptr) {
 					id = "anonym agent";
 					auto function = make_shared<UserFunction>(tree->getSon(0),vector<std::string>());
@@ -377,7 +378,8 @@ namespace stibbons {
 					newTurtle = breed->createTurtle(dynamic_pointer_cast<Turtle>(agent));
 				else
 					newTurtle = breed->createTurtle(agent);					
-				auto params = getParams(fct,newTurtle,paramTree,hashTable,id);
+				auto params = getParams(fct,agent,paramTree,hashTable,id);
+				std::cerr<<params->toString()<<std::endl;
 				auto inter = make_shared<TurtleInterpreter>();
 
 				auto newThread = new thread (&Interpreter::interpretFunction,
@@ -461,9 +463,8 @@ namespace stibbons {
 				throw SemanticException(oss.str().c_str(),
 										getPosition(tree));
 			}
-
 			for(size_t i=0;i<fct->getParams().size();i++) {
-				auto val = this->interpret(agent,tree->getSon(i),hashTable);
+				auto val = Interpreter::interpret(agent,tree->getSon(i),hashTable);
 				newHashTable->setValue(fct->getParams().at(i),val);
 			}
 		}
