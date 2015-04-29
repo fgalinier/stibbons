@@ -1,12 +1,11 @@
-pd
-if(1 == 1){
+if(1 == false){
 	println(true)
 }
 else { 
 	println(false)
 }
 
-if(1 != 1){
+if(1 != true){
 	println(true)
 }
 else { 

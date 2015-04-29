@@ -269,36 +269,16 @@ namespace stibbons {
 			}
 				break;
 			case yy::parser::token::EQ: {
-				try{
 					auto val1 = this->interpret(agent,tree->getSon(0),hashTable);
 					auto val2 = this->interpret(agent,tree->getSon(1),hashTable);
-					if(val1->getType() != val2->getType())
-						throw SemanticException("==",
-												val1->getType(),val1->getType(),
-												val1->getType(),val2->getType(),
-												getPosition(tree));
 
 					return make_shared<Boolean>(val1->isEqual(val2));
-				}
-				catch (std::domain_error e) {
-					throw SemanticException(e.what(), getPosition(tree));
-				}
 			}
 				break; 
 			case yy::parser::token::NEQ: {
-				try{
 					auto val1 = this->interpret(agent,tree->getSon(0),hashTable);
 					auto val2 = this->interpret(agent,tree->getSon(1),hashTable);
-					if(val1->getType() != val2->getType())
-						throw SemanticException("!=",
-												val1->getType(),val1->getType(),
-												val1->getType(),val2->getType(),
-												getPosition(tree));
 					return make_shared<Boolean>(val1->isDifferent(val2));
-				}
-				catch (std::domain_error e) {
-					throw SemanticException(e.what(), getPosition(tree));
-				}			
 			}
 				break; 
 			case yy::parser::token::GT: {
