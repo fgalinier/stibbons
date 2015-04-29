@@ -246,13 +246,13 @@ Object World::exportWorld (){
 	Array size;
 	unsigned dimension=getWorldSize().getDimensions();
 	for (unsigned i=0;i<dimension;i++)
-		size.push_back(getWorldSize().getValue(i));
+		size.push_back(double(getWorldSize().getValue(i)));
 	world.push_back(Pair("WorldSize",size));
 
 	size.clear();
 	unsigned dimensionZ=getZoneSize().getDimensions();
 	for (unsigned i=0;i<dimensionZ;i++)
-		size.push_back(getZoneSize().getValue(i));
+		size.push_back(double(getZoneSize().getValue(i)));
 	world.push_back(Pair("ZoneSize",size));
 
 	Object tortue;

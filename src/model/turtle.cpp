@@ -446,7 +446,7 @@ void Turtle::addMessage(TurtlePtr exp,ValuePtr v){
 
 Object Turtle::exportTurtle(){
 	Object synthese;
-	synthese.push_back(Pair("id",getId()));
+	synthese.push_back(Pair("id",static_cast<uint64_t>(getId())));
 	synthese.push_back(Pair("color",this->getColor().toString()));
 
 	Point Tposition=getPosition();
@@ -473,7 +473,9 @@ Object Turtle::exportTurtle(){
 	{
 		synthese.push_back(Pair("parent","world"));
 	}
-	else synthese.push_back(Pair("parent",dynamic_pointer_cast<Turtle>(parent)->getId()));
+	else synthese.push_back(Pair("parent", static_cast<uint64_t>(
+		dynamic_pointer_cast<Turtle>(parent)->getId()
+	)));
 
 	return synthese;
 }

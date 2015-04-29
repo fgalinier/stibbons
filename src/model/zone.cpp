@@ -137,7 +137,7 @@ string Zone::toString () {
 
 Object Zone::exportZone() {
 	Object synthese;
-	synthese.push_back(Pair("id",getId()));
+	synthese.push_back(Pair("id",static_cast<uint64_t>(getId())));
 	synthese.push_back(Pair("color",this->getColor().toString()));
 
 unordered_map<string,ValuePtr>* properties=Agent::getProperty();
