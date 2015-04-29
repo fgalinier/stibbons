@@ -1,0 +1,6 @@
+println(type-of(42))
+println(type-of("42"))
+
+println(type-of(type-of(42)))
+
+println(type-of(42) == type-of(-1))

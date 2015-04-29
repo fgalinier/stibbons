@@ -14,6 +14,21 @@
 namespace stibbons {
 
 /**
+ * class TypeOfFunction
+ *
+ *\brief A class returning the type of a value.
+ *
+ *\author Adrien Plazas
+**/
+class TypeOfFunction : public Function, public Singleton<TypeOfFunction> {
+	friend Singleton<TypeOfFunction>;
+	protected:
+		TypeOfFunction ();
+	public:
+		virtual ValuePtr exec (AgentPtr agent, TablePtr params);
+};
+
+/**
  * class RandFunction
  *
  *\brief A class returning a random number.

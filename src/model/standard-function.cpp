@@ -4,6 +4,7 @@
 #include "nil.h"
 #include "number.h"
 #include "turtle.h"
+#include "type-value.h"
 
 #include <cstdlib>
 #include <iostream>
@@ -37,6 +38,13 @@ inline TurtlePtr asTurtle (ValuePtr value, string param) throw(domain_error) {
 	if (!casted)
 		paramError (param, Type::TURTLE);
 	return casted;
+}
+
+TypeOfFunction::TypeOfFunction () : Function({"value"}) {}
+
+ValuePtr TypeOfFunction::exec (AgentPtr agent, TablePtr params) {
+	Type type = params->getValue("value")->getType();
+	return make_shared<TypeValue>(type);
 }
 
 ValuePtr RandFunction::exec (AgentPtr agent, TablePtr params) {

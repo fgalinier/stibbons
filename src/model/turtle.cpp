@@ -77,6 +77,7 @@ void Turtle::initAttributes () {
 	setProperty("print", PrintFunction::getInstance());
 	setProperty("println", PrintlnFunction::getInstance());
 	setProperty("rand", RandFunction::getInstance());
+	setProperty("type-of", TypeOfFunction::getInstance());
 
 	// Turtle specific standard functions
 	setProperty("distance-to", DistanceToFunction::getInstance());
