@@ -7,27 +7,27 @@ namespace stibbons {
 std::string toString(Type& type) {
 	switch (type) {
 		case Type::NIL:
-			return "Nil";
+			return "nil";
 		case Type::NUMBER:
-			return "Number";
+			return "number";
 		case Type::BOOLEAN:
-			return "Boolean";
+			return "boolean";
 		case Type::STRING:
-			return "String";
+			return "string";
 		case Type::COLOR:
-			return "Color";
+			return "color";
 		case Type::TABLE:
-			return "Table";
+			return "table";
 		case Type::FUNCTION:
-			return "Function";
+			return "function";
 		case Type::TURTLE:
-			return "Turtle";
+			return "turtle";
 		case Type::TYPE:
-			return "Type";
+			return "type";
 		case Type::ZONE:
-			return "Zone";
+			return "zone";
 		case Type::WORLD:
-			return "World";
+			return "world";
 		default:
 			throw std::domain_error("Can't convert unknown type to string");
 	}
@@ -36,27 +36,27 @@ std::string toString(Type& type) {
 std::string toString(Type&& type) {
 	switch (type) {
 		case Type::NIL:
-			return "Nil";
+			return "nil";
 		case Type::NUMBER:
-			return "Number";
+			return "number";
 		case Type::BOOLEAN:
-			return "Boolean";
+			return "boolean";
 		case Type::STRING:
-			return "String";
+			return "string";
 		case Type::COLOR:
-			return "Color";
+			return "color";
 		case Type::TABLE:
-			return "Table";
+			return "table";
 		case Type::FUNCTION:
-			return "Function";
+			return "function";
 		case Type::TURTLE:
-			return "Turtle";
+			return "turtle";
 		case Type::TYPE:
-			return "Type";
+			return "type";
 		case Type::ZONE:
-			return "Zone";
+			return "zone";
 		case Type::WORLD:
-			return "World";
+			return "world";
 		default:
 			throw std::domain_error("Can't convert unknown type to string");
 	}
