@@ -44,6 +44,7 @@ MODELSRC = \
 	src/model/table.cpp \
 	src/model/turtle.cpp \
 	src/model/type.cpp \
+	src/model/type-value.cpp \
 	src/model/user-function.cpp \
 	src/model/world.cpp \
 	src/model/zone.cpp \

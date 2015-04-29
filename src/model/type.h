@@ -30,7 +30,8 @@ enum class Type {
 	FUNCTION,
 	TURTLE,
 	ZONE,
-	WORLD
+	WORLD,
+	TYPE
 };
 
 std::string toString(Type& type);
@@ -46,6 +47,7 @@ class Number;
 class String;
 class Table;
 class Turtle;
+class TypeValue;
 class Value;
 class World;
 class Zone;
@@ -60,6 +62,7 @@ typedef std::shared_ptr<Number> NumberPtr;
 typedef std::shared_ptr<String> StringPtr;
 typedef std::shared_ptr<Table> TablePtr;
 typedef std::shared_ptr<Turtle> TurtlePtr;
+typedef std::shared_ptr<TypeValue> TypeValuePtr;
 typedef std::shared_ptr<Value> ValuePtr;
 typedef std::shared_ptr<World> WorldPtr;
 typedef std::shared_ptr<Zone> ZonePtr;

@@ -22,6 +22,8 @@ std::string toString(Type& type) {
 			return "Function";
 		case Type::TURTLE:
 			return "Turtle";
+		case Type::TYPE:
+			return "Type";
 		case Type::ZONE:
 			return "Zone";
 		case Type::WORLD:
@@ -49,6 +51,8 @@ std::string toString(Type&& type) {
 			return "Function";
 		case Type::TURTLE:
 			return "Turtle";
+		case Type::TYPE:
+			return "Type";
 		case Type::ZONE:
 			return "Zone";
 		case Type::WORLD:
