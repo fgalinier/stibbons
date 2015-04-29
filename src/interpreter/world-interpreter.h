@@ -39,7 +39,7 @@ namespace stibbons {
 		 *
 		 * \param program The Stibbons program to parse.
 		 */
-		WorldInterpreter(std::string program) throw(SyntaxException);
+		WorldInterpreter(std::string program) throw(InterpreterException);
 
 		/**
 		 * Get the world.

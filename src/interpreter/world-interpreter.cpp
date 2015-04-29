@@ -9,24 +9,95 @@
 
 namespace stibbons {
 
-	WorldInterpreter::WorldInterpreter(std::string program) throw(SyntaxException) {
+	WorldInterpreter::WorldInterpreter(std::string program) throw(InterpreterException) {
 		std::istringstream iss(program, ios_base::in);
 
 		// Parse the program
 		tree = make_shared<Tree>(0,nullptr);
-		Parser pparser(tree, &iss);
+		auto worldDir = make_shared<Table>();
+		Parser pparser(tree, worldDir, &iss);
 		pparser.parse();
 
 		// Create a new world depending on the program's parameters
+		ValuePtr prop;
 		auto worldSize = Size(2);
-		worldSize.setValue(0, 50);
-		worldSize.setValue(1, 50);
+
+		if ((prop = worldDir->getValue("world-width")) != Nil::getInstance()) {
+			if (prop->getType() != Type::NUMBER) {
+				throw SemanticException("%world-width",
+										Type::NUMBER,
+										prop->getType(),
+										getPosition(tree));
+			}
+			worldSize.setValue(0, dynamic_pointer_cast<Number>(prop)->getValue());
+		}
+		else
+			worldSize.setValue(0, 50);
+
+		if ((prop = worldDir->getValue("world-height")) != Nil::getInstance()) {
+			if (prop->getType() != Type::NUMBER) {
+				throw SemanticException("%world-height",
+										Type::NUMBER,
+										prop->getType(),
+										getPosition(tree));
+			}
+			worldSize.setValue(1, dynamic_pointer_cast<Number>(prop)->getValue());
+		}
+		else
+			worldSize.setValue(1, 50);
+
 		auto zoneSize = Size(2);
-		zoneSize.setValue(0, 10);
-		zoneSize.setValue(1, 10);
+
+		if ((prop = worldDir->getValue("zone-width")) != Nil::getInstance()) {
+			if (prop->getType() != Type::NUMBER) {
+				throw SemanticException("%zone-width",
+										Type::NUMBER,
+										prop->getType(),
+										getPosition(tree));
+			}
+			zoneSize.setValue(0, dynamic_pointer_cast<Number>(prop)->getValue());
+		}
+		else
+			zoneSize.setValue(0, 10);
+
+		if ((prop = worldDir->getValue("zone-height")) != Nil::getInstance()) {
+			if (prop->getType() != Type::NUMBER) {
+				throw SemanticException("%zone-height",
+										Type::NUMBER,
+										prop->getType(),
+										getPosition(tree));
+			}
+			zoneSize.setValue(1, dynamic_pointer_cast<Number>(prop)->getValue());
+		}
+		else
+			zoneSize.setValue(1, 10);
+
 		auto warp = vector<bool>();
-		warp.push_back(false);
-		warp.push_back(false);
+
+		if ((prop = worldDir->getValue("x-warp")) != Nil::getInstance()) {
+			if (prop->getType() != Type::BOOLEAN) {
+				throw SemanticException("%x-warp",
+										Type::BOOLEAN,
+										prop->getType(),
+										getPosition(tree));
+			}
+			warp.push_back(dynamic_pointer_cast<Boolean>(prop)->getValue());
+		}
+		else
+			warp.push_back(false);
+
+		if ((prop = worldDir->getValue("y-warp")) != Nil::getInstance()) {
+			if (prop->getType() != Type::BOOLEAN) {
+				throw SemanticException("%y-warp",
+										Type::BOOLEAN,
+										prop->getType(),
+										getPosition(tree));
+			}
+			warp.push_back(dynamic_pointer_cast<Boolean>(prop)->getValue());
+		}
+		else
+			warp.push_back(false);
+
 		world = World::construct(worldSize, zoneSize, warp);
 	}
 

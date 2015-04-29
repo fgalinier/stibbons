@@ -5,7 +5,8 @@
 namespace stibbons {
 	class Parser {
 	public:
-	Parser(stibbons::TreePtr tree, std::istream* in) : scanner(new FlexScanner(in)), parser(*scanner,tree) {}
+	Parser(stibbons::TreePtr tree, stibbons::TablePtr worldDir, std::istream* in) 
+		: scanner(new FlexScanner(in)), parser(*scanner,tree,worldDir) {}
 		
 		int parse() {
 			return parser.parse();

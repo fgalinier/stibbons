@@ -18,6 +18,9 @@ Runner::Runner(std::string& program) : started(false), running(false) {
 	try {
 		interpreter = new WorldInterpreter(program);
 	}
+	catch (SemanticException e) {
+		cerr << "Semantic error: " << e.what() << endl;
+	}
 	catch (SyntaxException e) {
 		cerr << "Syntax error: " << e.what() << endl;
 	}
