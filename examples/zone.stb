@@ -1,0 +1,28 @@
+%x-warp true
+%y-warp true
+
+agent ant (c) {
+	teleport(rand() % world.max-x, rand() % world.max-y, rand())
+
+	function wiggle() {
+		rt rand() % 60
+		lt rand() % 60
+		fd 1
+	}
+
+	color = c - #888
+	zc = c + #888
+
+	while (true) {
+		wiggle()
+		zone.color = zc
+	}
+}
+
+new ant(red)
+new ant(green)
+new ant(blue)
+new ant(yellow)
+new ant(cyan)
+new ant(magenta)
+

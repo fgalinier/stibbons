@@ -1,0 +1,3 @@
+println(yellow)
+println(cyan)
+println(magenta)

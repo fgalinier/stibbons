@@ -1,0 +1,10 @@
+agent a () {
+	message = recv()
+	println("Quelqu’un m’a dit : " + message)
+}
+receveur = new a()
+
+new agent {
+	send (world.receveur, "Coucou !")
+}
+

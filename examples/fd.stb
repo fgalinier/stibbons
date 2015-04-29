@@ -1,0 +1,7 @@
+new agent {
+	lt 135
+
+	while (true) {
+		fd 1
+	}
+}

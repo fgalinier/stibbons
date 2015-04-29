@@ -1,0 +1,5 @@
+println("Hello, world!")
+println(rand() % 100)
+println(println)
+println(true)
+println(#FFF)

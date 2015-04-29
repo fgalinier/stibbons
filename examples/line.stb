@@ -1,0 +1,9 @@
+%x-warp true
+%y-warp true
+
+new agent {
+	pd
+	rt 20
+	fd 1500
+	fd 1500
+}
