@@ -68,9 +68,6 @@ namespace stibbons {
 				case yy::parser::token::PD:
 					agent->penDown();
 					break;
-				default :
-					throw SemanticException("invalid action for a turtle",
-											getPosition(tree));	
 				}
 			}
 		}
