@@ -17,6 +17,8 @@
 namespace stibbons {
 
 class Runner : public QThread {
+	Q_OBJECT
+
 	public:
 		Runner(std::string& program);
 		~Runner();
@@ -28,6 +30,9 @@ class Runner : public QThread {
 		void halt();
 
 		bool isRunning();
+
+	signals:
+		void error(QString type, QString what);
 
 	private:
 		void unhalt();

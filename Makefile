@@ -104,6 +104,7 @@ QTSRC = \
 	$(NULL)
 
 MOCHEADERS = \
+	src/qt/runner.h \
 	src/qt/window.h \
 	src/qt/world-view.h \
 	$(NULL)

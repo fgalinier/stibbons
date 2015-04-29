@@ -149,6 +149,9 @@ void Window::loadProgram() {
 
 	runner = new Runner(program);
 
+	connect(runner, SIGNAL(error(QString,QString)),
+	        this, SLOT(error(QString,QString)));
+
 	auto scrollArea = new QScrollArea();
 	scrollArea->setAlignment(Qt::AlignCenter);
 	scrollArea->show();
@@ -197,6 +200,13 @@ void Window::about() {
 
 void Window::updateInterpreterWaitTime(int waitTime) {
 	Interpreter::waitTime = pow(10.0, (double) waitTime / 100.0) - 1;
+}
+
+void Window::error(QString type, QString what) {
+	QMessageBox::critical(this, type, what);
+	cerr << type.toStdString() << ": " << what.toStdString() << endl;
+
+	updateToolbar();
 }
 
 void Window::readSettings() {

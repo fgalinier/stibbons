@@ -38,6 +38,8 @@ class Window : public QMainWindow {
 		void about();
 		void updateInterpreterWaitTime(int waitTime);
 
+		void error(QString type, QString what);
+
 	private:
 		void createActions();
 		void createToolBars();

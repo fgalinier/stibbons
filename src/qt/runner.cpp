@@ -54,11 +54,13 @@ void Runner::run() {
 		running = true;
 	}
 	catch (SemanticException e) {
-		cerr << "Semantic error: " << e.what() << endl;
+		halt();
+		emit error("Semantic error", QString(e.what()));
 		running = false;
 	}
 	catch (exception e) {
-		cerr << e.what() << endl;
+		halt();
+		emit error("Error", QString(e.what()));
 		running = false;
 	}
 }
