@@ -198,6 +198,16 @@ namespace stibbons {
 				catch (std::domain_error e) {
 					throw SemanticException(e.what(), getPosition(tree));
 				}
+			case yy::parser::token::UNARYMINUS: {
+				auto val1 = this->interpret(agent,tree->getSon(0),hashTable);
+				if(val1->getType() != Type::NUMBER) 
+					throw SemanticException("-",
+					                        Type::NUMBER,
+					                        val1->getType(),
+					                        getPosition(tree));
+				return dynamic_pointer_cast<Number>(val1)->unaryMinus();
+			}
+				break;
 			case '*':
 				try {
 					auto val1 = this->interpret(agent,tree->getSon(0), hashTable);

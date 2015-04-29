@@ -84,6 +84,13 @@ NumberPtr Number::modulo (NumberPtr other) throw(std::domain_error) {
 	return make_shared<Number>(fmod(getValue(), other->getValue()));
 }
 
+NumberPtr Number::unaryMinus () throw(std::domain_error){
+	auto number = this->getValue();
+	auto val = - number;
+	return make_shared<Number>(val);
+}
+
+
 int Number::compare (ValuePtr other) {
 	if (getType() != other->getType())
 		return Value::compare (other);

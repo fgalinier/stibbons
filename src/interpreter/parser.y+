@@ -136,6 +136,7 @@
 %token NEW   "new"
 %token AGT   "agent"
 %token CALL
+%token UNARYMINUS
 %token <v> NUMBER
 %token <v> STRING
 %token <v> COLOR
@@ -332,7 +333,7 @@ expr : assignment_expression { $$ = $1; }
 }
 | '-' expr %prec MOINSUNAIRE 
 {
-  stibbons::TreePtr t1 = make_shared<stibbons::Tree>('-',nullptr);
+  stibbons::TreePtr t1 = make_shared<stibbons::Tree>(yy::parser::token::UNARYMINUS,nullptr);
   t1->addSon($2);
   $$ = t1;
 }

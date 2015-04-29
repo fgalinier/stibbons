@@ -98,6 +98,12 @@ class Number : public GenericValue<Type::NUMBER>, public SimpleValue<double> {
 		 * @return the resulting value
 		 */
 		virtual NumberPtr modulo (NumberPtr other) throw(std::domain_error);
+		
+		/**
+		 * Apply the unary minus operation to current number
+		 * @return the resulting value
+		 */
+		virtual NumberPtr unaryMinus () throw(std::domain_error);
 
 		/**
 		 * Return whether the comparison value of two values
