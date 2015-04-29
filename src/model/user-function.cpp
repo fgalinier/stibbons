@@ -1,7 +1,7 @@
 #include "user-function.h"
 
 #include "type.h"
-#include "../interpreter/interpreter.h"
+#include "../interpreter/world-interpreter.h"
 #include "../interpreter/turtle-interpreter.h"
 
 namespace stibbons {
@@ -14,7 +14,7 @@ ValuePtr UserFunction::exec (AgentPtr agent, TablePtr params) {
 	if(agent->getType() == Type::TURTLE){
 		return TurtleInterpreter().interpret(agent, tree, params);
 	}
-	return Interpreter().interpret (agent, tree, params);
+	return WorldInterpreter().interpret (agent, tree, params);
 		
 }
 

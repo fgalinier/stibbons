@@ -32,6 +32,12 @@ namespace stibbons {
 	 */
 	class WorldInterpreter : public virtual Interpreter {
 	public:
+
+		/**
+		 * Create a new interpreter for a turtle
+		 */
+		WorldInterpreter() = default;
+
 		/**
 		 * Create a new interpreter
 		 * Parse a Stibbons program, store its syntactic tree and return
