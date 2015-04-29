@@ -1,8 +1,10 @@
-while (true) {
-	pd
-	repeat 360 {
-		rt 1
-		fd 1
+new agent {
+	while (true) {
+		pd
+		repeat 360 {
+			rt 1
+			fd 1
+		}
+		pu
 	}
-	pu
 }

@@ -1,8 +1,10 @@
-pd
-fd 50
-rt 90
-fd 50
-rt 90
-fd 50
-rt 90
-fd 50
+new agent {
+	pd
+	fd 50
+	rt 90
+	fd 50
+	rt 90
+	fd 50
+	rt 90
+	fd 50
+}

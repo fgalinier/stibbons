@@ -1,3 +1,6 @@
+%x-warp true
+%y-warp true
+
 agent ant () {
 	teleport(rand() % world.max-x, rand() % world.max-y, rand())
 

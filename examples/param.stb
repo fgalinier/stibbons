@@ -2,7 +2,7 @@ agent wolf(a){
 	function add(a,b){
 		a+b
 	}
-	
+
 	pd
 	fd a
 	pu

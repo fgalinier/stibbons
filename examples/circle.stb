@@ -1,6 +1,11 @@
-pd
-repeat 360 {
-	rt 1
-	fd 1
+%x-warp true
+%y-warp true
+
+new agent {
+	pd
+	repeat 360 {
+		rt 1
+		fd 1
+	}
+	pu
 }
-pu

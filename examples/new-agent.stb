@@ -1,5 +1,6 @@
 2 new agent {
-	while true { fd 20 
+	while true {
+		fd 20
 		rt 20
 	}
 }
