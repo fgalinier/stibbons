@@ -15,6 +15,7 @@
 #include <sstream>
 #include <cstdlib>
 #include "y.tab.h"
+#include "syntax-exception.h"
 #include "../model/nil.h"
 #include "../model/number.h"
 #include "../model/string.h"
@@ -44,10 +45,13 @@
 id [_a-z][\-_a-z0-9]*
 
 %x comment
+%x spl_quote
+%x dbl_quote
+%x tpl_quote
 
  /*Rules*/
 %%
-
+     std::string tmp;
 %{
   loc->step();
 %}
@@ -103,8 +107,35 @@ agent {return yy::parser::token::AGT;}
 function {return yy::parser::token::FCT;}
 
 [0-9]+\.?[0-9]*|\.[0-9]+ {std::istringstream iss(yytext); double n; iss >> n; pyylval->v=make_shared<stibbons::Number>(n); return yy::parser::token::NUMBER;}
+ 
+\' { BEGIN(spl_quote); }
 
-(\"(\\\"|[^\"])*\")|('(\\'|[^'])*')|(\"\"\"(.|\\n)*\"\"\")  {pyylval->v=make_shared<stibbons::String>(yytext); return yy::parser::token::STRING;}
+<spl_quote>[^\\\n\']+ { tmp += yytext; }
+<spl_quote>\\\' { tmp += yytext[1]; }
+<spl_quote>\\\\ { tmp += yytext[1]; }
+<spl_quote>\n { throw stibbons::SyntaxException("New line in a 'string'",loc->begin); }
+<spl_quote>\' { BEGIN(INITIAL);
+	pyylval->v=make_shared<stibbons::String>(tmp); 
+	return yy::parser::token::STRING;}
+
+\"\"\" { BEGIN(tpl_quote); }
+
+<tpl_quote>\"\"\" { BEGIN(INITIAL);
+	pyylval->v=make_shared<stibbons::String>(tmp); 
+	return yy::parser::token::STRING;}
+<tpl_quote>[^\"]+ { tmp += yytext; }
+<tpl_quote>\"[^\"] { tmp += yytext; }
+<tpl_quote>\"\"[^\"] { tmp += yytext; }
+
+\" { BEGIN(dbl_quote); }
+
+<dbl_quote>[^\\\n\"]+ { tmp += yytext; }
+<dbl_quote>\\\" { tmp += yytext[1]; }
+<dbl_quote>\\\\ { tmp += yytext[1]; }
+<dbl_quote>\n { throw stibbons::SyntaxException("New line in a \"string\"",loc->begin); }
+<dbl_quote>\" { BEGIN(INITIAL);
+	pyylval->v=make_shared<stibbons::String>(tmp); 
+	return yy::parser::token::STRING;}
 
 #([a-f0-9]{6}|[a-f0-9]{3}) {pyylval->v=make_shared<stibbons::Color>(yytext); return yy::parser::token::COLOR;}
 
@@ -114,7 +145,7 @@ function {return yy::parser::token::FCT;}
 
 "/*" {BEGIN(comment);}
 
-<comment>[^*];
+<comment>[^*]
 <comment>"*"+[^*/]*
 <comment>\n\n* {loc->lines(yyleng); loc->step();}
 <comment>"*"+"/" {BEGIN(INITIAL);}
