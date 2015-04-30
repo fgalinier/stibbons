@@ -122,6 +122,31 @@ namespace stibbons {
 				return agent->getProperty(id);
 			}
 				break;
+			case yy::parser::token::TAB_ID: {
+				auto tab = this->interpret(agent,tree->getSon(0),hashTable);
+				if(tab->getType() != Type::TABLE) 
+					throw SemanticException("[]",
+					                        Type::TABLE,
+					                        tab->getType(),
+					                        getPosition(tree));
+				auto key = this->interpret(agent,tree->getSon(1),hashTable);
+				if(key->getType() == Type::STRING) {
+					return dynamic_pointer_cast<Table>(tab)
+						->getValue(dynamic_pointer_cast<String>(key)->getValue());
+				}
+				else if (key->getType() == Type::NUMBER) {
+					return dynamic_pointer_cast<Table>(tab)
+						->getValue(dynamic_pointer_cast<Number>(key)->getValue());
+				}
+				else {
+					throw SemanticException("TABLE KEY",
+											Type::STRING,
+											Type::NUMBER,
+											key->getType(),
+											getPosition(tree));
+				}
+			}
+				break;
 			case '=': {
 				return affectationOp(agent,tree,hashTable);
 			}
@@ -152,7 +177,6 @@ namespace stibbons {
 				break;
 			case yy::parser::token::TABLE:
 				{
-					tree->output(std::cout);
 					auto val = make_shared<Table>();
 					auto sons = tree->getSons();
 					if(std::get<0>(sons.at(1)->getNode()) == yy::parser::token::PAIR) {
@@ -447,34 +471,64 @@ namespace stibbons {
 	}
 
 	inline ValuePtr Interpreter::affectationOp(AgentPtr agent,TreePtr tree, TablePtr hashTable){
-		auto val = this->interpret(agent,tree->getSon(1),hashTable);
-		auto son = tree->getSon(0)->getNode();
-		auto id = dynamic_pointer_cast<String>(std::get<1>(son))->getValue();
-		AgentPtr target;
+	auto val = this->interpret(agent,tree->getSon(1),hashTable);
+				auto son = tree->getSon(0)->getNode();
+				AgentPtr target;
 
-		if (std::get<0>(son) == yy::parser::token::ATT_ID) {
-			auto t = this->interpret(agent,tree->getSon(0)->getSon(0),hashTable);
-			if(t->getType() != Type::TURTLE 
-			   && t->getType() != Type::WORLD 
-			   && t->getType() != Type::ZONE)
-				throw SemanticException(".",
-										Type::TURTLE,
-										t->getType(),
-										getPosition(tree));
-			target = dynamic_pointer_cast<Agent>(t);
-		}
-		else
-			target = agent;
+				if (std::get<0>(son) == yy::parser::token::TAB_ID) {
+					auto tab = this->interpret(agent,tree->getSon(0)->getSon(0),hashTable);
+					if(tab->getType() != Type::TABLE) 
+						throw SemanticException("[]",
+												Type::TABLE,
+												tab->getType(),
+												getPosition(tree));
+					if(tree->getSon(0)->getSons().size() > 1) {
+						auto key = this->interpret(agent,tree->getSon(0)->getSon(1),hashTable);
+						if(key->getType() == Type::STRING) {
+							dynamic_pointer_cast<Table>(tab)
+								->setValue(dynamic_pointer_cast<String>(key)->getValue(),val);
+						}
+						else if (key->getType() == Type::NUMBER) {
+							dynamic_pointer_cast<Table>(tab)
+								->setValue(dynamic_pointer_cast<Number>(key)->getValue(),val);
+						}
+						else {
+							throw SemanticException("TABLE KEY",
+													Type::STRING,
+													Type::NUMBER,
+													key->getType(),
+													getPosition(tree));
+						}
+					}
+					else
+						dynamic_pointer_cast<Table>(tab)->append(val);
+				}
+				else {
+				auto id = dynamic_pointer_cast<String>(std::get<1>(son))->getValue();
+					if (std::get<0>(son) == yy::parser::token::ATT_ID) {
+						auto t = this->interpret(agent,tree->getSon(0)->getSon(0),hashTable);
+						if(t->getType() != Type::TURTLE 
+						   && t->getType() != Type::WORLD 
+						   && t->getType() != Type::ZONE)
+							throw SemanticException(".",
+													Type::TURTLE,
+													t->getType(),
+													getPosition(tree));
+						target = dynamic_pointer_cast<Agent>(t);
+					}
+					else
+						target = agent;
 				
-		if(hashTable) {
-			auto got = hashTable->getValue(id);
-			if (got->getType() != Type::NIL) {
-				hashTable->setValue(id,val);
-			}
-		}
-		target->setProperty(id,val);
-				
-		return val;
+					if(hashTable) {
+						auto got = hashTable->getValue(id);
+						if (got->getType() != Type::NIL) {
+							hashTable->setValue(id,val);
+						}
+					}
+					target->setProperty(id,val);
+				}				
+
+				return val;
 	}
 
 	inline TurtlePtr Interpreter::newOp(AgentPtr agent,TreePtr tree, TablePtr hashTable){

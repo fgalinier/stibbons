@@ -145,13 +145,14 @@
 %token TABLE      "table"
 %token PAIR       "pair"
 %token UNARYMINUS "-"
+%token ATT_ID
+%token TAB_ID
 %token <v> NUMBER
 %token <v> STRING
 %token <v> COLOR
 %token <v> BOOLEAN 
 %token <v> NIL
 %token <v> ID
-%token <v> ATT_ID
 %type <tr> nb_agt
 %type <tr> statement_list
 %type <tr> statement_list_bloc
@@ -410,7 +411,16 @@ primary_expr : ID
 }
 | primary_expr '[' expr ']'
 {
-
+  auto t1 = make_shared<stibbons::Tree>(yy::parser::token::TAB_ID,nullptr);
+  t1->addSon($1);
+  t1->addSon($3);
+  $$ = t1;
+}
+| primary_expr '[' ']'
+{
+  auto t1 = make_shared<stibbons::Tree>(yy::parser::token::TAB_ID,nullptr);
+  t1->addSon($1);
+  $$ = t1;
 }
 | ID '(' ')'
 {
