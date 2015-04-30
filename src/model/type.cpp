@@ -20,6 +20,8 @@ std::string toString(Type& type) {
 			return "table";
 		case Type::FUNCTION:
 			return "function";
+		case Type::AGENT:
+			return "agent";
 		case Type::TURTLE:
 			return "turtle";
 		case Type::TYPE:

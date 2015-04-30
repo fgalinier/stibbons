@@ -58,7 +58,17 @@ namespace stibbons {
 		 * \param pos The position of error.
 		 */
 		SemanticException(std::string msg, Type expectedType1, Type expectedType2, Type actualType1, Type actualType2, yy::position pos);
-
+	
+		/**
+		 * Create a new SemanticException
+		 * \param msg The error message.
+		 * \param expectedType1 One of the expected type.
+		 * \param expectedType2 The other expected type.
+		 * \param actualType The actual type.
+		 * \param pos The position of error.
+		 */
+		SemanticException(std::string msg, Type expectedType1, Type expectedType2, Type actualType, yy::position pos);
+		
 		/**
 		 * Return a message with the error that occurred.
 		 * \return A message with the error and the position

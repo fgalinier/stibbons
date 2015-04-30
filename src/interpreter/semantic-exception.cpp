@@ -15,6 +15,12 @@ namespace stibbons {
 	                                     yy::position pos):
 	InterpreterException(msg + ": expected " + toString(expectedType1) + " and " + toString(expectedType2) + ", got " + toString(actualType1) + " and " + toString(actualType2),pos) {}
 
+	SemanticException::SemanticException(std::string msg,
+	                                     Type expectedType1, Type expectedType2,
+	                                     Type actualType,
+	                                     yy::position pos):
+	InterpreterException(msg + ": expected " + toString(expectedType1) + " or " + toString(expectedType2) + ", got " + toString(actualType),pos) {}
+
   	const char* SemanticException::what() const throw() {
 		return InterpreterException::what();
   	}

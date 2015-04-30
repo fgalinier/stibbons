@@ -28,6 +28,7 @@ enum class Type {
 	COLOR,
 	TABLE,
 	FUNCTION,
+	AGENT,
 	TURTLE,
 	ZONE,
 	WORLD,

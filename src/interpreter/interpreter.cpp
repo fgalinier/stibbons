@@ -136,7 +136,7 @@ namespace stibbons {
 					   && t->getType() != Type::WORLD 
 					   && t->getType() != Type::ZONE)
 						throw SemanticException(".",
-												Type::TURTLE,
+												Type::AGENT,
 												t->getType(),
 												getPosition(tree));
 						target = dynamic_pointer_cast<Agent>(t);
@@ -151,6 +151,44 @@ namespace stibbons {
 			case yy::parser::token::BOOLEAN:
 			case yy::parser::token::NIL:
 				return std::get<1>(tree->getNode());
+				break;
+			case yy::parser::token::TABLE:
+				{
+					tree->output(std::cout);
+					auto val = make_shared<Table>();
+					auto sons = tree->getSons();
+					if(std::get<0>(sons.at(1)->getNode()) == yy::parser::token::PAIR) {
+						for(auto s : sons) {
+							auto key = this->interpret(agent,s->getSon(0),hashTable);
+							auto value = this->interpret(agent,s->getSon(1),hashTable);
+							if(key->getType() == Type::STRING) {
+								val->setValue(
+									dynamic_pointer_cast<String>(key)->getValue(),
+									value
+								);
+							}
+							else if (key->getType() == Type::NUMBER) {
+								val->setValue(
+									dynamic_pointer_cast<Number>(key)->getValue(),
+									value
+								);
+							}
+							else {
+								throw SemanticException("TABLE KEY",
+														Type::STRING,
+														Type::NUMBER,
+														key->getType(),
+														getPosition(tree));
+							}
+						}
+					}
+					else {
+						for(auto s : sons) {
+							val->append(this->interpret(agent,s,hashTable));
+						}
+					}
+					return val;
+				}
 				break;
 				//Arithmetic cases:
 			case '+':
