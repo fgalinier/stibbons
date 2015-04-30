@@ -104,39 +104,47 @@
       return "NIL";
     case yy::parser::token::ID:
       return "ID";
+    case yy::parser::token::TABLE:
+      return "TABLE";
+    case yy::parser::token::PAIR:
+      return "PAIR";
+    case yy::parser::token::UNARYMINUS:
+      return "-";
     default:
       return std::string(1,static_cast<char>(tok));
     }
   }
 }
 
-%token SEQ 0 "sequence"
-%token FD    "forward"
-%token LT    "turn-left"
-%token RT    "turn-right"
-%token PU    "pen-up"
-%token PD    "pen-down"
-%token DIE   "die"
-%token AND   "and"
-%token OR    "or"
-%token XOR   "xor"
-%token NOT   "not" 
-%token EQ    "=="
-%token NEQ   "!="
-%token GT    ">"
-%token GEQ   ">="
-%token LS    "<"
-%token LEQ   "<="
-%token RPT   "repeat"
-%token WHL   "while"
-%token END   "end of file"
-%token IF    "if"
-%token ELSE  "else" 
-%token FCT   "function"
-%token NEW   "new"
-%token AGT   "agent"
-%token CALL
-%token UNARYMINUS
+%token SEQ 0      "sequence"
+%token FD         "forward"
+%token LT         "turn-left"
+%token RT         "turn-right"
+%token PU         "pen-up"
+%token PD         "pen-down"
+%token DIE        "die"
+%token AND        "and"
+%token OR         "or"
+%token XOR        "xor"
+%token NOT        "not" 
+%token EQ         "=="
+%token NEQ        "!="
+%token GT         ">"
+%token GEQ        ">="
+%token LS         "<"
+%token LEQ        "<="
+%token RPT        "repeat"
+%token WHL        "while"
+%token END        "end of file"
+%token IF         "if"
+%token ELSE       "else" 
+%token FCT        "function"
+%token NEW        "new"
+%token AGT        "agent"
+%token CALL       "call"
+%token TABLE      "table"
+%token PAIR       "pair"
+%token UNARYMINUS "-"
 %token <v> NUMBER
 %token <v> STRING
 %token <v> COLOR
@@ -164,6 +172,10 @@
 %type <tr> decl_list
 %type <tr> id_list
 %type <tr> initializer_list
+%type <tr> table_list
+%type <tr> expr_list
+%type <tr> pair_list
+%type <tr> pair
 %type <tok> binary_operator
 %type <tok> decl_id
 
@@ -331,7 +343,7 @@ expr : assignment_expression { $$ = $1; }
   t1->setPosition({@1.begin.line,@1.begin.column});
   $$ = t1;
 }
-| '-' expr %prec MOINSUNAIRE 
+| '-' expr %prec UNARYMINUS 
 {
   stibbons::TreePtr t1 = make_shared<stibbons::Tree>(yy::parser::token::UNARYMINUS,nullptr);
   t1->addSon($2);
@@ -370,6 +382,13 @@ assignment_expression : primary_expr '=' expr
   t1->addSon($3);
   $$ = t1;
 }
+| primary_expr '=' '{' table_list '}'
+{
+  stibbons::TreePtr t1 = make_shared<stibbons::Tree>('=',nullptr);
+  t1->addSon($1);
+  t1->addSon($4);
+  $$ = t1;
+}
 | primary_expr '=' creat_statement
 {
   stibbons::TreePtr t1 = make_shared<stibbons::Tree>('=',nullptr);
@@ -405,6 +424,48 @@ primary_expr : ID
   t1->setPosition({@1.begin.line,@1.begin.column});
   t1->appendSons($3);
   $$ = t1;
+}
+;
+
+table_list : expr_list { $$ = $1; }
+| pair_list { $$ = $1; }
+
+expr_list : expr
+{
+  stibbons::TreePtr t1 = make_shared<stibbons::Tree>(yy::parser::token::TABLE,nullptr);
+  t1->addSon($1);
+  $$ = t1;
+}
+| expr_list ',' expr
+{
+  stibbons::TreePtr t1 = make_shared<stibbons::Tree>(yy::parser::token::TABLE,nullptr);
+  t1->appendSons($1);
+  t1->addSon($3);
+  $$ = t1;
+}
+;
+
+pair_list : pair
+{
+  stibbons::TreePtr t1 = make_shared<stibbons::Tree>(yy::parser::token::TABLE,nullptr);
+  t1->addSon($1);
+  $$ = t1;
+}
+| pair_list ',' pair
+{
+  stibbons::TreePtr t1 = make_shared<stibbons::Tree>(yy::parser::token::TABLE,nullptr);
+  t1->appendSons($1);
+  t1->addSon($3);
+  $$ = t1;
+}
+;
+
+pair : expr ':' expr
+{
+  stibbons::TreePtr t1 = make_shared<stibbons::Tree>(yy::parser::token::PAIR,nullptr);
+  t1->addSon($1);
+  t1->addSon($3);
+  $$ = t1;	
 }
 ;
 
@@ -499,10 +560,10 @@ instr_turtle : FD expr
 };
 
 lit : NUMBER { $$ = make_shared<stibbons::Tree>(yy::parser::token::NUMBER,$1); }
-| STRING { $$ = make_shared<stibbons::Tree>(yy::parser::token::STRING,$1);}
-| BOOLEAN { $$ = make_shared<stibbons::Tree>(yy::parser::token::BOOLEAN,$1);}
-| COLOR { $$ = make_shared<stibbons::Tree>(yy::parser::token::COLOR,$1);}
-| NIL { $$ = make_shared<stibbons::Tree>(yy::parser::token::NIL,$1);};
+| STRING { $$ = make_shared<stibbons::Tree>(yy::parser::token::STRING,$1); }
+| BOOLEAN { $$ = make_shared<stibbons::Tree>(yy::parser::token::BOOLEAN,$1); }
+| COLOR { $$ = make_shared<stibbons::Tree>(yy::parser::token::COLOR,$1); }
+| NIL { $$ = make_shared<stibbons::Tree>(yy::parser::token::NIL,$1); };
 
 %%
 
