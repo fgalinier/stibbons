@@ -9,8 +9,6 @@
 #include "world-interpreter.h"
 #include "y.tab.h"
 
-extern FILE *yyin;
-
 namespace stibbons {
 
 	size_t Interpreter::waitTime = 0;
