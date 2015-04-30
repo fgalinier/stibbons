@@ -139,6 +139,7 @@ function {return yy::parser::token::FCT;}
 <spl_quote,dbl_quote>{
     \\n { tmp += '\n'; }
     \\r { tmp += '\r'; }
+    \\t { tmp += '\t'; }
     \\f { tmp += '\f'; }
     \\0 { tmp += '\0'; }
 }
