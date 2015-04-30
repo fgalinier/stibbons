@@ -1,0 +1,16 @@
+a = 12
+
+t = {18,red,"bla"}
+v = { "bla" : "blou", "blue" : blue, a : 29 }
+
+println(t[2])
+t[2] = 32
+println(t[2])
+v[] = 48
+println(v)
+
+u = 5 new agent {
+	while true fd 20
+}
+
+println(u)

@@ -151,18 +151,18 @@ namespace stibbons {
 				return affectationOp(agent,tree,hashTable);
 			}
 				break;
-			//Attribute cases:
+				//Attribute cases:
 			case yy::parser::token::ATT_ID: {
 				auto t = this->interpret(agent,tree->getSon(0),hashTable);	
 				AgentPtr target;
 				if(t->getType() != Type::TURTLE 
-					   && t->getType() != Type::WORLD 
-					   && t->getType() != Type::ZONE)
-						throw SemanticException(".",
-												Type::AGENT,
-												t->getType(),
-												getPosition(tree));
-						target = dynamic_pointer_cast<Agent>(t);
+				   && t->getType() != Type::WORLD 
+				   && t->getType() != Type::ZONE)
+					throw SemanticException(".",
+											Type::AGENT,
+											t->getType(),
+											getPosition(tree));
+				target = dynamic_pointer_cast<Agent>(t);
 				auto id = dynamic_pointer_cast<String>(std::get<1>(tree->getNode()))->getValue();
 				return target->getProperty(id);
 			}
@@ -313,16 +313,16 @@ namespace stibbons {
 			}
 				break;
 			case yy::parser::token::EQ: {
-					auto val1 = this->interpret(agent,tree->getSon(0),hashTable);
-					auto val2 = this->interpret(agent,tree->getSon(1),hashTable);
+				auto val1 = this->interpret(agent,tree->getSon(0),hashTable);
+				auto val2 = this->interpret(agent,tree->getSon(1),hashTable);
 
-					return make_shared<Boolean>(val1->isEqual(val2));
+				return make_shared<Boolean>(val1->isEqual(val2));
 			}
 				break; 
 			case yy::parser::token::NEQ: {
-					auto val1 = this->interpret(agent,tree->getSon(0),hashTable);
-					auto val2 = this->interpret(agent,tree->getSon(1),hashTable);
-					return make_shared<Boolean>(val1->isDifferent(val2));
+				auto val1 = this->interpret(agent,tree->getSon(0),hashTable);
+				auto val2 = this->interpret(agent,tree->getSon(1),hashTable);
+				return make_shared<Boolean>(val1->isDifferent(val2));
 			}
 				break; 
 			case yy::parser::token::GT: {
@@ -426,12 +426,12 @@ namespace stibbons {
 		auto sons = tree->getSons();
 		for(size_t i=1;i<sons.size();i++) {
 			params.push_back(
-							 dynamic_pointer_cast<String>(
-														  std::get<1>(
-																	  sons.at(i)->getNode()
-																	  )
-														  )->getValue()
-							 );
+				dynamic_pointer_cast<String>(
+					std::get<1>(
+						sons.at(i)->getNode()
+					)
+				)->getValue()
+			);
 		}
 		return make_shared<UserFunction>(fctTree,params);
 	}
@@ -471,76 +471,83 @@ namespace stibbons {
 	}
 
 	inline ValuePtr Interpreter::affectationOp(AgentPtr agent,TreePtr tree, TablePtr hashTable){
-	auto val = this->interpret(agent,tree->getSon(1),hashTable);
-				auto son = tree->getSon(0)->getNode();
-				AgentPtr target;
+		auto val = this->interpret(agent,tree->getSon(1),hashTable);
+		auto son = tree->getSon(0)->getNode();
+		AgentPtr target;
 
-				if (std::get<0>(son) == yy::parser::token::TAB_ID) {
-					auto tab = this->interpret(agent,tree->getSon(0)->getSon(0),hashTable);
-					if(tab->getType() != Type::TABLE) 
-						throw SemanticException("[]",
-												Type::TABLE,
-												tab->getType(),
-												getPosition(tree));
-					if(tree->getSon(0)->getSons().size() > 1) {
-						auto key = this->interpret(agent,tree->getSon(0)->getSon(1),hashTable);
-						if(key->getType() == Type::STRING) {
-							dynamic_pointer_cast<Table>(tab)
-								->setValue(dynamic_pointer_cast<String>(key)->getValue(),val);
-						}
-						else if (key->getType() == Type::NUMBER) {
-							dynamic_pointer_cast<Table>(tab)
-								->setValue(dynamic_pointer_cast<Number>(key)->getValue(),val);
-						}
-						else {
-							throw SemanticException("TABLE KEY",
-													Type::STRING,
-													Type::NUMBER,
-													key->getType(),
-													getPosition(tree));
-						}
-					}
-					else
-						dynamic_pointer_cast<Table>(tab)->append(val);
+		if (std::get<0>(son) == yy::parser::token::TAB_ID) {
+			auto tab = this->interpret(agent,tree->getSon(0)->getSon(0),hashTable);
+			if(tab->getType() != Type::TABLE) 
+				throw SemanticException("[]",
+										Type::TABLE,
+										tab->getType(),
+										getPosition(tree));
+			if(tree->getSon(0)->getSons().size() > 1) {
+				auto key = this->interpret(agent,tree->getSon(0)->getSon(1),hashTable);
+				if(key->getType() == Type::STRING) {
+					dynamic_pointer_cast<Table>(tab)
+						->setValue(dynamic_pointer_cast<String>(key)->getValue(),val);
+				}
+				else if (key->getType() == Type::NUMBER) {
+					dynamic_pointer_cast<Table>(tab)
+						->setValue(dynamic_pointer_cast<Number>(key)->getValue(),val);
 				}
 				else {
-				auto id = dynamic_pointer_cast<String>(std::get<1>(son))->getValue();
-					if (std::get<0>(son) == yy::parser::token::ATT_ID) {
-						auto t = this->interpret(agent,tree->getSon(0)->getSon(0),hashTable);
-						if(t->getType() != Type::TURTLE 
-						   && t->getType() != Type::WORLD 
-						   && t->getType() != Type::ZONE)
-							throw SemanticException(".",
-													Type::TURTLE,
-													t->getType(),
-													getPosition(tree));
-						target = dynamic_pointer_cast<Agent>(t);
-					}
-					else
-						target = agent;
+					throw SemanticException("TABLE KEY",
+											Type::STRING,
+											Type::NUMBER,
+											key->getType(),
+											getPosition(tree));
+				}
+			}
+			else
+				dynamic_pointer_cast<Table>(tab)->append(val);
+		}
+		else {
+			auto id = dynamic_pointer_cast<String>(std::get<1>(son))->getValue();
+			if (std::get<0>(son) == yy::parser::token::ATT_ID) {
+				auto t = this->interpret(agent,tree->getSon(0)->getSon(0),hashTable);
+				if(t->getType() != Type::TURTLE 
+				   && t->getType() != Type::WORLD 
+				   && t->getType() != Type::ZONE)
+					throw SemanticException(".",
+											Type::TURTLE,
+											t->getType(),
+											getPosition(tree));
+				target = dynamic_pointer_cast<Agent>(t);
+			}
+			else
+				target = agent;
 				
-					if(hashTable) {
-						auto got = hashTable->getValue(id);
-						if (got->getType() != Type::NIL) {
-							hashTable->setValue(id,val);
-						}
-					}
-					target->setProperty(id,val);
-				}				
+			if(hashTable) {
+				auto got = hashTable->getValue(id);
+				if (got->getType() != Type::NIL) {
+					hashTable->setValue(id,val);
+				}
+			}
+			target->setProperty(id,val);
+		}				
 
-				return val;
+		return val;
 	}
 
-	inline TurtlePtr Interpreter::newOp(AgentPtr agent,TreePtr tree, TablePtr hashTable){
+	inline TablePtr Interpreter::newOp(AgentPtr agent,TreePtr tree, TablePtr hashTable){
 		auto type = std::get<1>(tree->getNode());
 		std::string id;
-		TurtlePtr newTurtle;
 		TreePtr paramTree;
 		BreedPtr breed;
+		auto turtleTable = make_shared<Table>();
+		auto nb = this->interpret(agent,tree->getSon(0),hashTable);
 
+		if(nb->getType() != Type::NUMBER)
+			throw SemanticException("NEW",
+									Type::NUMBER,
+									nb->getType(),
+									getPosition(tree));					
+				
 		if(type == nullptr) {
 			id = "anonym agent";
-			auto function = make_shared<UserFunction>(tree->getSon(0),vector<std::string>());
+			auto function = make_shared<UserFunction>(tree->getSon(1),vector<std::string>());
 			breed = agent->getWorld()->createBreed(function);
 			paramTree = nullptr;
 
@@ -548,25 +555,29 @@ namespace stibbons {
 		else {
 			id = dynamic_pointer_cast<String>(type)->getValue();
 			breed = agent->getWorld()->getBreed(id);
-			paramTree = tree;
+			paramTree = tree->getSon(1);
 		}
 
-		auto fct = breed->getFunction();
-		if(agent->getType() == Type::TURTLE)
-			newTurtle = breed->createTurtle(dynamic_pointer_cast<Turtle>(agent));
-		else
-			newTurtle = breed->createTurtle(agent);					
-		auto params = getParams(fct,agent,paramTree,hashTable,id);
-		auto inter = make_shared<TurtleInterpreter>();
+		for(auto i = 0;i<dynamic_pointer_cast<Number>(nb)->getValue();i++) {
+			TurtlePtr newTurtle;
+			auto fct = breed->getFunction();
+			if(agent->getType() == Type::TURTLE)
+				newTurtle = breed->createTurtle(dynamic_pointer_cast<Turtle>(agent));
+			else
+				newTurtle = breed->createTurtle(agent);					
+			auto params = getParams(fct,agent,paramTree,hashTable,id);
+			auto inter = make_shared<TurtleInterpreter>();
 
-		auto newThread = new thread (&Interpreter::interpretFunction,
-									 inter,
-									 fct,
-									 newTurtle,
-									 params);
-		sons.push_back(newThread);
+			auto newThread = new thread (&Interpreter::interpretFunction,
+										 inter,
+										 fct,
+										 newTurtle,
+										 params);
+			sons.push_back(newThread);
+			turtleTable->append(newTurtle);
+		}
 			
-		return newTurtle;
+		return turtleTable;
 	}
 
 	inline ValuePtr Interpreter::callOp(AgentPtr agent,TreePtr tree, TablePtr hashTable){

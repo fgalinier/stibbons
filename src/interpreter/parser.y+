@@ -390,13 +390,6 @@ assignment_expression : primary_expr '=' expr
   t1->addSon($4);
   $$ = t1;
 }
-| primary_expr '=' creat_statement
-{
-  stibbons::TreePtr t1 = make_shared<stibbons::Tree>('=',nullptr);
-  t1->addSon($1);
-  t1->addSon($3);
-  $$ = t1;
-}
 ;
 
 primary_expr : ID
@@ -496,36 +489,45 @@ initializer_list : expr
 
 creat_statement : nb_agt NEW AGT bloc
 {
-  stibbons::TreePtr t1 = make_shared<stibbons::Tree>(yy::parser::token::RPT,nullptr);
-  t1->addSon($1);
+  stibbons::TreePtr t1 = make_shared<stibbons::Tree>(yy::parser::token::NEW,nullptr);
   t1->setPosition({@1.begin.line,@1.begin.column});
-  stibbons::TreePtr t2 = make_shared<stibbons::Tree>(yy::parser::token::NEW,nullptr);
-  t2->addSon($4);
-  t1->addSon(t2);
+  t1->addSon($1);
+  t1->addSon($4);
   $$ = t1;
 }
 | nb_agt NEW ID '(' initializer_list ')'
 {
-  stibbons::TreePtr t1 = make_shared<stibbons::Tree>(yy::parser::token::RPT,nullptr);
-  t1->addSon($1);
+  stibbons::TreePtr t1 = make_shared<stibbons::Tree>(yy::parser::token::NEW,$3);
   t1->setPosition({@1.begin.line,@1.begin.column});
-  stibbons::TreePtr t2 = make_shared<stibbons::Tree>(yy::parser::token::NEW,$3);
-  t2->appendSons($5);
-  t1->addSon(t2);
+  t1->addSon($1);
+  t1->addSon($5);
   $$ = t1;
 }
 | nb_agt NEW ID '(' ')'
 {
-  stibbons::TreePtr t1 = make_shared<stibbons::Tree>(yy::parser::token::RPT,nullptr);
+  stibbons::TreePtr t1 = make_shared<stibbons::Tree>(yy::parser::token::NEW,$3);
   t1->addSon($1);
+  t1->addSon(make_shared<stibbons::Tree>(yy::parser::token::NEW,nullptr));
   t1->setPosition({@1.begin.line,@1.begin.column});
-  stibbons::TreePtr t2 = make_shared<stibbons::Tree>(yy::parser::token::NEW,$3);
-  t1->addSon(t2);
+  $$ = t1;
+}
+| primary_expr '=' creat_statement
+{
+  stibbons::TreePtr t1 = make_shared<stibbons::Tree>('=',nullptr);
+  t1->addSon($1);
+  t1->addSon($3);
   $$ = t1;
 }
 ;
 
-nb_agt : expr { $$ = $1; }
+nb_agt : NUMBER 
+{ 
+  $$ = make_shared<stibbons::Tree>(yy::parser::token::NUMBER,$1);
+}
+| primary_expr
+{ 
+	$$ = $1;
+}
 | 
 { 
   stibbons::ValuePtr nb = make_shared<stibbons::Number>(1.0);

@@ -100,7 +100,7 @@ namespace stibbons {
 		 * \param hashTable A hashtable which contain parameters
 		 * \return the newest turtles created by the new operation
 		 */
-		inline TurtlePtr newOp(AgentPtr, TreePtr, TablePtr);
+		inline TablePtr newOp(AgentPtr, TreePtr, TablePtr);
 
 		/**
 		 * Do the calling operation if token detected is 'CALL'
