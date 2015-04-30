@@ -76,8 +76,40 @@ namespace stibbons {
 		 * \return The function corresponding to the tree
 		 */
 		virtual FunctionPtr getFunctionFromTree(const TreePtr);
+		
+		/**
+		 * Get the position of errors
+		 * \param tree The syntaxic tree to interpret.
+		 * \return The position of the error detected.
+		 */
+		static inline yy::position getPosition(const TreePtr);
+		
+		/**
+		 * Do the affectation operation if token detected is '='
+		 * \param agent The agent to run the program on.
+		 * \param tree The syntaxic tree to interpret.
+		 * \param hashTable A hashtable which contain parameters
+		 * \return The result of the '=' operation on concerned value.
+		 */
+		inline ValuePtr affectationOp(AgentPtr, TreePtr, TablePtr);
 
-		static inline yy::position getPosition(const TreePtr tree);
+		/**
+		 * Do the new operation if token detected is 'NEW'
+		 * \param agent The agent to run the program on.
+		 * \param tree The syntaxic tree to interpret.
+		 * \param hashTable A hashtable which contain parameters
+		 * \return the newest turtles created by the new operation
+		 */
+		inline TurtlePtr newOp(AgentPtr, TreePtr, TablePtr);
+
+		/**
+		 * Do the calling operation if token detected is 'CALL'
+		 * \param agent The agent to run the program on.
+		 * \param tree The syntaxic tree to interpret.
+		 * \param hashTable A hashtable which contain parameters
+		 * \return The result of the call operation on concerned value.
+		 */
+		inline ValuePtr callOp(AgentPtr, TreePtr, TablePtr);
 
 		/**
 		 * If suspended, suspend until resumed. 

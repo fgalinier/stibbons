@@ -125,34 +125,7 @@ namespace stibbons {
 			}
 				break;
 			case '=': {
-				auto val = this->interpret(agent,tree->getSon(1),hashTable);
-				auto son = tree->getSon(0)->getNode();
-				auto id = dynamic_pointer_cast<String>(std::get<1>(son))->getValue();
-				AgentPtr target;
-
-				if (std::get<0>(son) == yy::parser::token::ATT_ID) {
-					auto t = this->interpret(agent,tree->getSon(0)->getSon(0),hashTable);
-					if(t->getType() != Type::TURTLE 
-					   && t->getType() != Type::WORLD 
-					   && t->getType() != Type::ZONE)
-						throw SemanticException(".",
-												Type::TURTLE,
-												t->getType(),
-												getPosition(tree));
-						target = dynamic_pointer_cast<Agent>(t);
-				}
-				else
-					target = agent;
-				
-				if(hashTable) {
-					auto got = hashTable->getValue(id);
-					if (got->getType() != Type::NIL) {
-						hashTable->setValue(id,val);
-					}
-				}
-				target->setProperty(id,val);
-				
-				return val;
+				return affectationOp(agent,tree,hashTable);
 			}
 				break;
 			//Attribute cases:
@@ -364,41 +337,7 @@ namespace stibbons {
 			}
 				break;
 			case yy::parser::token::NEW: {
-				auto type = std::get<1>(tree->getNode());
-				std::string id;
-				TurtlePtr newTurtle;
-				TreePtr paramTree;
-				BreedPtr breed;
-
-				if(type == nullptr) {
-					id = "anonym agent";
-					auto function = make_shared<UserFunction>(tree->getSon(0),vector<std::string>());
-					breed = agent->getWorld()->createBreed(function);
-					paramTree = nullptr;
-
-				}
-				else {
-					id = dynamic_pointer_cast<String>(type)->getValue();
-					breed = agent->getWorld()->getBreed(id);
-					paramTree = tree;
-				}
-
-				auto fct = breed->getFunction();
-				if(agent->getType() == Type::TURTLE)
-					newTurtle = breed->createTurtle(dynamic_pointer_cast<Turtle>(agent));
-				else
-					newTurtle = breed->createTurtle(agent);					
-				auto params = getParams(fct,agent,paramTree,hashTable,id);
-				auto inter = make_shared<TurtleInterpreter>();
-
-				auto newThread = new thread (&Interpreter::interpretFunction,
-											 inter,
-											 fct,
-											 newTurtle,
-											 params);
-				sons.push_back(newThread);
-			
-				return newTurtle;
+				return newOp(agent,tree,hashTable);
 			}
 				break;
 				// Functions
@@ -408,24 +347,8 @@ namespace stibbons {
 				agent->setProperty(id, fct);
 			}
 				break;
-			case yy::parser::token::CALL: {
-				auto id = dynamic_pointer_cast<String>(std::get<1>(tree->getNode()))->getValue();
-				auto fct = dynamic_pointer_cast<Function>(agent->getProperty(id));
-				if(fct == nullptr)
-					throw SemanticException("Try to eval a non function value",
-			                                getPosition(tree));
-				if(fct->getType() != Type::FUNCTION)
-					throw SemanticException("()",
-					                        Type::FUNCTION,
-					                        fct->getType(),
-			                                getPosition(tree));
-				auto params = getParams(fct,agent,tree,hashTable,id);
-				try {
-					return this->interpretFunction(fct,agent,params);
-				}
-				catch (std::domain_error e) {
-					throw SemanticException(e.what(), getPosition(tree));
-				}
+			case yy::parser::token::CALL: {	
+				return callOp(agent,tree,hashTable);
 			}
 				break;
 			default :
@@ -485,6 +408,95 @@ namespace stibbons {
 	                                        AgentPtr agent,
 	                                        TablePtr params) {
 		return (*fct)(agent, params);
+	}
+
+	inline ValuePtr Interpreter::affectationOp(AgentPtr agent,TreePtr tree, TablePtr hashTable){
+		auto val = this->interpret(agent,tree->getSon(1),hashTable);
+		auto son = tree->getSon(0)->getNode();
+		auto id = dynamic_pointer_cast<String>(std::get<1>(son))->getValue();
+		AgentPtr target;
+
+		if (std::get<0>(son) == yy::parser::token::ATT_ID) {
+			auto t = this->interpret(agent,tree->getSon(0)->getSon(0),hashTable);
+			if(t->getType() != Type::TURTLE 
+			   && t->getType() != Type::WORLD 
+			   && t->getType() != Type::ZONE)
+				throw SemanticException(".",
+										Type::TURTLE,
+										t->getType(),
+										getPosition(tree));
+			target = dynamic_pointer_cast<Agent>(t);
+		}
+		else
+			target = agent;
+				
+		if(hashTable) {
+			auto got = hashTable->getValue(id);
+			if (got->getType() != Type::NIL) {
+				hashTable->setValue(id,val);
+			}
+		}
+		target->setProperty(id,val);
+				
+		return val;
+	}
+
+	inline TurtlePtr Interpreter::newOp(AgentPtr agent,TreePtr tree, TablePtr hashTable){
+		auto type = std::get<1>(tree->getNode());
+		std::string id;
+		TurtlePtr newTurtle;
+		TreePtr paramTree;
+		BreedPtr breed;
+
+		if(type == nullptr) {
+			id = "anonym agent";
+			auto function = make_shared<UserFunction>(tree->getSon(0),vector<std::string>());
+			breed = agent->getWorld()->createBreed(function);
+			paramTree = nullptr;
+
+		}
+		else {
+			id = dynamic_pointer_cast<String>(type)->getValue();
+			breed = agent->getWorld()->getBreed(id);
+			paramTree = tree;
+		}
+
+		auto fct = breed->getFunction();
+		if(agent->getType() == Type::TURTLE)
+			newTurtle = breed->createTurtle(dynamic_pointer_cast<Turtle>(agent));
+		else
+			newTurtle = breed->createTurtle(agent);					
+		auto params = getParams(fct,agent,paramTree,hashTable,id);
+		auto inter = make_shared<TurtleInterpreter>();
+
+		auto newThread = new thread (&Interpreter::interpretFunction,
+									 inter,
+									 fct,
+									 newTurtle,
+									 params);
+		sons.push_back(newThread);
+			
+		return newTurtle;
+	}
+
+	inline ValuePtr Interpreter::callOp(AgentPtr agent,TreePtr tree, TablePtr hashTable){
+		auto id = dynamic_pointer_cast<String>(std::get<1>(tree->getNode()))->getValue();
+		auto fct = dynamic_pointer_cast<Function>(agent->getProperty(id));
+		if(fct == nullptr)
+			throw SemanticException("Try to eval a non function value",
+									getPosition(tree));
+		if(fct->getType() != Type::FUNCTION)
+			throw SemanticException("()",
+									Type::FUNCTION,
+									fct->getType(),
+									getPosition(tree));
+		auto params = getParams(fct,agent,tree,hashTable,id);
+		try {
+			return this->interpretFunction(fct,agent,params);
+		}
+		catch (std::domain_error e) {
+			throw SemanticException(e.what(), getPosition(tree));
+		}
 	}
 }
 
