@@ -42,6 +42,7 @@ void World::init () {
 	}
 
 	// General purpose standard functions
+	setProperty("ask-zones", AskZonesFunction::getInstance());
 	setProperty("print", PrintFunction::getInstance());
 	setProperty("println", PrintlnFunction::getInstance());
 	setProperty("rand", RandFunction::getInstance());

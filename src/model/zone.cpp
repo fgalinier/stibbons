@@ -81,6 +81,12 @@ void Zone::setProperty (string key, ValuePtr value) {
 		return;
 	}
 
+	if (key == "parent")
+		return;
+
+	if (key == "world")
+		return;
+
 	Agent::setProperty(key, value);
 }
 
@@ -89,6 +95,12 @@ ValuePtr Zone::getProperty(string p) {
 
 	if (p == "color")
 		return make_shared<Color>(getColor());
+
+	if (p == "parent")
+		return getParent();
+
+	if (p == "world")
+		return getWorld();
 
 	return Agent::getProperty(p);
 }

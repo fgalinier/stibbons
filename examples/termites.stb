@@ -1,3 +1,7 @@
+%world-width 250
+%world-height 250
+%zone-width 2
+%zone-height 2
 %x-warp true
 %y-warp true
 
@@ -9,42 +13,48 @@ agent termite () {
 	}
 
 	function search-for-chip () {
-		if (zone.color == yellow) {
-			zone.color = black
-			color = red
-			fd 20
-		}
-		else {
-			wiggle()
-			search-for-chip()
+		continue = true
+		while continue {
+			if (zone.color == yellow) {
+				zone.color = black
+				color = red
+				fd 20
+				continue = false
+			}
+			else {
+				wiggle()
+			}
 		}
 	}
 
 	function find-new-pile () {
-		if (zone.color != yellow) {
+		while (zone.color != yellow) {
 			wiggle()
-			find-new-pile()
 		}
 	}
 
 	function put-down-chip () {
-		if (zone.color == black) {
-			zone.color = yellow
-			color = white
-			get-away()
-		}
-		else {
-			rt rand()
-			fd 1
-			put-down-chip()
+		continue = true
+		while continue {
+			if (zone.color == black) {
+				zone.color = yellow
+				color = white
+				get-away()
+				continue = false
+			}
+			else {
+				rt rand()
+				fd 1
+			}
 		}
 	}
 
 	function get-away () {
 		rt rand()
 		fd 20
-		if (zone.color != black) {
-			get-away()
+		while (zone.color != black) {
+			rt rand()
+			fd 20
 		}
 	}
 
@@ -61,25 +71,16 @@ agent termite () {
 	}
 }
 
-agent setter (line) {
-	teleport(0, line, 0)
-	repeat 50 {
-		test = rand() % 3
-		if (test == 0) {
-			zone.color = yellow
-		}
-		else {
-			zone.color = black
-		}
-		fd 10
+function init-zone() {
+	test = rand() % 3
+	if (test == 0) {
+		color = yellow
+	}
+	else {
+		color = black
 	}
 }
 
-y = 0
+foreach-zone (init-zone)
 
-repeat 50 {
-	new setter(y)
-	y = y + 10
-}
-
-5 new termite()
+20 new termite()

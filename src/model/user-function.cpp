@@ -17,11 +17,14 @@ UserFunction::UserFunction (TreePtr tree, vector<string> params) :
 	tree(tree) {}
 
 ValuePtr UserFunction::exec (AgentPtr agent, TablePtr params) {
-	if(agent->getType() == Type::TURTLE){
-		return TurtleInterpreter().interpret(*manager, agent, tree, params);
+	switch (agent->getType()) {
+		case Type::TURTLE:
+			return TurtleInterpreter().interpret(*manager, agent, tree, params);
+		case Type::WORLD:
+			return TurtleInterpreter().interpret(*manager, agent, tree, params);
+		default:
+			return Interpreter().interpret(*manager, agent, tree, params);
 	}
-	return WorldInterpreter().interpret (*manager, agent, tree, params);
-		
 }
 
 }

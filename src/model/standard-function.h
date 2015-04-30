@@ -193,6 +193,21 @@ class InRadiusFunction : public Function, public Singleton<InRadiusFunction> {
 		virtual ValuePtr exec (AgentPtr agent, TablePtr params);
 };
 
+/**
+ * class AskZonesFunction
+ *
+ *\brief A class applying a function to every zone.
+ *
+ *\author Adrien Plazas
+ **/
+class AskZonesFunction : public Function, public Singleton<AskZonesFunction> {
+	friend Singleton<AskZonesFunction>;
+	protected:
+		AskZonesFunction ();
+	public:
+		virtual ValuePtr exec (AgentPtr agent, TablePtr params);
+};
+
 }
 
 /*

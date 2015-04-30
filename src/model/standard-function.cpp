@@ -19,6 +19,13 @@ inline void paramError (string name, Type expected) throw(domain_error) {
 	throw domain_error("Parameter " + name + " is expected to be of type " + toString(expected));
 }
 
+inline WorldPtr asWorld (AgentPtr agent) throw(domain_error) {
+	auto world = dynamic_pointer_cast<World>(agent);
+	if (!world)
+		throw domain_error("The agent is expected to be of type " + toString(Type::WORLD));
+	return world;
+}
+
 inline TurtlePtr asTurtle (AgentPtr agent) throw(domain_error) {
 	auto turtle = dynamic_pointer_cast<Turtle>(agent);
 	if (!turtle)
@@ -30,6 +37,13 @@ inline NumberPtr asNumber (ValuePtr value, string param) throw(domain_error) {
 	auto casted = dynamic_pointer_cast<Number>(value);
 	if (!casted)
 		paramError (param, Type::NUMBER);
+	return casted;
+}
+
+inline FunctionPtr asFunction (ValuePtr value, string param) throw(domain_error) {
+	auto casted = dynamic_pointer_cast<Function>(value);
+	if (!casted)
+		paramError (param, Type::FUNCTION);
 	return casted;
 }
 
@@ -170,6 +184,35 @@ ValuePtr InRadiusFunction::exec (AgentPtr agent, TablePtr params) {
 	}
 
 	return turtles;
+}
+
+AskZonesFunction::AskZonesFunction () : Function({"function"}) {}
+
+ValuePtr AskZonesFunction::exec (AgentPtr agent, TablePtr params) {
+	auto world = asWorld(agent);
+
+	auto function = asFunction(params->getValue("function"), "function");
+
+	auto ws = world->getSize();
+	auto is = Size(2);
+
+	auto newParams = make_shared<Table>();
+
+	for (is.setValue(0, 0) ;
+	     is.getValue(0) < ws.getValue(0) ;
+	     is.setValue(0, is.getValue(0) + 1))
+	for (is.setValue(1, 0) ;
+	     is.getValue(1) < ws.getValue(1) ;
+	     is.setValue(1, is.getValue(1) + 1)) {
+//		cout << is.getValue(0) << " " << is.getValue(1) << endl;
+		auto zone = world->getZone(is);
+		if (zone) {
+			function->exec(zone, newParams);
+			cout << "exec OK" << endl;
+		}
+	}
+
+	return Nil::getInstance();
 }
 
 }
