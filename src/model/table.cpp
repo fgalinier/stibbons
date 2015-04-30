@@ -60,7 +60,8 @@ namespace stibbons {
 	void Table::append (ValuePtr value) {
 		lock_guard<recursive_mutex> lock(value_m);
 
-		long key = indexedValues.rbegin()->first + 1;
+		long key = indexedValues.empty() ? 0 :
+			indexedValues.rbegin()->first + 1;
 
 		indexedValues.insert(pair<long, ValuePtr>(key, value));
 	}
