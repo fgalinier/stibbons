@@ -12,7 +12,6 @@
 
 #include <cstdio>
 #include <unistd.h>
-#include <QtWidgets>
 
 namespace stibbons {
 
@@ -98,7 +97,7 @@ void Window::createToolBars() {
 	toolbar->addWidget(empty);
 
 	// Slider
-	QSlider* slider = new QSlider(Qt::Horizontal);
+	slider = new QSlider(Qt::Horizontal);
 	slider->setTickInterval(100);
 	slider->setTickPosition(QSlider::TicksBothSides);
 	slider->setMaximum(400);
@@ -163,6 +162,8 @@ void Window::loadProgram() {
 	setCentralWidget(scrollArea);
 	scrollArea->setWidget(worldView);
 
+	if (slider)
+		updateInterpreterWaitTime(slider->value());
 	updateToolbar();
 }
 
@@ -199,7 +200,8 @@ void Window::about() {
 }
 
 void Window::updateInterpreterWaitTime(int waitTime) {
-	Interpreter::waitTime = pow(10.0, (double) waitTime / 100.0) - 1;
+	if (runner)
+		runner->setWaitTime(pow(10.0, (double) waitTime / 100.0) - 1);
 }
 
 void Window::error(QString type, QString what) {

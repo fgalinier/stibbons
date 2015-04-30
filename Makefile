@@ -75,6 +75,7 @@ INTERPETERSRC = \
 	src/interpreter/interpreter.cpp \
 	src/interpreter/tree.cpp \
 	src/interpreter/interpreter-exception.cpp \
+	src/interpreter/interpreter-manager.cpp \
 	src/interpreter/syntax-exception.cpp \
 	src/interpreter/semantic-exception.cpp \
 	src/interpreter/turtle-interpreter.cpp \

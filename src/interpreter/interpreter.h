@@ -27,6 +27,9 @@
 #include <condition_variable>
 
 namespace stibbons {
+
+class InterpreterManager;
+
 	/**
 	 * \class Interpreter
 	 * \brief Class that will interpret stibbons language.
@@ -37,12 +40,8 @@ namespace stibbons {
 	 * \author Clément Simon
 	 */
 	class Interpreter {
-	protected:
-
-		mutex suspendMutex;
-		vector<thread*> sons;
-
-        /**
+	public:
+		/**
 		 * Interpret a function (or function of a breed)
 		 * \param fct A function that will be interpreted
 		 * \param turtle The turtle to run the program on
@@ -51,7 +50,8 @@ namespace stibbons {
 		 * \param id The name of function for error message
 		 * \return The Value returned by the Function fct
 		 */
-		virtual	TablePtr getParams(FunctionPtr,
+		virtual	TablePtr getParams(InterpreterManager& manager,
+		                           FunctionPtr,
 		                           AgentPtr,
 		                           const TreePtr,
 		                           TablePtr, 
@@ -67,15 +67,17 @@ namespace stibbons {
 		 * \return The Value returned by the Function fct
 		 */
 		virtual	ValuePtr interpretFunction(FunctionPtr,
-										   AgentPtr,
-										   TablePtr);
+		                                   AgentPtr,
+		                                   TablePtr);
+
 		/**
 		 * Create a function from a tree with a
 		 * FCT or AGT node.
 		 * \param tree A tree with the FCT or AGT root node. 
 		 * \return The function corresponding to the tree
 		 */
-		virtual FunctionPtr getFunctionFromTree(const TreePtr);
+
+		virtual FunctionPtr getFunctionFromTree(InterpreterManager& manager, const TreePtr);
 		
 		/**
 		 * Get the position of errors
@@ -91,7 +93,7 @@ namespace stibbons {
 		 * \param hashTable A hashtable which contain parameters
 		 * \return The result of the '=' operation on concerned value.
 		 */
-		inline ValuePtr affectationOp(AgentPtr, TreePtr, TablePtr);
+		inline ValuePtr affectationOp(InterpreterManager& manager, AgentPtr, TreePtr, TablePtr);
 
 		/**
 		 * Do the new operation if token detected is 'NEW'
@@ -100,7 +102,7 @@ namespace stibbons {
 		 * \param hashTable A hashtable which contain parameters
 		 * \return the newest turtles created by the new operation
 		 */
-		inline TablePtr newOp(AgentPtr, TreePtr, TablePtr);
+		inline TablePtr newOp(InterpreterManager& manager, AgentPtr, TreePtr, TablePtr);
 
 		/**
 		 * Do the calling operation if token detected is 'CALL'
@@ -109,17 +111,11 @@ namespace stibbons {
 		 * \param hashTable A hashtable which contain parameters
 		 * \return The result of the call operation on concerned value.
 		 */
-		inline ValuePtr callOp(AgentPtr, TreePtr, TablePtr);
-
-		/**
-		 * If suspended, suspend until resumed. 
-		 */
-		virtual void checkHalt();
+		inline ValuePtr callOp(InterpreterManager& manager, AgentPtr, TreePtr, TablePtr);
 
 	public:
-	    static condition_variable resumeCond;
+		static condition_variable resumeCond;
 		static bool suspendFlag;
-		static size_t waitTime;
 
 		/**
 		 * Create a new interpreter
@@ -133,19 +129,10 @@ namespace stibbons {
 		 * \param hashTable A hashtable which contain parameters
 		 * \return An int equal to 0 if no error has occurred.
 		 */
-		virtual ValuePtr interpret(AgentPtr agent,
-								   const TreePtr,
-								   TablePtr hashTable=nullptr) throw(SemanticException);
-		/**
-		 * Start an interpreter on an agent
-		 * \param agent The agent to run the program on.
-		 * \param tree The syntaxic tree to interpret.
-		 * \param hashTable A hashtable which contain parameters
-		 * \return An int equal to 0 if no error has occurred.
-		 */
-		virtual void start(AgentPtr agent,
-						   const TreePtr);
-
+		virtual ValuePtr interpret(InterpreterManager& manager,
+		                           AgentPtr agent,
+		                           const TreePtr,
+		                           TablePtr hashTable=nullptr);
 	};
 }
 /*

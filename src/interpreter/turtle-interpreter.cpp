@@ -8,24 +8,26 @@
 #include "semantic-exception.h"
 
 namespace stibbons {
-	ValuePtr TurtleInterpreter::interpret(AgentPtr agent,
+	ValuePtr TurtleInterpreter::interpret(InterpreterManager& manager,
+										  AgentPtr agent,
 										  const TreePtr tree,
-										  TablePtr hashTable) throw(SemanticException) {
+										  TablePtr hashTable) {
 
 		if(agent->getType() == Type::TURTLE){
-			return this->interpret(dynamic_pointer_cast<Turtle>(agent),tree,hashTable);
+			return this->interpret(manager,dynamic_pointer_cast<Turtle>(agent),tree,hashTable);
 		}
 		return nullptr;
 	}
 
 
-	ValuePtr TurtleInterpreter::interpret(TurtlePtr agent,
+	ValuePtr TurtleInterpreter::interpret(InterpreterManager& manager,
+										  TurtlePtr agent,
 										  const TreePtr tree,
-										  TablePtr hashTable) throw(SemanticException) {
+										  TablePtr hashTable) {
 		
 		if(tree != nullptr) {
 		
-			ValuePtr start = Interpreter::interpret(agent,tree,hashTable);
+			ValuePtr start = Interpreter::interpret(manager,agent,tree,hashTable);
 			if(start != nullptr || std::get<0>(tree->getNode()) == 0 ) {
 				return start;
 			}
@@ -33,7 +35,7 @@ namespace stibbons {
 				switch(std::get<0>(tree->getNode())) {
 					//Turtle cases:
 				case yy::parser::token::FD: {
-					auto val = this->interpret(agent,tree->getSon(0),hashTable);
+					auto val = this->interpret(manager,agent,tree->getSon(0),hashTable);
 					if(val->getType() != Type::NUMBER) 
 						throw SemanticException("FD",
 												Type::NUMBER,
@@ -43,7 +45,7 @@ namespace stibbons {
 				}
 					break;
 				case yy::parser::token::RT: {
-					auto val = this->interpret(agent,tree->getSon(0),hashTable);
+					auto val = this->interpret(manager,agent,tree->getSon(0),hashTable);
 					if(val->getType() != Type::NUMBER) 
 						throw SemanticException("RT",
 												Type::NUMBER,
@@ -53,7 +55,7 @@ namespace stibbons {
 				}
 					break;
 				case yy::parser::token::LT: {
-					auto val = this->interpret(agent,tree->getSon(0),hashTable);
+					auto val = this->interpret(manager,agent,tree->getSon(0),hashTable);
 					if(val->getType() != Type::NUMBER) 
 						throw SemanticException("LT",
 												Type::NUMBER,

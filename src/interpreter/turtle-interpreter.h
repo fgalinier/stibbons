@@ -40,9 +40,10 @@ namespace stibbons {
      * \param hashTable A hashtable which contain parameters
      * \return An int equal to 0 if no error has occurred.
      */
-    virtual ValuePtr interpret(AgentPtr agent,
+    virtual ValuePtr interpret(InterpreterManager& manager,
+				AgentPtr agent,
 			     const TreePtr,
-			     TablePtr hashTable) throw(SemanticException) ;
+			     TablePtr hashTable);
 
 
     /**
@@ -52,9 +53,10 @@ namespace stibbons {
      * \param hashTable A hashtable which contain parameters
      * \return An int equal to 0 if no error has occurred.
      */
-    virtual ValuePtr interpret(TurtlePtr agent,
+    virtual ValuePtr interpret(InterpreterManager& manager,
+				TurtlePtr agent,
 			     const TreePtr,
-			     TablePtr hashTable) throw(SemanticException) ;
+			     TablePtr hashTable);
 
   };
 }

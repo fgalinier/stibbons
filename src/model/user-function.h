@@ -11,6 +11,7 @@
 #include "function.h"
 
 //#include "value.h"
+#include "../interpreter/interpreter-manager.h"
 #include "../interpreter/tree.h"
 //#include <iostream>
 //#include <vector>
@@ -28,6 +29,16 @@ namespace stibbons {
 **/
 class UserFunction : public Function {
 	public:
+		/**
+		 * Constructor
+		 *
+		 * @param manager the interpreter manager
+		 * @param tree the syntactic tree of the function
+		 * @param params the parameters that the function expect to be
+		 * executed with
+		 */
+		UserFunction (InterpreterManager& manager, TreePtr tree, vector<string> params = vector<string>());
+
 		/**
 		 * Constructor
 		 *
@@ -52,6 +63,7 @@ class UserFunction : public Function {
 		virtual ValuePtr exec (AgentPtr agent, TablePtr params);
 
 	private:
+		InterpreterManager* manager;
 		TreePtr tree;
 };
 

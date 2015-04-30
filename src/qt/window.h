@@ -9,6 +9,7 @@
 #pragma once
 
 #include <QMainWindow>
+#include <QtWidgets>
 
 #include "../model/world.h"
 #include "world-view.h"
@@ -61,6 +62,7 @@ class Window : public QMainWindow {
 		WorldView *worldView;
 
 		QToolBar *toolbar;
+		QSlider* slider;
 
 		Runner *runner;
 

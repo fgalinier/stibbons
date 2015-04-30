@@ -6,15 +6,21 @@
 
 namespace stibbons {
 
+UserFunction::UserFunction (InterpreterManager& manager, TreePtr tree, vector<string> params) :
+	Function(params),
+	manager(&manager),
+	tree(tree) {}
+
 UserFunction::UserFunction (TreePtr tree, vector<string> params) :
 	Function(params),
+	manager(nullptr),
 	tree(tree) {}
 
 ValuePtr UserFunction::exec (AgentPtr agent, TablePtr params) {
 	if(agent->getType() == Type::TURTLE){
-		return TurtleInterpreter().interpret(agent, tree, params);
+		return TurtleInterpreter().interpret(*manager, agent, tree, params);
 	}
-	return WorldInterpreter().interpret (agent, tree, params);
+	return WorldInterpreter().interpret (*manager, agent, tree, params);
 		
 }
 

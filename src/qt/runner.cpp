@@ -8,6 +8,8 @@
 
 #include "runner.h"
 
+#include "../interpreter/semantic-exception.h"
+
 #include <iostream>
 
 using namespace std;
@@ -16,7 +18,7 @@ namespace stibbons {
 
 Runner::Runner(std::string& program) : started(false), running(false) {
 	try {
-		interpreter = new WorldInterpreter(program);
+		manager = new InterpreterManager(program);
 	}
 	catch (SemanticException e) {
 		cerr << "Semantic error: " << e.what() << endl;
@@ -30,11 +32,11 @@ Runner::Runner(std::string& program) : started(false), running(false) {
 }
 
 Runner::~Runner() {
-	delete interpreter;
+	delete manager;
 }
 
 WorldPtr Runner::getWorld() {
-	return interpreter->getWorld();
+	return manager->getWorld();
 }
 
 void Runner::start() {
@@ -49,9 +51,9 @@ void Runner::start() {
 
 void Runner::run() {
 	try {
-		interpreter->run();
 		started = true;
 		running = true;
+		manager->run();
 	}
 	catch (SemanticException e) {
 		halt();
@@ -70,17 +72,21 @@ bool Runner::isRunning() {
 }
 
 void Runner::halt() {
-	if (interpreter) {
-		interpreter->halt();
+	if (manager) {
+		manager->halt();
 		running = false;
 	}
 }
 
 void Runner::unhalt() {
-	if (interpreter) {
-		interpreter->unhalt();
+	if (manager) {
+		manager->unhalt();
 		running = true;
 	}
+}
+
+void Runner::setWaitTime(size_t waitTime) {
+	manager->setWaitTime(waitTime);
 }
 
 }

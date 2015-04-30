@@ -12,7 +12,7 @@
 
 #include <string>
 
-#include "../interpreter/world-interpreter.h"
+#include "../interpreter/interpreter-manager.h"
 
 namespace stibbons {
 
@@ -34,10 +34,18 @@ class Runner : public QThread {
 	signals:
 		void error(QString type, QString what);
 
+	public slots:
+		/**
+		 * Set the wait time used to slow down the interpretations.
+		 *
+		 * \param waitTime the waited time
+		 */
+		void setWaitTime(size_t waitTime);
+
 	private:
 		void unhalt();
 
-		WorldInterpreter* interpreter;
+		InterpreterManager* manager;
 		bool started;
 		bool running;
 };
