@@ -146,21 +146,32 @@ void Window::loadProgram() {
 		runner = nullptr;
 	}
 
-	runner = new Runner(program);
+	try {
+		runner = new Runner(program);
 
-	connect(runner, SIGNAL(error(QString,QString)),
-	        this, SLOT(error(QString,QString)));
+		connect(runner, SIGNAL(error(QString,QString)),
+			    this, SLOT(error(QString,QString)));
 
-	auto scrollArea = new QScrollArea();
-	scrollArea->setAlignment(Qt::AlignCenter);
-	scrollArea->show();
+		auto scrollArea = new QScrollArea();
+		scrollArea->setAlignment(Qt::AlignCenter);
+		scrollArea->show();
 
-	worldView = new WorldView(nullptr);
-	worldView->setWorld(runner->getWorld());
-	worldView->show();
+		worldView = new WorldView(nullptr);
+		worldView->setWorld(runner->getWorld());
+		worldView->show();
 
-	setCentralWidget(scrollArea);
-	scrollArea->setWidget(worldView);
+		setCentralWidget(scrollArea);
+		scrollArea->setWidget(worldView);
+	}
+	catch (SemanticException e) {
+		error("Semantic error", QString(e.what()));
+	}
+	catch (SyntaxException e) {
+		error("Syntax error", QString(e.what()));
+	}
+	catch (exception e) {
+		error("Unknown error", QString(e.what()));
+	}
 
 	if (slider)
 		updateInterpreterWaitTime(slider->value());

@@ -16,6 +16,7 @@ yy::position InterpreterManager::getPosition(const TreePtr tree) {
 }
 
 InterpreterManager::InterpreterManager(string program) throw(InterpreterException) :
+	errorCallback(nullptr),
 	suspendFlag(false),
 	exitFlag(false) {
 	istringstream iss(program, ios_base::in);
@@ -110,15 +111,34 @@ InterpreterManager::InterpreterManager(string program) throw(InterpreterExceptio
 }
 
 InterpreterManager::~InterpreterManager() {
-	exitFlag = true;
-	suspendFlag = false;
-	suspendMutex.unlock();
-	for (auto i : interpreters)
-		i.second->join();
+	stop();
 }
 
 WorldPtr InterpreterManager::getWorld() {
 	return world;
+}
+
+void InterpreterManager::onErrors (std::function<void(string,string)> callback) {
+	errorCallback = callback;
+}
+
+void InterpreterManager::errorsOccured (string type, string what) {
+	if (errorCallback)
+		errorCallback(type, what);
+}
+
+void InterpreterManager::stop () {
+	if (!exitFlag) {
+		exitFlag = true;
+		suspendFlag = false;
+		suspendMutex.unlock();
+		for (auto i : interpreters) {
+			try {
+				i.second->join();
+			}
+			catch (exception e) {}
+		}
+	}
 }
 
 void InterpreterManager::run() {
@@ -132,7 +152,21 @@ void InterpreterManager::run() {
 		WorldInterpreter wi;
 		wi.interpret(*this, world, tree, make_shared<Table>());
 	}
-	catch (exit_requested_exception e) {}
+	catch (exit_requested_exception e) {
+		stop();
+	}
+	catch (SemanticException e) {
+		stop();
+		errorsOccured("Semantic error", string(e.what()));
+	}
+	catch (SyntaxException e) {
+		stop();
+		errorsOccured("Syntax error", string(e.what()));
+	}
+	catch (exception e) {
+		stop();
+		errorsOccured("Unknown error", string(e.what()));
+	}
 }
 
 void InterpreterManager::wait() {
@@ -183,7 +217,21 @@ void InterpreterManager::interpret(shared_ptr<Interpreter> interpreter,
 	try {
 		interpreter->interpretFunction(function, agent, params);
 	}
-	catch (exit_requested_exception e) {}
+	catch (exit_requested_exception e) {
+		stop();
+	}
+	catch (SemanticException e) {
+		stop();
+		errorsOccured("Semantic error", string(e.what()));
+	}
+	catch (SyntaxException e) {
+		stop();
+		errorsOccured("Syntax error", string(e.what()));
+	}
+	catch (exception e) {
+		stop();
+		errorsOccured("Unknown error", string(e.what()));
+	}
 }
 
 }

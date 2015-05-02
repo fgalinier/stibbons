@@ -60,6 +60,8 @@ class InterpreterManager {
 		 */
 		virtual WorldPtr getWorld();
 
+		void onErrors (std::function<void(string,string)> callback);
+
 		/**
 		 * Run the interpreter with the parsed program.
 		 */
@@ -113,6 +115,8 @@ class InterpreterManager {
 
 		vector<pair<shared_ptr<Interpreter>, shared_ptr<thread>>> interpreters;
 
+		std::function<void(string,string)> errorCallback;
+
 		size_t waitTime;
 		mutex suspendMutex;
 		bool suspendFlag;
@@ -126,6 +130,9 @@ class InterpreterManager {
 		               AgentPtr agent,
 		               TablePtr params);
 
+		void errorsOccured (string type, string what);
+
+		void stop ();
 };
 
 }

@@ -17,18 +17,7 @@ using namespace std;
 namespace stibbons {
 
 Runner::Runner(std::string& program) : started(false), running(false) {
-	try {
-		manager = new InterpreterManager(program);
-	}
-	catch (SemanticException e) {
-		cerr << "Semantic error: " << e.what() << endl;
-	}
-	catch (SyntaxException e) {
-		cerr << "Syntax error: " << e.what() << endl;
-	}
-	catch (exception e) {
-		cerr << e.what() << endl;
-	}
+	manager = new InterpreterManager(program);
 }
 
 Runner::~Runner() {
@@ -50,21 +39,12 @@ void Runner::start() {
 }
 
 void Runner::run() {
-	try {
-		started = true;
-		running = true;
-		manager->run();
-	}
-	catch (SemanticException e) {
-		halt();
-		emit error("Semantic error", QString(e.what()));
-		running = false;
-	}
-	catch (exception e) {
-		halt();
-		emit error("Error", QString(e.what()));
-		running = false;
-	}
+	started = true;
+	running = true;
+	manager->onErrors([this](string type, string what) {
+		emit error(QString(type.c_str()), QString(what.c_str()));
+	});
+	manager->run();
 }
 
 bool Runner::isRunning() {
