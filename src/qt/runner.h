@@ -10,6 +10,7 @@
 
 #include <QThread>
 
+#include <mutex>
 #include <string>
 
 #include "../interpreter/interpreter-manager.h"
@@ -28,6 +29,8 @@ class Runner : public QThread {
 
 		void run();
 		void halt();
+
+		std::string exportModel();
 
 		bool isRunning();
 
@@ -48,6 +51,7 @@ class Runner : public QThread {
 		InterpreterManager* manager;
 		bool started;
 		bool running;
+		std::recursive_mutex haltMutex;
 };
 
 }

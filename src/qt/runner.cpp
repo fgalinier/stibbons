@@ -10,6 +10,7 @@
 
 #include "../interpreter/semantic-exception.h"
 
+#include <sstream>
 #include <iostream>
 
 using namespace std;
@@ -47,11 +48,30 @@ void Runner::run() {
 	manager->run();
 }
 
+string Runner::exportModel() {
+	lock_guard<recursive_mutex> lock(haltMutex);
+
+	bool restart = isRunning();
+
+	if (restart)
+		halt();
+
+	ostringstream oss;
+	json_spirit::write_formatted(getWorld()->exportWorld(), oss);
+
+	if (restart)
+		unhalt();
+
+	return oss.str();
+}
+
 bool Runner::isRunning() {
 	return running;
 }
 
 void Runner::halt() {
+	lock_guard<recursive_mutex> lock(haltMutex);
+
 	if (manager) {
 		manager->halt();
 		running = false;
@@ -59,6 +79,8 @@ void Runner::halt() {
 }
 
 void Runner::unhalt() {
+	lock_guard<recursive_mutex> lock(haltMutex);
+
 	if (manager) {
 		manager->unhalt();
 		running = true;

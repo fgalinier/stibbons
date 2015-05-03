@@ -78,6 +78,10 @@ void Window::createActions() {
 	aboutAct = new QAction(tr("&About"), this);
 	aboutAct->setStatusTip(tr("Show the application's About box"));
 	connect(aboutAct, SIGNAL(triggered()), this, SLOT(about()));
+
+	exportAct = new QAction(tr("&Export..."), this);
+	exportAct->setStatusTip(tr("Export the model to a file"));
+	connect(exportAct, SIGNAL(triggered()), this, SLOT(exportModel()));
 }
 
 void Window::createToolBars() {
@@ -108,6 +112,7 @@ void Window::createToolBars() {
 
 	// Bouton menu
 	QMenu *menu = new QMenu(tr("Menu"));
+	menu->addAction(exportAct);
 	menu->addAction(aboutAct);
 	menu->addAction(quitAct);
 	toolbar->addAction(menu->menuAction());
@@ -120,7 +125,16 @@ void Window::closeEvent(QCloseEvent *event) {
 }
 
 void Window::open() {
+	bool restart = runner ? runner->isRunning() : false;
+
+	if (restart)
+		runner->halt();
+
 	QString fileName = QFileDialog::getOpenFileName(this);
+
+	if (restart)
+		runner->start();
+
 	loadFile(fileName);
 }
 
@@ -194,6 +208,39 @@ void Window::halt() {
 		runner->halt();
 
 	updateToolbar();
+}
+
+void Window::exportModel() {
+	if (runner) {
+		bool restart = runner->isRunning();
+
+		if (restart)
+			runner->halt();
+
+		QString fileName = QFileDialog::getSaveFileName(this);
+
+		if (restart)
+			runner->start();
+
+		exportModel(fileName);
+	}
+}
+
+void Window::exportModel(QString fileName) {
+	if (runner) {
+		QFile file(fileName);
+		if (!file.open(QFile::WriteOnly | QFile::Text)) {
+			QMessageBox::warning(this, tr("Application"),
+				                 tr("Cannot open file %1:\n%2.")
+				                 .arg(fileName)
+				                 .arg(file.errorString()));
+			return;
+		}
+
+		auto exported = runner->exportModel();
+
+		file.write(exported.c_str());
+	}
 }
 
 void Window::about() {
