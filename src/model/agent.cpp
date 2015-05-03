@@ -125,6 +125,21 @@ void Agent::initColors() {
 	setProperty("magenta", make_shared<Color>(1.0, 0.0, 1.0));
 }
 
+void Agent::exportProperties(Object* o){
+	unordered_map<string,ValuePtr>* properties=Agent::getProperty();
+	for (auto m : *properties)
+	{
+		if (m.second->getType() == Type::COLOR)
+			o->push_back(Pair(m.first,dynamic_pointer_cast<Color>(m.second)->toString()));
+		if (m.second->getType() == Type::NUMBER)
+			o->push_back(Pair(m.first,dynamic_pointer_cast<Number>(m.second)->getValue()));
+		if (m.second->getType() == Type::STRING)
+			o->push_back(Pair(m.first,dynamic_pointer_cast<String>(m.second)->toString()));
+		if (m.second->getType() == Type::BOOLEAN)
+			o->push_back(Pair(m.first,dynamic_pointer_cast<Boolean>(m.second)->toString()));
+	}
+}
+
 }
 
 /*

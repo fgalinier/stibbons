@@ -91,6 +91,12 @@ class Agent : public Value, public enable_shared_from_this<Agent> {
 		 */
 		virtual int compare (AgentPtr other);
 
+		/**
+		 * Export the properties in the object o
+		 * @param a reference on an object (jsan spirit type)
+		 */
+		virtual void exportProperties(Object* o);
+
 	protected:
 		/**
 		 * Empty Constructor
