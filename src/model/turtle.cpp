@@ -448,6 +448,7 @@ Object Turtle::exportTurtle(){
 	Object synthese;
 	synthese.push_back(Pair("id",static_cast<uint64_t>(getId())));
 	synthese.push_back(Pair("color",this->getColor().toString()));
+	synthese.push_back(Pair("angle",this->getAngle()));
 
 	Point Tposition=getPosition();
 	Array position;
