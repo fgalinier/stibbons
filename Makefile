@@ -24,6 +24,17 @@ QTLIBS = \
 	-lQt5Widgets \
 	$(NULL)
 
+CLIINCDIRS = \
+	-I$(QTINCDIR) \
+	-I$(QTINCDIR)/QtCore \
+	-I$(QTINCDIR)/QtGui \
+	$(NULL)
+
+CLILIBS = \
+	-lQt5Core \
+	-lQt5Gui \
+	$(NULL)
+
 CFLAGS = -fPIC -Wall -Wpedantic -std=c++11 -g -ljson_spirit
 
 MODELSRC = \
@@ -105,13 +116,26 @@ QTSRC = \
 	src/qt/world-view.cpp \
 	$(NULL)
 
+CLISRC = \
+	src/cli/application.cpp \
+	src/qt/runner.cpp \
+	src/cli/stibbons-cli.cpp \
+	src/qt/world-painter.cpp \
+	$(NULL)
+
 MOCHEADERS = \
 	src/qt/runner.h \
 	src/qt/window.h \
 	src/qt/world-view.h \
 	$(NULL)
 
+CLIMOCHEADERS = \
+	src/qt/runner.h \
+	$(NULL)
+
 MOCSRC = $(MOCHEADERS:%.h=%.moc.cpp)
+
+CLIMOCSRC = $(CLIMOCHEADERS:%.h=%.moc.cpp)
 
 QRCFILES = \
 	data/stibbons.qrc \
@@ -131,7 +155,11 @@ TESTOBJECTS = $(TESTSRC:%.cpp=%.o)
 
 QTOBJECTS = $(QTSRC:%.cpp=%.o) $(MOCSRC:%.cpp=%.o) $(QRCSRC:%.cpp=%.o)
 
+CLIOBJECTS = $(CLISRC:%.cpp=%.o) $(CLIMOCSRC:%.cpp=%.o)
+
 APP = stibbons
+
+CLIAPP = stibbons-cli
 
 TEST = test
 
@@ -163,12 +191,15 @@ PDFCLN = \
 
 # Tout compiler
 
-all: doc $(APP) $(TEST)
+all: doc $(APP) $(CLIAPP) $(TEST)
 
 # Compilation du logiciel
 
 $(APP): $(MODELOBJECTS) $(BISONOBJECTS) $(FLEXOBJECTS) $(INTERPRETEROBJECTS) $(QTOBJECTS)
 	$(CC) $^ -o $@ $(CFLAGS) $(QTINCDIRS) $(QTLIBS)
+
+$(CLIAPP): $(MODELOBJECTS) $(BISONOBJECTS) $(FLEXOBJECTS) $(INTERPRETEROBJECTS) $(CLIOBJECTS)
+	$(CC) $^ -o $@ $(CFLAGS) $(CLIINCDIRS) $(QTLIBS)
 
 $(TEST): $(MODELOBJECTS) $(BISONOBJECTS) $(FLEXOBJECTS) $(INTERPRETEROBJECTS) $(TESTOBJECTS)
 	$(CC) $^ -o $@ $(CFLAGS) $(TESTINCDIRS) $(TESTLIBS)
@@ -179,11 +210,14 @@ $(BISONTMP): $(BISONSRC)
 $(FLEXTMP): $(FLEXSRC)
 	flex -o $@ $<
 
-%.moc.cpp: %.h
+$(MOCSRC): %.moc.cpp: %.h
 	$(MOC) $(QTINCDIRS) $< -o $@
 
 %.qrc.cpp: %.qrc
 	$(RCC) -name $(basename $(<F)) $< -o $@
+
+$(CLIMOCSRC): %.moc.cpp: %.h
+	$(MOC) $(CLIINCDIRS) $< -o $@
 
 $(MODELOBJECTS): %.o: %.cpp $(BISONTMP)
 	$(CC) $< -c -o $@ $(CFLAGS)
@@ -202,6 +236,9 @@ $(TESTOBJECTS): %.o: %.cpp
 
 $(QTOBJECTS): %.o: %.cpp
 	$(CC) $< -c -o $@ $(CFLAGS) $(QTINCDIRS) $(QTLIBS)
+
+$(CLIOBJECTS): %.o: %.cpp
+	$(CC) $< -c -o $@ $(CFLAGS) $(CLIINCDIRS) $(CLILIBS)
 
 # Compilation de la documentation
 
@@ -236,6 +273,8 @@ clean:
 	$(MOCSRC) \
 	$(QRCSRC) \
 	$(QTOBJECTS) \
+	$(CLIMOCSRC) \
+	$(CLIOBJECTS) \
 	$(PDFCLN)\
 	$(NULL)\
 	sauvegarde.json

@@ -1,0 +1,27 @@
+/**
+ * \file stibbons-cli.cpp
+ * \brief The Stibbons multi-agent system
+ * \author Adrien Plazas
+ * \version 0.5
+ * \date 05/05/2015
+ */
+
+#include "application.h"
+
+int main(int argc, char *argv[]) {
+	stibbons::Application app(argc, argv);
+	return app.exec();
+}
+
+/*
+ * Editor modelines  -  http://www.wireshark.org/tools/modelines.html
+ *
+ * Local variables:
+ * c-basic-offset: 4
+ * tab-width: 4
+ * indent-tabs-mode: t
+ * truncate-lines: 1
+ * End:
+ *
+ * vim:set ft=cpp ts=4 sw=4 sts=4
+ */
