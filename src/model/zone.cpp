@@ -149,10 +149,13 @@ string Zone::toString () {
 
 Object Zone::exportZone() {
 	Object synthese;
-	synthese.push_back(Pair("id",static_cast<uint64_t>(getId())));
-	synthese.push_back(Pair("color",this->getColor().toString()));
-	exportProperties(&synthese);
+	Object s;
 
+	s.push_back(Pair("color",this->getColor().toString()));
+	exportProperties(&s);
+
+	string id=to_string(static_cast<uint64_t>(getId()));
+	synthese.push_back(Pair(id,s));
 	return synthese;
 }
 

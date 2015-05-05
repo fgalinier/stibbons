@@ -444,28 +444,36 @@ void Turtle::addMessage(TurtlePtr exp,ValuePtr v){
 	messages.push_back(p);
 }
 
-Object Turtle::exportTurtle(){
+Object Turtle::exportTurtle(string name){
+
 	Object synthese;
-	synthese.push_back(Pair("id",static_cast<uint64_t>(getId())));
-	synthese.push_back(Pair("color",this->getColor().toString()));
-	synthese.push_back(Pair("angle",this->getAngle()));
+	Object s;
+
+	if (!name.empty())
+	{ s.push_back(Pair("Breed",name)); }
+
+	s.push_back(Pair("color",this->getColor().toString()));
+	s.push_back(Pair("angle",this->getAngle()));
 
 	Point Tposition=getPosition();
 	Array position;
 	for (unsigned i=0;i<Tposition.getDimensions();i++)
 		position.push_back(Tposition.getValue(i));
-	synthese.push_back(Pair("position",position));
-
-	exportProperties(&synthese);
+	s.push_back(Pair("position",position));
+	
+	exportProperties(&s);
 
 	auto parent=getParent();
 	if (parent->getType() == Type::WORLD)
 	{
-		synthese.push_back(Pair("parent","world"));
+		s.push_back(Pair("parent","world"));
 	}
-	else synthese.push_back(Pair("parent", static_cast<uint64_t>(
+	else s.push_back(Pair("parent", static_cast<uint64_t>(
 		dynamic_pointer_cast<Turtle>(parent)->getId()
 	)));
+
+	string id=to_string(static_cast<uint64_t>(getId()));
+	synthese.push_back(Pair(id,s));
 
 	return synthese;
 }

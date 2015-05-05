@@ -11,6 +11,7 @@
 #include "value.h"
 #include <future>
 #include <cmath>
+#include <string>
 #include <fstream>
 #include <deque>
 #include <stdexcept>
@@ -249,9 +250,10 @@ class Turtle : public Agent {
 
 		/**
 		 * Export turtle's state
-		 * @return 
+		 * @param a string represent the name of his breed, which can not exist
+		 * @return a json_spirit object
 		 */
-		Object exportTurtle();
+		Object exportTurtle(string name = "");
 
 		/**
 		 * Return a string corresponding to the value

@@ -127,17 +127,19 @@ void Agent::initColors() {
 
 void Agent::exportProperties(Object* o){
 	unordered_map<string,ValuePtr>* properties=Agent::getProperty();
+	Object p;
 	for (auto m : *properties)
 	{
 		if (m.second->getType() == Type::COLOR)
-			o->push_back(Pair(m.first,dynamic_pointer_cast<Color>(m.second)->toString()));
+			p.push_back(Pair(m.first,dynamic_pointer_cast<Color>(m.second)->toString()));
 		if (m.second->getType() == Type::NUMBER)
-			o->push_back(Pair(m.first,dynamic_pointer_cast<Number>(m.second)->getValue()));
+			p.push_back(Pair(m.first,dynamic_pointer_cast<Number>(m.second)->getValue()));
 		if (m.second->getType() == Type::STRING)
-			o->push_back(Pair(m.first,dynamic_pointer_cast<String>(m.second)->toString()));
+			p.push_back(Pair(m.first,dynamic_pointer_cast<String>(m.second)->toString()));
 		if (m.second->getType() == Type::BOOLEAN)
-			o->push_back(Pair(m.first,dynamic_pointer_cast<Boolean>(m.second)->toString()));
+			p.push_back(Pair(m.first,dynamic_pointer_cast<Boolean>(m.second)->toString()));
 	}
+	o->push_back(Pair("properties",p));
 }
 
 }

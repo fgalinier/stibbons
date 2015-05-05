@@ -256,13 +256,13 @@ Object World::exportWorld (){
 		size.push_back(double(getZoneSize().getValue(i)));
 	world.push_back(Pair("ZoneSize",size));
 
-	Object tortue;
+	Array tortue;
 	for (auto t : anonymousBreeds)
 	{
 		auto turtles=t->getTurtles();
 		for (auto to : turtles)
 		{
-		     tortue.push_back(Pair("anonymous",to->exportTurtle()));
+		     tortue.push_back(to->exportTurtle());
 		}
 	}
 	for (auto t : namedBreeds)
@@ -270,7 +270,7 @@ Object World::exportWorld (){
 		string nom=t.first;
 		for (auto to : t.second->getTurtles())
 		{
-		   tortue.push_back(Pair(nom,to->exportTurtle()));
+		   tortue.push_back(to->exportTurtle(nom));
 		}
 	}
 	world.push_back(Pair("Turtles",tortue));
