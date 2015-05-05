@@ -3,7 +3,7 @@
  * \brief InterpreterManager class header.
  * \author Florian Galinier
  * \author Adrien Plazas
- * \version 0.4
+ * \version 0.5
  * \date 30/04/15
  */
 

@@ -2,7 +2,7 @@
  * \file singleton.h
  * \brief A class representing a singleton
  * \author Adrien Plazas
- * \version 0.4
+ * \version 0.5
  * \date 19/03/2015
  */
 
