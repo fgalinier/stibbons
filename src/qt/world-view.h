@@ -10,6 +10,8 @@
 
 #include <QWidget>
 
+#include "world-painter.h"
+
 #include "../model/line.h"
 #include "../model/turtle.h"
 #include "../model/world.h"
@@ -34,18 +36,8 @@ class WorldView : public QWidget {
 		void changed();
 
 	private:
-		void paint(QPainter &p, World &world, int xt, int yt);
-		void paintWarped(QPainter &p, Line &line, int xt, int yt);
-		void paint(QPainter &p, Line &line, int xt, int yt);
-		void paint(QPainter &p, Turtle &turtle, int xt, int yt);
-
-		void paint(QPainter &p, QPolygon &polygon, double x, double y, double angle, double size = 1.0);
-		QPolygon getTriangle();
-
-		vector<size_t> linesSizes;
-		QPixmap linesBuffer;
-
 		WorldPtr world;
+		WorldPainter worldPainter;
 };
 
 }
