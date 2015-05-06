@@ -23,22 +23,50 @@ using namespace std;
 
 namespace stibbons {
 
-class Interpreter;
+	class Interpreter;
 
-class exit_requested_exception : exception {};
+	class exit_requested_exception : exception {};
 
-/**
- * \class InterpreterManager
- * \brief Class that will interpret stibbons language.
- *
- * This class will parse the standart input, generate a syntaxic tree
- * and interpret it.
- *
- * \author Florian Galinier
- * \author Adrien Plazas
- */
-class InterpreterManager {
+	/**
+	 * \class InterpreterManager
+	 * \brief Class that will interpret stibbons language.
+	 *
+	 * This class will parse the standart input, generate a syntaxic tree
+	 * and interpret it.
+	 *
+	 * \author Florian Galinier
+	 * \author Adrien Plazas
+	 */
+	class InterpreterManager {
+	private:
+		WorldPtr world;
+		TreePtr tree;
+
+		vector<pair<shared_ptr<Interpreter>, shared_ptr<thread>>> interpreters;
+
+		std::function<void(string,string)> errorCallback;
+
+		size_t waitTime;    /*!< A size_t to control the speed.*/
+		mutex stopMutex;    /*!< A mutex to stop everything when stop button is pressed*/
+		bool exitFlag;	    /*!< A flag to signal when stop button is pressed*/
+		
+
+		/**
+		 * Run the interpreter with the parsed program.
+		 */
+		void interpret(shared_ptr<Interpreter> interpreter,
+		               FunctionPtr function,
+		               AgentPtr agent,
+		               TablePtr params);
+
+		void errorsOccured (string type, string what);
+
+		void stop ();
+
 	public:
+		static bool suspendFlag; /*!< A boolean to signal when pause button is pressed*/
+		static condition_variable resumeCond; /*!< A condition variable to control pause with all interpreters threads*/
+
 		/**
 		 * Create an interpreter manager
 		 *
@@ -69,8 +97,6 @@ class InterpreterManager {
 
 		virtual void wait();
 
-		virtual void checkHalt();
-
 		virtual void checkExit() throw(exit_requested_exception);
 
 		/**
@@ -79,6 +105,9 @@ class InterpreterManager {
 		 * \param waitTime the waited time
 		 */
 		virtual void setWaitTime(size_t waitTime);
+
+
+		virtual void checkHalt();
 
 		/**
 		 * Halt the execution of the interpreter.
@@ -94,9 +123,9 @@ class InterpreterManager {
 		 * Run the interpreter with the parsed program.
 		 */
 		template<class I>
-		void interpret_async(FunctionPtr function,
-		                     AgentPtr agent,
-		                     TablePtr params) {
+			void interpret_async(FunctionPtr function,
+								 AgentPtr agent,
+								 TablePtr params) {
 			auto i = make_shared<I>();
 
 			auto t = make_shared<thread>(&InterpreterManager::interpret,
@@ -108,32 +137,7 @@ class InterpreterManager {
 
 			interpreters.push_back(pair<shared_ptr<Interpreter>, shared_ptr<thread>>(i, t));
 		}
-
-	private:
-		WorldPtr world;
-		TreePtr tree;
-
-		vector<pair<shared_ptr<Interpreter>, shared_ptr<thread>>> interpreters;
-
-		std::function<void(string,string)> errorCallback;
-
-		size_t waitTime;
-		mutex suspendMutex;
-		bool suspendFlag;
-		bool exitFlag;
-
-		/**
-		 * Run the interpreter with the parsed program.
-		 */
-		void interpret(shared_ptr<Interpreter> interpreter,
-		               FunctionPtr function,
-		               AgentPtr agent,
-		               TablePtr params);
-
-		void errorsOccured (string type, string what);
-
-		void stop ();
-};
+	};
 
 }
 

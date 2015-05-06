@@ -41,6 +41,12 @@ class InterpreterManager;
 	 */
 	class Interpreter {
 	public:
+
+		mutex suspendMutex;    /*!< A mutex used to lock the thread when pause is called. */
+
+		bool inPauseFlag;    /*!< A flag which signal if the thread is paused. Useful when export is called
+		 * and every thread need to be in pause before exporting model. */
+
 		/**
 		 * Interpret a function (or function of a breed)
 		 * \param fct A function that will be interpreted
@@ -112,10 +118,6 @@ class InterpreterManager;
 		 * \return The result of the call operation on concerned value.
 		 */
 		inline ValuePtr callOp(InterpreterManager& manager, AgentPtr, TreePtr, TablePtr);
-
-	public:
-		static condition_variable resumeCond;
-		static bool suspendFlag;
 
 		/**
 		 * Create a new interpreter

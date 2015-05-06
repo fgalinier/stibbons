@@ -10,9 +10,6 @@
 
 namespace stibbons {
 
-	bool Interpreter::suspendFlag = false;
-	condition_variable Interpreter::resumeCond;
-
 	yy::position Interpreter::getPosition(const TreePtr tree) {
 		return yy::position(nullptr,
 		                    std::get<0>(tree->getPosition()),
@@ -23,6 +20,8 @@ namespace stibbons {
 									AgentPtr agent,
 									const TreePtr tree,
 									TablePtr hashTable) {
+
+		inPauseFlag = false;
 		manager.checkExit();
 		manager.checkHalt();
 		manager.wait();
