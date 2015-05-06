@@ -70,6 +70,10 @@ pd|pen-down {return yy::parser::token::PD;}
 
 pu|pen-up {return yy::parser::token::PU;}
 
+send {return yy::parser::token::SEND;}
+
+recv {return yy::parser::token::RECV;}
+
 die {return yy::parser::token::DIE;}
 
 "==" {return yy::parser::token::EQ;}

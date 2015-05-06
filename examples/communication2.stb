@@ -1,0 +1,21 @@
+agent listener (name) {
+	println("Hello, I am " + name)
+	recv msg exp
+	println ("I am " + name + " and someone told me " + msg)
+}
+
+new listener ("Denis")
+new listener ("Bjarne")
+new listener ("Linus")
+
+new agent {
+	println(1)
+	send "Hello, agents!"
+	println(2)
+	michel = new listener ("Michel")
+	println(3)
+	send "Hello, agents!" michel
+	println(4)
+}
+
+

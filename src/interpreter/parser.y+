@@ -52,6 +52,10 @@
       return "PU";
     case yy::parser::token::PD:
       return "PD";
+    case yy::parser::token::SEND:
+      return "SEND";
+    case yy::parser::token::RECV:
+      return "RECV";
     case yy::parser::token::DIE:
       return "DIE";
     case yy::parser::token::AND:
@@ -122,6 +126,8 @@
 %token RT         "turn-right"
 %token PU         "pen-up"
 %token PD         "pen-down"
+%token SEND         "send"
+%token RECV         "recv"
 %token DIE        "die"
 %token AND        "and"
 %token OR         "or"
@@ -565,6 +571,29 @@ instr_turtle : FD expr
 | PD
 { 
   $$ = make_shared<stibbons::Tree>(yy::parser::token::PD,nullptr);
+}
+| SEND expr expr
+{ 
+  stibbons::TreePtr t1 = make_shared<stibbons::Tree>(yy::parser::token::SEND,nullptr);
+  t1->addSon($2);
+  t1->addSon($3);
+  t1->setPosition({@1.begin.line,@1.begin.column});
+  $$ = t1; 
+}
+| SEND expr
+{ 
+  stibbons::TreePtr t1 = make_shared<stibbons::Tree>(yy::parser::token::SEND,nullptr);
+  t1->addSon($2);
+  t1->setPosition({@1.begin.line,@1.begin.column});
+  $$ = t1; 
+}
+| RECV primary_expr primary_expr
+{ 
+  stibbons::TreePtr t1 = make_shared<stibbons::Tree>(yy::parser::token::RECV,nullptr);
+  t1->addSon($2);
+  t1->addSon($3);
+  t1->setPosition({@1.begin.line,@1.begin.column});
+  $$ = t1; 
 }
 | DIE 
 { 
