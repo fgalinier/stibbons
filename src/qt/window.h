@@ -8,9 +8,15 @@
 
 #pragma once
 
+#include <QGridLayout>
 #include <QMainWindow>
 #include <QtWidgets>
-
+#include <QApplication>
+#include <QtGui>
+#include <QTextEdit>
+#include <QFile>
+#include <QString>
+#include <QTextStream> 
 #include "../model/world.h"
 #include "world-view.h"
 #include "runner.h"
@@ -54,6 +60,10 @@ class Window : public QMainWindow {
 
 		void updateToolbar();
 
+		void createOnglet(QScrollArea *t);
+
+		void loadText(QString fileName);
+
 		QAction *openAct;
 		QAction *resetAct;
 		QAction *runAct;
@@ -66,6 +76,9 @@ class Window : public QMainWindow {
 
 		QToolBar *toolbar;
 		QSlider* slider;
+
+		QTabWidget *onglets;
+		QTextEdit *zoneTexte;
 
 		Runner *runner;
 

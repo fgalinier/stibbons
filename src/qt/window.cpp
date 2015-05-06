@@ -19,6 +19,7 @@ Window::Window() : runner(nullptr) {
 	createActions();
 	createToolBars();
 
+
 	auto scrollArea = new QScrollArea();
 	scrollArea->setAlignment(Qt::AlignCenter);
 	scrollArea->show();
@@ -34,6 +35,9 @@ Window::Window() : runner(nullptr) {
 	setUnifiedTitleAndToolBarOnMac(true);
 
 	updateToolbar();
+
+	createOnglet(scrollArea);
+
 }
 
 Window::~Window() {
@@ -82,6 +86,8 @@ void Window::createActions() {
 	exportAct = new QAction(tr("&Export..."), this);
 	exportAct->setStatusTip(tr("Export the model to a file"));
 	connect(exportAct, SIGNAL(triggered()), this, SLOT(exportModel()));
+
+
 }
 
 void Window::createToolBars() {
@@ -152,6 +158,24 @@ void Window::loadFile(const QString &fileName) {
 	program = in.readAll().toStdString();
 
 	loadProgram();
+
+	loadText(fileName);
+}
+
+void Window::loadText(QString fileName){
+
+	zoneTexte->setGeometry(100,100,400,200);
+	QFile fichier(fileName);
+
+	if(fichier.open(QIODevice::ReadWrite))
+	{
+		zoneTexte->setText(fichier.readAll());
+		fichier.close();
+	}
+	else cout<<"Impossible d'ouvrir le fichier !"<<endl;
+	//TODO Levé une exception
+
+	zoneTexte->show();
 }
 
 void Window::loadProgram() {
@@ -176,6 +200,7 @@ void Window::loadProgram() {
 
 		setCentralWidget(scrollArea);
 		scrollArea->setWidget(worldView);
+		createOnglet(scrollArea);
 	}
 	catch (SemanticException e) {
 		error("Semantic error", QString(e.what()));
@@ -294,6 +319,33 @@ void Window::updateToolbar() {
 		runAct->setVisible(false);
 		haltAct->setVisible(false);
 	}
+}
+
+void Window::createOnglet(QScrollArea *t){
+	//creation de la table widget
+	onglets = new QTabWidget(this);
+	QWidget *affichage = new QWidget();
+	QWidget *code = new QWidget();
+
+	//page editeur
+	//box qui va contenir les widgets de la page
+	QVBoxLayout *vbox1 = new QVBoxLayout;
+	zoneTexte=new QTextEdit;
+	vbox1->addWidget(zoneTexte);
+
+	code->setLayout(vbox1);
+
+	//page affichage
+	//box qui va contenir les widgets de la page
+	QVBoxLayout *vbox2 = new QVBoxLayout;
+
+	vbox2->addWidget(t);
+	affichage->setLayout(vbox2);
+
+	onglets->addTab(affichage, "Print");
+	onglets->addTab(code, "Code");
+
+	this->setCentralWidget(onglets);
 }
 
 }
