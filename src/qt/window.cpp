@@ -19,7 +19,6 @@ Window::Window() : runner(nullptr) {
 	createActions();
 	createToolBars();
 
-
 	auto scrollArea = new QScrollArea();
 	scrollArea->setAlignment(Qt::AlignCenter);
 	scrollArea->show();
@@ -68,6 +67,12 @@ void Window::createActions() {
 	runAct->setStatusTip(tr("Run the program"));
 	connect(runAct, SIGNAL(triggered()), this, SLOT(run()));
 
+	icon = QApplication::style()->standardIcon (QStyle::SP_DialogSaveButton);
+	saveAct = new QAction(icon, tr("&Save..."), this);
+//	saveAct->setShortcuts(QKeySequence::Play);
+	saveAct->setStatusTip(tr("Save the program"));
+	connect(saveAct, SIGNAL(triggered()), this, SLOT(save()));
+
 	icon = QApplication::style()->standardIcon (QStyle::SP_MediaPause);
 	haltAct = new QAction(icon, tr("&Halt..."), this);
 //	haltAct->setShortcuts(QKeySequence::Pause);
@@ -86,8 +91,6 @@ void Window::createActions() {
 	exportAct = new QAction(tr("&Export..."), this);
 	exportAct->setStatusTip(tr("Export the model to a file"));
 	connect(exportAct, SIGNAL(triggered()), this, SLOT(exportModel()));
-
-
 }
 
 void Window::createToolBars() {
@@ -100,6 +103,7 @@ void Window::createToolBars() {
 	toolbar->addAction(resetAct);
 	toolbar->addAction(runAct);
 	toolbar->addAction(haltAct);
+	toolbar->addAction(saveAct);
 
 	// Extenseur
 	QWidget* empty = new QWidget();
@@ -231,6 +235,17 @@ void Window::run() {
 void Window::halt() {
 	if (runner)
 		runner->halt();
+
+	updateToolbar();
+}
+
+void Window::save(){
+	QString fileName = QFileDialog::getSaveFileName(this, tr("Save File"));
+	QFile code(fileName);
+	code.open(QIODevice::WriteOnly | QIODevice::Text);
+	QTextStream flux(&code);
+	flux<< zoneTexte->toPlainText();
+	code.close();
 
 	updateToolbar();
 }

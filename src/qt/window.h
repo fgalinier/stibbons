@@ -46,6 +46,7 @@ class Window : public QMainWindow {
 		void exportModel(QString fileName);
 		void about();
 		void updateInterpreterWaitTime(int waitTime);
+		void save();
 
 		void error(QString type, QString what);
 
@@ -71,6 +72,7 @@ class Window : public QMainWindow {
 		QAction *quitAct;
 		QAction *aboutAct;
 		QAction *exportAct;
+		QAction *saveAct;
 
 		WorldView *worldView;
 
