@@ -130,6 +130,7 @@ MOCHEADERS = \
 	$(NULL)
 
 CLIMOCHEADERS = \
+	src/cli/application.h \
 	src/qt/runner.h \
 	$(NULL)
 

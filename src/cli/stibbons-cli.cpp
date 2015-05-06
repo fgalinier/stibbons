@@ -21,6 +21,18 @@ int main(int argc, char *argv[]) {
 	parser.addVersionOption();
 	parser.addPositionalArgument("file", "The Stibbons program file to execute.");
 
+	// Export the model every <seconds> seconds
+	parser.addOption(QCommandLineOption(
+		QStringList() << "e" << "export",
+		"Export the model every <seconds>.",
+		"seconds"));
+
+	// Prefix exported files with <prefix>
+	parser.addOption(QCommandLineOption(
+		QStringList() << "p" << "prefix",
+		"Prefix the exported files with <prefix>.",
+		"prefix"));
+
 	// Process the actual command line arguments given by the user
 	parser.process(app);
 
@@ -39,6 +51,15 @@ int main(int argc, char *argv[]) {
 	}
 	QTextStream in(&file);
 	app.setProgram(in.readAll().toStdString());
+
+	// The the export options
+	auto exportInterval = parser.value("export");
+	auto prefix = parser.value("prefix");
+
+	bool ok;
+	auto seconds = exportInterval.toULong(&ok);
+	app.setExportInterval(ok ? seconds : 0);
+	app.setExportPrefix(prefix.toStdString());
 
 	return app.exec();
 }

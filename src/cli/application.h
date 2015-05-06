@@ -13,24 +13,37 @@
 #include "../qt/runner.h"
 
 #include <QCoreApplication>
+#include <QTimer>
 
 namespace stibbons {
 
 class Application : public QCoreApplication {
+	Q_OBJECT
+
 	public:
 		Application(int & argc, char ** argv);
 		~Application();
 		int exec();
 
 		void setProgram(std::string program);
+		void setExportInterval(size_t seconds);
+		void setExportPrefix(std::string prefix);
+
+	public slots:
+		void exportModel();
 
 	private slots:
 		void error(QString type, QString what);
 
 	private:
 		std::string program;
+		size_t seconds;
+		std::string prefix;
 
 		Runner* runner;
+		QTimer* timer;
+
+		void exportModel(QString fileName);
 };
 
 }
