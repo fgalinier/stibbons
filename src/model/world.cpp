@@ -255,6 +255,7 @@ Object World::exportWorld (){
 	for (unsigned i=0;i<dimensionZ;i++)
 		size.push_back(double(getZoneSize().getValue(i)));
 	world.push_back(Pair("ZoneSize",size));
+	exportProperties(&world);
 
 	Array tortue;
 	for (auto t : anonymousBreeds)
