@@ -10,15 +10,27 @@
 
 #include "../interpreter/interpreter.h"
 #include "../model/world.h"
+#include "../qt/runner.h"
 
 #include <QCoreApplication>
 
 namespace stibbons {
 
-class Application : private QCoreApplication {
+class Application : public QCoreApplication {
 	public:
 		Application(int & argc, char ** argv);
+		~Application();
 		int exec();
+
+		void setProgram(std::string program);
+
+	private slots:
+		void error(QString type, QString what);
+
+	private:
+		std::string program;
+
+		Runner* runner;
 };
 
 }

@@ -8,8 +8,38 @@
 
 #include "application.h"
 
+#include <QCommandLineParser>
+#include <QFile>
+#include <QTextStream>
+
 int main(int argc, char *argv[]) {
 	stibbons::Application app(argc, argv);
+
+	QCommandLineParser parser;
+	parser.setApplicationDescription("The Stibbons headless interpreter");
+	parser.addHelpOption();
+	parser.addVersionOption();
+	parser.addPositionalArgument("file", "The Stibbons program file to execute.");
+
+	// Process the actual command line arguments given by the user
+	parser.process(app);
+
+	QStringList args = parser.positionalArguments();
+	if (args.size() < 1) {
+		cerr << "Please pass a file to run." << endl;
+		return 1;
+	}
+
+	// Load the program
+	auto fileName = args.at(0);
+	QFile file(fileName);
+	if (!file.open(QFile::ReadOnly | QFile::Text)) {
+		cerr << "Couldn't open file " << fileName.toStdString() << endl;
+		return 1;
+	}
+	QTextStream in(&file);
+	app.setProgram(in.readAll().toStdString());
+
 	return app.exec();
 }
 

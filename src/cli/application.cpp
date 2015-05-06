@@ -11,26 +11,54 @@
 namespace stibbons {
 
 Application::Application (int & argc, char ** argv) :
-	QCoreApplication (argc, argv)
+	QCoreApplication (argc, argv),
+	program(""),
+	runner(nullptr)
 	{
 	setOrganizationName("StibbonsTeam");
 	setApplicationName("Stibbons");
+	setApplicationVersion("0.5");
+}
+
+Application::~Application () {
+	if (runner)
+		delete runner;
 }
 
 int Application::exec () {
-	// Analyser la ligne de commande
+	if (runner)
+		delete runner;
 
-	/* Options :
-	stibbons-cli [OPTIONS] [FILE]
-	[OPTIONS]
-		-e=temps --export=temps exporter le modèle toutes les x secondes
-		-o --output préfixe des fichiers générés (auquel s'ajoute le temps et le format)
-		-r --render rendre le monde à chaque export
-		-f --format paramètre le format de rendu (svg, png...)
-	[FILE] un programme Stibbons
-	*/
+	try {
+		runner = new Runner(program);
+	}
+	catch (SemanticException e) {
+		error("Semantic error", QString(e.what()));
+		return 1;
+	}
+	catch (SyntaxException e) {
+		error("Syntax error", QString(e.what()));
+		return 1;
+	}
+	catch (exception e) {
+		error("Unknown error", QString(e.what()));
+		return 1;
+	}
+
+	connect(runner, SIGNAL(error(QString,QString)),
+		    this, SLOT(error(QString,QString)));
+
+	runner->start();
 
 	return QCoreApplication::exec();
+}
+
+void Application::error(QString type, QString what) {
+	cerr << type.toStdString() << ": " << what.toStdString() << endl;
+}
+
+void Application::setProgram (std::string program) {
+	this->program = program;
 }
 
 }
