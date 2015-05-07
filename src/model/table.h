@@ -95,7 +95,13 @@ class Table : public GenericValue<Type::TABLE> {
 		 * Get a string representing the table
 		 * @return a string representing the table
 		 */
-		 virtual string toString();
+		 virtual string toString();	
+
+		 /**
+		 * Get the length of the table
+		 * @return a int representing the table's length
+		 */
+		 virtual int length();
 
 	protected :
 		recursive_mutex value_m;

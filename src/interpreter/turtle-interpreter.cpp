@@ -74,12 +74,16 @@ namespace stibbons {
 					auto msg = this->interpret(manager,agent,tree->getSon(0),hashTable);
 					if(tree->getSons().size() > 1){
 						auto dest = this->interpret(manager,agent,tree->getSon(1),hashTable);
-						if(dest->getType() != Type::TURTLE)
+						if(dest->getType() != Type::TABLE)
 							throw SemanticException("In send at recipient",
-													Type::TURTLE,
+													Type::TABLE,
 													dest->getType(),
 													getPosition(tree));
-						agent->send(dynamic_pointer_cast<Turtle>(dest), msg);
+
+						for(int i=0;i<dynamic_pointer_cast<Table>(dest)->length();i++)
+							agent->send(dynamic_pointer_cast<Turtle>(
+									     dynamic_pointer_cast<Table>(dest)->getValue(i)),
+									     msg);
 					}
 					else{
 						agent->sendAll(msg);
@@ -89,15 +93,18 @@ namespace stibbons {
 				case yy::parser::token::RECV:{
 					while (agent->checkMessage() <= 0)
 						this_thread::sleep_for(chrono::milliseconds(10));
+
 					auto msg = agent->recv();
+					auto valMsg = dynamic_pointer_cast<String>(msg.second);
+					auto valExp = dynamic_pointer_cast<Turtle>(msg.first);
+
 					auto son1 = tree->getSon(0)->getNode();
 					auto idMsg = dynamic_pointer_cast<String>(std::get<1>(son1))->getValue();
 					auto son2 = tree->getSon(1)->getNode();
 					auto idExp = dynamic_pointer_cast<String>(std::get<1>(son2))->getValue();
-					agent->setProperty(idMsg,dynamic_pointer_cast<String>(msg.second));
-					agent->setProperty(idExp,dynamic_pointer_cast<Turtle>(msg.first));
-					cout<<"idmsg: "<<idMsg<<" et msg: "<<dynamic_pointer_cast<String>(msg.second)->getValue()<<endl;
-					cout<<"idexp: "<<idExp<<" et exp: "<<dynamic_pointer_cast<Turtle>(msg.first)->toString()<<endl;
+
+					agent->setProperty(idMsg,valMsg);
+					agent->setProperty(idExp,valExp);
 				}
 					break;
 				}

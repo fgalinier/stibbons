@@ -1,3 +1,4 @@
+
 #include "table.h"
 
 #include "boolean.h"
@@ -105,6 +106,12 @@ namespace stibbons {
 
 		return oss.str();
 	}
+
+	int Table::length() {
+		return indexedValues.size();
+	}
+
+
 
 }
 
