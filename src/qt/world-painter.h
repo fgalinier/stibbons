@@ -35,7 +35,7 @@ class WorldPainter {
 		QPolygon getTriangle();
 
 		vector<size_t> linesSizes;
-		QPixmap linesBuffer;
+		QImage linesBuffer;
 
 		WorldPtr world;
 };

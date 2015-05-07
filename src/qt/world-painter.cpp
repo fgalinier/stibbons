@@ -26,7 +26,7 @@ inline QBrush brush(Color c) {
 
 WorldPainter::WorldPainter(WorldPtr world) :
 	linesSizes(vector<size_t>()),
-	linesBuffer(QPixmap()),
+	linesBuffer(QImage()),
 	world(world) {
 	resetLinesBuffer();
 }
@@ -34,7 +34,7 @@ WorldPainter::WorldPainter(WorldPtr world) :
 void WorldPainter::resetLinesBuffer() {
 	linesSizes = vector<size_t>();
 	auto ws = world ? world->getSize() : Size();
-	linesBuffer = QPixmap(QSize(ws.getValue(0), ws.getValue(1)));
+	linesBuffer = QImage(ws.getValue(0), ws.getValue(1), QImage::Format_ARGB32);
 	linesBuffer.fill(Qt::transparent);
 }
 
@@ -74,7 +74,7 @@ void WorldPainter::paint(QPainter &p, World &world, int xt, int yt) {
 	QPainter lp(&linesBuffer);
 	for (auto& line : world.getLinesSince(linesSizes))
 		paintWarped(lp, line, xt, yt);
-	p.drawPixmap(0, 0, linesBuffer);
+	p.drawImage(0, 0, linesBuffer);
 
 	// Draw the turtles
 	for (auto& turtle : world.getTurtles())

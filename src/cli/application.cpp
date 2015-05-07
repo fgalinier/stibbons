@@ -18,7 +18,9 @@ Application::Application (int & argc, char ** argv) :
 	program(""),
 	seconds(0),
 	prefix(""),
+	png(false),
 	runner(nullptr),
+	painter(nullptr),
 	timer(nullptr)
 	{
 	setOrganizationName("StibbonsTeam");
@@ -30,6 +32,9 @@ Application::~Application () {
 	if (runner)
 		delete runner;
 
+	if (painter)
+		delete painter;
+
 	if (timer)
 		delete timer;
 }
@@ -37,6 +42,9 @@ Application::~Application () {
 int Application::exec () {
 	if (runner)
 		delete runner;
+
+	if (painter)
+		delete painter;
 
 	if (timer)
 		delete timer;
@@ -67,6 +75,8 @@ int Application::exec () {
 		timer->start(seconds*1000);
 	}
 
+	painter = new WorldPainter(runner->getWorld());
+
 	runner->start();
 
 	return QCoreApplication::exec();
@@ -88,6 +98,10 @@ void Application::setExportPrefix (std::string prefix) {
 	this->prefix = prefix;
 }
 
+void Application::setRenderPNG (bool value) {
+	png = value;
+}
+
 void Application::exportModel() {
 	if (runner) {
 		runner->halt();
@@ -96,6 +110,8 @@ void Application::exportModel() {
 		auto timeStampedPrefix = QString(prefix.c_str()) + "-" + time;
 
 		exportModel(timeStampedPrefix + ".json");
+		if (png)
+			exportPNG(timeStampedPrefix + ".png");
 
 		runner->start();
 	}
@@ -110,6 +126,19 @@ void Application::exportModel(QString fileName) {
 		auto exported = runner->exportModel();
 
 		file.write(exported.c_str());
+	}
+}
+
+void Application::exportPNG(QString fileName) {
+	if (runner && painter) {
+		auto world = runner->getWorld();
+		auto ws = world ? world->getSize() : Size();
+		auto image = QImage(ws.getValue(0), ws.getValue(1), QImage::Format_RGB32);
+
+		QPainter p(&image);
+		painter->paint(p);
+
+		image.save(fileName, "PNG");
 	}
 }
 

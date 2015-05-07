@@ -33,6 +33,11 @@ int main(int argc, char *argv[]) {
 		"Prefix the exported files with <prefix>.",
 		"prefix"));
 
+	// Render a PNG for every export
+	parser.addOption(QCommandLineOption(
+		"png",
+		"Render a PNG for every export."));
+
 	// Process the actual command line arguments given by the user
 	parser.process(app);
 
@@ -60,6 +65,8 @@ int main(int argc, char *argv[]) {
 	auto seconds = exportInterval.toULong(&ok);
 	app.setExportInterval(ok ? seconds : 0);
 	app.setExportPrefix(prefix.toStdString());
+
+	app.setRenderPNG(parser.isSet("png"));
 
 	return app.exec();
 }

@@ -11,6 +11,7 @@
 #include "../interpreter/interpreter.h"
 #include "../model/world.h"
 #include "../qt/runner.h"
+#include "../qt/world-painter.h"
 
 #include <QCoreApplication>
 #include <QTimer>
@@ -28,6 +29,7 @@ class Application : public QCoreApplication {
 		void setProgram(std::string program);
 		void setExportInterval(size_t seconds);
 		void setExportPrefix(std::string prefix);
+		void setRenderPNG(bool value);
 
 	public slots:
 		void exportModel();
@@ -39,11 +41,14 @@ class Application : public QCoreApplication {
 		std::string program;
 		size_t seconds;
 		std::string prefix;
+		bool png;
 
 		Runner* runner;
+		WorldPainter* painter;
 		QTimer* timer;
 
 		void exportModel(QString fileName);
+		void exportPNG(QString fileName);
 };
 
 }
