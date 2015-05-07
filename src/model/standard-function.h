@@ -104,36 +104,6 @@ class SendFunction : public Function, public Singleton<SendFunction> {
 };
 
 /**
- * class SendAllFunction
- *
- *\brief A class sending a message from a turtle to all others.
- *
- *\author Adrien Plazas
- **/
-class SendAllFunction : public Function, public Singleton<SendAllFunction> {
-	friend Singleton<SendAllFunction>;
-	protected:
-		SendAllFunction ();
-	public:
-		virtual ValuePtr exec (AgentPtr agent, TablePtr params);
-};
-
-/**
- * class RecvFunction
- *
- *\brief A class retreiving the first new message of the turtle.
- *
- *\author Adrien Plazas
- **/
-class RecvFunction : public Function, public Singleton<RecvFunction> {
-	friend Singleton<RecvFunction>;
-	protected:
-		RecvFunction () = default;
-	public:
-		virtual ValuePtr exec (AgentPtr agent, TablePtr params);
-};
-
-/**
  * class InboxFunction
  *
  *\brief A class returning the number of unread messages.

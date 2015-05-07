@@ -84,9 +84,6 @@ void Turtle::initAttributes () {
 	setProperty("face", FaceFunction::getInstance());
 	setProperty("in-radius", InRadiusFunction::getInstance());
 	setProperty("inbox", InboxFunction::getInstance());
-	setProperty("recv", RecvFunction::getInstance());
-	setProperty("send", SendFunction::getInstance());
-	setProperty("send-all", SendAllFunction::getInstance());
 	setProperty("teleport", TeleportFunction::getInstance());
 }
 

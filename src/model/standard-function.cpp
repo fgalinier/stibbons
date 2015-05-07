@@ -100,40 +100,6 @@ ValuePtr TeleportFunction::exec (AgentPtr agent, TablePtr params) {
 	return Nil::getInstance();
 }
 
-SendFunction::SendFunction () : Function({"recipient", "message"}) {}
-
-ValuePtr SendFunction::exec (AgentPtr agent, TablePtr params) {
-	auto turtle = asTurtle(agent);
-
-	auto recipient = asTurtle(params->getValue("recipient"), "recipient");
-	auto message = params->getValue("message");
-
-	turtle->send(recipient, message);
-
-	return Nil::getInstance();
-}
-
-SendAllFunction::SendAllFunction () : Function({"message"}) {}
-
-ValuePtr SendAllFunction::exec (AgentPtr agent, TablePtr params) {
-	auto turtle = asTurtle(agent);
-
-	auto message = params->getValue("message");
-
-	turtle->sendAll(message);
-
-	return Nil::getInstance();
-}
-
-ValuePtr RecvFunction::exec (AgentPtr agent, TablePtr params) {
-	auto turtle = asTurtle(agent);
-
-	while (turtle->checkMessage() <= 0)
-		this_thread::sleep_for(chrono::milliseconds(10));
-
-	return turtle->recv().second;
-}
-
 ValuePtr InboxFunction::exec (AgentPtr agent, TablePtr params) {
 	auto turtle = asTurtle(agent);
 
