@@ -471,6 +471,7 @@ primary_expr : ID
 
 table_list : expr_list { $$ = $1; }
 | pair_list { $$ = $1; }
+| { $$ = make_shared<stibbons::Tree>(yy::parser::token::TABLE,nullptr); };
 
 expr_list : expr
 {

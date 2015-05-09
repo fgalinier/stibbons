@@ -16,3 +16,11 @@ for (k,v in t) {
 	println(v)
 }
 
+u = { }
+
+println(u)
+print('\n')
+
+for v in u {
+	println(v)
+}

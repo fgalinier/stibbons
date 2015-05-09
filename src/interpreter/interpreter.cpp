@@ -84,7 +84,7 @@ namespace stibbons {
 					key_id = dynamic_pointer_cast<String>(std::get<1>(key->getNode()))->getValue();
 				auto id = dynamic_pointer_cast<String>(std::get<1>(key_value->getNode()))->getValue();
 				auto table = this->interpret(manager,agent,key_value->getSon(0),hashTable);
-				ValuePtr res;
+				ValuePtr res = Nil::getInstance();
 				if(table->getType() != Type::TABLE)
 					throw SemanticException("FOR",
 					                        Type::TABLE,
@@ -193,34 +193,36 @@ namespace stibbons {
 				{
 					auto val = make_shared<Table>();
 					auto sons = tree->getSons();
-					if(std::get<0>(sons.at(0)->getNode()) == yy::parser::token::PAIR) {
-						for(auto s : sons) {
-							auto key = this->interpret(manager,agent,s->getSon(0),hashTable);
-							auto value = this->interpret(manager,agent,s->getSon(1),hashTable);
-							if(key->getType() == Type::STRING) {
-								val->setValue(
-									dynamic_pointer_cast<String>(key)->getValue(),
-									value
-								);
-							}
-							else if (key->getType() == Type::NUMBER) {
-								val->setValue(
-									dynamic_pointer_cast<Number>(key)->getValue(),
-									value
-								);
-							}
-							else {
-								throw SemanticException("TABLE KEY",
-														Type::STRING,
-														Type::NUMBER,
-														key->getType(),
-														getPosition(tree));
+					if(sons.size() > 0) {
+						if(std::get<0>(sons.at(0)->getNode()) == yy::parser::token::PAIR) {
+							for(auto s : sons) {
+								auto key = this->interpret(manager,agent,s->getSon(0),hashTable);
+								auto value = this->interpret(manager,agent,s->getSon(1),hashTable);
+								if(key->getType() == Type::STRING) {
+									val->setValue(
+										dynamic_pointer_cast<String>(key)->getValue(),
+										value
+									);
+								}
+								else if (key->getType() == Type::NUMBER) {
+									val->setValue(
+										dynamic_pointer_cast<Number>(key)->getValue(),
+										value
+									);
+								}
+								else {
+									throw SemanticException("TABLE KEY",
+															Type::STRING,
+															Type::NUMBER,
+															key->getType(),
+															getPosition(tree));
+								}
 							}
 						}
-					}
-					else {
-						for(auto s : sons) {
-							val->append(this->interpret(manager,agent,s,hashTable));
+						else {
+							for(auto s : sons) {
+								val->append(this->interpret(manager,agent,s,hashTable));
+							}
 						}
 					}
 					return val;
