@@ -6,6 +6,8 @@
 #include "number.h"
 #include "string.h"
 
+#include "standard-function.h"
+
 #include <cmath>
 
 namespace stibbons {
@@ -72,6 +74,19 @@ void Agent::unparent () {
 void Agent::setProperty (string key, ValuePtr value) {
 	lock_guard<recursive_mutex> lock(parent_m);
 
+	// Standard functions
+	if (key == "print")
+		return;
+
+	if (key == "println")
+		return;
+
+	if (key == "rand")
+		return;
+
+	if (key == "type-of")
+		return;
+
 	// Standard colors
 	if (key == "black")
 		return;
@@ -114,6 +129,19 @@ void Agent::setProperty (string key, ValuePtr value) {
 
 ValuePtr Agent::getProperty(string p) {
 	lock_guard<recursive_mutex> lock(parent_m);
+
+	// Standard functions
+	if (p == "print")
+		return PrintFunction::getInstance();
+
+	if (p == "println")
+		return PrintlnFunction::getInstance();
+
+	if (p == "rand")
+		return RandFunction::getInstance();
+
+	if (p == "type-of")
+		return TypeOfFunction::getInstance();
 
 	// Standard colors
 	if (p == "black")
