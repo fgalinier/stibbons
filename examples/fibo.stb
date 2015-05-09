@@ -1,0 +1,26 @@
+agent sergeant-fibo(n) {
+	new fibo(n)
+	recv nb
+	println("Résultat :")
+	println(nb)
+}
+
+agent fibo (n) {
+	teleport(0,world.max-y,-45)
+	pd
+	dest = { parent }
+	if(n < 2) {
+		send n dest
+		fd n * 10
+	}
+	else {
+		new fibo(n - 1)
+		new fibo(n - 2)
+		recv a
+		recv b
+		send a + b dest
+		fd (a + b) * 10
+	}
+}
+
+t = new sergeant-fibo(9)
