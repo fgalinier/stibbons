@@ -317,16 +317,100 @@ double Turtle::getDistanceTo(Point& point) {
 	return position.getDistanceTo(image);
 }
 
+/*
+ * From a point to another, get the possible bound crossing point and
+ * remaining distance for an axis.
+ */
+inline bool Turtle::isBoundCrossed(Point& start, Point& end, size_t axis, double lower, double upper, Point& outCrossing, double& outRemainingDist) {
+	// If the start point isn't in the bounds
+	if (start.getValue(axis) < lower || start.getValue(axis) > upper)
+		// Don't consider the axis crossed
+		return false;
+
+	double value = 0.0;
+
+	// If the upper bound is crossed
+	if (end.getValue(axis) < lower)
+		value = lower;
+	// If the lower bound is crossed
+	else if (end.getValue(axis) > upper)
+		value = upper;
+	else
+	// If no bound is crossed
+		return false;
+
+	// Ratio of the distance until crossing the axis
+	double ratio = (value - start.getValue(axis)) /
+	               (end.getValue(axis) - start.getValue(axis));
+
+	// Set the crossing point
+	for (size_t i = 0 ; i < outCrossing.getDimensions() ; i++) {
+		double delta = (end.getValue(i) - start.getValue(i)) * ratio;
+		outCrossing.setValue(i, start.getValue(i) + delta);
+	}
+
+	// Set the remaining distance
+	outRemainingDist = start.getDistanceTo(end) * (1 - abs(ratio));
+
+	return true;
+}
+
+/*
+ * From a point to another, get the possible bound crossing point,
+ * remaining distance and resulting angle.
+ */
+inline bool Turtle::getBounce(Point& start, Point& end, Point& outCrossing, double& outRemainingDist, double& outAngle) {
+	auto world = getWorld();
+	auto ws = world->getSize();
+	auto warp = world->getWarp();
+
+	// The default, expected, end point
+	bool crossed = false;
+	outCrossing = Point(end);
+	outRemainingDist = 0.0;
+	outAngle = getAngle();
+
+	// For each axis, check if it is bounceable and if it have been crossed
+	for (size_t axis = 0 ; axis < ws.getDimensions() ; axis++) {
+		if (warp[axis])
+			continue;
+
+		Point crossing(ws.getDimensions());
+		double remainingDist = 0.0;
+		isBoundCrossed(start, end, axis, 0.0, ws.getValue(axis), crossing, remainingDist);
+
+		// If the current axis have been crossed, update
+		if (remainingDist > outRemainingDist) {
+			crossed = true;
+			outRemainingDist = remainingDist;
+			outCrossing = crossing;
+			outAngle = (axis == 0 ? 180.0 : 0.0) - getAngle();
+		}
+	}
+
+	return crossed;
+}
+
 void Turtle::forward(double dist) {
-	double radians = radian(getAngle());
+	while (dist > 0.0) {
+		double radians = radian(getAngle());
 
-	double dx = cos(radians) * dist;
-	double dy = sin(radians) * dist;
+		double dx = cos(radians) * dist;
+		double dy = sin(radians) * dist;
 
-	auto newPosition = Point(position);
-	newPosition.setValue(0, newPosition.getValue(0) + dx);
-	newPosition.setValue(1, newPosition.getValue(1) + dy);
-	setPosition(newPosition);
+		auto newPosition = Point(position);
+		newPosition.setValue(0, newPosition.getValue(0) + dx);
+		newPosition.setValue(1, newPosition.getValue(1) + dy);
+
+		Point outCrossing(getWorld()->getDimensions());
+
+		double outAngle;
+
+		getBounce(position, newPosition, outCrossing, dist, outAngle);
+
+		setPosition(outCrossing);
+		setAngle(outAngle);
+	}
 
 	changed();
 }

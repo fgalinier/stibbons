@@ -298,6 +298,9 @@ class Turtle : public Agent {
 		Color color;
 		Line* line;
 		deque<pair<TurtlePtr,ValuePtr>> messages;
+
+		inline bool getBounce(Point& start, Point& end, Point& outCrossing, double& outRemainingDist, double& outAngle);
+		inline bool isBoundCrossed(Point& start, Point& end, size_t axis, double lower, double upper, Point& outCrossing, double& outRemainingDist);
 	};
 }
 
