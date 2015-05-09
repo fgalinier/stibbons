@@ -170,11 +170,9 @@ ValuePtr AskZonesFunction::exec (AgentPtr agent, TablePtr params) {
 	for (is.setValue(1, 0) ;
 	     is.getValue(1) < ws.getValue(1) ;
 	     is.setValue(1, is.getValue(1) + 1)) {
-//		cout << is.getValue(0) << " " << is.getValue(1) << endl;
 		auto zone = world->getZone(is);
 		if (zone) {
 			function->exec(zone, newParams);
-			cout << "exec OK" << endl;
 		}
 	}
 
