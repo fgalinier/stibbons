@@ -163,7 +163,7 @@ namespace stibbons {
 				{
 					auto val = make_shared<Table>();
 					auto sons = tree->getSons();
-					if(std::get<0>(sons.at(1)->getNode()) == yy::parser::token::PAIR) {
+					if(std::get<0>(sons.at(0)->getNode()) == yy::parser::token::PAIR) {
 						for(auto s : sons) {
 							auto key = this->interpret(manager,agent,s->getSon(0),hashTable);
 							auto value = this->interpret(manager,agent,s->getSon(1),hashTable);
