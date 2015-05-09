@@ -30,8 +30,7 @@ Turtle::Turtle () :
 	color(Color()),
 	line(nullptr),
 	messages(deque<pair<TurtlePtr,ValuePtr>>()){
-		initAttributes();
-	}
+}
 
 Turtle::Turtle (AgentPtr parent, turtle_id id) :
 	Agent(parent),
@@ -41,11 +40,10 @@ Turtle::Turtle (AgentPtr parent, turtle_id id) :
 	color(Color()),
 	line(nullptr),
 	messages(deque<pair<TurtlePtr,ValuePtr>>()) {
-		initAttributes();
 		if (parent->getType() == Type::WORLD)
 			setId(dynamic_pointer_cast<World>(parent)->putTurtleId());
 		else setId(dynamic_pointer_cast<Turtle>(parent)->getWorld()->putTurtleId());
-	}
+}
 
 Turtle::Turtle (Breed *breed) :
 	Agent(dynamic_pointer_cast<Agent>(breed->getWorld())),
@@ -55,8 +53,7 @@ Turtle::Turtle (Breed *breed) :
 	color(Color()),
 	line(nullptr),
 	messages(deque<pair<TurtlePtr,ValuePtr>>()) {
-		initAttributes();
-	}
+}
 
 Turtle::Turtle (TurtlePtr parent) :
 	Agent(parent),
@@ -66,16 +63,6 @@ Turtle::Turtle (TurtlePtr parent) :
 	color(parent->color),
 	line(nullptr),
 	messages(deque<pair<TurtlePtr,ValuePtr>>()) {
-		initAttributes();
-	}
-
-void Turtle::initAttributes () {
-	// Turtle specific standard functions
-	setProperty("distance-to", DistanceToFunction::getInstance());
-	setProperty("face", FaceFunction::getInstance());
-	setProperty("in-radius", InRadiusFunction::getInstance());
-	setProperty("inbox", InboxFunction::getInstance());
-	setProperty("teleport", TeleportFunction::getInstance());
 }
 
 TurtlePtr Turtle::construct () {
@@ -112,6 +99,21 @@ void Turtle::init () {
 
 void Turtle::setProperty (string key, ValuePtr value) {
 	lock_guard<recursive_mutex> lock(value_m);
+
+	if (key == "distance-to")
+		return;
+
+	if (key == "face")
+		return;
+
+	if (key == "in-radius")
+		return;
+
+	if (key == "inbox")
+		return;
+
+	if (key == "teleport")
+		return;
 
 	if (key == "color") {
 		if (value->getType() != Type::COLOR)
@@ -167,6 +169,21 @@ void Turtle::setProperty (string key, ValuePtr value) {
 
 ValuePtr Turtle::getProperty(string p) {
 	lock_guard<recursive_mutex> lock(value_m);
+
+	if (p == "distance-to")
+		return DistanceToFunction::getInstance();
+
+	if (p == "face")
+		return FaceFunction::getInstance();
+
+	if (p == "in-radius")
+		return InRadiusFunction::getInstance();
+
+	if (p == "inbox")
+		return InboxFunction::getInstance();
+
+	if (p == "teleport")
+		return TeleportFunction::getInstance();
 
 	if (p == "color")
 		return make_shared<Color>(getColor());

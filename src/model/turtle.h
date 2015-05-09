@@ -55,11 +55,6 @@ class Turtle : public Agent {
 		 */
 		static TurtlePtr construct (AgentPtr parent, turtle_id id = 0);
 
-		/**
-		 * Initialize the default attributes
-		 */
-		void initAttributes ();
-
 		virtual Type getType() const;
 
 		/**
