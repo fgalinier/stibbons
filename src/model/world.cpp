@@ -25,9 +25,6 @@ WorldPtr World::construct (Size worldSize, Size zoneSize, vector<bool> warp) thr
 void World::init () {
 	Agent::init();
 
-	// Set the default colors
-	initColors();
-
 	// Count the number of zones
 	size_t zonesNb = worldSize.getDimensions() > 0 ? 1 : 0;
 

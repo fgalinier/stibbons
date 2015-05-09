@@ -70,9 +70,6 @@ Turtle::Turtle (TurtlePtr parent) :
 	}
 
 void Turtle::initAttributes () {
-	// Set the default colors
-	initColors();
-
 	// General purpose standard functions
 	setProperty("print", PrintFunction::getInstance());
 	setProperty("println", PrintlnFunction::getInstance());

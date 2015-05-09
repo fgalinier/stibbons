@@ -72,6 +72,35 @@ void Agent::unparent () {
 void Agent::setProperty (string key, ValuePtr value) {
 	lock_guard<recursive_mutex> lock(parent_m);
 
+	// Standard colors
+	if (key == "black")
+		return;
+
+	if (key == "white")
+		return;
+
+	if (key == "grey")
+		return;
+
+	if (key == "red")
+		return;
+
+	if (key == "green")
+		return;
+
+	if (key == "blue")
+		return;
+
+	if (key == "yellow")
+		return;
+
+	if (key == "cyan")
+		return;
+
+	if (key == "magenta")
+		return;
+
+	// Other properties
 	auto prop = pair<string, ValuePtr>(key, value);
 
 	auto search = properties->find (key);
@@ -86,6 +115,35 @@ void Agent::setProperty (string key, ValuePtr value) {
 ValuePtr Agent::getProperty(string p) {
 	lock_guard<recursive_mutex> lock(parent_m);
 
+	// Standard colors
+	if (p == "black")
+		return make_shared<Color>(0.0, 0.0, 0.0);
+
+	if (p == "white")
+		return make_shared<Color>(1.0, 1.0, 1.0);
+
+	if (p == "grey")
+		return make_shared<Color>(0.5, 0.5, 0.5);
+
+	if (p == "red")
+		return make_shared<Color>(1.0, 0.0, 0.0);
+
+	if (p == "green")
+		return make_shared<Color>(0.0, 1.0, 0.0);
+
+	if (p == "blue")
+		return make_shared<Color>(0.0, 0.0, 1.0);
+
+	if (p == "yellow")
+		return make_shared<Color>(1.0, 1.0, 0.0);
+
+	if (p == "cyan")
+		return make_shared<Color>(0.0, 1.0, 1.0);
+
+	if (p == "magenta")
+		return make_shared<Color>(1.0, 0.0, 1.0);
+
+	// Other properties
 	unordered_map<string,ValuePtr>::const_iterator got = properties->find(p);
 
 	if (got == properties->end())
@@ -108,21 +166,6 @@ int Agent::compare (ValuePtr other) {
 
 int Agent::compare(AgentPtr other) {
 	return this - other.get();
-}
-
-void Agent::initColors() {
-	setProperty("black", make_shared<Color>(0.0, 0.0, 0.0));
-	setProperty("white", make_shared<Color>(1.0, 1.0, 1.0));
-
-	setProperty("grey", make_shared<Color>(0.5, 0.5, 0.5));
-
-	setProperty("red", make_shared<Color>(1.0, 0.0, 0.0));
-	setProperty("green", make_shared<Color>(0.0, 1.0, 0.0));
-	setProperty("blue", make_shared<Color>(0.0, 0.0, 1.0));
-
-	setProperty("yellow", make_shared<Color>(1.0, 1.0, 0.0));
-	setProperty("cyan", make_shared<Color>(0.0, 1.0, 1.0));
-	setProperty("magenta", make_shared<Color>(1.0, 0.0, 1.0));
 }
 
 void Agent::exportProperties(Object* o){
