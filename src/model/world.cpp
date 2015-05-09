@@ -37,9 +37,6 @@ void World::init () {
 		auto zone = Zone::construct(shared_from_this());
 		zones.push_back(zone);
 	}
-
-	// General purpose standard functions
-	setProperty("ask-zones", AskZonesFunction::getInstance());
 }
 
 World::~World () {
@@ -54,6 +51,9 @@ Type World::getType() const {
 void World::setProperty (string key, ValuePtr value) {
 	lock_guard<recursive_mutex> lock(value_m);
 
+	if (key == "ask-zones")
+		return;
+
 	if (key == "max-x")
 		return;
 
@@ -65,6 +65,9 @@ void World::setProperty (string key, ValuePtr value) {
 
 ValuePtr World::getProperty(string p) {
 	lock_guard<recursive_mutex> lock(value_m);
+
+	if (p == "ask-zones")
+		return AskZonesFunction::getInstance();
 
 	if (p == "max-x")
 		return make_shared<Number>(worldSize.getValue(0) *
