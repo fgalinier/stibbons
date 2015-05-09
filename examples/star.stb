@@ -13,6 +13,7 @@ agent star () {
 }
 
 marylin = new star()
+marylin = marylin[0]
 
 5 new agent {
 	teleport(rand() % world.max-x, rand() % world.max-y, rand())
