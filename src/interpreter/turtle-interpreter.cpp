@@ -91,20 +91,24 @@ namespace stibbons {
 				}
 					break;
 				case yy::parser::token::RECV:{
-					while (agent->checkMessage() <= 0)
-						this_thread::sleep_for(chrono::milliseconds(10));
+						while (agent->checkMessage() <= 0)
+							this_thread::sleep_for(chrono::milliseconds(10));
+						auto msg = agent->recv();
+						
+						auto valMsg = msg.second;
+						auto son1 = tree->getSon(0)->getNode();
+						auto idMsg = dynamic_pointer_cast<String>(std::get<1>(son1))->getValue();
+						
+						agent->setProperty(idMsg,valMsg);
 
-					auto msg = agent->recv();
-					auto valMsg = dynamic_pointer_cast<String>(msg.second);
-					auto valExp = dynamic_pointer_cast<Turtle>(msg.first);
+					if(tree->getSons().size() > 1){
 
-					auto son1 = tree->getSon(0)->getNode();
-					auto idMsg = dynamic_pointer_cast<String>(std::get<1>(son1))->getValue();
-					auto son2 = tree->getSon(1)->getNode();
-					auto idExp = dynamic_pointer_cast<String>(std::get<1>(son2))->getValue();
+						auto valExp = dynamic_pointer_cast<Turtle>(msg.first);
+						auto son2 = tree->getSon(1)->getNode();
+						auto idExp = dynamic_pointer_cast<String>(std::get<1>(son2))->getValue();
 
-					agent->setProperty(idMsg,valMsg);
-					agent->setProperty(idExp,valExp);
+						agent->setProperty(idExp,valExp);
+					}						
 				}
 					break;
 				}

@@ -596,6 +596,13 @@ instr_turtle : FD expr
   t1->setPosition({@1.begin.line,@1.begin.column});
   $$ = t1; 
 }
+| RECV primary_expr
+{ 
+  stibbons::TreePtr t1 = make_shared<stibbons::Tree>(yy::parser::token::RECV,nullptr);
+  t1->addSon($2);
+  t1->setPosition({@1.begin.line,@1.begin.column});
+  $$ = t1; 
+}
 | DIE 
 { 
   $$ = make_shared<stibbons::Tree>(yy::parser::token::DIE,nullptr);
