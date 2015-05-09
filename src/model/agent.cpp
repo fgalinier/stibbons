@@ -119,12 +119,11 @@ void Agent::setProperty (string key, ValuePtr value) {
 	auto prop = pair<string, ValuePtr>(key, value);
 
 	auto search = properties->find (key);
-	if ( search == properties->end())
-		properties->insert(prop);
-	else {
+	if ( search != properties->end())
 		properties->erase(key);
+
+	if (value->getType() != Type::NIL)
 		properties->insert(prop);
-	}
 }
 
 ValuePtr Agent::getProperty(string p) {
