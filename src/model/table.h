@@ -41,6 +41,18 @@ class Table : public GenericValue<Type::TABLE> {
 		 */
 		 virtual ValuePtr getValue(string key);
 
+		 /**
+		 * Get all the named values
+		 * @return values contained in the table
+		 */
+		 virtual const unordered_map<string, ValuePtr>& getNamedValues();
+
+		 /**
+		 * Get all the indexed values
+		 * @return values contained in the table
+		 */
+		 virtual const map<long, ValuePtr>& getIndexedValues();
+
 		/**
 		 * Add a value
 		 * @param pair the key-value pair to set

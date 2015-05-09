@@ -1,0 +1,18 @@
+t = {1, 2, 3}
+t["bla"] = 5
+
+println(t)
+print('\n')
+
+for i in t {
+	println(i)
+}
+
+print('\n')
+
+for (k,v in t) {
+	print(k)
+	print(" : ")
+	println(v)
+}
+

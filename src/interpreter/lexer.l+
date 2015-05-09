@@ -141,7 +141,9 @@ zone_t {pyylval->v=make_shared<stibbons::TypeValue>(stibbons::Type::ZONE);
 world_t {pyylval->v=make_shared<stibbons::TypeValue>(stibbons::Type::WORLD); 
 	return yy::parser::token::TYPE;}
 
-[0-9]+\.?[0-9]*|\.[0-9]+ {std::istringstream iss(yytext); double n; iss >> n; pyylval->v=make_shared<stibbons::Number>(n); return yy::parser::token::NUMBER;}
+for {return yy::parser::token::FOR;}
+
+in {return yy::parser::token_type(':');}
 
 \"\"\" { tmp = std::string(); BEGIN(tpl_quote); }
 
@@ -179,6 +181,8 @@ world_t {pyylval->v=make_shared<stibbons::TypeValue>(stibbons::Type::WORLD);
     \\0 { tmp += '\0'; }
 }
 
+[0-9]+\.?[0-9]*|\.[0-9]+ {std::istringstream iss(yytext); double n; iss >> n; pyylval->v=make_shared<stibbons::Number>(n); return yy::parser::token::NUMBER;}
+
 #([a-f0-9]{6}|[a-f0-9]{3}) {pyylval->v=make_shared<stibbons::Color>(yytext); return yy::parser::token::COLOR;}
 
 {id} {pyylval->v=make_shared<stibbons::String>(yytext); return yy::parser::token::ID;}
@@ -191,8 +195,6 @@ world_t {pyylval->v=make_shared<stibbons::TypeValue>(stibbons::Type::WORLD);
 <comment>"*"+[^*/]*
 <comment>\n\n* {loc->lines(yyleng); loc->step();}
 <comment>"*"+"/" {BEGIN(INITIAL);}
-
-"}" { return yy::parser::token_type(yytext[0]);}
 
 [ \r\t]+  {loc->step();}
 

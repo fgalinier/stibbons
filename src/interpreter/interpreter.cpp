@@ -76,6 +76,37 @@ namespace stibbons {
 				return res;
 			}
 				break;
+			case yy::parser::token::FOR: {
+				auto key_value = tree->getSon(0);
+				auto key = (key_value->getSons().size() > 1)?key_value->getSon(1):nullptr;
+				std::string key_id;
+				if(key)
+					key_id = dynamic_pointer_cast<String>(std::get<1>(key->getNode()))->getValue();
+				auto id = dynamic_pointer_cast<String>(std::get<1>(key_value->getNode()))->getValue();
+				auto table = this->interpret(manager,agent,key_value->getSon(0),hashTable);
+				ValuePtr res;
+				if(table->getType() != Type::TABLE)
+					throw SemanticException("FOR",
+					                        Type::TABLE,
+					                        table->getType(),
+					                        getPosition(tree));
+				auto indexedValues = dynamic_pointer_cast<Table>(table)->getIndexedValues();
+				auto namedValues = dynamic_pointer_cast<Table>(table)->getNamedValues();
+				for(auto p : indexedValues) {
+					if(key)
+						agent->setProperty(key_id,make_shared<Number>(p.first));
+					agent->setProperty(id,p.second);
+					res = this->interpret(manager,agent,tree->getSon(1),hashTable);
+				}
+				for(auto p : namedValues) {
+					if(key)
+						agent->setProperty(key_id,make_shared<String>(p.first));
+					agent->setProperty(id,p.second);
+					res = this->interpret(manager,agent,tree->getSon(1),hashTable);
+				}
+				return res;
+			}
+				break;
 				//Conditionnal cases:
 			case yy::parser::token::IF: {
 				auto cond = this->interpret(manager,agent,tree->getSon(0),hashTable);

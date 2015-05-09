@@ -39,6 +39,18 @@ namespace stibbons {
 			return Nil::getInstance();
 
 		return got->second;
+	}	
+
+	const unordered_map<string, ValuePtr>& Table::getNamedValues() {
+		lock_guard<recursive_mutex> lock(value_m);
+
+		return namedValues;
+	}
+
+	const map<long, ValuePtr>& Table::getIndexedValues() {
+		lock_guard<recursive_mutex> lock(value_m);
+
+		return indexedValues;
 	}
 
 	void Table::setValue (pair<long, ValuePtr> pair) {
