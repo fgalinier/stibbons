@@ -1,7 +1,10 @@
 #include "world.h"
 
-namespace stibbons {
+#include <algorithm>
 
+using namespace std;
+
+namespace stibbons {
 
 World::World (Size worldSize, Size zoneSize,vector<bool> warp) throw(domain_error) : Agent(nullptr), worldSize(worldSize), zoneSize(zoneSize),warp(warp), Tid(0),Zid(0) {
 	if (worldSize.getDimensions() != zoneSize.getDimensions())
@@ -158,16 +161,20 @@ ZonePtr World::getZone (Size& coordinates) throw(domain_error) {
 	if (worldSize.getDimensions() != coordinates.getDimensions())
 		throw domain_error("Can't get a zone for coordinates in a dimension different from the world's");
 
-	// If no zone correspond to the coordinates, return a null pointer
-	for (size_t i = 0 ; i < coordinates.getDimensions() ; i++)
-		if (coordinates.getValue(i) > worldSize.getValue(i))
-			return nullptr;
+	auto requestedZone = Size(coordinates.getDimensions());
+
+	// Get the closest zone to the requested one
+	for (size_t i = 0 ; i < coordinates.getDimensions() ; i++) {
+		requestedZone.setValue(i, max(min((long) coordinates.getValue(i),
+		                                  (long) worldSize.getValue(i) - 1),
+		                              0l));
+	}
 
 	// Compute the index of the zone
 	size_t prevDimensionsSize = 1;
 	size_t index = 0;
-	for (size_t i = 0 ; i < coordinates.getDimensions() ; i++) {
-		index += coordinates.getValue(i) * prevDimensionsSize;
+	for (size_t i = 0 ; i < requestedZone.getDimensions() ; i++) {
+		index += requestedZone.getValue(i) * prevDimensionsSize;
 		prevDimensionsSize *= worldSize.getValue(i);
 	}
 
