@@ -17,6 +17,7 @@ yy::position InterpreterManager::getPosition(const TreePtr tree) {
 
 InterpreterManager::InterpreterManager(string program) throw(InterpreterException) :
 	errorCallback(nullptr),
+	waitTime(0),
 	suspendFlag(false),
 	exitFlag(false) {
 	istringstream iss(program, ios_base::in);
