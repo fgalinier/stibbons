@@ -1,0 +1,22 @@
+t = new agent {
+	t = world.t
+	nb = 5
+	b = true
+	s = "toto"
+	c = red
+	z = zone
+	w = world
+
+	ty = type-of(nb)
+
+	if(type-of(nb) == number_t) println(type-of(nb))
+	if(type-of(b) == boolean_t) println(type-of(b))
+	if(type-of(s) == string_t) println(type-of(s))
+	if(type-of(c) == color_t) println(type-of(c))
+	if(type-of(t) == table_t) println(type-of(t))
+	if(type-of(t[0]) == turtle_t) println(type-of(t[0]))
+	if(type-of(z) == zone_t) println(type-of(z))
+	if(type-of(w) == world_t) println(type-of(w))
+	if(type-of(n) == nil) println(type-of(n))
+	if(type-of(ty) == type_t) println(type-of(ty))
+}

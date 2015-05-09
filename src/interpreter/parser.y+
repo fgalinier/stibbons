@@ -158,6 +158,7 @@
 %token <v> COLOR
 %token <v> BOOLEAN 
 %token <v> NIL
+%token <v> TYPE
 %token <v> ID
 %type <tr> nb_agt
 %type <tr> statement_list
@@ -604,7 +605,8 @@ lit : NUMBER { $$ = make_shared<stibbons::Tree>(yy::parser::token::NUMBER,$1); }
 | STRING { $$ = make_shared<stibbons::Tree>(yy::parser::token::STRING,$1); }
 | BOOLEAN { $$ = make_shared<stibbons::Tree>(yy::parser::token::BOOLEAN,$1); }
 | COLOR { $$ = make_shared<stibbons::Tree>(yy::parser::token::COLOR,$1); }
-| NIL { $$ = make_shared<stibbons::Tree>(yy::parser::token::NIL,$1); };
+| NIL { $$ = make_shared<stibbons::Tree>(yy::parser::token::NIL,$1); }
+| TYPE { $$ = make_shared<stibbons::Tree>(yy::parser::token::TYPE,$1); };
 
 %%
 

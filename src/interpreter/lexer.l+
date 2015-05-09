@@ -21,6 +21,7 @@
 #include "../model/string.h"
 #include "../model/boolean.h"
 #include "../model/color.h"
+#include "../model/type-value.h"
 
 #define YY_USER_ACTION loc->columns(yyleng);
 #define yyterminate() {}
@@ -109,6 +110,36 @@ new {return yy::parser::token::NEW;}
 agent {return yy::parser::token::AGT;}
 
 function {return yy::parser::token::FCT;}
+
+nil {pyylval->v=make_shared<stibbons::TypeValue>(stibbons::Type::NIL); 
+	return yy::parser::token::TYPE;}
+
+number_t {pyylval->v=make_shared<stibbons::TypeValue>(stibbons::Type::NUMBER); 
+	return yy::parser::token::TYPE;}
+
+boolean_t {pyylval->v=make_shared<stibbons::TypeValue>(stibbons::Type::BOOLEAN); 
+	return yy::parser::token::TYPE;}
+
+string_t {pyylval->v=make_shared<stibbons::TypeValue>(stibbons::Type::STRING); 
+	return yy::parser::token::TYPE;}
+
+color_t {pyylval->v=make_shared<stibbons::TypeValue>(stibbons::Type::COLOR); 
+	return yy::parser::token::TYPE;}
+
+table_t {pyylval->v=make_shared<stibbons::TypeValue>(stibbons::Type::TABLE); 
+	return yy::parser::token::TYPE;}
+
+type_t {pyylval->v=make_shared<stibbons::TypeValue>(stibbons::Type::TYPE); 
+	return yy::parser::token::TYPE;}
+
+turtle_t {pyylval->v=make_shared<stibbons::TypeValue>(stibbons::Type::TURTLE); 
+	return yy::parser::token::TYPE;}
+
+zone_t {pyylval->v=make_shared<stibbons::TypeValue>(stibbons::Type::ZONE); 
+	return yy::parser::token::TYPE;}
+
+world_t {pyylval->v=make_shared<stibbons::TypeValue>(stibbons::Type::WORLD); 
+	return yy::parser::token::TYPE;}
 
 [0-9]+\.?[0-9]*|\.[0-9]+ {std::istringstream iss(yytext); double n; iss >> n; pyylval->v=make_shared<stibbons::Number>(n); return yy::parser::token::NUMBER;}
 

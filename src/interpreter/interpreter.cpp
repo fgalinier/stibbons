@@ -156,6 +156,7 @@ namespace stibbons {
 			case yy::parser::token::COLOR:
 			case yy::parser::token::BOOLEAN:
 			case yy::parser::token::NIL:
+			case yy::parser::token::TYPE:
 				return std::get<1>(tree->getNode());
 				break;
 			case yy::parser::token::TABLE:
