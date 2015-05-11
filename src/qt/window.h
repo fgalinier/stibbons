@@ -20,10 +20,10 @@
 #include "../model/world.h"
 #include "world-view.h"
 #include "runner.h"
+#include "stibbons-editor.h"
 
 class QAction;
 class QMenu;
-class QPlainTextEdit;
 
 namespace stibbons {
 
@@ -80,7 +80,7 @@ class Window : public QMainWindow {
 		QSlider* slider;
 
 		QTabWidget *onglets;
-		QTextEdit *zoneTexte;
+		StibbonsEditor *zoneTexte;
 
 		Runner *runner;
 

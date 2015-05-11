@@ -111,6 +111,7 @@ QTSRC = \
 	src/qt/application.cpp \
 	src/qt/runner.cpp \
 	src/qt/stibbons.cpp \
+	src/qt/stibbons-editor.cpp \
 	src/qt/window.cpp \
 	src/qt/world-painter.cpp \
 	src/qt/world-view.cpp \
@@ -127,6 +128,7 @@ MOCHEADERS = \
 	src/qt/runner.h \
 	src/qt/window.h \
 	src/qt/world-view.h \
+	src/qt/stibbons-editor.h \
 	$(NULL)
 
 CLIMOCHEADERS = \

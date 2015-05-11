@@ -173,7 +173,7 @@ void Window::loadText(QString fileName){
 
 	if(fichier.open(QIODevice::ReadWrite))
 	{
-		zoneTexte->setText(fichier.readAll());
+		zoneTexte->setPlainText(fichier.readAll());
 		fichier.close();
 	}
 	else cout<<"Impossible d'ouvrir le fichier !"<<endl;
@@ -345,7 +345,7 @@ void Window::createOnglet(QScrollArea *t){
 	//page editeur
 	//box qui va contenir les widgets de la page
 	QVBoxLayout *vbox1 = new QVBoxLayout;
-	zoneTexte=new QTextEdit;
+	zoneTexte=new StibbonsEditor;
 	vbox1->addWidget(zoneTexte);
 
 	code->setLayout(vbox1);
