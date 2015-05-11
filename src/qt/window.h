@@ -21,6 +21,7 @@
 #include "world-view.h"
 #include "runner.h"
 #include "stibbons-editor.h"
+#include "stibbons-highlighter.h"
 
 class QAction;
 class QMenu;
@@ -81,6 +82,7 @@ class Window : public QMainWindow {
 
 		QTabWidget *onglets;
 		StibbonsEditor *zoneTexte;
+		StibbonsHighlighter *highlighter;
 
 		Runner *runner;
 

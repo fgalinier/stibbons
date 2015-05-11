@@ -346,6 +346,7 @@ void Window::createOnglet(QScrollArea *t){
 	//box qui va contenir les widgets de la page
 	QVBoxLayout *vbox1 = new QVBoxLayout;
 	zoneTexte=new StibbonsEditor;
+	highlighter = new StibbonsHighlighter(zoneTexte->document());
 	vbox1->addWidget(zoneTexte);
 
 	code->setLayout(vbox1);

@@ -112,6 +112,7 @@ QTSRC = \
 	src/qt/runner.cpp \
 	src/qt/stibbons.cpp \
 	src/qt/stibbons-editor.cpp \
+	src/qt/stibbons-highlighter.cpp \
 	src/qt/window.cpp \
 	src/qt/world-painter.cpp \
 	src/qt/world-view.cpp \
