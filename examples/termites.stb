@@ -1,7 +1,7 @@
-%world-width 250
-%world-height 250
-%zone-width 2
-%zone-height 2
+%world-width 100
+%world-height 100
+%zone-width 5
+%zone-height 5
 %x-warp true
 %y-warp true
 
@@ -72,15 +72,16 @@ agent termite () {
 }
 
 function init-zone() {
-	test = rand() % 3
+	rand = world.rand
+	test = rand() % 5
 	if (test == 0) {
-		color = yellow
+		color = world.yellow
 	}
 	else {
-		color = black
+		color = world.black
 	}
 }
 
-foreach-zone (init-zone)
+ask-zones (init-zone)
 
 20 new termite()

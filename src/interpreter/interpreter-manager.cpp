@@ -188,11 +188,13 @@ namespace stibbons {
 	bool cond() {return !InterpreterManager::suspendFlag;}
 	
 	void InterpreterManager::checkHalt() {
-		for(auto i : interpreters){
-			std::get<0>(i)->inPauseFlag = true;
-			std::unique_lock<std::mutex> lock(std::get<0>(i)->suspendMutex);
-			resumeCond.wait(lock,cond);
-			std::get<0>(i)->inPauseFlag = false;
+		if(suspendFlag == true){
+		   for(auto i : interpreters){
+			   std::get<0>(i)->inPauseFlag = true;
+			   std::unique_lock<std::mutex> lock(std::get<0>(i)->suspendMutex);
+			   resumeCond.wait(lock,cond);
+			   std::get<0>(i)->inPauseFlag = false;
+		   }
 		}
 	}
 
