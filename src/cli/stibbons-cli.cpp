@@ -38,6 +38,11 @@ int main(int argc, char *argv[]) {
 		"png",
 		"Render a PNG for every export."));
 
+	// Don't export the model as a JSON file
+	parser.addOption(QCommandLineOption(
+		"no-json",
+		"Don't export the model as a JSON file."));
+
 	// Process the actual command line arguments given by the user
 	parser.process(app);
 
@@ -67,6 +72,7 @@ int main(int argc, char *argv[]) {
 	app.setExportPrefix(prefix.toStdString());
 
 	app.setRenderPNG(parser.isSet("png"));
+	app.setExportJSON(!parser.isSet("no-json"));
 
 	return app.exec();
 }

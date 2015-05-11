@@ -19,6 +19,7 @@ Application::Application (int & argc, char ** argv) :
 	seconds(0),
 	prefix(""),
 	png(false),
+	json(true),
 	runner(nullptr),
 	painter(nullptr),
 	timer(nullptr)
@@ -102,6 +103,10 @@ void Application::setRenderPNG (bool value) {
 	png = value;
 }
 
+void Application::setExportJSON (bool value) {
+	json = value;
+}
+
 void Application::exportModel() {
 	if (runner) {
 		runner->halt();
@@ -109,7 +114,8 @@ void Application::exportModel() {
 		auto time = QDateTime::currentDateTimeUtc().toString(Qt::ISODate);
 		auto timeStampedPrefix = QString(prefix.c_str()) + "-" + time;
 
-		exportModel(timeStampedPrefix + ".json");
+		if (json)
+			exportModel(timeStampedPrefix + ".json");
 		if (png)
 			exportPNG(timeStampedPrefix + ".png");
 

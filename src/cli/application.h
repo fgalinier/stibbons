@@ -30,6 +30,7 @@ class Application : public QCoreApplication {
 		void setExportInterval(size_t seconds);
 		void setExportPrefix(std::string prefix);
 		void setRenderPNG(bool value);
+		void setExportJSON(bool value);
 
 	public slots:
 		void exportModel();
@@ -42,6 +43,7 @@ class Application : public QCoreApplication {
 		size_t seconds;
 		std::string prefix;
 		bool png;
+		bool json;
 
 		Runner* runner;
 		WorldPainter* painter;
