@@ -68,7 +68,7 @@ void Agent::unparent () {
 	// TODO si child non dans les enfants acutels, lever erreur
 	// TODO retirer this de la liste des enfants du parent
 
-	parent = parent;
+	parent = nullptr;
 }
 
 void Agent::setProperty (string key, ValuePtr value) {
@@ -210,6 +210,14 @@ void Agent::exportProperties(Object* o){
 			p.push_back(Pair(m.first,dynamic_pointer_cast<Boolean>(m.second)->toString()));
 	}
 	o->push_back(Pair("properties",p));
+}
+
+void Agent::destroy () {
+	auto p = parent;
+	for(auto t : children)
+		this->reparent();
+	this->unparent();
+	parent = p;
 }
 
 }

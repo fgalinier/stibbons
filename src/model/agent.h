@@ -97,6 +97,11 @@ class Agent : public Value, public enable_shared_from_this<Agent> {
 		 */
 		virtual void exportProperties(Object* o);
 
+		/**
+		 * Remove as much references to this agent as possible
+		 */
+		virtual void destroy();
+
 	protected:
 		/**
 		 * Empty Constructor

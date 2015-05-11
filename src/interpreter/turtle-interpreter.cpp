@@ -70,6 +70,9 @@ namespace stibbons {
 				case yy::parser::token::PD:
 					agent->penDown();
 					break;
+				case yy::parser::token::DIE:
+					agent->die();
+					break;
 				case yy::parser::token::SEND:{
 					auto msg = this->interpret(manager,agent,tree->getSon(0),hashTable);
 					if(tree->getSons().size() > 1){

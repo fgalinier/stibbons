@@ -22,20 +22,20 @@ inline double degree (double radian) {
 	return radian * 180 / M_PI;
 }
 
-Turtle::Turtle () :
-	Agent(nullptr),
-	id(0),
-	breed(nullptr),
+Turtle::Turtle (Breed *breed) :
+	Agent(breed ? dynamic_pointer_cast<Agent>(breed->getWorld()) : nullptr),
+	id(breed ? breed->getWorld()->putTurtleId() : 0),
+	breed(breed),
 	angle(0.0),
 	color(Color()),
 	line(nullptr),
 	messages(deque<pair<TurtlePtr,ValuePtr>>()){
 }
 
-Turtle::Turtle (AgentPtr parent, turtle_id id) :
+Turtle::Turtle (Breed *breed, AgentPtr parent, turtle_id id) :
 	Agent(parent),
 	id(id),
-	breed(nullptr),
+	breed(breed),
 	angle(0.0),
 	color(Color()),
 	line(nullptr),
@@ -43,16 +43,6 @@ Turtle::Turtle (AgentPtr parent, turtle_id id) :
 		if (parent->getType() == Type::WORLD)
 			setId(dynamic_pointer_cast<World>(parent)->putTurtleId());
 		else setId(dynamic_pointer_cast<Turtle>(parent)->getWorld()->putTurtleId());
-}
-
-Turtle::Turtle (Breed *breed) :
-	Agent(dynamic_pointer_cast<Agent>(breed->getWorld())),
-	id(breed->getWorld()->putTurtleId()),
-	breed(breed),
-	angle(0.0),
-	color(Color()),
-	line(nullptr),
-	messages(deque<pair<TurtlePtr,ValuePtr>>()) {
 }
 
 Turtle::Turtle (TurtlePtr parent) :
@@ -65,22 +55,15 @@ Turtle::Turtle (TurtlePtr parent) :
 	messages(deque<pair<TurtlePtr,ValuePtr>>()) {
 }
 
-TurtlePtr Turtle::construct () {
-	auto self = shared_ptr<Turtle>(new Turtle());
-	self->init();
-
-	return self;
-}
-
-TurtlePtr Turtle::construct (AgentPtr parent, turtle_id id) {
-	auto self = shared_ptr<Turtle>(new Turtle(parent, id));
-	self->init();
-
-	return self;
-}
-
 TurtlePtr Turtle::construct (Breed *breed) {
 	auto self = shared_ptr<Turtle>(new Turtle(breed));
+	self->init();
+
+	return self;
+}
+
+TurtlePtr Turtle::construct (Breed *breed, AgentPtr parent, turtle_id id) {
+	auto self = shared_ptr<Turtle>(new Turtle(breed, parent, id));
 	self->init();
 
 	return self;
@@ -388,7 +371,7 @@ void Turtle::penUp() throw (future_error) {
 
 TurtlePtr Turtle::createChild() {
 	lock_guard<recursive_mutex> lock(value_m);
-	auto child = Turtle::construct(shared_from_this());
+	auto child = Turtle::construct(dynamic_pointer_cast<Turtle>(shared_from_this()));
 
 	breed->addTurtle (child);
 
@@ -489,6 +472,23 @@ string Turtle::toString () {
 	oss << "turtle(" << getId() << ")";
 
 	return oss.str();
+}
+
+void Turtle::die () {
+	lock_guard<recursive_mutex> lock(value_m);
+
+	destroy();
+
+	changed();
+}
+
+void Turtle::destroy () {
+	lock_guard<recursive_mutex> lock(value_m);
+
+	if (breed)
+		breed->removeTurtle(dynamic_pointer_cast<Turtle>(shared_from_this()));
+
+	Agent::destroy();
 }
 
 }

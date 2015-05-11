@@ -33,7 +33,7 @@ TurtlePtr Breed::createTurtle () {
 }
 
 TurtlePtr Breed::createTurtle (AgentPtr parent) {
-	TurtlePtr turtle = Turtle::construct(parent);
+	TurtlePtr turtle = Turtle::construct(this, parent);
 
 	addTurtle(turtle);
 

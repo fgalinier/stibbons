@@ -47,13 +47,13 @@ class Turtle : public Agent {
 		/**
 		 * Create a turtle
 		 */
-		static TurtlePtr construct ();
+		static TurtlePtr construct (Breed *breed = nullptr);
 
 		/**
 		 * Create a turtle
 		 *
 		 */
-		static TurtlePtr construct (AgentPtr parent, turtle_id id = 0);
+		static TurtlePtr construct (Breed *breed, AgentPtr parent, turtle_id id = 0);
 
 		virtual Type getType() const;
 
@@ -191,11 +191,6 @@ class Turtle : public Agent {
 		/**
 		 * Special constructor for Breed
 		 */
-		static TurtlePtr construct (Breed *breed);
-
-		/**
-		 * Special constructor for Breed
-		 */
 		static TurtlePtr construct (TurtlePtr parent);
 
 		void changed ();
@@ -256,22 +251,27 @@ class Turtle : public Agent {
 		 */
 		virtual string toString ();
 
+		/**
+		 * Kill a turtle
+		 */
+		void die ();
+
+		/**
+		 * Remove as much references to this agent as possible
+		 */
+		virtual void destroy();
+
 	protected:
 		/**
 		 * Create a turtle
 		 */
-		Turtle ();
+		Turtle (Breed *breed);
 
 		/**
 		 * Create a turtle
 		 *
 		 */
-		Turtle (AgentPtr parent, turtle_id id = 0);
-
-		/**
-		 * Special constructor for Breed
-		 */
-		Turtle (Breed *breed);
+		Turtle (Breed *breed, AgentPtr parent, turtle_id id = 0);
 
 		/**
 		 * Special constructor for Breed
