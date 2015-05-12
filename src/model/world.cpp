@@ -51,13 +51,13 @@ Type World::getType() const {
 void World::setProperty (string key, ValuePtr value) {
 	lock_guard<recursive_mutex> lock(value_m);
 
-	if (key == "ask-zones")
+	if (key == "ask_zones")
 		return;
 
-	if (key == "max-x")
+	if (key == "max_x")
 		return;
 
-	if (key == "max-y")
+	if (key == "max_y")
 		return;
 
 	Agent::setProperty(key, value);
@@ -66,14 +66,14 @@ void World::setProperty (string key, ValuePtr value) {
 ValuePtr World::getProperty(string p) {
 	lock_guard<recursive_mutex> lock(value_m);
 
-	if (p == "ask-zones")
+	if (p == "ask_zones")
 		return AskZonesFunction::getInstance();
 
-	if (p == "max-x")
+	if (p == "max_x")
 		return make_shared<Number>(worldSize.getValue(0) *
 		                           zoneSize.getValue(0));
 
-	if (p == "max-y")
+	if (p == "max_y")
 		return make_shared<Number>(worldSize.getValue(1) *
 		                           zoneSize.getValue(1));
 

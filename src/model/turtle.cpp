@@ -83,13 +83,13 @@ void Turtle::init () {
 void Turtle::setProperty (string key, ValuePtr value) {
 	lock_guard<recursive_mutex> lock(value_m);
 
-	if (key == "distance-to")
+	if (key == "distance_to")
 		return;
 
 	if (key == "face")
 		return;
 
-	if (key == "in-radius")
+	if (key == "in_radius")
 		return;
 
 	if (key == "inbox")
@@ -110,7 +110,7 @@ void Turtle::setProperty (string key, ValuePtr value) {
 	if (key == "parent")
 		return;
 
-	if (key == "pos-x") {
+	if (key == "pos_x") {
 		if (value->getType() != Type::NUMBER)
 			return;
 
@@ -121,7 +121,7 @@ void Turtle::setProperty (string key, ValuePtr value) {
 		return;
 	}
 
-	if (key == "pos-y") {
+	if (key == "pos_y") {
 		if (value->getType() != Type::NUMBER)
 			return;
 
@@ -132,7 +132,7 @@ void Turtle::setProperty (string key, ValuePtr value) {
 		return;
 	}
 
-	if (key == "pos-angle") {
+	if (key == "pos_angle") {
 		if (value->getType() != Type::NUMBER)
 			return;
 
@@ -153,13 +153,13 @@ void Turtle::setProperty (string key, ValuePtr value) {
 ValuePtr Turtle::getProperty(string p) {
 	lock_guard<recursive_mutex> lock(value_m);
 
-	if (p == "distance-to")
+	if (p == "distance_to")
 		return DistanceToFunction::getInstance();
 
 	if (p == "face")
 		return FaceFunction::getInstance();
 
-	if (p == "in-radius")
+	if (p == "in_radius")
 		return InRadiusFunction::getInstance();
 
 	if (p == "inbox")
@@ -174,13 +174,13 @@ ValuePtr Turtle::getProperty(string p) {
 	if (p == "parent")
 		return getParent();
 
-	if (p == "pos-x")
+	if (p == "pos_x")
 		return make_shared<Number>(getPosition().getValue(0));
 
-	if (p == "pos-y")
+	if (p == "pos_y")
 		return make_shared<Number>(getPosition().getValue(1));
 
-	if (p == "pos-angle")
+	if (p == "pos_angle")
 		return make_shared<Number>(getAngle());
 
 	if (p == "world")

@@ -84,7 +84,7 @@ void Agent::setProperty (string key, ValuePtr value) {
 	if (key == "rand")
 		return;
 
-	if (key == "type-of")
+	if (key == "type_of")
 		return;
 
 	// Standard colors
@@ -139,7 +139,7 @@ ValuePtr Agent::getProperty(string p) {
 	if (p == "rand")
 		return RandFunction::getInstance();
 
-	if (p == "type-of")
+	if (p == "type_of")
 		return TypeOfFunction::getInstance();
 
 	// Standard colors

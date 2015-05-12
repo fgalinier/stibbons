@@ -43,7 +43,7 @@
  } 
 %}
 
-id [_a-z][\-_a-z0-9]*
+id [_a-z][_a-z0-9]*
 
 %x comment
 %x spl_quote

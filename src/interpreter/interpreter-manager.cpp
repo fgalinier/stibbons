@@ -34,9 +34,9 @@ namespace stibbons {
 		ValuePtr prop;
 		auto worldSize = Size(2);
 
-		if ((prop = worldDir->getValue("world-width")) != Nil::getInstance()) {
+		if ((prop = worldDir->getValue("world_width")) != Nil::getInstance()) {
 			if (prop->getType() != Type::NUMBER) {
-				throw SemanticException("%world-width",
+				throw SemanticException("%world_width",
 										Type::NUMBER,
 										prop->getType(),
 										getPosition(tree));
@@ -46,9 +46,9 @@ namespace stibbons {
 		else
 			worldSize.setValue(0, 50);
 
-		if ((prop = worldDir->getValue("world-height")) != Nil::getInstance()) {
+		if ((prop = worldDir->getValue("world_height")) != Nil::getInstance()) {
 			if (prop->getType() != Type::NUMBER) {
-				throw SemanticException("%world-height",
+				throw SemanticException("%world_height",
 										Type::NUMBER,
 										prop->getType(),
 										getPosition(tree));
@@ -72,9 +72,9 @@ namespace stibbons {
 		else
 			zoneSize.setValue(0, 10);
 
-		if ((prop = worldDir->getValue("zone-height")) != Nil::getInstance()) {
+		if ((prop = worldDir->getValue("zone_height")) != Nil::getInstance()) {
 			if (prop->getType() != Type::NUMBER) {
-				throw SemanticException("%zone-height",
+				throw SemanticException("%zone_height",
 										Type::NUMBER,
 										prop->getType(),
 										getPosition(tree));
@@ -86,9 +86,9 @@ namespace stibbons {
 
 		auto warp = vector<bool>();
 
-		if ((prop = worldDir->getValue("x-warp")) != Nil::getInstance()) {
+		if ((prop = worldDir->getValue("x_warp")) != Nil::getInstance()) {
 			if (prop->getType() != Type::BOOLEAN) {
-				throw SemanticException("%x-warp",
+				throw SemanticException("%x_warp",
 										Type::BOOLEAN,
 										prop->getType(),
 										getPosition(tree));
@@ -98,9 +98,9 @@ namespace stibbons {
 		else
 			warp.push_back(false);
 
-		if ((prop = worldDir->getValue("y-warp")) != Nil::getInstance()) {
+		if ((prop = worldDir->getValue("y_warp")) != Nil::getInstance()) {
 			if (prop->getType() != Type::BOOLEAN) {
-				throw SemanticException("%y-warp",
+				throw SemanticException("%y_warp",
 										Type::BOOLEAN,
 										prop->getType(),
 										getPosition(tree));
