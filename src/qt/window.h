@@ -16,6 +16,7 @@
 #include <QTextEdit>
 #include <QFile>
 #include <QString>
+#include <QTextCursor>
 #include <QTextStream> 
 #include "../model/world.h"
 #include "world-view.h"
@@ -25,7 +26,7 @@
 
 class QAction;
 class QMenu;
-
+using namespace std;
 namespace stibbons {
 
 class Window : public QMainWindow {
@@ -38,7 +39,7 @@ class Window : public QMainWindow {
 	protected:
 		void closeEvent(QCloseEvent *event) Q_DECL_OVERRIDE;
 
-	private slots:
+	public slots:
 		void open();
 		void reset();
 		void run();
@@ -48,8 +49,12 @@ class Window : public QMainWindow {
 		void about();
 		void updateInterpreterWaitTime(int waitTime);
 		void save();
+		void saveUnder();
 
 		void error(QString type, QString what);
+
+	signals :
+		void change();
 
 	private:
 		void createActions();
@@ -62,9 +67,11 @@ class Window : public QMainWindow {
 
 		void updateToolbar();
 
-		void createOnglet(QScrollArea *t);
+		void createTab(QScrollArea *t);
 
 		void loadText(QString fileName);
+
+void updatePrint(QScrollArea* t);
 
 		QAction *openAct;
 		QAction *resetAct;
@@ -74,19 +81,24 @@ class Window : public QMainWindow {
 		QAction *aboutAct;
 		QAction *exportAct;
 		QAction *saveAct;
+		QAction *saveUnderAct;
 
 		WorldView *worldView;
 
 		QToolBar *toolbar;
 		QSlider* slider;
 
-		QTabWidget *onglets;
-		StibbonsEditor *zoneTexte;
+		QTabWidget *tab;
+		QWidget *print;
+		QWidget *code;
+		StibbonsEditor *textArea;
 		StibbonsHighlighter *highlighter;
 
 		Runner *runner;
 
 		std::string program;
+		QString openFileName;
+
 };
 
 }

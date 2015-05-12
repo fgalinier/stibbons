@@ -16,6 +16,7 @@
 namespace stibbons {
 
 Window::Window() : runner(nullptr) {
+	tab=nullptr;
 	createActions();
 	createToolBars();
 
@@ -35,7 +36,7 @@ Window::Window() : runner(nullptr) {
 
 	updateToolbar();
 
-	createOnglet(scrollArea);
+	createTab(scrollArea);
 
 }
 
@@ -69,7 +70,6 @@ void Window::createActions() {
 
 	icon = QApplication::style()->standardIcon (QStyle::SP_DialogSaveButton);
 	saveAct = new QAction(icon, tr("&Save..."), this);
-//	saveAct->setShortcuts(QKeySequence::Play);
 	saveAct->setStatusTip(tr("Save the program"));
 	connect(saveAct, SIGNAL(triggered()), this, SLOT(save()));
 
@@ -91,6 +91,10 @@ void Window::createActions() {
 	exportAct = new QAction(tr("&Export..."), this);
 	exportAct->setStatusTip(tr("Export the model to a file"));
 	connect(exportAct, SIGNAL(triggered()), this, SLOT(exportModel()));
+
+	saveUnderAct = new QAction(tr("&Save under..."), this);
+	saveUnderAct->setStatusTip(tr("Save the program under"));
+	connect(saveUnderAct, SIGNAL(triggered()), this, SLOT(saveUnder()));
 }
 
 void Window::createToolBars() {
@@ -122,6 +126,7 @@ void Window::createToolBars() {
 
 	// Bouton menu
 	QMenu *menu = new QMenu(tr("Menu"));
+	menu->addAction(saveUnderAct);
 	menu->addAction(exportAct);
 	menu->addAction(aboutAct);
 	menu->addAction(quitAct);
@@ -146,6 +151,8 @@ void Window::open() {
 		runner->start();
 
 	loadFile(fileName);
+
+	updateToolbar();
 }
 
 void Window::loadFile(const QString &fileName) {
@@ -164,22 +171,25 @@ void Window::loadFile(const QString &fileName) {
 	loadProgram();
 
 	loadText(fileName);
+	tab->setCurrentWidget(code);
 }
 
 void Window::loadText(QString fileName){
 
-	zoneTexte->setGeometry(100,100,400,200);
+	textArea->setGeometry(100,100,400,200);
 	QFile fichier(fileName);
 
 	if(fichier.open(QIODevice::ReadWrite))
 	{
-		zoneTexte->setPlainText(fichier.readAll());
+		textArea->setPlainText(fichier.readAll());
 		fichier.close();
+		openFileName=fileName;
 	}
 	else cout<<"Impossible d'ouvrir le fichier !"<<endl;
 	//TODO Levé une exception
 
-	zoneTexte->show();
+	textArea->show();
+
 }
 
 void Window::loadProgram() {
@@ -204,7 +214,7 @@ void Window::loadProgram() {
 
 		setCentralWidget(scrollArea);
 		scrollArea->setWidget(worldView);
-		createOnglet(scrollArea);
+		createTab(scrollArea);
 	}
 	catch (SemanticException e) {
 		error("Semantic error", QString(e.what()));
@@ -222,10 +232,14 @@ void Window::loadProgram() {
 }
 
 void Window::reset() {
+	program=textArea->document()->toPlainText().toStdString(); 
 	loadProgram();
 }
 
 void Window::run() {
+	//save();
+	tab->setCurrentWidget(print);
+
 	if (runner)
 		runner->start();
 
@@ -240,11 +254,24 @@ void Window::halt() {
 }
 
 void Window::save(){
+if (openFileName != NULL)
+{
+	QFile code(openFileName);
+	code.open(QIODevice::WriteOnly | QIODevice::Text);
+	QTextStream flux(&code);
+	flux<< textArea->toPlainText();
+	code.close();
+
+	updateToolbar();
+} else { saveUnder();}
+}
+
+void Window::saveUnder(){
 	QString fileName = QFileDialog::getSaveFileName(this, tr("Save File"));
 	QFile code(fileName);
 	code.open(QIODevice::WriteOnly | QIODevice::Text);
 	QTextStream flux(&code);
-	flux<< zoneTexte->toPlainText();
+	flux<< textArea->toPlainText();
 	code.close();
 
 	updateToolbar();
@@ -336,32 +363,51 @@ void Window::updateToolbar() {
 	}
 }
 
-void Window::createOnglet(QScrollArea *t){
-	//creation de la table widget
-	onglets = new QTabWidget(this);
-	QWidget *affichage = new QWidget();
-	QWidget *code = new QWidget();
+void Window::createTab(QScrollArea *t){
+	if (tab == nullptr){
+		tab = new QTabWidget(this);
+		print = new QWidget();
+		code = new QWidget();
 
-	//page editeur
-	//box qui va contenir les widgets de la page
-	QVBoxLayout *vbox1 = new QVBoxLayout;
-	zoneTexte=new StibbonsEditor;
-	highlighter = new StibbonsHighlighter(zoneTexte->document());
-	vbox1->addWidget(zoneTexte);
+		QVBoxLayout *editor = new QVBoxLayout;
+		textArea=new StibbonsEditor;
+		highlighter = new StibbonsHighlighter(textArea->document());
+		editor->addWidget(textArea);
+		code->setLayout(editor);
 
-	code->setLayout(vbox1);
+		QVBoxLayout *StibPrint = new QVBoxLayout;
+		StibPrint->addWidget(t);
+		print->setLayout(StibPrint);
 
-	//page affichage
-	//box qui va contenir les widgets de la page
-	QVBoxLayout *vbox2 = new QVBoxLayout;
+		tab->addTab(print, "Print");
+		tab->addTab(code, "Code");
 
-	vbox2->addWidget(t);
-	affichage->setLayout(vbox2);
+		this->setCentralWidget(tab);
+	}
+	else
+	{
+		QString prog;
+		prog=textArea->document()->toPlainText();
+		tab = new QTabWidget(this);
+		print = new QWidget();
+		code = new QWidget();
 
-	onglets->addTab(affichage, "Print");
-	onglets->addTab(code, "Code");
+		QVBoxLayout *editor = new QVBoxLayout;
+		textArea=new StibbonsEditor;
+		highlighter = new StibbonsHighlighter(textArea->document());
+		editor->addWidget(textArea);
+		textArea->setPlainText(prog);
+		code->setLayout(editor);
 
-	this->setCentralWidget(onglets);
+		QVBoxLayout *StibPrint = new QVBoxLayout;
+		StibPrint->addWidget(t);
+		print->setLayout(StibPrint);
+
+		tab->addTab(print, "Print");
+		tab->addTab(code, "Code");
+
+		this->setCentralWidget(tab); 
+		}
 }
 
 }
