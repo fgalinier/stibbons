@@ -158,10 +158,10 @@ void Window::open() {
 void Window::loadFile(const QString &fileName) {
 	QFile file(fileName);
 	if (!file.open(QFile::ReadOnly | QFile::Text)) {
-		QMessageBox::warning(this, tr("Application"),
-		                     tr("Cannot read file %1:\n%2.")
-		                     .arg(fileName)
-		                     .arg(file.errorString()));
+		//QMessageBox::warning(this, tr("Application"),
+		//                     tr("Cannot read file %1:\n%2.")
+		//                     .arg(fileName)
+		//                     .arg(file.errorString()));
 		return;
 	}
 
@@ -378,9 +378,9 @@ void Window::createTab(QScrollArea *t){
 	textArea->setPlainText(prog);
 	code->setLayout(editor);
 
-	QVBoxLayout *StibPrint = new QVBoxLayout;
-	StibPrint->addWidget(t);
-	print->setLayout(StibPrint);
+	QVBoxLayout *stibPrint = new QVBoxLayout;
+	stibPrint->addWidget(t);
+	print->setLayout(stibPrint);
 
 	tab->addTab(print, "Print");
 	tab->addTab(code, "Code");

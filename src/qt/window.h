@@ -71,7 +71,7 @@ class Window : public QMainWindow {
 
 		void loadText(QString fileName);
 
-void updatePrint(QScrollArea* t);
+		void updatePrint(QScrollArea* t);
 
 		QAction *openAct;
 		QAction *resetAct;
