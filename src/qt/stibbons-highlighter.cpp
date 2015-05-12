@@ -23,6 +23,9 @@ void StibbonsHighlighter::highlightBlock(const QString &line) {
 	litFormat.setForeground(Qt::darkGreen);
 	QTextCharFormat worldInstrFormat;
 	worldInstrFormat.setForeground(Qt::gray);
+	QTextCharFormat worldInstrKFormat;
+	worldInstrKFormat.setFontWeight(QFont::Bold);
+	worldInstrKFormat.setForeground(Qt::gray);
 	QTextCharFormat turtleInstrFormat;
 	turtleInstrFormat.setFontWeight(QFont::Bold);
 	turtleInstrFormat.setForeground(Qt::magenta);
@@ -67,7 +70,7 @@ void StibbonsHighlighter::highlightBlock(const QString &line) {
 			break;
 		default: 
 			{
-				QRegExp worldInstr("^\\s*%[_a-z][\\-_a-z0-9]*.+");
+				QRegExp worldInstr("^\\s*(%[_a-z][\\-_a-z0-9]*)(.+)");
 				worldInstr.setCaseSensitivity(Qt::CaseInsensitive);
 				QRegExp keyword("\\b(new|agent|function|for|repeat|while|if|else|and|or|xor|not)(?!-)\\b");
 				keyword.setCaseSensitivity(Qt::CaseInsensitive);
@@ -97,6 +100,7 @@ void StibbonsHighlighter::highlightBlock(const QString &line) {
 				else {
 					if ((start = line.indexOf(worldInstr,i)) > -1) {
 						setFormat(start, worldInstr.matchedLength(), worldInstrFormat);
+						setFormat(worldInstr.pos(1),worldInstr.cap(1).length(),worldInstrKFormat);
 						i += worldInstr.matchedLength();
 					}
 					if ((start = line.indexOf(keyword,i)) > -1) {
