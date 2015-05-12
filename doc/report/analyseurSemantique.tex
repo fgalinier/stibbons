@@ -4,11 +4,11 @@ L'analyse sémantique du Stibbons est effectué dans les classes Interpreter. Pl
 \includegraphics[scale=0.5]{doc/report/uml/interpreterUML.png}
 \end{figure}
 
-On a donc les classes TurtleInterpreter et WorldInterpreter qui hérite de la classe Interpreter. Cette dernière analyse et provoque, dans le modèle, les actions liés au code stibbons écrit. Elle permet de gérer tout type d'intéraction, du moment que ces actions ne sont pas liés à un monde ou une tortue.\\
-La classe TurtleInterpreter, gère justement ce dernier type d'actions : celles liées a une tortue.\\
+On a donc les classes TurtleInterpreter et WorldInterpreter qui héritent de la classe Interpreter. Cette dernière analyse et provoque, dans le modèle, les actions liées au code stibbons écrit. Elle permet de gérer tout type d'interaction, du moment que ces actions ne sont pas liées à un monde ou une tortue.\\
+La classe TurtleInterpreter, gère justement ce dernier type d'actions : celles liées à une tortue.\\
 Contrairement à WorldInterpreter qui gère les actions du monde.\\
 
-L'utilité de la classe InterpreterManager est expliqué de manière détaillé dans la section \ref{remaniementInterpreter} (page~\pageref{remaniementInterpreter}).\\
+L'utilité de la classe InterpreterManager est expliqué de manière détaillée dans la section \ref{remaniementInterpreter} (page~\pageref{remaniementInterpreter}).\\
 
 Ainsi, pour avoir un exemple concret, si on demande à une tortue d'avancer en stibbons (ex : fd 10), alors c'est le TurtleInterpreter qui gèrera cette action.\\
 A contrario, si on effectue une définition de fonction (ex : a = 10) alors l'Interpreter affectera la valeur '10' à la propriété 'a' de l'agent courant.\\
@@ -17,10 +17,10 @@ Pour ce qui est du WorldInterpreter, il n'y a pas encore d'exemple possible, tou
 \subsection{Fonctionnalités}
 
 \subsubsection{Sprint 1 \& 2}
-Les deux premiers sprint ont été assez conséquent au niveau du nombre de fonctionnalités ajoutés.\\
-En effet lors du sprint 1 on pouvait déjà effectuer les opérations de bases sur une tortue, telle que avancer,tourner,écrire,...etc. De plus les opérations de calculs ainsi que la gestions de nombre ont été fait. En effet il était nécessaire de gérer les nombres de manière à pouvoir indiquer à la tortue de quelle distance elle devait avancer.\\
+Les deux premiers sprints ont été assez conséquent au niveau du nombre de fonctionnalités ajoutées.\\
+En effet lors du sprint 1 on pouvait déjà effectuer les opérations de bases sur une tortue, telles que avancer,tourner,écrire,...etc. De plus les opérations de calculs ainsi que la gestions de nombre ont été fait. En effet, il était nécessaire de gérer les nombres de manière à pouvoir indiquer à la tortue de quelle distance elle devait avancer.\\
 
-Lors du deuxième sprint est apparu les conditionnelles, ainsi que les boucles, les comparaisons binaires, les booléens et autres type (color,string...etc.), la création de nouveaux agents dans le code et les fonctions sans paramètres. Ce sprint fut alors une version déjà bien avancé de notre programme final.
+Lors du deuxième sprint sont apparu les conditionnelles, ainsi que les boucles, les comparaisons binaires, les booléens et autres type (color,string...etc.), la création de nouveaux agents dans le code et les fonctions sans paramètres. Ce sprint fut alors une version déjà bien avancé de notre programme final.
 
 
 \subsubsection{Sprint 3 à 5}
