@@ -7,16 +7,16 @@ t = new agent {
 	z = zone
 	w = world
 
-	ty = type-of(nb)
+	ty = type_of(nb)
 
-	if(type-of(nb) == number_t) println(type-of(nb))
-	if(type-of(b) == boolean_t) println(type-of(b))
-	if(type-of(s) == string_t) println(type-of(s))
-	if(type-of(c) == color_t) println(type-of(c))
-	if(type-of(t) == table_t) println(type-of(t))
-	if(type-of(t[0]) == turtle_t) println(type-of(t[0]))
-	if(type-of(z) == zone_t) println(type-of(z))
-	if(type-of(w) == world_t) println(type-of(w))
-	if(type-of(n) == nil) println(type-of(n))
-	if(type-of(ty) == type_t) println(type-of(ty))
+	if(type_of(nb) == number_t) println(type_of(nb))
+	if(type_of(b) == boolean_t) println(type_of(b))
+	if(type_of(s) == string_t) println(type_of(s))
+	if(type_of(c) == color_t) println(type_of(c))
+	if(type_of(t) == table_t) println(type_of(t))
+	if(type_of(t[0]) == turtle_t) println(type_of(t[0]))
+	if(type_of(z) == zone_t) println(type_of(z))
+	if(type_of(w) == world_t) println(type_of(w))
+	if(type_of(n) == nil) println(type_of(n))
+	if(type_of(ty) == type_t) println(type_of(ty))
 }

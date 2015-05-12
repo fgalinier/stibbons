@@ -1,8 +1,8 @@
-%x-warp true
-%y-warp true
+%x_warp true
+%y_warp true
 
 agent ant () {
-	teleport(rand() % world.max-x, rand() % world.max-y, rand())
+	teleport(rand() % world.max_x, rand() % world.max_y, rand())
 
 	function wiggle() {
 		rt rand() % 60

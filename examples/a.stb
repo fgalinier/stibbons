@@ -1,10 +1,10 @@
 agent a () {
-	message = recv()
+	recv message
 	println("Quelqu’un m’a dit : " + message)
 }
 receveur = new a()
 
 new agent {
-	send (world.receveur, "Coucou !")
+	send world.receveur "Coucou !"
 }
 

@@ -1,5 +1,5 @@
-%x-warp true
-%y-warp true
+%x_warp true
+%y_warp true
 
 new agent {
 	pd

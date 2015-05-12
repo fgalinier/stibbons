@@ -1,0 +1,41 @@
+%x_warp true
+%y_warp true
+
+agent ant () {
+	teleport(rand() % world.max_x, rand() % world.max_y, rand())
+
+	function wiggle() {
+		rt rand() % 60
+		lt rand() % 60
+		fd 1
+	}
+
+	pd
+	while (true) {
+		wiggle()
+	}
+}
+
+agent cow () {
+	color = red
+	teleport(rand() % world.max_x, rand() % world.max_y, rand())
+
+	function wiggle() {
+		rt rand() % 60
+		lt rand() % 60
+		fd 1
+	}
+
+	pd
+	i=0
+	while (i<100) {
+		i=i+1
+		wiggle()
+	}
+	
+	die
+}
+
+4 new ant()
+1 new cow()
+

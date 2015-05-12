@@ -1,18 +1,18 @@
-%world-width 100
-%world-height 100
-%zone-width 5
-%zone-height 5
-%x-warp true
-%y-warp true
+%world_width 100
+%world_height 100
+%zone_width 5
+%zone_height 5
+%x_warp true
+%y_warp true
 
 agent termite () {
 	function go () {
-		search-for-chip ()
-		find-new-pile ()
-		put-down-chip ()
+		search_for_chip ()
+		find_new_pile ()
+		put_down_chip ()
 	}
 
-	function search-for-chip () {
+	function search_for_chip () {
 		continue = true
 		while continue {
 			if (zone.color == yellow) {
@@ -27,19 +27,19 @@ agent termite () {
 		}
 	}
 
-	function find-new-pile () {
+	function find_new_pile () {
 		while (zone.color != yellow) {
 			wiggle()
 		}
 	}
 
-	function put-down-chip () {
+	function put_down_chip () {
 		continue = true
 		while continue {
 			if (zone.color == black) {
 				zone.color = yellow
 				color = white
-				get-away()
+				get_away()
 				continue = false
 			}
 			else {
@@ -49,7 +49,7 @@ agent termite () {
 		}
 	}
 
-	function get-away () {
+	function get_away () {
 		rt rand()
 		fd 20
 		while (zone.color != black) {
@@ -64,14 +64,14 @@ agent termite () {
 		lt rand() % 50
 	}
 
-	teleport(rand() % world.max-x, rand() % world.max-y, rand())
+	teleport(rand() % world.max_x, rand() % world.max_y, rand())
 
 	while (true) {
 		go()
 	}
 }
 
-function init-zone() {
+function init_zone() {
 	rand = world.rand
 	test = rand() % 5
 	if (test == 0) {
@@ -82,6 +82,6 @@ function init-zone() {
 	}
 }
 
-ask-zones (init-zone)
+ask_zones (init_zone)
 
 20 new termite()

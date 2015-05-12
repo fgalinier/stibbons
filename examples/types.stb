@@ -1,6 +1,6 @@
-println(type-of(42))
-println(type-of("42"))
+println(type_of(42))
+println(type_of("42"))
 
-println(type-of(type-of(42)))
+println(type_of(type_of(42)))
 
-println(type-of(42) == type-of(-1))
+println(type_of(42) == type_of(-1))

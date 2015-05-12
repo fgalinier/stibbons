@@ -1,4 +1,4 @@
-agent sergeant-fibo(n) {
+agent sergeant_fibo(n) {
 	new fibo(n)
 	recv nb
 	println("Résultat :")
@@ -6,7 +6,7 @@ agent sergeant-fibo(n) {
 }
 
 agent fibo (n) {
-	teleport(0,world.max-y,-45)
+	teleport(0,world.max_y,-45)
 	pd
 	dest = { parent }
 	if(n < 2) {
@@ -23,4 +23,4 @@ agent fibo (n) {
 	}
 }
 
-t = new sergeant-fibo(9)
+t = new sergeant_fibo(9)
