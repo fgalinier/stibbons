@@ -189,6 +189,7 @@ void Window::loadText(QString fileName){
 	//TODO Levé une exception
 
 	textArea->show();
+	textArea->setFocus();
 
 }
 
@@ -316,10 +317,10 @@ void Window::about() {
 			"<p><b>Stibbons</b> multi agent-system</p>"
 			"<p><a href=\"https://gitlab.info-ufr.univ-montp2.fr/florian.galinier/stibbons\">Site Web</a></p>"
 			"<p><small>"
-				"Copyright © 2015 <a href=\"mailto://juliasupernana@neuf.fr\">Julia Bassoumi</a><br/>"
-				"Copyright © 2015 <a href=\"mailto://galinierflo@gmail.com\">Florian Galinier</a><br/>"
-				"Copyright © 2015 <a href=\"mailto://kekun.plazas@laposte.net\">Adrien Plazas</a><br/>"
-				"Copyright © 2015 <a href=\"mailto://clem.simon.sc@gmail.com\">Clement Simon</a>"
+				"Copyright © 2015 <a href=\"mailto://julia.bassoumi@etud.univ-montp2.fr\">Julia Bassoumi</a><br/>"
+				"Copyright © 2015 <a href=\"mailto://florian.galinier@etud.univ-montp2.fr\">Florian Galinier</a><br/>"
+				"Copyright © 2015 <a href=\"mailto://adrien.plazas@etud.univ-montp2.fr\">Adrien Plazas</a><br/>"
+				"Copyright © 2015 <a href=\"mailto://clement.simon@etud.univ-montp2.fr\">Clement Simon</a>"
 			"</small></p>"
 		));
 }
@@ -364,50 +365,28 @@ void Window::updateToolbar() {
 }
 
 void Window::createTab(QScrollArea *t){
-	if (tab == nullptr){
-		tab = new QTabWidget(this);
-		print = new QWidget();
-		code = new QWidget();
+	QString prog;
+	prog = (tab == nullptr)?"":textArea->document()->toPlainText();
+	tab = new QTabWidget(this);
+	print = new QWidget();
+	code = new QWidget();
 
-		QVBoxLayout *editor = new QVBoxLayout;
-		textArea=new StibbonsEditor;
-		highlighter = new StibbonsHighlighter(textArea->document());
-		editor->addWidget(textArea);
-		code->setLayout(editor);
+	QVBoxLayout *editor = new QVBoxLayout;
+	textArea=new StibbonsEditor;
+	highlighter = new StibbonsHighlighter(textArea->document());
+	editor->addWidget(textArea);
+	textArea->setPlainText(prog);
+	code->setLayout(editor);
 
-		QVBoxLayout *StibPrint = new QVBoxLayout;
-		StibPrint->addWidget(t);
-		print->setLayout(StibPrint);
+	QVBoxLayout *StibPrint = new QVBoxLayout;
+	StibPrint->addWidget(t);
+	print->setLayout(StibPrint);
 
-		tab->addTab(print, "Print");
-		tab->addTab(code, "Code");
+	tab->addTab(print, "Print");
+	tab->addTab(code, "Code");
 
-		this->setCentralWidget(tab);
-	}
-	else
-	{
-		QString prog;
-		prog=textArea->document()->toPlainText();
-		tab = new QTabWidget(this);
-		print = new QWidget();
-		code = new QWidget();
+	this->setCentralWidget(tab); 
 
-		QVBoxLayout *editor = new QVBoxLayout;
-		textArea=new StibbonsEditor;
-		highlighter = new StibbonsHighlighter(textArea->document());
-		editor->addWidget(textArea);
-		textArea->setPlainText(prog);
-		code->setLayout(editor);
-
-		QVBoxLayout *StibPrint = new QVBoxLayout;
-		StibPrint->addWidget(t);
-		print->setLayout(StibPrint);
-
-		tab->addTab(print, "Print");
-		tab->addTab(code, "Code");
-
-		this->setCentralWidget(tab); 
-		}
 }
 
 }
