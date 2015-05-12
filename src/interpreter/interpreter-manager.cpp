@@ -60,9 +60,9 @@ namespace stibbons {
 
 		auto zoneSize = Size(2);
 
-		if ((prop = worldDir->getValue("zone-width")) != Nil::getInstance()) {
+		if ((prop = worldDir->getValue("zone_width")) != Nil::getInstance()) {
 			if (prop->getType() != Type::NUMBER) {
-				throw SemanticException("%zone-width",
+				throw SemanticException("%zone_width",
 										Type::NUMBER,
 										prop->getType(),
 										getPosition(tree));
