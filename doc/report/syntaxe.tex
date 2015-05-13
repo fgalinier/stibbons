@@ -3,84 +3,163 @@
 \subsection{Flex}
 
 \begin{rail}
-	instructions: instruction *
+	ID : ( 'a-z' | underscore ) ( ( 'a-z'  | underscore | '0-9' ) * ) ;
+	FD : 'fd' | 'forward'	;
+	LT : 'lt' | 'turn-left'	;
+	RT : 'rt' | 'turn-right' ;
+	PD : 'pd' | 'pen-down' ;
+	PU : 'pu' | 'pen-up' ;
+	SEND : 'send'	;
+	RECV : 'recv'	;
+	DIE : 'die'	;
+	AND : 'and' | ampersand ;
+	OR : 'or' | pipe ;
+	XOR : 'xor' | '\^{}' ;
+	NOT : 'not' | '!'	;
+	RPT : 'repeat' ;
+	WHL : 'while' ;
+	IF : 'if' ;
+	ELSE : 'else' ;
+	NEW : 'new' ;
+	AGT : 'agent' ;
+	FCT : 'function' ;
+	FOR : 'for' ;
+	IN : ':' | 'in' ;
+	TYPE : 'null' underscore 't' 
+			 | 'number' underscore 't' 
+			 | 'boolean' underscore 't' 
+			 | 'string' underscore 't'
+			 | 'color' underscore 't'
+			 | 'table' underscore 't'
+			 | 'type' underscore 't'
+			 | 'turtle' underscore 't'
+			 | 'zone' underscore 't'
+			 | 'world' underscore 't'
+			 ;
+	NIL : 'null' ;
+	BOOLEAN : 'true' | 'false' ;
+	STRING : squote ( WORD * ) squote
+				 | dquote ( WORD * ) dquote
+				 | tquote ( WORD * ) tquote
+				 ;
+	NUMBER : (('0-9' + ) ( (dot ( '0-9' * ) ) ?))
+				 | dot ( '0-9' + ) ;
+	COLOR : sharp ('a-f' | '0-9') ('a-f' | '0-9') ('a-f' | '0-9') \\
+					( ('a-f' | '0-9') ('a-f' | '0-9') ('a-f' | '0-9') ) ? ;
 \end{rail}
 
-\begin{rail}
-	value: id | nil | number | boolean | string | color | table | function | agent | functioncall
-\end{rail}
+
+\subsection{Bison}
 
 \begin{rail}
-	id: 'a-z' ( ( 'a-z'  | '-' | '0-9' ) * )
-\end{rail}
+code : worlddirlist statementlist | statementlist ;
 
-\begin{rail}
-	nil: 'null'
-\end{rail}
+worlddirlist : worlddir
+| worlddirlist worlddir
+;
 
-\begin{rail}
-	number: (( '0-9' + ) ( dot ? )) | dot ( '0-9' + )
-\end{rail}
+worlddir : '\%' ID lit 'newline' 
+| 'newline'
+;
 
-\begin{rail}
-	boolean: 'true' | 'false'
-\end{rail}
+statementlist : ( statement | statementlist statement ) ?
+;
 
-\begin{rail}
-	string:
-\end{rail}
+statement : exprstatement | complstatement;	
 
-\begin{rail}
-	color: sharp ( 'a-f' | '0-9' ) ( 'a-f' | '0-9' ) ( 'a-f' | '0-9' ) \\
-	       ( ( 'a-f' | '0-9' ) ( 'a-f' | '0-9' ) ( 'a-f' | '0-9' ) ) ?
-\end{rail}
+complstatement : bloc
+| declstatement 
+| selection 
+| loop 
+| complstatement 'newline'
+;
 
-\begin{rail}
-	table:
-\end{rail}
+bloc : lbrace rbrace 
+| lbrace statementlistbloc rbrace 
+; 
 
-\begin{rail}
-	function: 'function' id lpar (params) rpar lbrace instructions rbrace
-\end{rail}
+statementlistbloc : statementlist 
+| statementlist exprnoseparator 
+;
 
-\begin{rail}
-	params: id * comma
-\end{rail}
+declstatement : ( AGT | FCT ) ID lpar ( ( ID ( (',' ID) *) ) ? ) rpar bloc 
+;
 
-\begin{rail}
-	instructions: instruction *
-\end{rail}
+selection : IF expr statement (ELSE statement) ? ;
 
-\begin{rail}
-	functioncall: id lpar ( value * comma ) rpar
-\end{rail}
+loop : RPT expr statement
+| WHL expr statement
+| FOR (( lpar ( ID | ID ',' ID ) IN expr rpar ) | ((ID | ID ',' ID ) IN expr)) statement 
+;
 
-\begin{rail}
-	instruction:
-\end{rail}
+exprstatement : 'newline' 
+| expr 'newline'
+| instrturtle 'newline' 
+| creatstatement 'newline'
+;
 
-\begin{rail}
-	agent:
-\end{rail}
+exprnoseparator : expr 
+| instrturtle
+| creatstatement 
+;
 
-\begin{rail}
-	while:
-\end{rail}
+expr : assignmentexpression 
+| lpar expr rpar
+| expr ( '+' 
+| '-' 
+| '/' 
+| '*' 
+| '\%' 
+| AND 
+| OR 
+| XOR 
+| '==' 
+| '!='
+| '>'
+| '>=' 
+| '<'
+| '<=' ) expr
+| '-' expr 
+| NOT expr
+| primaryexpr
+| lit 
+;
 
-\begin{rail}
-	repeat:
-\end{rail}
+assignmentexpression : primaryexpr '=' expr
+| primaryexpr '=' lbrace \\ (
+(expr ((',' expr ) *))
+| (expr ':' expr ((',' expr ':' expr ) *))
+)? rbrace
+;
 
-\begin{rail}
-	agenttype: 'agent' id lpar (params) rpar lbrace instructions rbrace
-\end{rail}
+primaryexpr : ID
+| primaryexpr '.' ID
+| primaryexpr '[' expr ']'
+| primaryexpr '[' ']'
+| ID lpar ( ( expr ((',' expr) *) ) ? )  rpar
+;
 
-\begin{rail}
-	untypedagent: number ? 'new' 'agent' lbrace instructions rbrace
-\end{rail}
+creatstatement : (primaryexpr '=') ? \\ (NUMBER | primaryexpr)? (NEW AGT bloc
+| NEW ID lpar \\ ( ( expr ((',' expr) *) ) ? ) rpar)
+;
 
-\begin{rail}
-	typedagent: number ? 'new' id lpar ( value * comma ) rpar
+instrturtle : FD expr
+| LT expr
+| RT expr
+| PU
+| PD
+| SEND expr expr
+| SEND expr
+| RECV primaryexpr primaryexpr
+| RECV primaryexpr
+| DIE ;
+
+lit : NUMBER 
+| STRING 
+| BOOLEAN 
+| COLOR 
+| NIL
+| TYPE ;
 \end{rail}
 
 
