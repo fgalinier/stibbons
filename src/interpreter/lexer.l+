@@ -49,6 +49,7 @@ id [_a-z][_a-z0-9]*
 %x spl_quote
 %x dbl_quote
 %x tpl_quote
+%s for_state
 
  /*Rules*/
 %%
@@ -111,7 +112,7 @@ agent {return yy::parser::token::AGT;}
 
 function {return yy::parser::token::FCT;}
 
-nil {pyylval->v=make_shared<stibbons::TypeValue>(stibbons::Type::NIL); 
+null_t {pyylval->v=make_shared<stibbons::TypeValue>(stibbons::Type::NIL); 
 	return yy::parser::token::TYPE;}
 
 number_t {pyylval->v=make_shared<stibbons::TypeValue>(stibbons::Type::NUMBER); 
@@ -141,9 +142,10 @@ zone_t {pyylval->v=make_shared<stibbons::TypeValue>(stibbons::Type::ZONE);
 world_t {pyylval->v=make_shared<stibbons::TypeValue>(stibbons::Type::WORLD); 
 	return yy::parser::token::TYPE;}
 
-for {return yy::parser::token::FOR;}
+for { BEGIN(for_state); return yy::parser::token::FOR; }
 
-in {return yy::parser::token_type(':');}
+<for_state>in {BEGIN(INITIAL); return yy::parser::token_type(':');}
+<for_state>':' {BEGIN(INITIAL); return yy::parser::token_type(':');}
 
 \"\"\" { tmp = std::string(); BEGIN(tpl_quote); }
 
@@ -181,7 +183,7 @@ in {return yy::parser::token_type(':');}
     \\0 { tmp += '\0'; }
 }
 
-[0-9]+\.?[0-9]*|\.[0-9]+ {std::istringstream iss(yytext); double n; iss >> n; pyylval->v=make_shared<stibbons::Number>(n); return yy::parser::token::NUMBER;}
+[0-9]+(\.[0-9]*)?|\.[0-9]+ {std::istringstream iss(yytext); double n; iss >> n; pyylval->v=make_shared<stibbons::Number>(n); return yy::parser::token::NUMBER;}
 
 #([a-f0-9]{6}|[a-f0-9]{3}) {pyylval->v=make_shared<stibbons::Color>(yytext); return yy::parser::token::COLOR;}
 
