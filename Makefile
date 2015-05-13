@@ -245,7 +245,7 @@ $(CLIOBJECTS): %.o: %.cpp
 
 doc: $(PDF)
 
-$(PDFDIR)/%.pdf: $(REPDIR)/%.tex $(RAILBIN)
+$(PDFDIR)/%.pdf: $(REPDIR)/%.tex $(RAILBIN) bibtex
 	# Compile pour générer la TOC
 	TEXINPUTS=.//:$$TEXINPUTS pdflatex -output-directory $(@D) $<
 	# Compile les diagrammes de syntaxe
@@ -254,6 +254,12 @@ $(PDFDIR)/%.pdf: $(REPDIR)/%.tex $(RAILBIN)
 		$(RAILBIN) $(REPRAI) ; \
 	fi;
 	# Compile avec la TOC
+	TEXINPUTS=.//:$$TEXINPUTS pdflatex -output-directory $(@D) $<
+
+bibtex: $(REPDIR)/report.aux
+	bibtex $<
+
+$(REPDIR)/report.aux: $(REPDIR)/report.tex 
 	TEXINPUTS=.//:$$TEXINPUTS pdflatex -output-directory $(@D) $<
 
 $(REPDIR)/report.tex: $(REPDEPS)
