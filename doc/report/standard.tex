@@ -2,7 +2,7 @@
 
 Les agents possèdent certaines propriétés par défaut. Ces propriétés varient selon leur type, et peuvent être de simples attributs prédéfinis, des fonctions prédéfinies, ou encore des propriétés spéciales ayant une sémantique particulière.
 
-Les prorpiétés spéciales ont une sémantique particulière et peuvent par conséquent être en lecture seule ou avoir certaines requêtes quant au valeurs qui lui sont affectées.
+Les propriétés spéciales ont une sémantique particulière et peuvent par conséquent être en lecture seule ou avoir certaines requêtes quant au valeurs qui lui sont affectées.
 
 \subsection{Attributs communs aux tortues et au monde}
 
@@ -41,7 +41,7 @@ Les prorpiétés spéciales ont une sémantique particulière et peuvent par con
 
 	\item[rand] () $\rightarrow$ number
 
-	Retourne un entier positif au hazard.
+	Retourne un entier positif au hasard.
 
 	\begin{description}
 		\item[Retourne] un entier positif au hazard
@@ -51,13 +51,13 @@ Les prorpiétés spéciales ont une sémantique particulière et peuvent par con
 \subsection{Attributs du monde}
 
 \begin{description}
-	\item[max-x] $\rightarrow$ number
+	\item[max\_x] $\rightarrow$ number
 
 	L'abscisse maximale du monde.
 
 	\emph{Attribut en lecture seule.}
 
-	\item[max-y] $\rightarrow$ number
+	\item[max\_y] $\rightarrow$ number
 
 	L'ordonnée maximale du monde.
 
@@ -79,19 +79,19 @@ Les prorpiétés spéciales ont une sémantique particulière et peuvent par con
 
 	\emph{Attribut en lecture seule.}
 
-	\item[pos-x] $\rightarrow$ number
+	\item[pos\_x] $\rightarrow$ number
 
 	L'abscisse de la position de la tortue.
 
 	\emph{Requiert une valeur de type number.}
 
-	\item[pos-y] $\rightarrow$ number
+	\item[pos\_y] $\rightarrow$ number
 
 	L'ordonnée de la position de la tortue.
 
 	\emph{Requiert une valeur de type number.}
 
-	\item[pos-angle] $\rightarrow$ number
+	\item[pos\_angle] $\rightarrow$ number
 
 	L'angle de la tortue.
 
@@ -113,7 +113,7 @@ Les prorpiétés spéciales ont une sémantique particulière et peuvent par con
 \subsection{Fonctions de tortues}
 
 \begin{description}
-	\item[distance-to] (turtle) $\rightarrow$ number
+	\item[distance\_to] (turtle) $\rightarrow$ number
 
 	Retourne la distance la plus courte vers une autre tortue.
 
@@ -131,7 +131,7 @@ Les prorpiétés spéciales ont une sémantique particulière et peuvent par con
 		\item[Retourne] null
 	\end{description}
 
-	\item[in-radius] (distance) $\rightarrow$ table
+	\item[in\_radius] (distance) $\rightarrow$ table
 
 	Retourne l' ensemble de tortues dans le rayon donné autour de la tortue.
 
@@ -146,33 +146,6 @@ Les prorpiétés spéciales ont une sémantique particulière et peuvent par con
 
 	\begin{description}
 		\item[Retourne] Le nombre de messages non lus
-	\end{description}
-
-	\item[recv] () $\rightarrow$ value
-
-	Reçoit le message le plus vieux reçu. Si aucun message n'a été reçu, la tortue attendra d'en recevoir un.
-
-	\begin{description}
-		\item[Retourne] La valeur représentant le message
-	\end{description}
-
-	\item[send] (recipient, message) $\rightarrow$ null
-
-	Envoie un message à une tortue.
-
-	\begin{description}
-		\item[recipient] Le destinataire du message
-		\item[message] La valeur représentant le message
-		\item[Retourne] null
-	\end{description}
-
-	\item[send-all] (message) $\rightarrow$ null
-
-	Envoie un message à toutes les tortues.
-
-	\begin{description}
-		\item[message] La valeur représentant le message
-		\item[Retourne] null
 	\end{description}
 
 	\item[teleport] (x, y, angle) $\rightarrow$ null

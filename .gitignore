@@ -11,6 +11,9 @@ stibbons
 *.log
 *.aux
 *.toc
+*.bbl
+*.blg
 
 # Temporaires
 *~
+*\#
