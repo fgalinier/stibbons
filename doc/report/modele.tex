@@ -1,27 +1,44 @@
-\section{Les classes "agents"}
-Lors du premier sprint, nous avons dû mettre en place la base du programme.\\ Pour le modèle, il s'agissait de mettre en place les classes :
+\section{Les classes \enquote{agents}}
+Lors du premier sprint, nous avons dû mettre en place la base du programme.
+
+ Pour le modèle, il s'agissait de mettre en place les classes :
 \begin{itemize}
 \item Turtle qui représente une tortue, 
 \item Point, pour stocker les coordonnées d'une tortue,
 \item Line, qui permettent aux tortues de laisser une trace (instruction pendown),
-\item World.\\
+\item World.
 \end{itemize}
+
+
 Voir l'UML~\ref{v0.1} prévu correspondant page~\pageref{v0.1}.\\
+
+
 \begin{figure}[h]
 \caption{\label{v0.1} UML de la version 0.1 prévue}
 \includegraphics[scale=0.5]{doc/report/uml/v01.png}
 \end{figure}
-\newpage
+
 
 La classe World représente le monde des tortues. Il contient la liste des tortues, et les lignes tracées par ces tortues.
 A la fin du sprint 1, on pouvait voir une tortue avancer et tracer une ligne sur sur passage.
-Nous avions réalisé le schéma~\ref{v0.1R} page~\pageref{v0.1R}, en dehors de la classe Instruction.\\
+Nous avions réalisé le schéma~\ref{v0.1R} page~\pageref{v0.1R}, en dehors de la classe Instruction.
 
-Pour le second sprint, nous avons ajouté une classe Agent, car les classes World, Turtle et Zone sont des agents, au sens multi-agent. Elle contient le code en commun de ces trois classes.\\
- Voir figure~\ref{v0.2} page~\pageref{v0.2}.\\ 
-Ils ont chacun un parent, celui qui l'a créer, une liste d'enfants, et des propriétés. Les propriétés sont des variables définit par l'utilisateur lors de la définition du code de l'agent, donc surtout utile pour les tortues.\\
-Le monde a une taille, une liste de "breed", d'espèce. Il y a les espèces nommées et les "anonymes", qui sont des turtles dans le code.\\
-Comme le montre ce code, on peut créer des tortues nommées ou pas. Une tortue anonyme s'écrit "new agent" et une nommée "agent listener".\\
+
+Pour le second sprint, nous avons ajouté une classe Agent, car les classes World, Turtle et Zone sont des agents, au sens multi-agent. Elle contient le code en commun de ces trois classes.
+
+
+ Voir figure~\ref{v0.2} page~\pageref{v0.2}.
+
+ 
+Ils ont chacun un parent, celui qui l'a créer, une liste d'enfants, et des propriétés. Les propriétés sont des variables définit par l'utilisateur lors de la définition du code de l'agent, donc surtout utile pour les tortues.
+
+
+Le monde a une taille, une liste de \enquote{breed}, d'espèce. Il y a les espèces nommées et les \enquote{anonymes}, qui sont des turtles dans le code.
+
+
+Comme le montre ce code, on peut créer des tortues nommées ou pas. Une tortue anonyme s'écrit \enquote{new agent} et une nommée \enquote{agent listener}.\\
+
+
 \begin{lstlisting}
 agent listener () {
 	fd 2
@@ -34,18 +51,30 @@ new agent {
 	fd 5
 }
 \end{lstlisting}
-Lors du troisième sprint, nous avons mis en place des pointers intelligents dans toutes nos classes.\\
-Le but de ce sprint était la mise en place de la communication entre les agents. Les tortues peuvent "communiquer" avec les zones par écriture dans leurs propriétés. Les tortues peuvent communiquer entre elles grâce à des méthodes comme sendAll(message), recv(), etc...
-Voir figure~\ref{v0.3} page~\pageref{v0.3}.\\
+Lors du troisième sprint, nous avons mis en place des pointers intelligents dans toutes nos classes.
 
-Ensuite, nous devions ajouter des fonctionnalités tel que la maîtrise du temps et l'exportation du modèle. Ces ajouts ne provoque pas de changement du coté du modèle, si ce n'est quelques méthodes dans les classes World et Turtle et Zone pour l'exportation du modèle.\\
-L'exportation du modèle consiste à créer une sauvegarde de l'état du modèle à un instant t dans un fichier JSON.\\
-Cela permettra ensuite, en passant par une transformation en CSV, d'avoir un tableau avec toutes ces données, ce qui permettra d'avoir des diagrammes de l'évolution du monde.\\
 
-La maîtrise du temps se fait grâce à un bouton pause, qui arrête les threads qui s'executent, ou par un slider qui permet de ralentir ou de diminuer la vitesse. Cela se fait dans le code grâce à une méthode wait() qui lance sleep() sur le thread.\\
+Le but de ce sprint était la mise en place de la communication entre les agents. Les tortues peuvent \enquote{communiquer} avec les zones par écriture dans leurs propriétés. Les tortues peuvent communiquer entre elles grâce à des méthodes comme sendAll(message), recv(), etc...
+Voir figure~\ref{v0.3} page~\pageref{v0.3}.
+
+
+Ensuite, nous devions ajouter des fonctionnalités tel que la maîtrise du temps et l'exportation du modèle. Ces ajouts ne provoque pas de changement du coté du modèle, si ce n'est quelques méthodes dans les classes World et Turtle et Zone pour l'exportation du modèle.
+
+
+L'exportation du modèle consiste à créer une sauvegarde de l'état du modèle à un instant t dans un fichier JSON.
+
+
+Cela permettra ensuite, en passant par une transformation en CSV, d'avoir un tableau avec toutes ces données, ce qui permettra d'avoir des diagrammes de l'évolution du monde.
+
+
+
+La maîtrise du temps se fait grâce à un bouton pause, qui arrête les threads qui s'executent, ou par un slider qui permet de ralentir ou de diminuer la vitesse. Cela se fait dans le code grâce à une méthode wait() qui lance sleep() sur le thread.
+
 
 \section{Les types}
-Lors du premier sprint, nous mettions en place certains types Stibbons, comme Color, pour la couleur, ou Nil qui a une valeur nulle. Ils héritent de Value, une classe abstraite qui contient une valeur et ses accesseurs.\\
+Lors du premier sprint, nous mettions en place certains types Stibbons, comme Color, pour la couleur, ou Nil qui a une valeur nulle. Ils héritent de Value, une classe abstraite qui contient une valeur et ses accesseurs.
+
+
 Les instructions tel que pendown, forward, etc... sont finalement des mots clés dans la grammaire du langage, et non pas des instructions, contrairement à ce que nous avions prévu (UML~\ref{v0.1} correspondant page~\pageref{v0.1}).\\
 
 
@@ -54,10 +83,16 @@ Les instructions tel que pendown, forward, etc... sont finalement des mots clés
 \includegraphics[scale=0.5]{doc/report/uml/v01reel.png}
 \end{figure}
 
-Lors du sprint deux, les types stibbons sont les mêmes, mais leurs définitions s'est un peu compléxifiés en passant par une classe Simple-value, pour la mise en place des mutexs. Une énumeration des types Stibbons existe, elle est utiliser avec la méthode getType() pour pouvoir connaître le type de Value.\\
+Lors du sprint deux, les types stibbons sont les mêmes, mais leurs définitions s'est un peu compléxifiés en passant par une classe Simple-value, pour la mise en place des mutexs. Une énumeration des types Stibbons existe, elle est utiliser avec la méthode getType() pour pouvoir connaître le type de Value.
+
+
 Pour que l'utilisateur puisse écrire des fonctions dans le code, nous avons ajouté une classe Function, qui stocke un arbre, qui contient le code la fonction, déja parser.
-\\ Des mutexs ont été ajouté dans toutes les classes pour assurer que les threads sont thread-safe.\\
-A la fin de ce sprint, nous devons relancer le programme pour charger un nouveau fichier de code, ce qui n'est pas pratique.\\
+\\ Des mutexs ont été ajouté dans toutes les classes pour assurer que les threads sont thread-safe.
+
+
+A la fin de ce sprint, nous devons relancer le programme pour charger un nouveau fichier de code, ce qui n'est pas pratique.
+
+
 Voir figure~\ref{v0.2} page~\pageref{v0.2}.
 \begin{figure}[h]
 \caption{\label{v0.2} UML version 0.2}

@@ -1,6 +1,7 @@
 \section{Analyse de code}
 
 \subsection{Flex}
+\subsubsection{Théorie}
 Pour faire la compilation, la première étape est l'analyse du fichier source.
 Tout d'abord, on fait une analyse d'un point de vue lexicale, c'est à dire qu'on décompose les chaînes de caractère (le code) en lexème ou jeton.\\
 L'une des façons de faire est de construire un automate à état fini associé au mots reconnus.\\
@@ -13,28 +14,34 @@ Pour éviter les erreurs avec les mots préfixes d'autres, on applique la règle
 Il faut pouvoir revenir en arrière si on a été trop loin dans la lecture et qu'on se retrouve dans un état non terminal. Il faut donc connaître les états de notre automate.
 Il faut aussi penser à filtrer les blancs et les commentaires, selon la grammaire.
 Un générateur d'analyseur permet d'éviter cette étape.\\
-
+\subsubsection{Pratique}
 Flex est une version libre de l'analyseur lexical Lex. Il est généralement associé à l'analyseur syntaxique GNU Bison, la version GNU de Yacc. \\
 Il lit les fichiers d'entrée donnés pour obtenir la description de l'analyseur à générer. La description est une liste de paires d'expressions rationnelles et de code C, appelées règles. \\
 Flex a plusieurs régles pour l'écriture du fichier .l+ .\\
 D'abord, un espace entre \%\{ \%\} qui contient une partie optionnelle de définition.\\
-Par exemple :\\
-\%\{\\
-include <iostream.h>\\
-class A\{ \\
- public :\\
-  void Hello() \{cout<< ``Hello world !''<<endl ; \}
-\};\\
-\%\}\\
+Par exemple :
+\ \begin{verbatim}
+%{
+include <iostream.h>
+class A\{ 
+ public :
+  void Hello() {cout<< ``Hello world !''<<endl ; }
+};
+%}
+\end{verbatim}
 Une partie obligatoire de régles lex commencant par \%\%.\\
-Cette partie associe des instructions C++ à des expressions régulières.\\
-\%\%
-[a-z]([a-z])*           \{return 5;\}\\
+Cette partie associe des instructions C++ à des expressions régulières.
+\begin{verbatim}
+%%
+[a-z]([a-z])*           {return 5;}
+\end{verbatim}
 Enfin, une partie optionnelle pour des fonctions C++ définis par l'utilisateur, commençant par \%\%.\\
-\%\%\\
-int main()\{
+\begin{verbatim}
+%%
+int main(){
 ...
-\}\\
+}
+\end{verbatim}
 Pour compiler : \textit{flex -+ exemple.l+}  puis \textit{g++ -g -o exemple lex.yy.cc -lfl}.\\
 Après, c'est la fonction de l'analyseur syntaxique yyparse() qui appelle yylex() pour avoir les jetons correspondant au fichier lu.\\
 La fonction main() appelle yyparse().\\
@@ -42,14 +49,15 @@ La fonction main() appelle yyparse().\\
 
 \subsection{Bison}
 
-Yacc est un outil d'analyse syntaxique. L'analyse syntaxique permet de vérifier qu'un mot appartient bien au langage.\\ Il génère un analyseur syntaxique ascendant utilisant un automate à pile (dérivation à droite, on remplace le symbole non terminal le plus à droite).\\ Son fonctionnement est le suivant : à chaque règle de grammaire, on associe des actions (instructions d'un langage). L'analyseur généré essaie de reconnaître un mot du langage défini par la grammaire. Il exécute les actions pour chaque règle reconnue.  Bison est une version de yacc.\\
+Yacc est un outil d'analyse syntaxique. L'analyse syntaxique permet de vérifier qu'un mot appartient bien au langage.\\ Il génère un analyseur syntaxique ascendant utilisant un automate à pile (dérivation à droite, on remplace le symbole non terminal le plus à droite).
+ Son fonctionnement est le suivant : à chaque règle de grammaire, on associe des actions (instructions d'un langage). L'analyseur généré essaie de reconnaître un mot du langage défini par la grammaire. Il exécute les actions pour chaque règle reconnue.  Bison est une version de yacc.\\
 
 \textbf{Exemple} :\\
-D'après une grammaire ambiguë,on construit un vérificateur syntaxique. On écrit un source yacc : fichier.y, dans lequel on définit :
+D'après une grammaire ambiguë, on construit un vérificateur syntaxique. On écrit un source yacc : fichier.y, dans lequel on définit :
 
-\%\{  \textit{déclaration C} \%\}\\
-\%\% \textit{définition de la grammaire reconnu} \%\%\\
-\textit{définition fonction C}
+ \begin{verbatim}%{ \end{verbatim}  \textit{déclaration C}  \begin{verbatim}%} \end{verbatim}
+ \begin{verbatim}%%\end{verbatim} \textit{définition de la grammaire reconnu} \begin{verbatim}%% \end{verbatim}
+\textit{définition fonction C}\\
 
 Les définitions de fonction C  doit avoir une fonction main, qui appelle yyparse(), une définition de yylex() appellée par yyparse() et une définition de yyerror(char*) pour signaler un erreur à l'utilisateur.
 On compile avec bison : \textit{bison -y fichier.y} , puis \textit{gcc -o fichier.y.tab.c}, puis lancer l’exécutable.\\
