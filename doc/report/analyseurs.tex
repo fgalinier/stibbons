@@ -1,12 +1,12 @@
-L'application Stibbons fournit un interprète pour le langage du même nom. Cette interprétation du code se déroule en 2 phases~: une de compilation lors du chargement du code, et une d'interprétation de l'arbre abstrait généré lors de l'exécution.
+L'application Stibbons fournit un interprète (ou interpréteur) pour le langage du même nom. Cette interprétation du code se déroule en 2 phases~: une de compilation lors du chargement du code, et une d'interprétation de l'arbre abstrait (généré lors de la phase 1) lors de l'exécution.
 
 La première phase peut elle-même être découpée en deux parties~:
 \begin{itemize}
-\item l'analyseur lexical qui «lit le flot de caractères qui constituent le programme source et les regroupe en séquences de caractères significatives appelées \emph{lexèmes}.» (\cite{compilateurs})~;
+\item l'analyseur lexical qui «~lit le flot de caractères qui constituent le programme source et les regroupe en séquences de caractères significatives appelées \emph{lexèmes}.~» \cite{compilateurs}~;
 \item l'analyseur syntaxique qui, à partir des lexèmes, génère un arbre abstrait qui pourra par la suite être analysé pour être interprété.
 \end{itemize}
 
-L'interprétation quant à elle se déroule lors de l'analyse sémantique de l'arbre abstrait, qui exécute les opérations contenus par les nœuds.
+L'interprétation quant à elle se déroule lors de l'analyse sémantique de l'arbre abstrait, qui exécute les opérations contenues dans les nœuds.
 
 \section{Analyseur lexical}
 \input{doc/report/analyseurLexical.tex}
