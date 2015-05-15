@@ -93,7 +93,7 @@ unsigned Point::getDimensions () const {
 	return dimensions;
 }
 
-Point Point::getClosestImage (Point& other, Size& environment, vector<bool> warp) {
+Point Point::getClosestImage (Point& other, Size& environment, vector<BorderType> borderTypes) {
 	auto dimensions = other.getDimensions();
 
 	auto image = Point(dimensions);
@@ -101,8 +101,8 @@ Point Point::getClosestImage (Point& other, Size& environment, vector<bool> warp
 	for (size_t i = 0 ; i < dimensions ; i++) {
 		double value = other.getValue(i);
 
-		// If a warp is possible, get the image's value
-		if (warp[i]) {
+		// If a wrap is possible, get the image's value
+		if (borderTypes[i] == BorderType::WRAP) {
 			// Compute the images' values deltas to this point's
 			double c = getValue(i) - other.getValue(i);
 			double l = c + environment[i];
@@ -142,11 +142,11 @@ double Point::getAngleTo (Point& other) {
 	return atan2 (y, x);
 }
 
-bool Point::warp (Size& environment, vector<bool> warp) {
+bool Point::warp (Size& environment, vector<BorderType> borderTypes) {
 	bool warped = false;
 
 	for (size_t axis = 0 ; axis < getDimensions() ; axis++)
-		if (warp[axis]) {
+		if (borderTypes[axis] == BorderType::WRAP) {
 			size_t max = environment.getValue(axis);
 			auto value = getValue(axis);
 			if ((value >= max) | (value < 0))

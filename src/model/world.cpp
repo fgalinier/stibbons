@@ -6,20 +6,20 @@ using namespace std;
 
 namespace stibbons {
 
-World::World (Size worldSize, Size zoneSize,vector<bool> warp) throw(domain_error) : Agent(nullptr), worldSize(worldSize), zoneSize(zoneSize),warp(warp), Tid(0),Zid(0) {
+World::World (Size worldSize, Size zoneSize,vector<BorderType> borderTypes) throw(domain_error) : Agent(nullptr), worldSize(worldSize), zoneSize(zoneSize),borderTypes(borderTypes), Tid(0),Zid(0) {
 	if (worldSize.getDimensions() != zoneSize.getDimensions())
 		throw domain_error("Can't create a world with a dimension number different to its zones'");
 
-	if (worldSize.getDimensions() != warp.size())
-		throw domain_error("Can't create a world without a different number of warping values than there is dimensions");
+	if (worldSize.getDimensions() != borderTypes.size())
+		throw domain_error("Can't create a world without a different number of borderTypesing values than there is dimensions");
 
 	for (size_t i = 0 ; i < getDimensions() ; i++)
 		size.setValue(i, worldSize.getValue(i) * zoneSize.getValue(i));
 
 }
 
-WorldPtr World::construct (Size worldSize, Size zoneSize, vector<bool> warp) throw(domain_error) {
-	auto self = shared_ptr<World>(new World (worldSize, zoneSize, warp));
+WorldPtr World::construct (Size worldSize, Size zoneSize, vector<BorderType> borderTypes) throw(domain_error) {
+	auto self = shared_ptr<World>(new World (worldSize, zoneSize, borderTypes));
 	self->init();
 
 	return self;
@@ -210,8 +210,8 @@ Size World::getZoneSize () {
 	return Size(zoneSize);
 }
 
-vector<bool> World::getWarp () {
-	return warp;
+vector<BorderType> World::getBorderTypes () {
+	return borderTypes;
 }
 
 BreedPtr World::createBreed (FunctionPtr function, string name) throw(invalid_argument) {

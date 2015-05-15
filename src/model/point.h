@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include "border-type.h"
 #include "size.h"
 
 #include <stdexcept>
@@ -80,10 +81,10 @@ class Point {
 		 * Get the closest image of another point in a warped environment
 		 * \param other the other point
 		 * \param environment the size of the environment
-		 * \param warp whether the environment warps
+		 * \param borderTypes whether the environment warps
 		 * \return the closest image of the other point
 		 */
-		Point getClosestImage (Point& other, Size& environment, vector<bool> warp);
+		Point getClosestImage (Point& other, Size& environment, vector<BorderType> borderTypes);
 
 		/**
 		 * Get the distance to another point
@@ -102,10 +103,10 @@ class Point {
 		/**
 		 * Warp the point in the environment
 		 * \param environment the size of the environment
-		 * \param warp whether the environment warps
+		 * \param borderTypes whether the environment warps
 		 * \return whether the point have been warped or not
 		 */
-		bool warp (Size& environment, vector<bool> warp);
+		bool warp (Size& environment, vector<BorderType> borderTypes);
 
 		/**
 		 * Get the value for an axis

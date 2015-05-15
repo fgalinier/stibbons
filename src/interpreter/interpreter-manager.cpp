@@ -4,6 +4,7 @@
 #include "world-interpreter.h"
 
 #include "../model/table.h"
+#include "../model/border-type.h"
 #include "../model/user-function.h"
 
 using namespace std;
@@ -85,7 +86,7 @@ namespace stibbons {
 		else
 			zoneSize.setValue(1, 10);
 
-		auto warp = vector<bool>();
+		auto warp = vector<BorderType>();
 
 		if ((prop = worldDir->getValue("x_warp")) != Nil::getInstance()) {
 			if (prop->getType() != Type::BOOLEAN) {
@@ -94,10 +95,13 @@ namespace stibbons {
 										prop->getType(),
 										getPosition(tree));
 			}
-			warp.push_back(dynamic_pointer_cast<Boolean>(prop)->getValue());
+			auto borderType = dynamic_pointer_cast<Boolean>(prop)->getValue() ?
+				BorderType::WRAP :
+				BorderType::NONE;
+			warp.push_back(borderType);
 		}
 		else
-			warp.push_back(false);
+			warp.push_back(BorderType::NONE);
 
 		if ((prop = worldDir->getValue("y_warp")) != Nil::getInstance()) {
 			if (prop->getType() != Type::BOOLEAN) {
@@ -106,10 +110,13 @@ namespace stibbons {
 										prop->getType(),
 										getPosition(tree));
 			}
-			warp.push_back(dynamic_pointer_cast<Boolean>(prop)->getValue());
+			auto borderType = dynamic_pointer_cast<Boolean>(prop)->getValue() ?
+				BorderType::WRAP :
+				BorderType::NONE;
+			warp.push_back(borderType);
 		}
 		else
-			warp.push_back(false);
+			warp.push_back(BorderType::NONE);
 
 		world = World::construct(worldSize, zoneSize, warp);
 	}

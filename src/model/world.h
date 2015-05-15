@@ -1,5 +1,6 @@
 #pragma once
 
+#include "border-type.h"
 #include "changeable.h"
 #include "size.h"
 #include "zone.h"
@@ -46,7 +47,7 @@ class World : public Changeable, public Agent {
 		/**
 		 * Create a world
 		 */
-		static WorldPtr construct (Size worldSize, Size zoneSize, vector<bool> warp) throw(domain_error);
+		static WorldPtr construct (Size worldSize, Size zoneSize, vector<BorderType> borderTypes) throw(domain_error);
 
 		/**
 		 * Empty Destructor
@@ -165,10 +166,10 @@ class World : public Changeable, public Agent {
 		Size getZoneSize ();
 
 		/**
-		 * Get the warping values of the world
-		 * \return the warping values
+		 * Get the border types of the world
+		 * \return the border types
 		 */
-		vector<bool> getWarp ();
+		vector<BorderType> getBorderTypes ();
 
 		/**
 		 * Return the global variable Tid
@@ -226,7 +227,7 @@ class World : public Changeable, public Agent {
 		/**
 		 * Create a world
 		 */
-		World (Size worldSize, Size zoneSize, vector<bool> warp) throw(domain_error);
+		World (Size worldSize, Size zoneSize, vector<BorderType> borderTypes) throw(domain_error);
 
 		/**
 		 * Initialize the world
@@ -238,7 +239,7 @@ class World : public Changeable, public Agent {
 		Size worldSize;
 		Size zoneSize;
 
-		vector<bool> warp;
+		vector<BorderType> borderTypes;
 
 		vector<ZonePtr> zones;
 

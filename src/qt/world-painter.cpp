@@ -92,20 +92,20 @@ void WorldPainter::paintWarped(QPainter &p, Line &line, int xt, int yt) {
 	long w = ws.getValue(0);
 	long h = ws.getValue(1);
 
-	auto warp = world->getWarp();
+	auto borderTypes = world->getBorderTypes();
 
-	long x = warp[0] ? w * (1 - ((long) floor(begin.getValue(0)) / w)) :
+	long x = borderTypes[0] == BorderType::WRAP ? w * (1 - ((long) floor(begin.getValue(0)) / w)) :
 	                   w;
 
 	do {
-		long y = warp[1] ? h * (1 - ((long) floor(begin.getValue(1)) / h)) :
+		long y = borderTypes[1] == BorderType::WRAP ? h * (1 - ((long) floor(begin.getValue(1)) / h)) :
 		                   h;
 		do {
 			paint(p, line, xt + x-w, yt + y-h);
 			y -= h;
-		} while (end.getValue(1)+y > h && warp[1]);
+		} while (end.getValue(1)+y > h && borderTypes[1] == BorderType::WRAP);
 		x -= w;
-	} while (end.getValue(0)+x > w && warp[0]);
+	} while (end.getValue(0)+x > w && borderTypes[0] == BorderType::WRAP);
 }
 
 void WorldPainter::paint(QPainter &p, Line &line, int xt, int yt) {

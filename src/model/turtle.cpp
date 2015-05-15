@@ -257,7 +257,7 @@ void Turtle::setPosition(Point position) {
 	auto newPosition = Point(position);
 	if (world) {
 		auto size = world->getSize();
-		warped = newPosition.warp(size, world->getWarp());
+		warped = newPosition.warp(size, world->getBorderTypes());
 	}
 
 	if (line) {
@@ -298,9 +298,9 @@ void Turtle::face(Point& point) {
 
 	auto world = getWorld();
 	auto size = world->getSize();
-	auto warp = world->getWarp();
+	auto borderTypes = world->getBorderTypes();
 
-	auto image = position.getClosestImage(point, size, warp);
+	auto image = position.getClosestImage(point, size, borderTypes);
 
 	setAngle(degree(position.getAngleTo(image)));
 }
@@ -310,9 +310,9 @@ double Turtle::getDistanceTo(Point& point) {
 
 	auto world = getWorld();
 	auto size = world->getSize();
-	auto warp = world->getWarp();
+	auto borderTypes = world->getBorderTypes();
 
-	auto image = position.getClosestImage(point, size, warp);
+	auto image = position.getClosestImage(point, size, borderTypes);
 
 	return position.getDistanceTo(image);
 }
@@ -362,7 +362,7 @@ inline bool Turtle::isBoundCrossed(Point& start, Point& end, size_t axis, double
 inline bool Turtle::getBounce(Point& start, Point& end, Point& outCrossing, double& outRemainingDist, double& outAngle) {
 	auto world = getWorld();
 	auto ws = world->getSize();
-	auto warp = world->getWarp();
+	auto borderTypes = world->getBorderTypes();
 
 	// The default, expected, end point
 	bool crossed = false;
@@ -372,7 +372,7 @@ inline bool Turtle::getBounce(Point& start, Point& end, Point& outCrossing, doub
 
 	// For each axis, check if it is bounceable and if it have been crossed
 	for (size_t axis = 0 ; axis < ws.getDimensions() ; axis++) {
-		if (warp[axis])
+		if (borderTypes[axis] != BorderType::BOUNCE)
 			continue;
 
 		Point crossing(ws.getDimensions());
