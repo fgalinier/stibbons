@@ -37,7 +37,7 @@ Les sprints suivants ont été plus léger. Non pas parce qu'il y avait moins de
 
 L'analyseur sémantique a d'abord été une seule classe~: la classe \verb|Interpreter|.
 Cette dernière implémentait tout types d'actions a effectué pour n'importe quel type d'agent.
-Cependant, lors de l'arrivé de la fonctionnalité d'ajout d'un nouvel agent (\verb|new agent|), nous nous sommes aperçu qu'il serait mieux d'avoir un interpréteur par type d'agent, ou plus précisement un interpréteur pour le monde, un pour les tortues et un pour les actions communes aux deux types.
+Cependant, lors de l'arrivée de la fonctionnalité d'ajout d'un nouvel agent (\verb|new agent|), nous nous sommes aperçu qu'il serait mieux d'avoir un interpréteur par type d'agent, ou plus précisement un interpréteur pour le monde, un pour les tortues et un pour les actions communes aux deux types.
 Nous avons alors crée les deux classes~: \verb|WorldInterpreter| et \verb|TurtleInterpreter|.
 
 De manière parallèle, la création du monde s'effectuait dans l'\verb|Interpreter|, puis dans le \verb|WorldInterpreter|, il fut alors nécessaire de crée une classe qui gérerait à la fois la création du monde et tout ce qui concernait l'application (la pause, le temps, les interpreteurs eux-mêmes). Nous avons alors décidé de crée la classe \verb|InterpreterManager|.
