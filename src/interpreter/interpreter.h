@@ -47,6 +47,12 @@ class InterpreterManager;
 		bool inPauseFlag;    /*!< A flag which signal if the thread is paused. Useful when export is called
 		 * and every thread need to be in pause before exporting model. */
 
+
+		/**
+		 * Create a new interpreter
+		 */
+		Interpreter() = default;
+
 		/**
 		 * Interpret a function (or function of a breed)
 		 * \param fct A function that will be interpreted
@@ -84,14 +90,14 @@ class InterpreterManager;
 		 */
 
 		virtual FunctionPtr getFunctionFromTree(InterpreterManager& manager, const TreePtr);
-		
+				
 		/**
 		 * Get the position of errors
 		 * \param tree The syntaxic tree to interpret.
 		 * \return The position of the error detected.
 		 */
-		static inline yy::position getPosition(const TreePtr);
-		
+		static yy::position getPosition(const TreePtr);
+
 		/**
 		 * Do the affectation operation if token detected is '='
 		 * \param agent The agent to run the program on.
@@ -118,11 +124,6 @@ class InterpreterManager;
 		 * \return The result of the call operation on concerned value.
 		 */
 		inline ValuePtr callOp(InterpreterManager& manager, AgentPtr, TreePtr, TablePtr);
-
-		/**
-		 * Create a new interpreter
-		 */
-		Interpreter() = default;
 
 		/**
 		 * Interpret the tree and apply it to the turtle.

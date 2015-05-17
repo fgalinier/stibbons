@@ -73,19 +73,21 @@ namespace stibbons {
 				case yy::parser::token::DIE:
 					agent->die();
 					break;
+					//Communication cases
 				case yy::parser::token::SEND:{
 					auto msg = this->interpret(manager,agent,tree->getSon(0),hashTable);
+					//send a message to all turtle if no recipient precised
 					if(tree->getSons().size() > 1){
-						auto dest = this->interpret(manager,agent,tree->getSon(1),hashTable);
-						if(dest->getType() != Type::TABLE)
+						auto rcp = this->interpret(manager,agent,tree->getSon(1),hashTable);
+						if(rcp->getType() != Type::TABLE)
 							throw SemanticException("In send at recipient",
 													Type::TABLE,
-													dest->getType(),
+													rcp->getType(),
 													getPosition(tree));
 
-						for(int i=0;i<dynamic_pointer_cast<Table>(dest)->length();i++)
+						for(int i=0;i<dynamic_pointer_cast<Table>(rcp)->length();i++)
 							agent->send(dynamic_pointer_cast<Turtle>(
-									     dynamic_pointer_cast<Table>(dest)->getValue(i)),
+									     dynamic_pointer_cast<Table>(rcp)->getValue(i)),
 									     msg);
 					}
 					else{
@@ -94,6 +96,7 @@ namespace stibbons {
 				}
 					break;
 				case yy::parser::token::RECV:{
+					//wait to receive a message, stock the shipper if needed
 						while (agent->checkMessage() <= 0)
 							this_thread::sleep_for(chrono::milliseconds(10));
 						auto msg = agent->recv();
@@ -106,11 +109,11 @@ namespace stibbons {
 
 					if(tree->getSons().size() > 1){
 
-						auto valExp = dynamic_pointer_cast<Turtle>(msg.first);
+						auto valShip = dynamic_pointer_cast<Turtle>(msg.first);
 						auto son2 = tree->getSon(1)->getNode();
-						auto idExp = dynamic_pointer_cast<String>(std::get<1>(son2))->getValue();
+						auto idShip = dynamic_pointer_cast<String>(std::get<1>(son2))->getValue();
 
-						agent->setProperty(idExp,valExp);
+						agent->setProperty(idShip,valShip);
 					}						
 				}
 					break;
