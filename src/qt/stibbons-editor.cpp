@@ -2,7 +2,9 @@
 #include "line-number-area.h"
 
 StibbonsEditor::StibbonsEditor(QWidget *parent) : QPlainTextEdit(parent) {
-	setFont(QFont("Monospace",12));
+	QFont font("Monospace",12);
+	setFont(font);
+	setTabStopWidth(4 * QFontMetrics(font).width(' '));
     lineNumberArea = new LineNumberArea(this);
 
     connect(this, SIGNAL(updateRequest(QRect,int)), this, SLOT(updateLineNumberArea(QRect,int)));
