@@ -133,7 +133,7 @@ namespace stibbons {
 	void InterpreterManager::stop () {
 		if (!exitFlag) {
 			exitFlag = true;
-			suspendFlag = false;
+			unhalt();
 			stopMutex.unlock();
 			for (auto i : interpreters) {
 				try {
@@ -188,7 +188,7 @@ namespace stibbons {
 	bool cond() {return !InterpreterManager::suspendFlag;}
 	
 	void InterpreterManager::checkHalt() {
-		if(suspendFlag == true){
+		if(suspendFlag){
 		   for(auto i : interpreters){
 			   std::get<0>(i)->inPauseFlag = true;
 			   std::unique_lock<std::mutex> lock(std::get<0>(i)->suspendMutex);
@@ -199,6 +199,12 @@ namespace stibbons {
 	}
 
 	void InterpreterManager::halt() {
+		if(exitFlag)
+			return;
+
+		if(suspendFlag)
+			return;
+
 		suspendFlag = true;
 		for(auto i : interpreters){
 			while(std::get<0>(i)->inPauseFlag);
