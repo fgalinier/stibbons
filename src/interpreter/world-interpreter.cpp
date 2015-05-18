@@ -22,12 +22,14 @@ namespace stibbons {
 									   WorldPtr agent,
 									   const TreePtr tree,
 									   TablePtr hashTable) {
-		ValuePtr start = Interpreter::interpret(manager,agent,tree,hashTable);
+		if(tree != nullptr){
+			ValuePtr start = Interpreter::interpret(manager,agent,tree,hashTable);
 
-		if(start != nullptr)	
-			return start;
+			if(start != nullptr)	
+				return start;
 
-		throw SemanticException("Invalid action for the world",getPosition(tree));		
+			throw SemanticException("Invalid action for the world",getPosition(tree));		
+		}
 	}
 }
 
