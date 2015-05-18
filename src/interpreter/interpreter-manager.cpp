@@ -3,6 +3,7 @@
 #include "parser.h"
 #include "world-interpreter.h"
 
+#include "../model/table.h"
 #include "../model/user-function.h"
 
 using namespace std;
@@ -151,25 +152,11 @@ namespace stibbons {
 		if (tree == nullptr )
 			return;
 
-		try {
-			WorldInterpreter wi;
-			wi.interpret(*this, world, tree, make_shared<Table>());
-		}
-		catch (exit_requested_exception e) {
-			stop();
-		}
-		catch (SemanticException e) {
-			stop();
-			errorsOccured("Semantic error", string(e.what()));
-		}
-		catch (SyntaxException e) {
-			stop();
-			errorsOccured("Syntax error", string(e.what()));
-		}
-		catch (exception e) {
-			stop();
-			errorsOccured("Unknown error", string(e.what()));
-		}
+		interpret_async<WorldInterpreter>(
+			make_shared<UserFunction> (*this, tree),
+			world,
+			make_shared<Table>()
+		);
 	}
 
 	void InterpreterManager::wait() {
