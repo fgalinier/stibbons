@@ -1,0 +1,88 @@
+%x_warp true
+%y_warp true
+
+number = 10
+green_chance = 25
+nb_lezard = 5
+
+nb_max = 50
+
+nb_green = (number * (green_chance / 100))
+nb_red = number - nb_green
+
+agent papillon(gene_1,gene_2) {
+	function init(gene_1,gene_2) {
+		teleport(random(0,world.max_x),random(0,world.max_y),rand())
+		if(gene_1 == gene_2) color = gene_1
+		else if (random(0,100) < world.green_chance) color = green
+		else color = red
+		life = 50
+	}
+	
+	function hatch() {
+		if (life > 100) and (world.number < world.nb_max) {
+			t = in_radius(10)
+			if(size(t) > 0) {
+				world.number = world.number + 1
+				new papillon(color,t[0].color)
+				life = 50
+			}
+		}
+	}
+		
+	function wiggle() {
+		rt random(0,60)
+		lt random(0,60)
+		fd 1
+	}
+	
+	function run() {
+		hatch()
+		wiggle()
+		life = life + 1
+	}
+	
+	init(gene_1,gene_2)
+	while(life > 0) {
+		run()
+	}
+	
+	world.number = world.number - 1
+	die
+}
+
+agent lezard() {
+	function hunt() {
+		t = in_radius(10)
+		hungry = true
+		for target in t {
+			if hungry and (target.color == red) {
+				hungry = false
+				target.life = -10
+			}
+		}
+	}
+	
+	function wiggle() {
+		rt random(0,60)
+		lt random(0,60)
+		fd 5
+	}
+	
+	teleport(random(0,world.max_x),random(0,world.max_y),rand())
+	while(true) {
+		hunt()
+		wiggle()
+	}
+}
+
+function init() {
+	color = #347235
+}
+
+ask_zones(init)
+
+nb_green new papillon(green,green)
+nb_red new papillon(red,red)
+nb_lezard new lezard()
+
