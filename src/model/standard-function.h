@@ -44,6 +44,21 @@ class RandFunction : public Function, public Singleton<RandFunction> {
 };
 
 /**
+ * class RandomFunction
+ *
+ *\brief A class returning a random number in a range.
+ *
+ *\author Florian Galinier
+**/
+class RandomFunction : public Function, public Singleton<RandomFunction> {
+	friend Singleton<RandomFunction>;
+	protected:
+		RandomFunction ();
+	public:
+		virtual ValuePtr exec (AgentPtr agent, TablePtr params);
+};
+
+/**
  * class PrintFunction
  *
  *\brief A class printing on the standard output.

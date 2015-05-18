@@ -115,8 +115,11 @@ namespace stibbons {
 				if(dynamic_pointer_cast<Boolean>(cond)->getValue()){
 					return this->interpret(manager,agent,tree->getSon(1),hashTable);
 				}
-				else{
+				else if(tree->getSons().size() > 2) {
 					return this->interpret(manager,agent,tree->getSon(2),hashTable);
+				}
+				else {
+					break;
 				}
 			}
 				//Variable cases:

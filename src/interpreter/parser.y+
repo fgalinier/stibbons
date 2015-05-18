@@ -303,7 +303,6 @@ selection : IF expr statement
   stibbons::TreePtr t1 = make_shared<stibbons::Tree>(yy::parser::token::IF,nullptr);
   t1->addSon($2);
   t1->addSon($3);
-  t1->addSon(nullptr);
   t1->setPosition({@1.begin.line,@1.begin.column});
   $$ = t1;
 }

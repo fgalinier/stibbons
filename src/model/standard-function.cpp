@@ -65,6 +65,17 @@ ValuePtr RandFunction::exec (AgentPtr agent, TablePtr params) {
 	return make_shared<Number>(rand());
 }
 
+RandomFunction::RandomFunction () : Function({"min", "max"}) {}
+
+ValuePtr RandomFunction::exec (AgentPtr agent, TablePtr params) {
+	auto min = long(asNumber(params->getValue("min"), "min")->getValue());
+	auto max = long(asNumber(params->getValue("max"), "max")->getValue());
+	max = max - min;
+	auto res = rand() % max + min;
+	
+	return make_shared<Number>(res);
+}
+
 PrintFunction::PrintFunction () : Function({"value"}) {}
 
 ValuePtr PrintFunction::exec (AgentPtr agent, TablePtr params) {
@@ -145,7 +156,7 @@ ValuePtr InRadiusFunction::exec (AgentPtr agent, TablePtr params) {
 
 	for (auto other : turtle->getWorld()->getTurtles()) {
 		auto point = other->getPosition();
-		if (turtle->getDistanceTo(point) <= d)
+		if (turtle->getDistanceTo(point) <= d && other != turtle)
 			turtles->append(other);
 	}
 

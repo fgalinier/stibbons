@@ -84,6 +84,9 @@ void Agent::setProperty (string key, ValuePtr value) {
 	if (key == "rand")
 		return;
 
+	if (key == "random")
+		return;
+
 	if (key == "type_of")
 		return;
 
@@ -138,6 +141,9 @@ ValuePtr Agent::getProperty(string p) {
 
 	if (p == "rand")
 		return RandFunction::getInstance();
+
+	if (p == "random")
+		return RandomFunction::getInstance();
 
 	if (p == "type_of")
 		return TypeOfFunction::getInstance();
