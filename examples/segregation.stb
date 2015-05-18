@@ -1,0 +1,45 @@
+%x_warp true
+%y_warp true
+
+number = 80
+similar_wanted = 90
+
+agent turtle () {
+	happy = false
+	function init() {
+		teleport(random(0,world.max_x), random(0,world.max_y), 0)
+		if random(0,100) < 50 color = green
+		else color = red
+	}
+
+	function calculate_happiness() {
+		turtles = in_radius(70)
+		nb_similar = 0
+		total = 0
+		for t in turtles {
+			if (t.color == color) nb_similar = nb_similar + 1
+			total = total + 1
+		}
+		if (total != 0) if (((nb_similar / total) * 100) >= world.similar_wanted) {
+			happy = true
+			face(turtles[0])
+		}
+		else happy = false
+	}
+
+	function wiggle() {
+		rt random(0,60)
+		lt random(0,60)
+		fd 1
+	}
+
+	init()
+
+	while true {
+		calculate_happiness()
+		if not happy wiggle()
+	}
+}
+
+number new turtle()
+
