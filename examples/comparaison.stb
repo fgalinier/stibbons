@@ -1,48 +1,50 @@
 if(1 == false){
-	println(true)
+	println("1 == false")
 }
 else {
-	println(false)
+	println("!(1 == false)")
 }
 
 if(1 != true){
-	println(true)
+	println("1 != true")
 }
 else {
-	println(false)
+	println("!(1 != true)")
 }
 
-if(2 < 1){
-	println(true)
+if( 0.4 > 0){
+	println(" 0.4 > 0")
 }
 else {
-	println(false)
+	println("!( 0.4 > 0)")
 }
 
-if(1 < 1){
-	println(true)
+if(0.8 == 0.1){
+	println(type_of(0.8))
+	println(type_of(0.1))
+	println("0.8 == 0.1")
 }
 else {
-	println(false)
+	println("!(0.8 == 0.1)")
 }
 
-if(1 <= 2){
-	println(true)
+if(1.5 <= 2){
+	println("1.5 <= 2")
 }
 else {
-	println(false)
+	println("!(1.5 <= 2)")
 }
 
 if(4 > 1){
-	println(true)
+	println("4 > 1")
 }
 else {
-	println(false)
+	println("!(4 > 1)")
 }
 
 if(5 >= 1){
-	println(true)
+	println("5 >= 1")
 }
 else {
-	println(false)
+	println("!(5 >= 1)")
 }
