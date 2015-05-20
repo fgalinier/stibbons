@@ -91,14 +91,14 @@ NumberPtr Number::unaryMinus () throw(std::domain_error){
 }
 
 
-int Number::compare (ValuePtr other) {
+double Number::compare (ValuePtr other) {
 	if (getType() != other->getType())
 		return Value::compare (other);
 
 	return compare (dynamic_pointer_cast<Number>(other));
 }
 
-int Number::compare(NumberPtr other) {
+double Number::compare(NumberPtr other) {;
 	return getValue () - other->getValue ();
 }
 

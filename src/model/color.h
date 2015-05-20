@@ -176,7 +176,7 @@ class Color : public GenericValue<Type::COLOR> {
 		 * @param other the other value
 		 * @return the comparison value of this and the other value
 		 */
-		virtual int compare (ValuePtr other);
+		virtual double compare (ValuePtr other);
 
 		/**
 		 * Return whether the comparison value of two values
@@ -188,7 +188,7 @@ class Color : public GenericValue<Type::COLOR> {
 		 * @param other the other value
 		 * @return the comparison value of this and the other value
 		 */
-		virtual int compare (ColorPtr other);
+		virtual double compare (ColorPtr other);
 
 		/**
 		 * Return a string corresponding to the value

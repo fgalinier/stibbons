@@ -39,7 +39,7 @@ class TypeValue : public GenericValue<Type::TYPE>, public SimpleValue<Type> {
 		 * @param other the other value
 		 * @return the comparison value of this and the other value
 		 */
-		virtual int compare (ValuePtr other);
+		virtual double compare (ValuePtr other);
 
 		/**
 		 * Return whether the comparison value of two values
@@ -51,7 +51,7 @@ class TypeValue : public GenericValue<Type::TYPE>, public SimpleValue<Type> {
 		 * @param other the other value
 		 * @return the comparison value of this and the other value
 		 */
-		virtual int compare (TypeValuePtr other);
+		virtual double compare (TypeValuePtr other);
 
 		/**
 		 * Return a string corresponding to the value

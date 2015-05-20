@@ -76,7 +76,7 @@ class Function : public GenericValue<Type::FUNCTION> {
 		 * @param other the other value
 		 * @return the comparison value of this and the other value
 		 */
-		virtual int compare (ValuePtr other);
+		virtual double compare (ValuePtr other);
 
 		/**
 		 * Return whether the comparison value of two values
@@ -88,7 +88,7 @@ class Function : public GenericValue<Type::FUNCTION> {
 		 * @param other the other value
 		 * @return the comparison value of this and the other value
 		 */
-		virtual int compare (FunctionPtr other);
+		virtual double compare (FunctionPtr other);
 
 		/**
 		 * Return a string corresponding to the value

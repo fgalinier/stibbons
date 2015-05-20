@@ -8,14 +8,14 @@ void Boolean::reset () {
 	value = false;
 }
 
-int Boolean::compare (ValuePtr other) {
+double Boolean::compare (ValuePtr other) {
 	if (getType() != other->getType())
 		return Value::compare (other);
 
 	return compare (dynamic_pointer_cast<Boolean>(other));
 }
 
-int Boolean::compare(BooleanPtr other) {
+double Boolean::compare(BooleanPtr other) {
 	return getValue () - other->getValue ();
 }
 

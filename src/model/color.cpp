@@ -215,14 +215,14 @@ ColorPtr Color::divide (ColorPtr other) {
 	                          blue  != 0.0 ? r() * blue  : 1.0);
 }
 
-int Color::compare (ValuePtr other) {
+double Color::compare (ValuePtr other) {
 	if (getType() != other->getType())
 		return Value::compare (other);
 
 	return compare (dynamic_pointer_cast<Color>(other));
 }
 
-int Color::compare (ColorPtr other) {
+double Color::compare (ColorPtr other) {
 	auto red = r() - other->r();
 	if (red < 0.0) return -1;
 	if (red > 0.0) return 1;

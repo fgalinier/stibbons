@@ -115,7 +115,7 @@ class Number : public GenericValue<Type::NUMBER>, public SimpleValue<double> {
 		 * @param other the other value
 		 * @return the comparison value of this and the other value
 		 */
-		virtual int compare (ValuePtr other);
+		virtual double compare (ValuePtr other);
 
 		/**
 		 * Return whether the comparison value of two values
@@ -127,7 +127,7 @@ class Number : public GenericValue<Type::NUMBER>, public SimpleValue<double> {
 		 * @param other the other value
 		 * @return the comparison value of this and the other value
 		 */
-		virtual int compare (NumberPtr other);
+		virtual double compare (NumberPtr other);
 
 		/**
 		 * Return a string corresponding to the value

@@ -13,15 +13,13 @@ else {
 }
 
 if( 0.4 > 0){
-	println(" 0.4 > 0")
+	println("0.4 > 0")
 }
 else {
-	println("!( 0.4 > 0)")
+	println("!(0.4 > 0)")
 }
 
 if(0.8 == 0.1){
-	println(type_of(0.8))
-	println(type_of(0.1))
 	println("0.8 == 0.1")
 }
 else {

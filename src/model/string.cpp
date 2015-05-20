@@ -21,14 +21,14 @@ StringPtr String::add (StringPtr other) {
 	return make_shared<String>(getValue() + other->getValue());
 }
 
-int String::compare (ValuePtr other) {
+double String::compare (ValuePtr other) {
 	if (getType() != other->getType())
 		return Value::compare (other);
 
 	return compare (dynamic_pointer_cast<String>(other));
 }
 
-int String::compare(StringPtr other) {
+double String::compare(StringPtr other) {
 	if (getValue () < other->getValue () )
 		return -1;
 	if (getValue () > other->getValue () )

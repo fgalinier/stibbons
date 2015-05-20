@@ -8,14 +8,14 @@ void TypeValue::reset () {
 	value = Type::TYPE;
 }
 
-int TypeValue::compare (ValuePtr other) {
+double TypeValue::compare (ValuePtr other) {
 	if (getType() != other->getType())
 		return Value::compare (other);
 
 	return compare (dynamic_pointer_cast<TypeValue>(other));
 }
 
-int TypeValue::compare(TypeValuePtr other) {
+double TypeValue::compare(TypeValuePtr other) {
 	return (long) getValue () - (long) other->getValue ();
 }
 

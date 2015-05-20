@@ -77,19 +77,19 @@ class Agent : public Value, public enable_shared_from_this<Agent> {
 		 * @param other the other value
 		 * @return the comparison value of this and the other value
 		 */
-		virtual int compare (ValuePtr other);
+		virtual double compare (ValuePtr other);
 
 		/**
 		 * Return whether the comparison value of two values
 		 *
 		 * Return a negative number if this value is lower than the other,
-		 * return a negative number if this value is greater than the other,
+		 * return a positive number if this value is greater than the other,
 		 * return 0 if they are equal.
 		 *
 		 * @param other the other value
 		 * @return the comparison value of this and the other value
 		 */
-		virtual int compare (AgentPtr other);
+		virtual double compare (AgentPtr other);
 
 		/**
 		 * Export the properties in the object o

@@ -55,7 +55,7 @@ class String : public GenericValue<Type::STRING>, public SimpleValue<std::string
 		 * @param other the other value
 		 * @return the comparison value of this and the other value
 		 */
-		virtual int compare (ValuePtr other);
+		virtual double compare (ValuePtr other);
 
 		/**
 		 * Return whether the comparison value of two values
@@ -67,7 +67,7 @@ class String : public GenericValue<Type::STRING>, public SimpleValue<std::string
 		 * @param other the other value
 		 * @return the comparison value of this and the other value
 		 */
-		virtual int compare (StringPtr other);
+		virtual double compare (StringPtr other);
 
 		/**
 		 * Return a string corresponding to the value

@@ -85,7 +85,7 @@ class Value {
 		 * @param other the other value
 		 * @return the comparison value of this and the other value
 		 */
-		virtual int compare (ValuePtr other) {
+		virtual double compare (ValuePtr other) {
 			return ((long) getType()) - ((long) other->getType());
 		}
 

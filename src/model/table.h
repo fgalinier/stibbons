@@ -89,7 +89,7 @@ class Table : public GenericValue<Type::TABLE> {
 		 * @param other the other value
 		 * @return the comparison value of this and the other value
 		 */
-		virtual int compare (ValuePtr other);
+		virtual double compare (ValuePtr other);
 
 		/**
 		 * Return whether the comparison value of two values
@@ -101,7 +101,7 @@ class Table : public GenericValue<Type::TABLE> {
 		 * @param other the other value
 		 * @return the comparison value of this and the other value
 		 */
-		virtual int compare (TablePtr other);
+		virtual double compare (TablePtr other);
 
 		 /**
 		 * Get a string representing the table

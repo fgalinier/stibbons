@@ -39,7 +39,7 @@ class Boolean : public GenericValue<Type::BOOLEAN>, public SimpleValue<bool> {
 		 * @param other the other value
 		 * @return the comparison value of this and the other value
 		 */
-		virtual int compare (ValuePtr other);
+		virtual double compare (ValuePtr other);
 
 		/**
 		 * Return whether the comparison value of two values
@@ -51,7 +51,7 @@ class Boolean : public GenericValue<Type::BOOLEAN>, public SimpleValue<bool> {
 		 * @param other the other value
 		 * @return the comparison value of this and the other value
 		 */
-		virtual int compare (BooleanPtr other);
+		virtual double compare (BooleanPtr other);
 
 		/**
 		 * Return a string corresponding to the value

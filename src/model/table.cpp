@@ -90,14 +90,14 @@ namespace stibbons {
 		return got->second;
 	}
 
-	int Table::compare (ValuePtr other) {
+	double Table::compare (ValuePtr other) {
 		if (getType() != other->getType())
 			return Value::compare (other);
 
 		return compare (dynamic_pointer_cast<Table>(other));
 	}
 
-	int Table::compare(TablePtr other) {
+	double Table::compare(TablePtr other) {
 		return this - other.get() ;
 	}
 

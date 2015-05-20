@@ -190,14 +190,14 @@ unordered_map<string,ValuePtr>* Agent::getProperty() {
 	return properties;
 }
 
-int Agent::compare (ValuePtr other) {
+double Agent::compare (ValuePtr other) {
 	if (getType() != other->getType())
 		return Value::compare (other);
 
 	return compare (dynamic_pointer_cast<Agent>(other));
 }
 
-int Agent::compare(AgentPtr other) {
+double Agent::compare(AgentPtr other) {
 	return this - other.get();
 }
 
