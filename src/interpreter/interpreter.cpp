@@ -112,15 +112,11 @@ namespace stibbons {
 					                        Type::BOOLEAN,
 					                        cond->getType(),
 					                        getPosition(tree));
-				if(dynamic_pointer_cast<Boolean>(cond)->getValue()){
+				if(dynamic_pointer_cast<Boolean>(cond)->getValue())
 					return this->interpret(manager,agent,tree->getSon(1),hashTable);
-				}
-				else if(tree->getSons().size() > 2) {
+				if(tree->getSons().size() > 2)
 					return this->interpret(manager,agent,tree->getSon(2),hashTable);
-				}
-				else {
-					break;
-				}
+				break;
 			}
 				//Variable cases:
 			case yy::parser::token::ID: {
