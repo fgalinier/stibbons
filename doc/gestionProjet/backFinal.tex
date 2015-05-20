@@ -4,8 +4,70 @@ Nous avons rajouté des tâches, et des user-stories au fil du projet. En effet,
 On peut aussi voir la justesse de nos estimations avec le temps réel passé sur chaque tâches.
 Nous étions globalement dans les temps à chaque sprint, très peu de tâches ont été fini en retard.
 
-
-\begin{figure}[h]
+\setcellgapes{1pt}
+\makegapedcells
+\begin{table}
+\centering
+\begin{tabular}{*{8}{c|}}
+\hline
+id & Scénario utilisateur & Priorité & Tests & Estimation & Sprint & Statut & Temps réel
+\hline
+1 & L'utilisateur écrit du code dans un éditeur & 200 & L'utilisateur écrit du code dans un éditeur intégré & 20h & 5 &  & 
+\hline
+2 & L'utilisateur importe du code dans le logiciel & 1100 & Importer du code Stibbons depuis un fichier, vérifier que le code obtenu est bien identique à celui du fichier. & 4h & 1 & Fini & 1h
+\hline
+3 & L'utilisateur visualise les rapports d'erreurs du code & 400 & Exécuter pd 50 et constater une erreur. & 8h & 4 & Fini & 8h
+\hline
+4 & L'utilisateur visualise l'évolution du modèle & 1400 & Vérifier que l'interprétation d'instructions données fait bien évoluer comme prévu la tortue dans son environnement. & 24h & 1 & Fini & 70h
+\hline
+5 & L'utilisateur modifie la vitesse (pause, pas à pas, parallèle) & 700 & Faire varier la vitesse et observer le changement dans l'execution des tortues. & 12h & 4 & Fini & 14h
+\hline
+6 & Le « dieu-tortue » interprète le code de l'utilisateur & 1500 & Lancer l'interprétation pour : repeat 4 { fd 1 rt 90 } (suivant syntaxe) ainsi que pour du code avec des erreurs : repat 4 {...} par exemple, ou repeat 4 { fd 1 rt } & 12h & 1 & Fini & 32h
+\hline
+7 & L'utilisateur crée une nouvelle tortue (avec un code) & 600 & Lancer l'interprétation pour : create-turtle {} et observer une nouvelle tortue apparaître dans l'interface graphique. & 7,5h & 2 & Fini & 4h
+\hline
+8 & Les tortues s'exécutent en parallèles & 1200 & Lancer l'interprétation pour deux tortues d'un bout de code et observer l'exécution parallèle via des écritures dans le terminal (Je suis tortue 1 et Je suis tortue 2 par exemple) & 42,5h & 2 & Fini & 40h
+\hline
+9 & Les tortues communiquent directement entre elles & 900 & Ecrire send(t,''Je suis là'') avec t une tortue qui a pour code : m = recv() if (m == ''Je suis là'') fd 50 et observer la tortue avancer & 30h & \hline
+3 & Fini & 16h
+\hline
+10 & Une tortue se déplace dans l'environnement & 1300 & Ecriture d'instructions simples : repeat 4 { fd 1 rt 90 } (suivant syntaxe) - Renvoi de la position de la tortue après chaque deplacement : where_am_i(); (suivant syntaxe) & 16h & 1 & Fini & 24h
+\hline
+11 & Les tortues communiquent avec les zones de l'environnement & 1000 & Ecrire if(zone.color == red) { color = blue } sur une zone de couleur rouge et observer la tortue changer de couleur. & 30h & 3 & Fini & 12h
+\hline
+12 & L'utilisateur exporte le code & 500 & L'utilisateur sauvegarde son code dans un fichier externe & 1h & 5 &  & 
+\hline
+13 & L'utilisateur exporte le modèle & 300 & Sauvegarder le modèle et observer les données en sortie (JSON ) & 30h & 4 & Fini & 22h
+\hline
+14 & L'utilisateur ajoute une entrée & 100 &  &  &  &  & 
+\hline
+15 & L'utilisateur remet à zéro l'environnement & 800 & Remettre à zéro après une exécution et observer que le monde est vierge. & 20h & 4 & Fini & 23h
+\hline
+16 & L'utilisateur utilise des variables dans le code & 1275 & Ecrire a = 90 fd a et observer la tortue qui avance. & 12h & 2 & Fini & 3h
+\hline
+17 & L'utilisateur définit des fonctions personnalisées dans le code & 1250 & Ecrire function f () { fd 90 } f () et observer la tortue qui avance. & 23 & 5h & 2 & Fini & 11h
+\hline
+18 & Les tortues communiquent via l'environnement & 950 & Ecrire broadcast(20,''Je suis là'') et dans une autre tortue dans le rayon avec le code m = recv() if (m == ''Je suis là'') fd 50 et observer la tortue avancer. & 10h & 3 & Fini & 2h
+\hline
+19 & L'utilisateur utilise des conditionnelles & 550 & Ecrire if(false) { fd 90 } et observer que la tortue ne bouge pas. Refaire le même test avec if(true) et observer que la tortue bouge. & 3,5h & 2 & Fini & 3,5h
+\hline
+20 & L'utilisateur utilise des boucles & 575 & Ecrire pd repeat 4 { fd 40 rt 90 } et observer que la tortue dessine un carré. & 7h & 2 & Fini & 3,5h
+\hline
+21 & L'utilisateur définit des fonctions avec paramètres & 1225 & Ecrire function f(a) { fd a } f(90) et observer la tortue avancer. & 10h & 3 & Fini & 16h
+\hline
+22 & L'utilisateur instancie des agents avec paramètres & 560 & Ecrire agent wolf (a) { fd a } new wolf (50) et observer la nouvelle tortue avancer. & 10h & 3 & Fini & 16h
+\hline
+23 & L'utilisateur modifie la couleur d'un agent (tortue ou zone) & 450 & Ecrire new agent { color = red } et observer la nouvelle tortue rouge. & 3h & 3 & Fini & 2h
+\hline
+24 & La tortue accède aux données de son parent & 50 & Taper parent.color= blue et observer le parent devenir bleu & 1h & 5 & Fini & 1h
+\hline
+25 & L'utilisateur peut stocker des valeurs dans une table & 540 & On stocke le retour dans t= {1,2} & 10h & 4 & Fini & 9h
+\hline
+26 & L'utilisateur parcours un tableau & 530 & Faire foreach(f : {1,2}) println(f) & 4h & 5 &  & 
+\hline
+27 & L'utilisateur lance l'application sans interface graphique & 250 & Lancer l'application et regarder les fichiers d'exportations & 16h & 5 & & 
+\hline
+\end{tabular}
 \caption{\label{bsp5} Backlog Sprint 5}
-\includegraphics[scale=0.35]{doc/gestionProjet/backlogsp5.png}
-\end{figure}
+\label{tab1}
+\end{table}
