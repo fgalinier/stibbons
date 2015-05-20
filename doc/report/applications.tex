@@ -1,0 +1,31 @@
+\section{Application en ligne de commande}
+
+Une application en ligne de commande a été ajoutée à la version 0.4. Elle permet d'exécuter des programmes Stibbons sans serveur graphique et à pleine vitesse.
+
+\subsection{Utilisation}
+
+Utilisation~: stibbons-cli [options] fichier
+
+Options~:
+\begin{description}
+	\item[-h, \texttt{-{}-}help] Affiche l'aide.
+	\item[-v, \texttt{-{}-}version] Affiche l'information de version.
+	\item[-e, \texttt{-{}-}export <secondes>] Exporte le modèle toutes les <secondes> secondes.
+	\item[-p, \texttt{-{}-}prefix <prefixe>] Préfixe les fichiers exportés avec <prefixe>.
+	\item[\texttt{-{}-}png] Génère une image PNG pour chaque export.
+	\item[\texttt{-{}-}no-json] N'exporte pas le modèle dans un fichier JSON.
+\end{description}
+
+Arguments~:
+\begin{description}
+	\item[fichier] Le fichier de programme Stibbons à exécuter.
+\end{description}
+
+\subsection{Fonctionnement}
+
+Le programme analyse la ligne de commande à l'aide de la classe QCommandLineParser, puis crée et exécute un objet représentant l'application selon les paramètres passés par l'utilisateur.
+
+Lors de l'exécution de l'application, il est possible d'exporter le modèle à intervale régulier grâce à l'option \texttt{-{}-}export. Par défaut, le modèle est exporté dans un fichier JSON, mais il est également possible d'exporter un rendu du monde en PNG, ou de ne pas exporter.
+
+Afin de pouvoir dessiner le monde dans un fichier image, la classe WorldView, widget de l'application graphique jusque là responsable de dessiner le monde sur lui même, a vu ses fonctionnnalités de dessin d'un monde migrer vers la nouvelle classe WorldPainter, capable de dessiner un monde sur une surface.
+Cette nouvelle classe est désormais utilisée dans l'application graphique par WorldView pour se dessiner, et par l'application en ligne de commandes pour dessiner sur une QImage.
