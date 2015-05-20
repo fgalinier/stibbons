@@ -4,14 +4,22 @@ Ensuite nous avons défini les fonctionnalités et fait notre premier backlog, c
 Pour l'estimation des heures, nous procédions avec des petits papiers, où pour chaque tâches, chacun de nous mettons son estimation maximale et minimal, puis nous en discutions. L'estimation correspond à la moyenne entre la plus haute de toutes et la plus petite.
 Nous avons rédigé des user-stories.
 
-\setcellgapes{1pt}
-\makegapedcells
-\begin{table}
-\centering
-\begin{tabular}{|*{8}{c|}}
+{\tiny
+\begin{longtable}[c]{|c|p{1.3cm}|c|p{3.5cm}|*{3}{c|}p{0.7cm}|}
 \hline
-id & Scénario utilisateur & Priorité & Tests & Estimation & Sprint & Statut & Temps réel \\
+\bf id & \bf Scénario utilisateur & \bf Priorité & \bf Tests & \bf Estimation & \bf Sprint & \bf Statut & \bf Temps réel \\
 \hline
+\endfirsthead
+\hline
+\bf id & \bf Scénario utilisateur & \bf Priorité & \bf Tests & \bf Estimation & \bf Sprint & \bf Statut & \bf Temps réel \\
+\hline
+\endhead
+\hline
+\caption{Backlog Initial (fin).} \label{bsp1}\\
+\endlastfoot
+\hline
+\caption[]{Backlog Initial.}\\
+\endfoot
 1 & L'utilisateur écrit du code dans un éditeur & 200 &  &  &  &  &  \\
 \hline
 2 & L'utilisateur importe du code dans le logiciel & 1100 & Importer du code Stibbons depuis un fichier, vérifier que le code obtenu est bien identique à celui du fichier. & 4h & 1 & ? & 1h \\
@@ -53,7 +61,4 @@ suis tortue 2 par exemple) & 42,5h & 2 & & \\
 \hline
 20 & L'utilisateur utilise des boucles & 575 & Ecrire pd repeat 4 { fd 40 rt 90 } et observer que la tortue dessine un carré. & 7h & 2 &  &  \\
 \hline
-\end{tabular}
-\caption{Backlog Initial}
-\label{bsp1} 
-\end{table}
+\end{longtable}}
