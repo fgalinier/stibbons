@@ -183,14 +183,33 @@ REPDEPS = \
 	$(REPDIR)/*.tex \
 	$(NULL)
 
-PDF = $(PDFDIR)/report.pdf
+REPPDF = $(PDFDIR)/report.pdf
 
-PDFCLN = \
-	$(PDF) \
-	$(PDF:%.pdf=%.aux) \
-	$(PDF:%.pdf=%.log) \
-	$(PDF:%.pdf=%.toc) \
+REPPDFCLN = \
+	$(REPPDF) \
+	$(REPPDF:%.pdf=%.aux) \
+	$(REPPDF:%.pdf=%.log) \
+	$(REPPDF:%.pdf=%.toc) \
 	$(REPRAI).rai \
+	$(NULL)
+
+# Variables pour le rapport de gestion de projet
+
+PRODIR = $(DOCDIR)/gestionProjet
+
+PROTEX = $(PRODIR)/reportProjet.tex
+
+PRODEPS = \
+	$(PRODIR)/*.tex \
+	$(NULL)
+
+PROPDF = $(PDFDIR)/reportProjet.pdf
+
+PROPDFCLN = \
+	$(PROPDF) \
+	$(PROPDF:%.pdf=%.aux) \
+	$(PROPDF:%.pdf=%.log) \
+	$(PROPDF:%.pdf=%.toc) \
 	$(NULL)
 
 # Tout compiler
@@ -246,9 +265,9 @@ $(CLIOBJECTS): %.o: %.cpp
 
 # Compilation de la documentation
 
-doc: $(PDF)
+doc: $(REPPDF) $(PROPDF)
 
-$(PDFDIR)/%.pdf: $(REPDIR)/%.tex $(RAILBIN) bibtex
+$(REPPDF): $(PDFDIR)/%.pdf: $(REPDIR)/%.tex $(RAILBIN) bibtex
 	# Compile pour générer la TOC
 	TEXINPUTS=.//:$$TEXINPUTS pdflatex -output-directory $(@D) $<
 	# Compile les diagrammes de syntaxe
@@ -257,6 +276,9 @@ $(PDFDIR)/%.pdf: $(REPDIR)/%.tex $(RAILBIN) bibtex
 		$(RAILBIN) $(REPRAI) ; \
 	fi;
 	# Compile avec la TOC
+	TEXINPUTS=.//:$$TEXINPUTS pdflatex -output-directory $(@D) $<
+
+$(PROPDF): $(PDFDIR)/%.pdf: $(PRODIR)/%.tex
 	TEXINPUTS=.//:$$TEXINPUTS pdflatex -output-directory $(@D) $<
 
 bibtex: $(REPDIR)/report.aux
@@ -285,7 +307,8 @@ clean:
 	$(QTOBJECTS) \
 	$(CLIMOCSRC) \
 	$(CLIOBJECTS) \
-	$(PDFCLN)\
+	$(REPPDFCLN)\
+	$(PROPDFCLN)\
 	$(NULL)\
 	sauvegarde.json
 	make clean -C $(RAILDIR) -f Makefile
