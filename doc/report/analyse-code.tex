@@ -1,19 +1,39 @@
 \section{Analyse de code}
 
 \subsection{Flex}
-\subsubsection{Théorie}
-Pour faire la compilation, la première étape est l'analyse du fichier source.
-Tout d'abord, on fait une analyse d'un point de vue lexicale, c'est à dire qu'on décompose les chaînes de caractère (le code) en lexème ou jeton.\\
-L'une des façons de faire est de construire un automate à état fini associé au mots reconnus.\\
-Suite à la reconnaissance d'un mot ou lexème, l'analyseur lexicale retourne un jeton correspondant  à la catégorie lexicale du lexème. Plus précisément, on retourne un couple (jeton, valeur sémantique).\\
-Par exemple, si on définit  (if , 300) et qu'on reconnaît un if on retourne (IF,).
-On choisit plutôt des entiers pour représenter les catégories lexicales.\\
-Pour les variables, il faut retourner une valeur sémantique, donc soit le lexème lui-même pour un littéral entier, l'indice d'entrée correspondant dans la table des symboles pour une variable.\\
-Par exemple : (LITTERALCHAINE,'Bonjour !').\\
-Pour éviter les erreurs avec les mots préfixes d'autres, on applique la règle du mot le plus long : on regarde le caractère suivant, s'il étend le lexème reconnu, on continue.\\
-Il faut pouvoir revenir en arrière si on a été trop loin dans la lecture et qu'on se retrouve dans un état non terminal. Il faut donc connaître les états de notre automate.
-Il faut aussi penser à filtrer les blancs et les commentaires, selon la grammaire.
-Un générateur d'analyseur permet d'éviter cette étape.\\
+
+\subsubsection{Pratique}
+Flex est une version libre de l'analyseur lexical Lex. Il est généralement associé à l'analyseur syntaxique GNU Bison, la version GNU de Yacc.
+Il lit les fichiers d'entrée donnés pour obtenir la description de l'analyseur à générer. La description est une liste de paires d'expressions rationnelles et de code C, appelées règles. 
+
+Un fichier flex est composé de plusieurs parties. La première est un espace, encadré par les symboles \verb|%{ %}| qui contient une partie optionnelle de définition (cf Listing \ref{flex-definition}), d'une partie obligatoire de règles encadré par les symboles \verb|% %|.
+
+\begin{lstlisting}[caption=Partie définition d'un fichier flex,label=flex-definition]
+%{
+ int yyFlexLexer::yywrap() {
+	return 1;
+ }
+%}
+\end{lstlisting}
+Une partie obligatoire de régles lex commencant par \%\%.\\
+Cette partie associe des instructions C++ à des expressions régulières.
+\begin{lstlisting}[label=flex-regles,caption=Partie règles de flex]
+%%
+#([a-f0-9]{6}|[a-f0-9]{3}) {
+							pyylval->v=make_shared<stibbons::Color>(yytext); 
+							return yy::parser::token::COLOR;
+						   }
+\end{lstlisting}
+Enfin, une partie optionnelle pour des fonctions C++ définis par l'utilisateur, commençant par \%\%.\\
+\begin{verbatim}
+%%
+int main(){
+...
+}
+\end{verbatim}
+Pour compiler : \textit{flex -+ exemple.l+}  puis \textit{g++ -g -o exemple lex.yy.cc -lfl}.\\
+Après, c'est la fonction de l'analyseur syntaxique yyparse() qui appelle yylex() pour avoir les jetons correspondant au fichier lu.\\
+La fonction main() appelle yyparse().\\
 
 \subsection{Bison}
 

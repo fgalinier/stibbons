@@ -1,37 +1,31 @@
+L'analyse lexicale vise à produire un flot de jeton qui pourront être analyser par l'analyseur syntaxique. Ces jetons sont des paires composées d'un type de jeton et de la valeur du lexème (par exemple, l'analyse du lexème \verb|12| va générer le jeton \verb|<NUMBER,12>| dans notre cas). Certains lexèmes peuvent générer des jetons qui n'ont pas de valeur (par exemple, le lexème \verb|(| va entrainer la génération du jeton \verb|<(>|).
+
+Nous avons fait le choix d'utiliser l'outil Flex pour notre projet (cf \ref{Flex}).
+
+\subsection{Jeton}
+
+
+\subsection{Règles}
+
+
 L'analyseur lexical de Stibbons est écrit en Flex et permet de détecter certaines chaînes de caractères pour y générer des séquences correspondantes dans l'analyseur syntaxique.
 
 Par exemple, lors de la détection d'un mot (prenons le mot \verb|recv|), la séquence correspondante est générer (ici, la séquence RECV serait produite).
 Un comptage de ligne pour la gestion d'erreur y est également faite.
 
 %%Et là en dessous c'est un copié collé de la partie de julia
-\subsubsection{Pratique}
-Flex est une version libre de l'analyseur lexical Lex. Il est généralement associé à l'analyseur syntaxique GNU Bison, la version GNU de Yacc. \\
-Il lit les fichiers d'entrée donnés pour obtenir la description de l'analyseur à générer. La description est une liste de paires d'expressions rationnelles et de code C, appelées règles. \\
-Flex a plusieurs régles pour l'écriture du fichier .l+ .\\
-D'abord, un espace entre \%\{ \%\} qui contient une partie optionnelle de définition.\\
-Par exemple :
-\ \begin{verbatim}
-%{
-include <iostream.h>
-class A\{ 
- public :
-  void Hello() {cout<< ``Hello world !''<<endl ; }
-};
-%}
-\end{verbatim}
-Une partie obligatoire de régles lex commencant par \%\%.\\
-Cette partie associe des instructions C++ à des expressions régulières.
-\begin{verbatim}
-%%
-[a-z]([a-z])*           {return 5;}
-\end{verbatim}
-Enfin, une partie optionnelle pour des fonctions C++ définis par l'utilisateur, commençant par \%\%.\\
-\begin{verbatim}
-%%
-int main(){
-...
-}
-\end{verbatim}
-Pour compiler : \textit{flex -+ exemple.l+}  puis \textit{g++ -g -o exemple lex.yy.cc -lfl}.\\
-Après, c'est la fonction de l'analyseur syntaxique yyparse() qui appelle yylex() pour avoir les jetons correspondant au fichier lu.\\
-La fonction main() appelle yyparse().\\
+
+\subsubsection{Théorie}
+Pour faire la compilation, la première étape est l'analyse du fichier source.
+Tout d'abord, on fait une analyse d'un point de vue lexicale, c'est à dire qu'on décompose les chaînes de caractère (le code) en lexème ou jeton.\\
+L'une des façons de faire est de construire un automate à état fini associé au mots reconnus.\\
+Suite à la reconnaissance d'un mot ou lexème, l'analyseur lexicale retourne un jeton correspondant  à la catégorie lexicale du lexème. Plus précisément, on retourne un couple (jeton, valeur sémantique).\\
+Par exemple, si on définit  (if , 300) et qu'on reconnaît un if on retourne (IF,).
+On choisit plutôt des entiers pour représenter les catégories lexicales.\\
+Pour les variables, il faut retourner une valeur sémantique, donc soit le lexème lui-même pour un littéral entier, l'indice d'entrée correspondant dans la table des symboles pour une variable.\\
+Par exemple : (LITTERALCHAINE,'Bonjour !').\\
+Pour éviter les erreurs avec les mots préfixes d'autres, on applique la règle du mot le plus long : on regarde le caractère suivant, s'il étend le lexème reconnu, on continue.\\
+Il faut pouvoir revenir en arrière si on a été trop loin dans la lecture et qu'on se retrouve dans un état non terminal. Il faut donc connaître les états de notre automate.
+Il faut aussi penser à filtrer les blancs et les commentaires, selon la grammaire.
+Un générateur d'analyseur permet d'éviter cette étape.\\
+
