@@ -1,12 +1,11 @@
-\section{Analyse de code}
+\section{Outils d'analyse}
 
 \subsection{Flex}
 
-\subsubsection{Pratique}
 Flex est une version libre de l'analyseur lexical Lex. Il est généralement associé à l'analyseur syntaxique GNU Bison, la version GNU de Yacc.
 Il lit les fichiers d'entrée donnés pour obtenir la description de l'analyseur à générer. La description est une liste de paires d'expressions rationnelles et de code C, appelées règles. 
 
-Un fichier flex est composé de plusieurs parties. La première est un espace, encadré par les symboles \verb|%{ %}| qui contient une partie optionnelle de définition (cf Listing \ref{flex-definition}), d'une partie obligatoire de règles encadré par les symboles \verb|% %|.
+Un fichier flex est composé de plusieurs parties. La première contient une partie optionnelle de définition, encadrée par les symboles \verb|%{ %}| (cf. listing \ref{flex-definition}), ainsi que des options pour flex (cf. \ref{flex-options}). La seconde partie est une partie obligatoire de règles, commençant par \verb|%%| (cf. listing \ref{flex-regles}), tandis que la dernière partie est une nouvelle partie optionnelle, débutée par \verb|%%|, pouvant contenir des fonctions C/C++ définies par l'utilisateur (cf. listing \ref{flex-fonctions}).
 
 \begin{lstlisting}[caption=Partie définition d'un fichier flex,label=flex-definition]
 %{
@@ -15,8 +14,13 @@ Un fichier flex est composé de plusieurs parties. La première est un espace, e
  }
 %}
 \end{lstlisting}
-Une partie obligatoire de régles lex commencant par \%\%.\\
-Cette partie associe des instructions C++ à des expressions régulières.
+
+\begin{lstlisting}[caption=Options flex,label=flex-options]
+%option c++ 
+%option nodefault 
+\end{lstlisting}
+
+
 \begin{lstlisting}[label=flex-regles,caption=Partie règles de flex]
 %%
 #([a-f0-9]{6}|[a-f0-9]{3}) {
@@ -24,21 +28,21 @@ Cette partie associe des instructions C++ à des expressions régulières.
 							return yy::parser::token::COLOR;
 						   }
 \end{lstlisting}
-Enfin, une partie optionnelle pour des fonctions C++ définis par l'utilisateur, commençant par \%\%.\\
-\begin{verbatim}
+\begin{lstlisting}[label=flex-fonctions,caption=Partie fonctions de flex]
 %%
 int main(){
 ...
 }
-\end{verbatim}
-Pour compiler : \textit{flex -+ exemple.l+}  puis \textit{g++ -g -o exemple lex.yy.cc -lfl}.\\
-Après, c'est la fonction de l'analyseur syntaxique yyparse() qui appelle yylex() pour avoir les jetons correspondant au fichier lu.\\
-La fonction main() appelle yyparse().\\
+\end{lstlisting}
+
+La transformation en code C++ se fait par compilation via l'appel à l'application \verb|flex -+ exemple.l+|. La fonction d'analyse ainsi générée se nomme \verb|yylex()|.
+Il faut par la suite penser à compiler le programme en liant la bibliothèque flex via le flag \verb|-lfl|.
 
 \subsection{Bison}
 
-Yacc est un outil d'analyse syntaxique. L'analyse syntaxique permet de vérifier qu'un mot appartient bien au langage.\\ Il génère un analyseur syntaxique ascendant utilisant un automate à pile (dérivation à droite, on remplace le symbole non terminal le plus à droite).
- Son fonctionnement est le suivant : à chaque règle de grammaire, on associe des actions (instructions d'un langage). L'analyseur généré essaie de reconnaître un mot du langage défini par la grammaire. Il exécute les actions pour chaque règle reconnue.  Bison est une version de yacc.\\
+Yacc est un outil d'analyse syntaxique. L'analyse syntaxique permet de vérifier qu'un mot appartient bien au langage. Il génère un analyseur syntaxique ascendant utilisant un automate à pile (dérivation à droite, on remplace le symbole non terminal le plus à droite).
+
+Son fonctionnement est le suivant~: à chaque règle de grammaire, on associe des actions (instructions d'un langage). L'analyseur généré essaie de reconnaître un mot du langage défini par la grammaire. Il exécute les actions pour chaque règle reconnue. Bison est une version de yacc.
 
 \textbf{Exemple} :\\
 D'après une grammaire ambiguë, on construit un vérificateur syntaxique. On écrit un source yacc : fichier.y, dans lequel on définit :
@@ -48,8 +52,8 @@ D'après une grammaire ambiguë, on construit un vérificateur syntaxique. On é
 \textit{définition fonction C}\\
 
 Les définitions de fonction C  doit avoir une fonction main, qui appelle yyparse(), une définition de yylex() appellée par yyparse() et une définition de yyerror(char*) pour signaler un erreur à l'utilisateur.
-On compile avec bison : \textit{bison -y fichier.y} , puis \textit{gcc -o fichier.y.tab.c}, puis lancer l’exécutable.\\
-Pour utiliser C++ avec bison, on écrit en C++ dans la partie action. On aura du C et C++ dans l'analyseur : fonction C, et action en C++.\\
+On compile avec bison~: \textit{bison -y fichier.y} , puis \textit{gcc -o fichier.y.tab.c}, puis lancer l’exécutable.
+Pour utiliser C++ avec bison, on écrit en C++ dans la partie action. On aura du C et C++ dans l'analyseur : fonction C, et action en C++.
 
-Si on veut un analyseur syntaxique en C++, il faut utiliser un squelette de parseur C++ en utilisant soit l'option bison -skeleton=lalr1.cc ; soit en utilisant la directive \%skeleton « lalr1.cc ».\\ Ne pas oublier de déclarer yylex() aprés \%union !\\
+Si on veut un analyseur syntaxique en C++, il faut utiliser un squelette de parseur C++ en utilisant soit l'option bison -skeleton=lalr1.cc, soit en utilisant la directive \verb|%skeleton "lalr1.cc"|. Ne pas oublier de déclarer yylex() aprés \%union !
 \textit{Pour plus de détails, regarder le cours de Michel Meynard, dont ces informations sont principalement tirés.}

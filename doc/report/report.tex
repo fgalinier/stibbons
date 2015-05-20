@@ -8,6 +8,7 @@
 \usepackage{rail}
 \usepackage{graphicx}
 \usepackage{listingsutf8}
+\usepackage{float}
 \usepackage[babel=true]{csquotes}
 
 \lstset{
@@ -15,7 +16,10 @@
 		captionpos=b,
 		showstringspaces=true, 
 		tabsize=2,
-		language=C++
+		language=C++,
+		frame=simple,
+		float,
+		floatplacement=H
 	   }
 
 \railalias{lbrace}{\{}
