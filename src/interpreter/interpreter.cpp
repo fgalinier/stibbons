@@ -436,7 +436,7 @@ namespace stibbons {
 	                                const TreePtr tree,
 	                                TablePtr hashTable,
 	                                std::string id) {
-		auto newHashTable = make_shared<Table>(*hashTable);
+		auto newHashTable = make_shared<Table>();
 
 		if(tree) {
 			if(fct->getParams().size() != tree->getChildren().size()) {

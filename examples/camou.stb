@@ -1,5 +1,5 @@
-%x_border BOUNCE
-%y_border BOUNCE
+%x_warp true
+%y_warp true
 
 number = 10
 green_chance = 25
@@ -11,7 +11,7 @@ nb_green = (number * (green_chance / 100))
 nb_red = number - nb_green
 
 agent papillon(gene_1,gene_2) {
-	function init() {
+	function init(gene_1,gene_2) {
 		teleport(random(0,world.max_x),random(0,world.max_y),rand())
 		if(gene_1 == gene_2) color = gene_1
 		else if (random(0,100) < world.green_chance) color = green
@@ -42,7 +42,7 @@ agent papillon(gene_1,gene_2) {
 		life = life + 1
 	}
 	
-	init()
+	init(gene_1,gene_2)
 	while(life > 0) {
 		run()
 	}
