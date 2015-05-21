@@ -58,7 +58,7 @@ id [_a-z][_a-z0-9]*
   loc->step();
 %}
 
-//Creating instruction tokens
+ /*Creating instruction tokens*/
 true|false { if(yytext[0] == 't' || yytext[0] == 'T') { pyylval->v = make_shared<stibbons::Boolean>(true); } else { pyylval->v = make_shared<stibbons::Boolean>(false); } return yy::parser::token::BOOLEAN;}
 
 null {return yy::parser::token::NIL;}
@@ -79,7 +79,7 @@ recv {return yy::parser::token::RECV;}
 
 die {return yy::parser::token::DIE;}
 
-//Creating comparison operations tokens
+ /*Creating comparison operations tokens*/
 "==" {return yy::parser::token::EQ;}
 
 "!=" {return yy::parser::token::NEQ;}
@@ -100,7 +100,7 @@ xor|^ {return yy::parser::token::XOR;}
 
 not|! {return yy::parser::token::NOT;}
 
-//Creating loops (except 'for') and conditional tokens
+ /*Creating loops (except 'for') and conditional tokens*/
 repeat {return yy::parser::token::RPT;}
 
 while {return yy::parser::token::WHL;}
@@ -109,14 +109,14 @@ if {return yy::parser::token::IF;}
 
 else {return yy::parser::token::ELSE;}
 
-//Creating agent and function tokens
+ /*Creating agent and function tokens*/
 new {return yy::parser::token::NEW;} 
 
 agent {return yy::parser::token::AGT;}
 
 function {return yy::parser::token::FCT;}
 
-//Creating tokens type
+ /*Creating tokens type*/
 null_t {pyylval->v=make_shared<stibbons::TypeValue>(stibbons::Type::NIL); 
 	return yy::parser::token::TYPE;}
 
@@ -147,13 +147,13 @@ zone_t {pyylval->v=make_shared<stibbons::TypeValue>(stibbons::Type::ZONE);
 world_t {pyylval->v=make_shared<stibbons::TypeValue>(stibbons::Type::WORLD); 
 	return yy::parser::token::TYPE;}
 
-//Creation loop 'for' tokens
+ /*Creation loop 'for' tokens*/
 for { BEGIN(for_state); return yy::parser::token::FOR; }
 
 <for_state>in {BEGIN(INITIAL); return yy::parser::token_type(':');}
 <for_state>':' {BEGIN(INITIAL); return yy::parser::token_type(':');}
 
-//Creating string tokens
+ /*Creating string tokens*/
 \"\"\" { tmp = std::string(); BEGIN(tpl_quote); }
 
 <tpl_quote>\"\"\" { BEGIN(INITIAL);
@@ -190,16 +190,16 @@ for { BEGIN(for_state); return yy::parser::token::FOR; }
     \\0 { tmp += '\0'; }
 }
 
-//Creating number tokens
+ /*Creating number tokens*/
 [0-9]+(\.[0-9]*)?|\.[0-9]+ {std::istringstream iss(yytext); double n; iss >> n; pyylval->v=make_shared<stibbons::Number>(n); return yy::parser::token::NUMBER;}
 
-//Creating color tokens
+ /*Creating color tokens*/
 #([a-f0-9]{6}|[a-f0-9]{3}) {pyylval->v=make_shared<stibbons::Color>(yytext); return yy::parser::token::COLOR;}
 
-//Creating identifying variables tokens
+ /*Creating identifying variables tokens*/
 {id} {pyylval->v=make_shared<stibbons::String>(yytext); return yy::parser::token::ID;}
 
-//Creating comment tokens
+ /*Creating comment tokens*/
 "//"[^\n]*\n* { loc->lines(countNewLine(yytext)); loc->step(); return yy::parser::token_type('\n');}
 
 "/*" {BEGIN(comment);}
