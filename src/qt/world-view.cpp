@@ -30,8 +30,6 @@ QSize WorldView::sizeHint() const {
 }
 
 void WorldView::paintEvent(QPaintEvent *event) {
-	auto rect = event->rect();
-
 	QPainter painter(this);
 	painter.setRenderHint(QPainter::Antialiasing);
 	QRect boundingRect;
