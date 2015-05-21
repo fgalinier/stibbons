@@ -1,5 +1,5 @@
-%x_warp true
-%y_warp true
+%x_border WRAP
+%y_border WRAP
 
 agent star () {
 	color = red

@@ -2,8 +2,8 @@
 %world_height 100
 %zone_width 5
 %zone_height 5
-%x_warp true
-%y_warp true
+%x_border WRAP
+%y_border WRAP
 
 agent termite () {
 	function go () {

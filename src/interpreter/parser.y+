@@ -214,6 +214,10 @@ world_dir : '%' ID lit '\n'
 	auto val = std::get<1>($3->getNode());
 	w->setValue(dynamic_pointer_cast<stibbons::String>($2)->getValue(),val); 
 }
+| '%' ID ID '\n' 
+{ 
+	w->setValue(dynamic_pointer_cast<stibbons::String>($2)->getValue(),$3); 
+}
 | '\n' {}
 ;
 

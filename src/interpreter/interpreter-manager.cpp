@@ -7,6 +7,8 @@
 #include "../model/border-type.h"
 #include "../model/user-function.h"
 
+#include <algorithm>
+
 using namespace std;
 
 namespace stibbons {
@@ -88,32 +90,48 @@ namespace stibbons {
 
 		auto warp = vector<BorderType>();
 
-		if ((prop = worldDir->getValue("x_warp")) != Nil::getInstance()) {
-			if (prop->getType() != Type::BOOLEAN) {
-				throw SemanticException("%x_warp",
-										Type::BOOLEAN,
-										prop->getType(),
+		if ((prop = worldDir->getValue("x_border")) != Nil::getInstance()) {
+			if (prop->getType() != Type::STRING) {
+				throw SemanticException("%x_border expect a value in {NONE, BOUNCE, WRAP}",
 										getPosition(tree));
 			}
-			auto borderType = dynamic_pointer_cast<Boolean>(prop)->getValue() ?
-				BorderType::WRAP :
-				BorderType::NONE;
-			warp.push_back(borderType);
+			auto val = dynamic_pointer_cast<String>(prop)->getValue();
+			std::transform(val.begin(),val.end(),val.begin(),::tolower);
+			
+			BorderType b = BorderType::NONE;
+			if(val == "none") ; 
+			else if(val == "bounce")
+				b = BorderType::BOUNCE;
+			else if(val == "wrap")
+				b = BorderType::WRAP;				
+			else
+				throw SemanticException("%x_border expect a value in {NONE, BOUNCE, WRAP}",
+										getPosition(tree));
+
+			warp.push_back(b);
 		}
 		else
 			warp.push_back(BorderType::NONE);
 
-		if ((prop = worldDir->getValue("y_warp")) != Nil::getInstance()) {
-			if (prop->getType() != Type::BOOLEAN) {
-				throw SemanticException("%y_warp",
-										Type::BOOLEAN,
-										prop->getType(),
+		if ((prop = worldDir->getValue("y_border")) != Nil::getInstance()) {
+			if (prop->getType() != Type::STRING) {
+				throw SemanticException("%y_border expect a value in {NONE, BOUNCE, WRAP}",
 										getPosition(tree));
 			}
-			auto borderType = dynamic_pointer_cast<Boolean>(prop)->getValue() ?
-				BorderType::WRAP :
-				BorderType::NONE;
-			warp.push_back(borderType);
+			auto val = dynamic_pointer_cast<String>(prop)->getValue();
+			std::transform(val.begin(),val.end(),val.begin(),::tolower);
+			
+			BorderType b = BorderType::NONE;
+			if(val == "none") ; 
+			else if(val == "bounce")
+				b = BorderType::BOUNCE;
+			else if(val == "wrap")
+				b = BorderType::WRAP;				
+			else
+				throw SemanticException("%y_border expect a value in {NONE, BOUNCE, WRAP}",
+										getPosition(tree));
+
+			warp.push_back(b);
 		}
 		else
 			warp.push_back(BorderType::NONE);
