@@ -193,6 +193,21 @@ class AskZonesFunction : public Function, public Singleton<AskZonesFunction> {
 		virtual ValuePtr exec (AgentPtr agent, TablePtr params);
 };
 
+/**
+ * class SizeFunction
+ *
+ *\brief A class that return an array size.
+ *
+ *\author Florian Galinier
+**/
+class SizeFunction : public Function, public Singleton<SizeFunction> {
+	friend Singleton<SizeFunction>;
+	protected:
+		SizeFunction ();
+	public:
+		virtual ValuePtr exec (AgentPtr agent, TablePtr params);
+};
+
 }
 
 /*

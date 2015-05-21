@@ -54,6 +54,14 @@ inline TurtlePtr asTurtle (ValuePtr value, string param) throw(domain_error) {
 	return casted;
 }
 
+inline TablePtr asTable (ValuePtr value, string param) throw(domain_error) {
+	auto casted = dynamic_pointer_cast<Table>(value);
+	if (!casted)
+		paramError (param, Type::TABLE);
+	return casted;
+}
+
+
 TypeOfFunction::TypeOfFunction () : Function({"value"}) {}
 
 ValuePtr TypeOfFunction::exec (AgentPtr agent, TablePtr params) {
@@ -188,6 +196,16 @@ ValuePtr AskZonesFunction::exec (AgentPtr agent, TablePtr params) {
 	}
 
 	return Nil::getInstance();
+}
+
+SizeFunction::SizeFunction () : Function({"table"}) {}
+
+ValuePtr SizeFunction::exec (AgentPtr agent, TablePtr params) {
+	auto table = asTable(params->getValue("table"), "table");
+
+	auto size = table->length();
+
+	return make_shared<Number>(size);
 }
 
 }
