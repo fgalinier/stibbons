@@ -30,6 +30,8 @@ namespace stibbons {
 
 			throw SemanticException("Invalid action for the world",getPosition(tree));		
 		}
+
+		return Nil::getInstance();
 	}
 }
 
