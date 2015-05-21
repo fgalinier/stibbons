@@ -90,6 +90,9 @@ void Agent::setProperty (string key, ValuePtr value) {
 	if (key == "type_of")
 		return;
 
+	if (key == "size")
+		return;
+
 	// Standard colors
 	if (key == "black")
 		return;
@@ -147,6 +150,9 @@ ValuePtr Agent::getProperty(string p) {
 
 	if (p == "type_of")
 		return TypeOfFunction::getInstance();
+
+	if (p == "size")
+		return SizeFunction::getInstance();
 
 	// Standard colors
 	if (p == "black")
