@@ -186,7 +186,7 @@ void Window::loadText(QString fileName){
 		openFileName=fileName;
 	}
 	else cout<<"Impossible d'ouvrir le fichier !"<<endl;
-	//TODO Levé une exception
+	//TODO Lever une exception
 
 	textArea->show();
 	textArea->setFocus();
@@ -353,12 +353,10 @@ void Window::writeSettings() {
 
 void Window::updateToolbar() {
 	if (runner) {
-		resetAct->setVisible(true);
 		runAct->setVisible(!runner->isRunning());
 		haltAct->setVisible(runner->isRunning());
 	}
 	else {
-		resetAct->setVisible(false);
 		runAct->setVisible(false);
 		haltAct->setVisible(false);
 	}
