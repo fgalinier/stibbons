@@ -13,10 +13,6 @@ using namespace std;
 
 namespace stibbons {
 
-	Table::Table (const Table& t) : 
-		namedValues(t.namedValues),
-		indexedValues(t.indexedValues) {}
-
 	void Table::setValue (pair<string, ValuePtr> pair) {
 		lock_guard<recursive_mutex> lock(value_m);
 
