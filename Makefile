@@ -1,5 +1,12 @@
 NULL =
 
+PREFIX = /usr/local
+BINDIR = $(PREFIX)/bin
+SHAREDIR = $(PREFIX)/share
+APPSDIR = $(SHAREDIR)/applications
+ICONSDIR = $(SHAREDIR)/icons
+INSTALLEDICONDIR = $(ICONSDIR)/hicolor/scalable/apps
+
 CC = g++ 
 MOC = moc-qt5
 RCC = rcc-qt5
@@ -307,6 +314,19 @@ $(REPDIR)/report.tex: $(REPDEPS)
 $(RAILBIN): $(RAILDIR)/Makefile
 	make -C $(<D) -f $(<F)
 
+install: install-stibbons install-stibbons-cli
+
+install-stibbons:
+	# Install the program
+	install -D $(APP) $(BINDIR)
+	# Install the icon
+	install -D data/images/stibbons.svg $(INSTALLEDICONDIR)/stibbons.svg
+	# Install the desktop entry
+	install -D data/stibbons.desktop $(APPSDIR)/stibbons.desktop
+
+install-stibbons-cli:
+	install -D $(CLIAPP) $(BINDIR)
+
 clean:
 	rm -Rf $(APP) $(TEST) \
 	$(MODELOBJECTS) \
@@ -327,5 +347,5 @@ clean:
 	sauvegarde.json
 	make clean -C $(RAILDIR) -f Makefile
 
-.PHONY: all doc clean
+.PHONY: all doc install install-stibbons install-stibbons-cli clean
 
