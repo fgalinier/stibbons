@@ -22,6 +22,11 @@ class Table : public GenericValue<Type::TABLE> {
 		Table () = default;
 
 		/**
+		 * Copy Constructor
+		 */
+		Table (const Table&);
+
+		/**
 		 * Add a value
 		 * \param pair the key-value pair to set
 		 */
