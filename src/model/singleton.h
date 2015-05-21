@@ -27,6 +27,10 @@ class Singleton {
 		Singleton (const Singleton<T>&) = delete;
 		Singleton& operator= (const Singleton<T>&) = delete;
 
+		/**
+		 * Get the instance of the type T
+		 * \return a reference of the instance
+		 */
 		static shared_ptr<T> getInstance () {
 			static shared_ptr<T> instance = shared_ptr<T>(new T());
 			return instance;

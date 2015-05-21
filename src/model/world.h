@@ -56,7 +56,7 @@ class World : public Changeable, public Agent {
 
 		virtual Type getType() const;
 
-		/**		 * Add a property
+		/** Add a property
 		 * \param key the key of the property
 		 * \param value the value of the property
 		 */

@@ -166,6 +166,10 @@ class Value {
 template<Type T>
 class GenericValue : public virtual Value {
 	public:
+		/**
+		 * Return the type of the value
+		 * \return a value of the enumeration Type
+		 */
 		virtual Type getType() const {
 			return T;
 		}

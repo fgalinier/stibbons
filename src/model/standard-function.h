@@ -25,6 +25,11 @@ class TypeOfFunction : public Function, public Singleton<TypeOfFunction> {
 	protected:
 		TypeOfFunction ();
 	public:
+		/**
+		 * Execute the function 
+		 *\param  an Agent pointer to execute on
+		 *\param a Table pointer with the parameters
+		 **/
 		virtual ValuePtr exec (AgentPtr agent, TablePtr params);
 };
 
@@ -40,6 +45,11 @@ class RandFunction : public Function, public Singleton<RandFunction> {
 	protected:
 		RandFunction () = default;
 	public:
+		/**
+		 * Execute the function 
+		 *\param  an Agent pointer to execute on
+		 *\param a Table pointer with the parameters
+		 **/
 		virtual ValuePtr exec (AgentPtr agent, TablePtr params);
 };
 
@@ -55,6 +65,11 @@ class RandomFunction : public Function, public Singleton<RandomFunction> {
 	protected:
 		RandomFunction ();
 	public:
+		/**
+		 * Execute the function 
+		 *\param  an Agent pointer to execute on
+		 *\param a Table pointer with the parameters
+		 **/
 		virtual ValuePtr exec (AgentPtr agent, TablePtr params);
 };
 
@@ -70,6 +85,11 @@ class PrintFunction : public Function, public Singleton<PrintFunction> {
 	protected:
 		PrintFunction ();
 	public:
+		/**
+		 * Execute the function 
+		 *\param  an Agent pointer to execute on
+		 *\param a Table pointer with the parameters
+		 **/
 		virtual ValuePtr exec (AgentPtr agent, TablePtr params);
 };
 
@@ -85,6 +105,11 @@ class PrintlnFunction : public Function, public Singleton<PrintlnFunction> {
 	protected:
 		PrintlnFunction ();
 	public:
+		/**
+		 * Execute the function 
+		 *\param  an Agent pointer to execute on
+		 *\param a Table pointer with the parameters
+		 **/
 		virtual ValuePtr exec (AgentPtr agent, TablePtr params);
 };
 
@@ -100,6 +125,11 @@ class TeleportFunction : public Function, public Singleton<TeleportFunction> {
 	protected:
 		TeleportFunction ();
 	public:
+		/**
+		 * Execute the function 
+		 *\param  an Agent pointer to execute on
+		 *\param a Table pointer with the parameters
+		 **/
 		virtual ValuePtr exec (AgentPtr agent, TablePtr params);
 };
 
@@ -115,6 +145,11 @@ class SendFunction : public Function, public Singleton<SendFunction> {
 	protected:
 		SendFunction ();
 	public:
+		/**
+		 * Execute the function 
+		 *\param  an Agent pointer to execute on
+		 *\param a Table pointer with the parameters
+		 **/
 		virtual ValuePtr exec (AgentPtr agent, TablePtr params);
 };
 
@@ -130,6 +165,11 @@ class InboxFunction : public Function, public Singleton<InboxFunction> {
 	protected:
 		InboxFunction () = default;
 	public:
+		/**
+		 * Execute the function 
+		 *\param  an Agent pointer to execute on
+		 *\param a Table pointer with the parameters
+		 **/
 		virtual ValuePtr exec (AgentPtr agent, TablePtr params);
 };
 
@@ -160,6 +200,11 @@ class FaceFunction : public Function, public Singleton<FaceFunction> {
 	protected:
 		FaceFunction ();
 	public:
+		/**
+		 * Execute the function 
+		 *\param  an Agent pointer to execute on
+		 *\param a Table pointer with the parameters
+		 **/
 		virtual ValuePtr exec (AgentPtr agent, TablePtr params);
 };
 
@@ -190,6 +235,11 @@ class AskZonesFunction : public Function, public Singleton<AskZonesFunction> {
 	protected:
 		AskZonesFunction ();
 	public:
+		/**
+		 * Execute the function 
+		 *\param  an Agent pointer to execute on
+		 *\param a Table pointer with the parameters
+		 **/
 		virtual ValuePtr exec (AgentPtr agent, TablePtr params);
 };
 
@@ -205,6 +255,11 @@ class SizeFunction : public Function, public Singleton<SizeFunction> {
 	protected:
 		SizeFunction ();
 	public:
+		/**
+		 * Execute the function 
+		 *\param  an Agent pointer to execute on
+		 *\param a Table pointer with the parameters
+		 **/
 		virtual ValuePtr exec (AgentPtr agent, TablePtr params);
 };
 
