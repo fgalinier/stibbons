@@ -36,39 +36,39 @@ class Color : public GenericValue<Type::COLOR> {
 	public:
 		/**
 		 * Create a copy of a color
-		 * @param other the other color
+		 * \param other the other color
 		 */
 		Color (Color &other);
 
 		/**
 		 * Move a color
-		 * @param other the other color
+		 * \param other the other color
 		 */
 		Color (Color &&other);
 
 		/**
 		 * Copy of a color
-		 * @param other the other color
+		 * \param other the other color
 		 */
 		Color& operator= (Color& other);
 
 		/**
 		 * Move a color
-		 * @param other the other color
+		 * \param other the other color
 		 */
 		Color& operator= (Color&& other);
 
 		/**
 		 * Create a color from its red, green and blue values.
-		 * @param red the value of the red composant
-		 * @param green the value of the green composant
-		 * @param blue the value of the blue composant
+		 * \param red the value of the red composant
+		 * \param green the value of the green composant
+		 * \param blue the value of the blue composant
 		 */
 		Color (double red = 0.0, double green = 0.0, double blue = 0.0);
 
 		/**
 		 * Creates a color from an HTML style color string.
-		 * @param color a stirng like #FFF or #FFFFFF
+		 * \param color a stirng like #FFF or #FFFFFF
 		 */
 		Color (std::string color) throw(std::domain_error);
 
@@ -76,93 +76,93 @@ class Color : public GenericValue<Type::COLOR> {
 
 		/**
 		 * Set the value of red
-		 * @param red the new value of red
+		 * \param red the new value of red
 		 */
 		void r (double red);
 
 		/**
 		 * Set the value of green
-		 * @param green the new value of green
+		 * \param green the new value of green
 		 */
 		void g (double green);
 
 		/**
 		 * Set the value of blue
-		 * @param blue the new value of blue
+		 * \param blue the new value of blue
 		 */
 		void b (double blue);
 
 		/**
 		 * Return the value of red
-		 * @return the value of red
+		 * \return the value of red
 		 */
 		double r ();
 
 		/**
 		 * Return the value of green
-		 * @return the value of green
+		 * \return the value of green
 		 */
 		double g ();
 
 		/**
 		 * Return the value of blue
-		 * @return the value of blue
+		 * \return the value of blue
 		 */
 		double b ();
 
 		/**
 		 * Add a value to another
-		 * @param other the other value
-		 * @return the resulting value
+		 * \param other the other value
+		 * \return the resulting value
 		 */
 		virtual ValuePtr add (ValuePtr other) throw(std::domain_error);
 
 		/**
 		 * Add a value to another
-		 * @param other the other value
-		 * @return the resulting value
+		 * \param other the other value
+		 * \return the resulting value
 		 */
 		virtual ColorPtr add (ColorPtr other);
 
 		/**
 		 * Substract a value to another
-		 * @param other the other value
-		 * @return the resulting value
+		 * \param other the other value
+		 * \return the resulting value
 		 */
 		virtual ValuePtr substract (ValuePtr other) throw(std::domain_error);
 
 		/**
 		 * Substract a value to another
-		 * @param other the other value
-		 * @return the resulting value
+		 * \param other the other value
+		 * \return the resulting value
 		 */
 		virtual ColorPtr substract (ColorPtr other);
 
 		/**
 		 * Multiply a value to another
-		 * @param other the other value
-		 * @return the resulting value
+		 * \param other the other value
+		 * \return the resulting value
 		 */
 		virtual ValuePtr multiply (ValuePtr other) throw(std::domain_error);
 
 		/**
 		 * Multiply a value to another
-		 * @param other the other value
-		 * @return the resulting value
+		 * \param other the other value
+		 * \return the resulting value
 		 */
 		virtual ColorPtr multiply (ColorPtr other);
 
 		/**
 		 * Divide a value to another
-		 * @param other the other value
-		 * @return the resulting value
+		 * \param other the other value
+		 * \return the resulting value
 		 */
 		virtual ValuePtr divide (ValuePtr other) throw(std::domain_error);
 
 		/**
 		 * Divide a value to another
-		 * @param other the other value
-		 * @return the resulting value
+		 * \param other the other value
+		 * \return the resulting value
 		 */
 		virtual ColorPtr divide (ColorPtr other);
 
@@ -173,8 +173,8 @@ class Color : public GenericValue<Type::COLOR> {
 		 * return a positive number if this value is greater than the other,
 		 * return 0 if they are equal.
 		 *
-		 * @param other the other value
-		 * @return the comparison value of this and the other value
+		 * \param other the other value
+		 * \return the comparison value of this and the other value
 		 */
 		virtual double compare (ValuePtr other);
 
@@ -185,14 +185,14 @@ class Color : public GenericValue<Type::COLOR> {
 		 * return a negative number if this value is greater than the other,
 		 * return 0 if they are equal.
 		 *
-		 * @param other the other value
-		 * @return the comparison value of this and the other value
+		 * \param other the other value
+		 * \return the comparison value of this and the other value
 		 */
 		virtual double compare (ColorPtr other);
 
 		/**
 		 * Return a string corresponding to the value
-		 * @return a string corresponding to the value
+		 * \return a string corresponding to the value
 		 */
 		virtual std::string toString ();
 };

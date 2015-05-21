@@ -38,7 +38,7 @@ class Breed {
 		 * The breed will own the function and destroy it when it is
 		 * deleted.
 		 *
-		 * @param function the function of the breed
+		 * \param function the function of the breed
 		 */
 		Breed (FunctionPtr function);
 
@@ -49,36 +49,36 @@ class Breed {
 		 *
 		 * The parent of the turtle will be the breed's world.
 		 *
-		 * @return a reference to the new turtle
+		 * \return a reference to the new turtle
 		 */
 		TurtlePtr createTurtle ();
 
 		/**
 		 * Create and add a new turtle to the breed
 		 *
-		 * @param parent the parent of the turtle
-		 * @return a reference to the new turtle
+		 * \param parent the parent of the turtle
+		 * \return a reference to the new turtle
 		 */
 		TurtlePtr createTurtle (AgentPtr parent);
 
 		/**
 		 * Get the turtles
 		 *
-		 * @return a set containing the turtles of the breed
+		 * \return a set containing the turtles of the breed
 		 */
 		unordered_set<TurtlePtr> getTurtles ();
 
 		/**
 		 * Get the world
 		 *
-		 * @return the world of the breed
+		 * \return the world of the breed
 		 */
 		WorldPtr getWorld ();
 
 		/**
 		 * Get the function
 		 *
-		 * @return the function of the breed
+		 * \return the function of the breed
 		 */
 		FunctionPtr getFunction ();
 
@@ -91,23 +91,23 @@ class Breed {
 		 * The breed will own the function and destroy it when it is
 		 * deleted.
 		 *
-		 * @param world the world of the breed
-		 * @param function the function of the breed
+		 * \param world the world of the breed
+		 * \param function the function of the breed
 		 */
 		Breed (WorldPtr world, FunctionPtr function);
 
 		/**
 		 * Add a turtle to the breed
 		 *
-		 * @param turtle the turtle to add
+		 * \param turtle the turtle to add
 		 */
 		void addTurtle (TurtlePtr turtle);
 
 		/**
 		 * Remove a turtle from the breed
 		 *
-		 * @param turtle the turtle to remove
-		 * @throw invalid_argument the breed doesn't contain the turtle
+		 * \param turtle the turtle to remove
+		 * \throw invalid_argument the breed doesn't contain the turtle
 		 */
 		void removeTurtle (TurtlePtr turtle) throw(invalid_argument);
 

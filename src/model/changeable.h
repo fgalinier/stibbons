@@ -27,7 +27,7 @@ class Changeable {
 		 *
 		 * Only one callback function can be set at a time
 		 *
-		 * @param callback the callback function
+		 * \param callback the callback function
 		 */
 		void onChanged (std::function<void()> callback);
 

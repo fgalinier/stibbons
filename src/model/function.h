@@ -31,7 +31,7 @@ class Function : public GenericValue<Type::FUNCTION> {
 		/**
 		 * Constructor
 		 *
-		 * @param params the parameters that the function expect to be
+		 * \param params the parameters that the function expect to be
 		 * executed with
 		 */
 		Function (vector<string> params = vector<string>());
@@ -44,25 +44,25 @@ class Function : public GenericValue<Type::FUNCTION> {
 		/**
 		 * Execute the function
 		 *
-		 * @param agent the agent to execute the function on
-		 * @param params the parameters to execute the function with
-		 * @return the returned value
+		 * \param agent the agent to execute the function on
+		 * \param params the parameters to execute the function with
+		 * \return the returned value
 		 */
 		virtual ValuePtr exec (AgentPtr agent, TablePtr params) = 0;
 
 		/**
 		 * Execute the function
 		 *
-		 * @param agent the agent to execute the function on
-		 * @param params the parameters to execute the function with
-		 * @return the returned value
+		 * \param agent the agent to execute the function on
+		 * \param params the parameters to execute the function with
+		 * \return the returned value
 		 */
 		virtual ValuePtr operator() (AgentPtr agent, TablePtr params);
 
 		/**
 		 * Get the parameters of the function
 		 *
-		 * @return the parameters of the function
+		 * \return the parameters of the function
 		 */
 		vector<string> getParams ();
 
@@ -73,8 +73,8 @@ class Function : public GenericValue<Type::FUNCTION> {
 		 * return a negative number if this value is greater than the other,
 		 * return 0 if they are equal.
 		 *
-		 * @param other the other value
-		 * @return the comparison value of this and the other value
+		 * \param other the other value
+		 * \return the comparison value of this and the other value
 		 */
 		virtual double compare (ValuePtr other);
 
@@ -85,14 +85,14 @@ class Function : public GenericValue<Type::FUNCTION> {
 		 * return a positive number if this value is greater than the other,
 		 * return 0 if they are equal.
 		 *
-		 * @param other the other value
-		 * @return the comparison value of this and the other value
+		 * \param other the other value
+		 * \return the comparison value of this and the other value
 		 */
 		virtual double compare (FunctionPtr other);
 
 		/**
 		 * Return a string corresponding to the value
-		 * @return a string corresponding to the value
+		 * \return a string corresponding to the value
 		 */
 		virtual string toString ();
 

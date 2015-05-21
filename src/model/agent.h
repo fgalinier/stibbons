@@ -28,13 +28,13 @@ class Agent : public Value, public enable_shared_from_this<Agent> {
 
 		 /**
 		 * Get the parent of the agent
-		 * @return the parent of the agent
+		 * \return the parent of the agent
 		 */
 		AgentPtr getParent ();
 
 		/**
 		 * Get the value of world
-		 * @return the value of world
+		 * \return the value of world
 		 */
 		virtual WorldPtr getWorld ()=0;
 
@@ -50,20 +50,20 @@ class Agent : public Value, public enable_shared_from_this<Agent> {
 
 		/**
 		 * Add a property
-		 * @param key the key of the property
-		 * @param value the value of the property
+		 * \param key the key of the property
+		 * \param value the value of the property
 		 */
 		virtual void setProperty (string key, ValuePtr value);
 
 		 /**
 		 * Get the value of the propertie p
-		 * @return the value of propertie p
+		 * \return the value of propertie p
 		 */
 		 virtual ValuePtr getProperty(string p);
 
 		 /**
 		 * Get the map of the properties
-		 * @return the map of properties
+		 * \return the map of properties
 		 */
 		 virtual unordered_map<string,ValuePtr>* getProperty();
 
@@ -74,8 +74,8 @@ class Agent : public Value, public enable_shared_from_this<Agent> {
 		 * return a positive number if this value is greater than the other,
 		 * return 0 if they are equal.
 		 *
-		 * @param other the other value
-		 * @return the comparison value of this and the other value
+		 * \param other the other value
+		 * \return the comparison value of this and the other value
 		 */
 		virtual double compare (ValuePtr other);
 
@@ -86,14 +86,14 @@ class Agent : public Value, public enable_shared_from_this<Agent> {
 		 * return a positive number if this value is greater than the other,
 		 * return 0 if they are equal.
 		 *
-		 * @param other the other value
-		 * @return the comparison value of this and the other value
+		 * \param other the other value
+		 * \return the comparison value of this and the other value
 		 */
 		virtual double compare (AgentPtr other);
 
 		/**
 		 * Export the properties in the object o
-		 * @param a reference on an object (jsan spirit type)
+		 * \param a reference on an object (jsan spirit type)
 		 */
 		virtual void exportProperties(Object* o);
 
@@ -105,7 +105,7 @@ class Agent : public Value, public enable_shared_from_this<Agent> {
 	protected:
 		/**
 		 * Empty Constructor
-		 * @param parent an unowned reference to the agent's parent
+		 * \param parent an unowned reference to the agent's parent
 		 */
 		Agent (AgentPtr parent = nullptr);
 

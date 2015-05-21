@@ -26,7 +26,7 @@ class SimpleValue {
 	public:
 		/**
 		 * Get the value of value
-		 * @return the value of value
+		 * \return the value of value
 		 */
 		T getValue () {
 			lock_guard<recursive_mutex> lock(value_m);

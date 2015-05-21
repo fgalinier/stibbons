@@ -59,112 +59,112 @@ class Turtle : public Agent {
 
 		/**
 		 * Add a property
-		 * @param key the key of the property
-		 * @param value the value of the property
+		 * \param key the key of the property
+		 * \param value the value of the property
 		 */
 		virtual void setProperty (string key, ValuePtr value);
 
 		 /**
 		 * Get the value of the propertie p
-		 * @return the value of propertie p
+		 * \return the value of propertie p
 		 */
 		virtual ValuePtr getProperty(string p);
 
 		/**
 		 * Set the position of the turtle
-		 * @param position the new position of the turtle
+		 * \param position the new position of the turtle
 		 */
 		void setPosition (Point position);
 
 		/**
 		 * Get the position of the turtle
-		 * @return the position of the turtle
+		 * \return the position of the turtle
 		 */
 		Point getPosition ();
 
 		/**
 		 * Set the value of angle
-		 * @param new_var the new value of angle
+		 * \param new_var the new value of angle
 		 */
 		void setAngle (double new_var);
 
 		/**
 		 * Get the value of angle
-		 * @return the value of angle
+		 * \return the value of angle
 		 */
 		double getAngle ();
 
 		/**
 		 * Face a point
-		 * @param point the point to face
+		 * \param point the point to face
 		 */
 		void face (Point& point);
 
 		/**
 		 * Get the distance to another point
-		 * @param other the other point
-		 * @return the distance to the other point
+		 * \param other the other point
+		 * \return the distance to the other point
 		 */
 		double getDistanceTo (Point& other);
 
 		/**
 		 * Set the value of id
-		 * @param new_var the new value of id
+		 * \param new_var the new value of id
 		 */
 		void setId (turtle_id new_var);
 
 		/**
 		 * Get the value of id
-		 * @return the value of id
+		 * \return the value of id
 		 */
 		turtle_id getId();
 
 		/**
 		 * Get the value of world
-		 * @return the value of world
+		 * \return the value of world
 		 */
 		WorldPtr getWorld ();
 
 		/**
 		 * Get the hovered zone
-		 * @return the hovered zone
+		 * \return the hovered zone
 		 */
 		ZonePtr getZone ();
 
 		/**
 		 * Set the value for an axis
-		 * @param axis the axis
-		 * @param value the value
+		 * \param axis the axis
+		 * \param value the value
 		 */
 		void setColor (Color color);
 
 		/**
 		 * Get the value for an axis
-		 * @return a reference to the value for an axis
+		 * \return a reference to the value for an axis
 		 */
 		Color& getColor ();
 
 		/**
 		 * Get the value for an axis
-		 * @return a constant reference to the value for an axis
+		 * \return a constant reference to the value for an axis
 		 */
 		const Color& getColor () const;
 
 		/**
 		 * Go forward
-		 * @param the distance to go
+		 * \param the distance to go
 		 */
 		void forward(double dist);
 
 		/**
 		 * Turn right at dist degree
-		 * @param the degree to turn
+		 * \param the degree to turn
 		 */
 		void turnRight(double angle);
 
 		/**
 		 * Turn left at dist degree
-		 * @param the degree to turn
+		 * \param the degree to turn
 		 */
 		void turnLeft(double angle);
 		/**
@@ -184,7 +184,7 @@ class Turtle : public Agent {
 		 * Create a new turtle whose parent is this turtle, and whose
 		 * breed and color are this turtle's breed and color.
 		 *
-		 * @return the new child turtle
+		 * \return the new child turtle
 		 */
 		TurtlePtr createChild();
 
@@ -197,57 +197,57 @@ class Turtle : public Agent {
 
 		/**
 		 * Get the first message receive
-		 * @return the first Message 
+		 * \return the first Message 
 		 */
 		pair<TurtlePtr,ValuePtr> getFirstMessage();
 
 		/**
 		 * Get the last message receive
-		 * @return the last Message 
+		 * \return the last Message 
 		 */
 		pair<TurtlePtr,ValuePtr> getLastMessage();
 
 		/**
 		 * Send a message to the Turtle t
-		 * @param a turtle t and the message
+		 * \param a turtle t and the message
 		 */
 		void send(TurtlePtr t, ValuePtr);
 
 		/**
 		 * Send a message to all the turtle  in t
-		 * @param a vector of turtle t and the message
+		 * \param a vector of turtle t and the message
 		 */
 		void send(vector<TurtlePtr> t, ValuePtr);
 
 		/**
 		 * Send a message to all turtles
-		 * @param the message a Value
+		 * \param the message a Value
 		 */
 		void sendAll(ValuePtr);
 
 		/**
 		 * Read the first message of the deque and delete it from the deque
-		 * @param the etiquette
-		 * @return Value, the first message receive
+		 * \param the etiquette
+		 * \return Value, the first message receive
 		 */
 		pair<TurtlePtr,ValuePtr> recv();
 
 		/**
 		 * Check if you have receve some messages
-		 * @return the number of message available
+		 * \return the number of message available
 		 */
 		size_t checkMessage();
 
 		/**
 		 * Export turtle's state
-		 * @param a string represent the name of his breed, which can not exist
-		 * @return a json_spirit object
+		 * \param a string represent the name of his breed, which can not exist
+		 * \return a json_spirit object
 		 */
 		Object exportTurtle(string name = "");
 
 		/**
 		 * Return a string corresponding to the value
-		 * @return a string corresponding to the value
+		 * \return a string corresponding to the value
 		 */
 		virtual string toString ();
 
@@ -286,7 +286,7 @@ class Turtle : public Agent {
 	private:
 		/**
 		 * Add a message to the deque
-		 * @param the expediteur and the message
+		 * \param the expediteur and the message
 		 */
 		void addMessage(TurtlePtr exp, ValuePtr v);
 

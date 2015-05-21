@@ -26,14 +26,14 @@ class Value {
 	public:
 		/**
 		 * Return the type of the value
-		 * @return a Type
+		 * \return a Type
 		 */
 		virtual Type getType() const=0;
 
 		/**
 		 * Add a value to another
-		 * @param other the other value
-		 * @return the resulting value
+		 * \param other the other value
+		 * \return the resulting value
 		 */
 		virtual ValuePtr add (ValuePtr other) throw(std::domain_error) {
 			throw std::domain_error("Can't add a " + stibbons::toString(getType()) + " and a " + stibbons::toString(other->getType()));
@@ -41,8 +41,8 @@ class Value {
 
 		/**
 		 * Substract a value to another
-		 * @param other the other value
-		 * @return the resulting value
+		 * \param other the other value
+		 * \return the resulting value
 		 */
 		virtual ValuePtr substract (ValuePtr other) throw(std::domain_error) {
 			throw std::domain_error("Can't substract a " + stibbons::toString(getType()) + " and a " + stibbons::toString(other->getType()));
@@ -50,8 +50,8 @@ class Value {
 
 		/**
 		 * Multiply a value to another
-		 * @param other the other value
-		 * @return the resulting value
+		 * \param other the other value
+		 * \return the resulting value
 		 */
 		virtual ValuePtr multiply (ValuePtr other) throw(std::domain_error) {
 			throw std::domain_error("Can't multiply a " + stibbons::toString(getType()) + " and a " + stibbons::toString(other->getType()));
@@ -59,8 +59,8 @@ class Value {
 
 		/**
 		 * Divide a value to another
-		 * @param other the other value
-		 * @return the resulting value
+		 * \param other the other value
+		 * \return the resulting value
 		 */
 		virtual ValuePtr divide (ValuePtr other) throw(std::domain_error) {
 			throw std::domain_error("Can't divide a " + stibbons::toString(getType()) + " and a " + stibbons::toString(other->getType()));
@@ -68,8 +68,8 @@ class Value {
 
 		/**
 		 * Get the remainder of the division of a value to another
-		 * @param other the other value
-		 * @return the resulting value
+		 * \param other the other value
+		 * \return the resulting value
 		 */
 		virtual ValuePtr modulo (ValuePtr other) throw(std::domain_error) {
 			throw std::domain_error("Can't divide a " + stibbons::toString(getType()) + " and a " + stibbons::toString(other->getType()));
@@ -82,8 +82,8 @@ class Value {
 		 * return a positive number if this value is greater than the other,
 		 * return 0 if they are equal.
 		 *
-		 * @param other the other value
-		 * @return the comparison value of this and the other value
+		 * \param other the other value
+		 * \return the comparison value of this and the other value
 		 */
 		virtual double compare (ValuePtr other) {
 			return ((long) getType()) - ((long) other->getType());
@@ -92,8 +92,8 @@ class Value {
 		/**
 		 * Return whether this value is equal to the other
 		 *
-		 * @param other the other value
-		 * @return whether this value is equal to the other
+		 * \param other the other value
+		 * \return whether this value is equal to the other
 		 */
 		virtual bool isEqual (ValuePtr other) {
 			return compare(other) == 0;
@@ -102,8 +102,8 @@ class Value {
 		/**
 		 * Return whether this value is different from the other
 		 *
-		 * @param other the other value
-		 * @return whether this value is different from the other
+		 * \param other the other value
+		 * \return whether this value is different from the other
 		 */
 		virtual bool isDifferent (ValuePtr other) {
 			return compare(other) != 0;
@@ -112,8 +112,8 @@ class Value {
 		/**
 		 * Return whether this value is lower than the other
 		 *
-		 * @param other the other value
-		 * @return whether this value is lower than the other
+		 * \param other the other value
+		 * \return whether this value is lower than the other
 		 */
 		virtual bool isLower (ValuePtr other) {
 			return compare(other) < 0;
@@ -122,8 +122,8 @@ class Value {
 		/**
 		 * Return whether this value is greater than the other
 		 *
-		 * @param other the other value
-		 * @return whether this value is greater than the other
+		 * \param other the other value
+		 * \return whether this value is greater than the other
 		 */
 		virtual bool isGreater (ValuePtr other) {
 			return compare(other) > 0;
@@ -132,8 +132,8 @@ class Value {
 		/**
 		 * Return whether this value is lower than or equal to the other
 		 *
-		 * @param other the other value
-		 * @return whether this value is lower than or equal to the other
+		 * \param other the other value
+		 * \return whether this value is lower than or equal to the other
 		 */
 		virtual bool isLowerOrEqual (ValuePtr other) {
 			return compare(other) <= 0;
@@ -142,8 +142,8 @@ class Value {
 		/**
 		 * Return whether this value is greater than or equal to the other
 		 *
-		 * @param other the other value
-		 * @return whether this value is greater than or equal to the other
+		 * \param other the other value
+		 * \return whether this value is greater than or equal to the other
 		 */
 		virtual bool isGreaterOrEqual (ValuePtr other) {
 			return compare(other) >= 0;
@@ -151,7 +151,7 @@ class Value {
 
 		/**
 		 * Return a string corresponding to the value
-		 * @return a string corresponding to the value
+		 * \return a string corresponding to the value
 		 */
 		virtual std::string toString ()=0;
 };

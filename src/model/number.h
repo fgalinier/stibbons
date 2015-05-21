@@ -31,77 +31,77 @@ class Number : public GenericValue<Type::NUMBER>, public SimpleValue<double> {
 
 		/**
 		 * Add a value to another
-		 * @param other the other value
-		 * @return the resulting value
+		 * \param other the other value
+		 * \return the resulting value
 		 */
 		virtual ValuePtr add (ValuePtr other) throw(std::domain_error);
 
 		/**
 		 * Add a value to another
-		 * @param other the other value
-		 * @return the resulting value
+		 * \param other the other value
+		 * \return the resulting value
 		 */
 		virtual NumberPtr add (NumberPtr other);
 
 		/**
 		 * Substract a value to another
-		 * @param other the other value
-		 * @return the resulting value
+		 * \param other the other value
+		 * \return the resulting value
 		 */
 		virtual ValuePtr substract (ValuePtr other) throw(std::domain_error);
 
 		/**
 		 * Substract a value to another
-		 * @param other the other value
-		 * @return the resulting value
+		 * \param other the other value
+		 * \return the resulting value
 		 */
 		virtual NumberPtr substract (NumberPtr other);
 
 		/**
 		 * Multiply a value to another
-		 * @param other the other value
-		 * @return the resulting value
+		 * \param other the other value
+		 * \return the resulting value
 		 */
 		virtual ValuePtr multiply (ValuePtr other) throw(std::domain_error);
 
 		/**
 		 * Multiply a value to another
-		 * @param other the other value
-		 * @return the resulting value
+		 * \param other the other value
+		 * \return the resulting value
 		 */
 		virtual NumberPtr multiply (NumberPtr other);
 
 		/**
 		 * Divide a value to another
-		 * @param other the other value
-		 * @return the resulting value
+		 * \param other the other value
+		 * \return the resulting value
 		 */
 		virtual ValuePtr divide (ValuePtr other) throw(std::domain_error);
 
 		/**
 		 * Divide a value to another
-		 * @param other the other value
-		 * @return the resulting value
+		 * \param other the other value
+		 * \return the resulting value
 		 */
 		virtual NumberPtr divide (NumberPtr other) throw(std::domain_error);
 
 		/**
 		 * Get the remainder of the division of a value to another
-		 * @param other the other value
-		 * @return the resulting value
+		 * \param other the other value
+		 * \return the resulting value
 		 */
 		virtual ValuePtr modulo (ValuePtr other) throw(std::domain_error);
 
 		/**
 		 * Get the remainder of the division of a value to another
-		 * @param other the other value
-		 * @return the resulting value
+		 * \param other the other value
+		 * \return the resulting value
 		 */
 		virtual NumberPtr modulo (NumberPtr other) throw(std::domain_error);
 		
 		/**
 		 * Apply the unary minus operation to current number
-		 * @return the resulting value
+		 * \return the resulting value
 		 */
 		virtual NumberPtr unaryMinus () throw(std::domain_error);
 
@@ -112,8 +112,8 @@ class Number : public GenericValue<Type::NUMBER>, public SimpleValue<double> {
 		 * return a negative number if this value is greater than the other,
 		 * return 0 if they are equal.
 		 *
-		 * @param other the other value
-		 * @return the comparison value of this and the other value
+		 * \param other the other value
+		 * \return the comparison value of this and the other value
 		 */
 		virtual double compare (ValuePtr other);
 
@@ -124,14 +124,14 @@ class Number : public GenericValue<Type::NUMBER>, public SimpleValue<double> {
 		 * return a positive number if this value is greater than the other,
 		 * return 0 if they are equal.
 		 *
-		 * @param other the other value
-		 * @return the comparison value of this and the other value
+		 * \param other the other value
+		 * \return the comparison value of this and the other value
 		 */
 		virtual double compare (NumberPtr other);
 
 		/**
 		 * Return a string corresponding to the value
-		 * @return a string corresponding to the value
+		 * \return a string corresponding to the value
 		 */
 		virtual string toString ();
 };

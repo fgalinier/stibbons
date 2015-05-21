@@ -27,7 +27,7 @@ class Nil : public GenericValue<Type::NIL>, public Singleton<Nil> {
 	public:
 		/**
 		 * Return a string corresponding to the value
-		 * @return a string corresponding to the value
+		 * \return a string corresponding to the value
 		 */
 		virtual std::string toString ();
 };

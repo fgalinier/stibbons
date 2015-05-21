@@ -29,87 +29,87 @@ class Point {
 	public:
 		/**
 		 * Create a point of a given dimension
-		 * @param dimensions the number of dimensions of the point
+		 * \param dimensions the number of dimensions of the point
 		 */
 		Point (unsigned dimensions = 2);
 
 		/**
 		 * Create a copy of a point
-		 * @param other the other point
+		 * \param other the other point
 		 */
 		Point (Point &other);
 
 		/**
 		 * Move a point
-		 * @param other the other point
+		 * \param other the other point
 		 */
 		Point (Point &&other);
 
 		/**
 		 * Copy of a point
-		 * @param other the other point
+		 * \param other the other point
 		 */
 		Point& operator= (Point& other);
 
 		/**
 		 * Move a point
-		 * @param other the other point
+		 * \param other the other point
 		 */
 		Point& operator= (Point&& other);
 
 		/**
 		 * Set the value for an axis
-		 * @param axis the axis
-		 * @param value the value
+		 * \param axis the axis
+		 * \param value the value
 		 */
 		void setValue (unsigned axis, double value) throw(out_of_range);
 
 		/**
 		 * Get the value for an axis
-		 * @return the value for an axis
+		 * \return the value for an axis
 		 */
 		double getValue (unsigned axis) throw(out_of_range);
 
 		/**
 		 * Get the number of dimensions
-		 * @return the number of dimensions
+		 * \return the number of dimensions
 		 */
 		unsigned getDimensions () const;
 
 		/**
 		 * Get the closest image of another point in a warped environment
-		 * @param other the other point
-		 * @param environment the size of the environment
-		 * @param warp whether the environment warps
-		 * @return the closest image of the other point
+		 * \param other the other point
+		 * \param environment the size of the environment
+		 * \param warp whether the environment warps
+		 * \return the closest image of the other point
 		 */
 		Point getClosestImage (Point& other, Size& environment, vector<bool> warp);
 
 		/**
 		 * Get the distance to another point
-		 * @param other the other point
-		 * @return the distance to the other point
+		 * \param other the other point
+		 * \return the distance to the other point
 		 */
 		double getDistanceTo (Point& other);
 
 		/**
 		 * Get the angle with the horizontal axis to another point in radian
-		 * @param other the other point
-		 * @return the angle with the horizontal axis to another point
+		 * \param other the other point
+		 * \return the angle with the horizontal axis to another point
 		 */
 		double getAngleTo (Point& other);
 
 		/**
 		 * Warp the point in the environment
-		 * @param environment the size of the environment
-		 * @param warp whether the environment warps
-		 * @return whether the point have been warped or not
+		 * \param environment the size of the environment
+		 * \param warp whether the environment warps
+		 * \return whether the point have been warped or not
 		 */
 		bool warp (Size& environment, vector<bool> warp);
 
 		/**
 		 * Get the value for an axis
-		 * @return the value for an axis
+		 * \return the value for an axis
 		 */
 		double operator[] (unsigned axis) throw(out_of_range);
 

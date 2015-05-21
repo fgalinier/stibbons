@@ -26,31 +26,31 @@ class Size {
 	public:
 		/**
 		 * Create a size of a given dimension
-		 * @param dimensions the number of dimensions of the size
+		 * \param dimensions the number of dimensions of the size
 		 */
 		Size (unsigned dimensions = 2);
 
 		/**
 		 * Create a copy of a size
-		 * @param other the other size
+		 * \param other the other size
 		 */
 		Size (Size &other);
 
 		/**
 		 * Move a size
-		 * @param other the other size
+		 * \param other the other size
 		 */
 		Size (Size &&other);
 
 		/**
 		 * Copy of a size
-		 * @param other the other size
+		 * \param other the other size
 		 */
 		Size& operator= (Size& other);
 
 		/**
 		 * Move a size
-		 * @param other the other size
+		 * \param other the other size
 		 */
 		Size& operator= (Size&& other);
 
@@ -61,26 +61,26 @@ class Size {
 
 		/**
 		 * Set the value for an axis
-		 * @param axis the axis
-		 * @param value the value
+		 * \param axis the axis
+		 * \param value the value
 		 */
 		void setValue (unsigned axis, size_t value) throw(out_of_range);
 
 		/**
 		 * Get the value for an axis
-		 * @return the value for an axis
+		 * \return the value for an axis
 		 */
 		size_t getValue (unsigned axis) throw(out_of_range);
 
 		/**
 		 * Get the number of dimensions
-		 * @return the number of dimensions
+		 * \return the number of dimensions
 		 */
 		unsigned getDimensions () const;
 
 		/**
 		 * Get the value for an axis
-		 * @return the value for an axis
+		 * \return the value for an axis
 		 */
 		size_t operator[] (unsigned axis) throw(out_of_range);
 

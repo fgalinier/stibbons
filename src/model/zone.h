@@ -38,25 +38,25 @@ class Zone : public Agent{
 
 		/**
 		 * Create a copy of a zone
-		 * @param other the other zone
+		 * \param other the other zone
 		 */
 		Zone (Zone &other);
 
 		/**
 		 * Move a zone
-		 * @param other the other zone
+		 * \param other the other zone
 		 */
 		Zone (Zone &&other);
 
 		/**
 		 * Copy of a zone
-		 * @param other the other zone
+		 * \param other the other zone
 		 */
 		Zone& operator= (Zone& other);
 
 		/**
 		 * Move a zone
-		 * @param other the other zone
+		 * \param other the other zone
 		 */
 		Zone& operator= (Zone&& other);
 
@@ -64,45 +64,45 @@ class Zone : public Agent{
 
 		/**
 		 * Add a property
-		 * @param key the key of the property
-		 * @param value the value of the property
+		 * \param key the key of the property
+		 * \param value the value of the property
 		 */
 		virtual void setProperty (string key, ValuePtr value);
 
 		 /**
 		 * Get the value of the propertie p
-		 * @return the value of propertie p
+		 * \return the value of propertie p
 		 */
 		virtual ValuePtr getProperty(string p);
 
 		/**
 		 * Set the value for an axis
-		 * @param axis the axis
-		 * @param value the value
+		 * \param axis the axis
+		 * \param value the value
 		 */
 		void setColor (Color color);
 
 		/**
 		 * Get the value for an axis
-		 * @return a reference to the value for an axis
+		 * \return a reference to the value for an axis
 		 */
 		Color getColor ();
 
 		/**
 		 * Get the value of world
-		 * @return the value of world
+		 * \return the value of world
 		 */
 		WorldPtr getWorld ();
 
 		/**
 		 * Set the value of id
-		 * @param the id
+		 * \param the id
 		 */
 		void setId (zone_id z);
 
 		/**
 		 * Get the value of id
-		 * @return the value of id
+		 * \return the value of id
 		 */
 		zone_id getId ();
 
@@ -110,13 +110,13 @@ class Zone : public Agent{
 
 		/**
 		 * Return a string corresponding to the value
-		 * @return a string corresponding to the value
+		 * \return a string corresponding to the value
 		 */
 		virtual string toString ();
 
 		/**
 		 * Return an object which contain the zone's properties
-		 * @return an json Object
+		 * \return an json Object
 		 */
 		Object exportZone();
 

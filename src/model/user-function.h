@@ -32,9 +32,9 @@ class UserFunction : public Function {
 		/**
 		 * Constructor
 		 *
-		 * @param manager the interpreter manager
-		 * @param tree the syntactic tree of the function
-		 * @param params the parameters that the function expect to be
+		 * \param manager the interpreter manager
+		 * \param tree the syntactic tree of the function
+		 * \param params the parameters that the function expect to be
 		 * executed with
 		 */
 		UserFunction (InterpreterManager& manager, TreePtr tree, vector<string> params = vector<string>());
@@ -42,8 +42,8 @@ class UserFunction : public Function {
 		/**
 		 * Constructor
 		 *
-		 * @param tree the syntactic tree of the function
-		 * @param params the parameters that the function expect to be
+		 * \param tree the syntactic tree of the function
+		 * \param params the parameters that the function expect to be
 		 * executed with
 		 */
 		UserFunction (TreePtr tree, vector<string> params = vector<string>());
@@ -56,9 +56,9 @@ class UserFunction : public Function {
 		/**
 		 * Execute the function
 		 *
-		 * @param agent the agent to execute the function on
-		 * @param params the parameters to execute the function with
-		 * @return the returned value
+		 * \param agent the agent to execute the function on
+		 * \param params the parameters to execute the function with
+		 * \return the returned value
 		 */
 		virtual ValuePtr exec (AgentPtr agent, TablePtr params);
 

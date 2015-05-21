@@ -29,76 +29,76 @@ class Line {
 	public:
 		/**
 		 * Create a line
-		 * @param point the initial point
+		 * \param point the initial point
 		 */
 		Line(Point point);
 
 		/**
 		 * Create a copy of a line
-		 * @param other the other line
-		 * @param since the point to copy the line from
+		 * \param other the other line
+		 * \param since the point to copy the line from
 		 */
 		Line (Line &other, size_t since = 0);
 
 		/**
 		 * Move a line
-		 * @param other the other line
+		 * \param other the other line
 		 */
 		Line (Line &&other);
 
 		/**
 		 * Copy of a line
-		 * @param other the other line
+		 * \param other the other line
 		 */
 		Line& operator= (Line& other);
 
 		/**
 		 * Move a line
-		 * @param other the other line
+		 * \param other the other line
 		 */
 		Line& operator= (Line&& other);
 
 		/**
 		 * Set the value for an axis
-		 * @param axis the axis
-		 * @param value the value
+		 * \param axis the axis
+		 * \param value the value
 		 */
 		void setColor (Color color);
 
 		/**
 		 * Get the value for an axis
-		 * @return a reference to the value for an axis
+		 * \return a reference to the value for an axis
 		 */
 		Color& getColor ();
 
 		/**
 		 * Get the value for an axis
-		 * @return a constant reference to the value for an axis
+		 * \return a constant reference to the value for an axis
 		 */
 		const Color& getColor () const;
 
 		/**
 		 * Add a point
-		 * @param point the point to add
+		 * \param point the point to add
 		 */
 		void push_back (Point point);
 
 		/**
 		 * Get the number of points
-		 * @return the number of points in the line
+		 * \return the number of points in the line
 		 */
 		size_t size ();
 
 		/**
 		 * Get the points of the box containing the line
-		 * @param begin the first corner of the box
-		 * @param end the last corner of the box
+		 * \param begin the first corner of the box
+		 * \param end the last corner of the box
 		 */
 		void getBox (Point& begin, Point& end);
 
 		/**
 		 * Do something for a copy of each point
-		 * @param foreachFunc the fonction to call for each point
+		 * \param foreachFunc the fonction to call for each point
 		 */
 		void for_each (std::function<void(Point)> foreachFunc);
 

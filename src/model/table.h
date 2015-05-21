@@ -23,59 +23,59 @@ class Table : public GenericValue<Type::TABLE> {
 
 		/**
 		 * Add a value
-		 * @param pair the key-value pair to set
+		 * \param pair the key-value pair to set
 		 */
 		virtual void setValue (pair<string, ValuePtr> pair);
 
 		/**
 		 * Add a value
-		 * @param key the key of the value
-		 * @param value the value of the value
+		 * \param key the key of the value
+		 * \param value the value of the value
 		 */
 		virtual void setValue (string key, ValuePtr value);
 
 		 /**
 		 * Get a value
-		 * @param key the key
-		 * @return the value
+		 * \param key the key
+		 * \return the value
 		 */
 		 virtual ValuePtr getValue(string key);
 
 		 /**
 		 * Get all the named values
-		 * @return values contained in the table
+		 * \return values contained in the table
 		 */
 		 virtual const unordered_map<string, ValuePtr>& getNamedValues();
 
 		 /**
 		 * Get all the indexed values
-		 * @return values contained in the table
+		 * \return values contained in the table
 		 */
 		 virtual const map<long, ValuePtr>& getIndexedValues();
 
 		/**
 		 * Add a value
-		 * @param pair the key-value pair to set
+		 * \param pair the key-value pair to set
 		 */
 		virtual void setValue (pair<long, ValuePtr> pair);
 
 		/**
 		 * Add a value
-		 * @param key the key of the value
-		 * @param value the value of the value
+		 * \param key the key of the value
+		 * \param value the value of the value
 		 */
 		virtual void setValue (long key, ValuePtr value);
 
 		/**
 		 * Add a value to the end
-		 * @param value the value of the value
+		 * \param value the value of the value
 		 */
 		virtual void append (ValuePtr value);
 
 		 /**
 		 * Get a value
-		 * @param key the key
-		 * @return the value
+		 * \param key the key
+		 * \return the value
 		 */
 		 virtual ValuePtr getValue(long key);
 
@@ -86,8 +86,8 @@ class Table : public GenericValue<Type::TABLE> {
 		 * return a negative number if this value is greater than the other,
 		 * return 0 if they are equal.
 		 *
-		 * @param other the other value
-		 * @return the comparison value of this and the other value
+		 * \param other the other value
+		 * \return the comparison value of this and the other value
 		 */
 		virtual double compare (ValuePtr other);
 
@@ -98,20 +98,20 @@ class Table : public GenericValue<Type::TABLE> {
 		 * return a positive number if this value is greater than the other,
 		 * return 0 if they are equal.
 		 *
-		 * @param other the other value
-		 * @return the comparison value of this and the other value
+		 * \param other the other value
+		 * \return the comparison value of this and the other value
 		 */
 		virtual double compare (TablePtr other);
 
 		 /**
 		 * Get a string representing the table
-		 * @return a string representing the table
+		 * \return a string representing the table
 		 */
 		 virtual string toString();	
 
 		 /**
 		 * Get the length of the table
-		 * @return a int representing the table's length
+		 * \return a int representing the table's length
 		 */
 		 virtual int length();
 
