@@ -88,6 +88,7 @@ PrintFunction::PrintFunction () : Function({"value"}) {}
 
 ValuePtr PrintFunction::exec (AgentPtr agent, TablePtr params) {
 	cout << params->getValue("value")->toString();
+	cout.flush();
 	return Nil::getInstance();
 }
 
