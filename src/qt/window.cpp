@@ -70,6 +70,7 @@ void Window::createActions() {
 
 	icon = QApplication::style()->standardIcon (QStyle::SP_DialogSaveButton);
 	saveAct = new QAction(icon, tr("&Save..."), this);
+	saveAct->setShortcuts(QKeySequence::Save);
 	saveAct->setStatusTip(tr("Save the program"));
 	connect(saveAct, SIGNAL(triggered()), this, SLOT(save()));
 
@@ -93,6 +94,7 @@ void Window::createActions() {
 	connect(exportAct, SIGNAL(triggered()), this, SLOT(exportModel()));
 
 	saveUnderAct = new QAction(tr("&Save as..."), this);
+	saveUnderAct->setShortcuts(QKeySequence::SaveAs);
 	saveUnderAct->setStatusTip(tr("Save the program in a file"));
 	connect(saveUnderAct, SIGNAL(triggered()), this, SLOT(saveUnder()));
 }
