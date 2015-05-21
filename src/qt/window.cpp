@@ -64,7 +64,7 @@ void Window::createActions() {
 
 	icon = QApplication::style()->standardIcon (QStyle::SP_MediaPlay);
 	runAct = new QAction(icon, tr("&Run..."), this);
-//	runAct->setShortcuts(QKeySequence::Play);
+	runAct->setShortcut(QKeySequence(tr("Ctrl+Space")));
 	runAct->setStatusTip(tr("Run the program"));
 	connect(runAct, SIGNAL(triggered()), this, SLOT(run()));
 
@@ -76,7 +76,7 @@ void Window::createActions() {
 
 	icon = QApplication::style()->standardIcon (QStyle::SP_MediaPause);
 	haltAct = new QAction(icon, tr("&Halt..."), this);
-//	haltAct->setShortcuts(QKeySequence::Pause);
+	haltAct->setShortcut(QKeySequence(tr("Ctrl+Space")));
 	haltAct->setStatusTip(tr("Halt the execution of the program"));
 	connect(haltAct, SIGNAL(triggered()), this, SLOT(halt()));
 
@@ -241,6 +241,9 @@ void Window::reset() {
 }
 
 void Window::run() {
+	if (!runner || runner->isRunning())
+		return;
+
 	//save();
 	tab->setCurrentWidget(print);
 
@@ -251,6 +254,9 @@ void Window::run() {
 }
 
 void Window::halt() {
+	if (!runner || !runner->isRunning())
+		return;
+
 	if (runner)
 		runner->halt();
 
