@@ -1,5 +1,5 @@
-%x_warp true
-%y_warp true
+%x_border bounce
+%y_border bounce
 
 number = 10
 green_chance = 25
