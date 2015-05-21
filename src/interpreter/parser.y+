@@ -205,6 +205,8 @@ code : world_dir_list statement_list { t->addChild($2); }
 | statement_list { t->addChild($1); }
 ;
 
+//Storage of the world's directives
+
 world_dir_list : world_dir {}
 | world_dir_list world_dir {}
 ;
@@ -222,7 +224,9 @@ world_dir : '%' ID lit '\n'
 ;
 
 // General languages struct
+// Storage of tokens and contents in a tree
 
+//Storage of statement and bloc
 statement_list : statement
 {
   $$ = $1; 
@@ -271,6 +275,7 @@ statement_list_bloc : statement_list { $$ = $1; }
 }
 ;
 
+//Storage of declaration of object (id,variables,list,...)
 decl_statement : decl_id ID decl_list bloc {
   stibbons::TreePtr t1 = make_shared<stibbons::Tree>($1,$2);
   t1->setPosition({@1.begin.line,@1.begin.column});
@@ -302,6 +307,7 @@ id_list : ID
   $$ = t1;
 };
 
+//Storage of conditionnal expression
 selection : IF expr statement 
 {
   stibbons::TreePtr t1 = make_shared<stibbons::Tree>(yy::parser::token::IF,nullptr);
@@ -320,6 +326,7 @@ selection : IF expr statement
   $$ = t1;
 };
 
+//Storage of loop expression
 loop : RPT expr statement
 {
   stibbons::TreePtr t1 = make_shared<stibbons::Tree>(yy::parser::token::RPT,nullptr);
@@ -364,6 +371,7 @@ for_expr : '(' for_expr ')' { $$ = $2; }
 }
 ;
 
+//Storage of expression
 expr_statement : '\n' { $$ = nullptr; }
 | expr '\n' { $$ = $1; }
 | instr_turtle '\n' { $$ = $1; }
@@ -374,7 +382,6 @@ expr_no_separator : expr { $$ = $1; }
 | instr_turtle { $$ = $1; }
 | creat_statement { $$ = $1; }
 ;
-
 
 expr : assignment_expression { $$ = $1; }
 | '(' expr ')' { $$ = $2; }
@@ -402,6 +409,7 @@ expr : assignment_expression { $$ = $1; }
 | lit { $$ = $1; }
 ;
 
+//Storage of binary operator
 binary_operator : '+' { $$ = '+'; }
 | '-' { $$ = '-'; }
 | '/' { $$ = '/'; }
@@ -418,6 +426,7 @@ binary_operator : '+' { $$ = '+'; }
 | LEQ { $$ = yy::parser::token::LEQ; }
 ;
 
+//Storage of assignment expression
 assignment_expression : primary_expr '=' expr
 {
   stibbons::TreePtr t1 = make_shared<stibbons::Tree>('=',nullptr);
@@ -434,6 +443,7 @@ assignment_expression : primary_expr '=' expr
 }
 ;
 
+//Storage of identifying attributes
 primary_expr : ID
 {
   $$ = make_shared<stibbons::Tree>(yy::parser::token::ID,$1);
@@ -472,6 +482,8 @@ primary_expr : ID
 }
 ;
 
+
+//Storage for table object
 table_list : expr_list { $$ = $1; }
 | pair_list { $$ = $1; }
 | { $$ = make_shared<stibbons::Tree>(yy::parser::token::TABLE,nullptr); };
@@ -515,6 +527,7 @@ pair : expr ':' expr
 }
 ;
 
+//Storage of call expression
 initializer_list : expr
 {
   stibbons::TreePtr t1 = make_shared<stibbons::Tree>(yy::parser::token::CALL,nullptr);
@@ -530,6 +543,7 @@ initializer_list : expr
 }
 ;
 
+//Storage for creation of new agent
 creat_statement : nb_agt NEW AGT bloc
 {
   stibbons::TreePtr t1 = make_shared<stibbons::Tree>(yy::parser::token::NEW,nullptr);
@@ -578,7 +592,7 @@ nb_agt : NUMBER
 }
 ;
 
-// Turtle instructions
+// Storage of turtle instructions
 
 instr_turtle : FD expr
 { 
@@ -644,6 +658,7 @@ instr_turtle : FD expr
   $$ = make_shared<stibbons::Tree>(yy::parser::token::DIE,nullptr);
 };
 
+//Storage of literals
 lit : NUMBER { $$ = make_shared<stibbons::Tree>(yy::parser::token::NUMBER,$1); }
 | STRING { $$ = make_shared<stibbons::Tree>(yy::parser::token::STRING,$1); }
 | BOOLEAN { $$ = make_shared<stibbons::Tree>(yy::parser::token::BOOLEAN,$1); }
