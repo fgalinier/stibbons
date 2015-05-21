@@ -90,6 +90,7 @@ void Window::createActions() {
 	connect(aboutAct, SIGNAL(triggered()), this, SLOT(about()));
 
 	exportAct = new QAction(tr("&Export..."), this);
+	exportAct->setShortcut(QKeySequence(tr("Ctrl+E")));
 	exportAct->setStatusTip(tr("Export the model to a file"));
 	connect(exportAct, SIGNAL(triggered()), this, SLOT(exportModel()));
 
