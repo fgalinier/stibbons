@@ -25,27 +25,27 @@
 	FCT : 'function' ;
 	FOR : 'for' ;
 	IN : ':' | 'in' ;
-	TYPE : 'null' underscore 't' 
-			 | 'number' underscore 't' 
-			 | 'boolean' underscore 't' 
-			 | 'string' underscore 't'
-			 | 'color' underscore 't'
-			 | 'table' underscore 't'
-			 | 'type' underscore 't'
-			 | 'turtle' underscore 't'
-			 | 'zone' underscore 't'
-			 | 'world' underscore 't'
-			 ;
+	TYPE : nullt
+	| numbert 
+	| booleant 
+	| stringt 
+	| colort
+	| tablet
+	| typet
+	| turtlet
+	| zonet 
+	| worldt
+	;
 	NIL : 'null' ;
 	BOOLEAN : 'true' | 'false' ;
 	STRING : squote ( WORD * ) squote
-				 | dquote ( WORD * ) dquote
-				 | tquote ( WORD * ) tquote
-				 ;
+	| dquote ( WORD * ) dquote
+	| tquote ( WORD * ) tquote
+	;
 	NUMBER : (('0-9' + ) ( (dot ( '0-9' * ) ) ?))
-				 | dot ( '0-9' + ) ;
+	| dot ( '0-9' + ) ;
 	COLOR : sharp ('a-f' | '0-9') ('a-f' | '0-9') ('a-f' | '0-9') \\
-					( ('a-f' | '0-9') ('a-f' | '0-9') ('a-f' | '0-9') ) ? ;
+	( ('a-f' | '0-9') ('a-f' | '0-9') ('a-f' | '0-9') ) ? ;
 \end{rail}
 
 
