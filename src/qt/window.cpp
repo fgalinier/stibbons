@@ -92,8 +92,8 @@ void Window::createActions() {
 	exportAct->setStatusTip(tr("Export the model to a file"));
 	connect(exportAct, SIGNAL(triggered()), this, SLOT(exportModel()));
 
-	saveUnderAct = new QAction(tr("&Save under..."), this);
-	saveUnderAct->setStatusTip(tr("Save the program under"));
+	saveUnderAct = new QAction(tr("&Save as..."), this);
+	saveUnderAct->setStatusTip(tr("Save the program in a file"));
 	connect(saveUnderAct, SIGNAL(triggered()), this, SLOT(saveUnder()));
 }
 
