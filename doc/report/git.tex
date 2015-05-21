@@ -1,21 +1,18 @@
-Git est hébergeur de code, de projet, qui permet d'avoir accès à ceux-ci n'importe où il y a internet.
-Il s'utilise avec des systèmes de branches et s'utilise à la le plus souvent console, mais nous l'avons utiliser aussi avec Gitg, qui est une interface qui permet d'avoir un visuel des branches (Voir ~\ref{gitg} page~\pageref{gitg}).
-
+Le SIF de l'UM2 (ref.~\cite{GitLabSIF}) a mis a disposition des étudiants un service GitLab que nous avons utilisé. Git a été choisi comme gestionnaire de version car c’est celui utilisé par GitLab (ref.~\cite{GitLab}).
+Git est un gestionnaire de version décentralisé, qui permet d'avoir accès à ceux-ci avec une simple connexion internet.
+Il s'utilise avec des systèmes de branches et le plus souvent depuis un terminal, mais nous l'avons aussi utilisé avec Gitg, qui est une interface permettant d'avoir un visuel (cf.~\ref{gitg}).
 
 \begin{figure}[h]
 \caption{\label{gitg} Capture de Gitg}
 \includegraphics[scale=0.35]{doc/report/uml/gitbranche.png}
 \end{figure}
 
+Les commandes les plus utilisées sont les suivantes~:
+\begin{description}
+\item[git checkout nom-branche] permet de changer de branche~;
+\item[git branch] permet de savoir sur quelle branche on est~;
+\item[git add fichiers] permet de suivre des fichiers (enregistrer les modifications qu'on fait sur des fichiers)~;
+\item[git commit] permet de sauvegarder des changements des fichiers~;
+\end{description}
 
-Les commandes commence toujours par git :
-\begin{itemize}
-\item git checkout nom-branche, permet de changer de branche,
-\item git branch, de savoir sur quel branche on est,
-\item git add fichiers, permet de suivre des fichiers (enregistrer les modifications qu'on fait sur des fichiers),
-\item git commit, permet de commiter les changements des fichiers qu'on suit,
-\end{itemize}
-
-
-De plus, Git permet sur son site de déclarer des \enquote{issues}. Ce sont des problèmes à corriger.
-
+De plus, GitLab possède une traqueur de bug. Ce dernier permet d'ouvrir des «~issues~» qui peuvent être fermées, ré-ouvertees, commentées, etc.
