@@ -149,7 +149,7 @@ bool Point::warp (Size& environment, vector<bool> warp) {
 		if (warp[axis]) {
 			size_t max = environment.getValue(axis);
 			auto value = getValue(axis);
-			if (value >= max | value < 0)
+			if ((value >= max) | (value < 0))
 				warped = true;
 			while (value >= max)
 				value -= max;
