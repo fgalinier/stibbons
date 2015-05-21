@@ -260,7 +260,7 @@ void Turtle::setPosition(Point position) {
 		warped = newPosition.warp(size, world->getWarp());
 	}
 
-	if (line)
+	if (line) {
 		if (warped) {
 			line->push_back(Point(position));
 
@@ -270,6 +270,7 @@ void Turtle::setPosition(Point position) {
 		}
 		else
 			line->push_back(Point(newPosition));
+	}
 
 	this->position = newPosition;
 
