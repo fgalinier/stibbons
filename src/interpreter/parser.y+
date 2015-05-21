@@ -201,8 +201,8 @@
 %right MOINSUNAIRE NOT
 %nonassoc '{' '}' '(' ')'
 %%
-code : world_dir_list statement_list { t->addSon($2); }
-| statement_list { t->addSon($1); }
+code : world_dir_list statement_list { t->addChild($2); }
+| statement_list { t->addChild($1); }
 ;
 
 world_dir_list : world_dir {}
@@ -234,9 +234,9 @@ statement_list : statement
     t1->mergeTree($1);
   }
   catch(std::exception& e) {
-    t1->addSon($1);
+    t1->addChild($1);
   }
-  t1->addSon($2);
+  t1->addChild($2);
   $$ = t1; 
 }
 | { $$ = nullptr; } 
@@ -264,9 +264,9 @@ statement_list_bloc : statement_list { $$ = $1; }
     t1->mergeTree($1);
   }
   catch(std::exception& e) {
-    t1->addSon($1);
+    t1->addChild($1);
   }
-  t1->addSon($2);
+  t1->addChild($2);
   $$ = t1; 
 }
 ;
@@ -274,8 +274,8 @@ statement_list_bloc : statement_list { $$ = $1; }
 decl_statement : decl_id ID decl_list bloc {
   stibbons::TreePtr t1 = make_shared<stibbons::Tree>($1,$2);
   t1->setPosition({@1.begin.line,@1.begin.column});
-  t1->addSon($4);
-  t1->appendSons($3);
+  t1->addChild($4);
+  t1->appendChildren($3);
   $$ = t1;  
 }
 ;
@@ -291,31 +291,31 @@ decl_list : '(' ')' { $$ = nullptr; }
 id_list : ID 
 { 
   stibbons::TreePtr t1 = make_shared<stibbons::Tree>(yy::parser::token::ID,nullptr);
-  t1->addSon(make_shared<stibbons::Tree>(yy::parser::token::ID,$1));
+  t1->addChild(make_shared<stibbons::Tree>(yy::parser::token::ID,$1));
   $$ = t1;
 }
 | id_list ',' ID 
 {
   stibbons::TreePtr t1 = make_shared<stibbons::Tree>(yy::parser::token::ID,nullptr);
-  t1->appendSons($1);
-  t1->addSon(make_shared<stibbons::Tree>(yy::parser::token::ID,$3));
+  t1->appendChildren($1);
+  t1->addChild(make_shared<stibbons::Tree>(yy::parser::token::ID,$3));
   $$ = t1;
 };
 
 selection : IF expr statement 
 {
   stibbons::TreePtr t1 = make_shared<stibbons::Tree>(yy::parser::token::IF,nullptr);
-  t1->addSon($2);
-  t1->addSon($3);
+  t1->addChild($2);
+  t1->addChild($3);
   t1->setPosition({@1.begin.line,@1.begin.column});
   $$ = t1;
 }
 | IF expr statement ELSE statement
 {
   stibbons::TreePtr t1 = make_shared<stibbons::Tree>(yy::parser::token::IF,nullptr);
-  t1->addSon($2);
-  t1->addSon($3);
-  t1->addSon($5);
+  t1->addChild($2);
+  t1->addChild($3);
+  t1->addChild($5);
   t1->setPosition({@1.begin.line,@1.begin.column});
   $$ = t1;
 };
@@ -323,24 +323,24 @@ selection : IF expr statement
 loop : RPT expr statement
 {
   stibbons::TreePtr t1 = make_shared<stibbons::Tree>(yy::parser::token::RPT,nullptr);
-  t1->addSon($2);
-  t1->addSon($3);
+  t1->addChild($2);
+  t1->addChild($3);
   t1->setPosition({@1.begin.line,@1.begin.column});
   $$ = t1;  
 }
 | WHL expr statement
 {
   stibbons::TreePtr t1 = make_shared<stibbons::Tree>(yy::parser::token::WHL,nullptr);
-  t1->addSon($2);
-  t1->addSon($3);
+  t1->addChild($2);
+  t1->addChild($3);
   t1->setPosition({@1.begin.line,@1.begin.column});
   $$ = t1;  
 }
 | FOR for_expr statement 
 {
   stibbons::TreePtr t1 = make_shared<stibbons::Tree>(yy::parser::token::FOR,nullptr);
-  t1->addSon($2);
-  t1->addSon($3);
+  t1->addChild($2);
+  t1->addChild($3);
   t1->setPosition({@1.begin.line,@1.begin.column});
   $$ = t1;	
 }
@@ -350,15 +350,15 @@ for_expr : '(' for_expr ')' { $$ = $2; }
 | ID ':' expr
 {
   stibbons::TreePtr t1 = make_shared<stibbons::Tree>(yy::parser::token::FOR,$1);
-  t1->addSon($3);
+  t1->addChild($3);
   t1->setPosition({@1.begin.line,@1.begin.column});
   $$ = t1;	
 }
 | ID ',' ID ':' expr
 {
   stibbons::TreePtr t1 = make_shared<stibbons::Tree>(yy::parser::token::FOR,$3);
-  t1->addSon($5);
-  t1->addSon(make_shared<stibbons::Tree>(yy::parser::token::ID,$1));
+  t1->addChild($5);
+  t1->addChild(make_shared<stibbons::Tree>(yy::parser::token::ID,$1));
   t1->setPosition({@1.begin.line,@1.begin.column});
   $$ = t1;	
 }
@@ -381,21 +381,21 @@ expr : assignment_expression { $$ = $1; }
 | expr binary_operator expr
 {
   stibbons::TreePtr t1 = make_shared<stibbons::Tree>($2,nullptr);
-  t1->addSon($1);
-  t1->addSon($3);
+  t1->addChild($1);
+  t1->addChild($3);
   t1->setPosition({@1.begin.line,@1.begin.column});
   $$ = t1;
 }
 | '-' expr %prec UNARYMINUS 
 {
   stibbons::TreePtr t1 = make_shared<stibbons::Tree>(yy::parser::token::UNARYMINUS,nullptr);
-  t1->addSon($2);
+  t1->addChild($2);
   $$ = t1;
 }
 | NOT expr
 {
   stibbons::TreePtr t1 = make_shared<stibbons::Tree>(yy::parser::token::NOT,nullptr);
-  t1->addSon($2);
+  t1->addChild($2);
   $$ = t1;
 }
 | primary_expr { $$ = $1; }
@@ -421,15 +421,15 @@ binary_operator : '+' { $$ = '+'; }
 assignment_expression : primary_expr '=' expr
 {
   stibbons::TreePtr t1 = make_shared<stibbons::Tree>('=',nullptr);
-  t1->addSon($1);
-  t1->addSon($3);
+  t1->addChild($1);
+  t1->addChild($3);
   $$ = t1;
 }
 | primary_expr '=' '{' table_list '}'
 {
   stibbons::TreePtr t1 = make_shared<stibbons::Tree>('=',nullptr);
-  t1->addSon($1);
-  t1->addSon($4);
+  t1->addChild($1);
+  t1->addChild($4);
   $$ = t1;
 }
 ;
@@ -441,20 +441,20 @@ primary_expr : ID
 | primary_expr '.' ID
 {
   auto t1 = make_shared<stibbons::Tree>(yy::parser::token::ATT_ID,$3);
-  t1->addSon($1);
+  t1->addChild($1);
   $$ = t1;
 }
 | primary_expr '[' expr ']'
 {
   auto t1 = make_shared<stibbons::Tree>(yy::parser::token::TAB_ID,nullptr);
-  t1->addSon($1);
-  t1->addSon($3);
+  t1->addChild($1);
+  t1->addChild($3);
   $$ = t1;
 }
 | primary_expr '[' ']'
 {
   auto t1 = make_shared<stibbons::Tree>(yy::parser::token::TAB_ID,nullptr);
-  t1->addSon($1);
+  t1->addChild($1);
   $$ = t1;
 }
 | ID '(' ')'
@@ -467,7 +467,7 @@ primary_expr : ID
 {
   stibbons::TreePtr t1 = make_shared<stibbons::Tree>(yy::parser::token::CALL,$1);
   t1->setPosition({@1.begin.line,@1.begin.column});
-  t1->appendSons($3);
+  t1->appendChildren($3);
   $$ = t1;
 }
 ;
@@ -479,14 +479,14 @@ table_list : expr_list { $$ = $1; }
 expr_list : expr
 {
   stibbons::TreePtr t1 = make_shared<stibbons::Tree>(yy::parser::token::TABLE,nullptr);
-  t1->addSon($1);
+  t1->addChild($1);
   $$ = t1;
 }
 | expr_list ',' expr
 {
   stibbons::TreePtr t1 = make_shared<stibbons::Tree>(yy::parser::token::TABLE,nullptr);
-  t1->appendSons($1);
-  t1->addSon($3);
+  t1->appendChildren($1);
+  t1->addChild($3);
   $$ = t1;
 }
 ;
@@ -494,14 +494,14 @@ expr_list : expr
 pair_list : pair
 {
   stibbons::TreePtr t1 = make_shared<stibbons::Tree>(yy::parser::token::TABLE,nullptr);
-  t1->addSon($1);
+  t1->addChild($1);
   $$ = t1;
 }
 | pair_list ',' pair
 {
   stibbons::TreePtr t1 = make_shared<stibbons::Tree>(yy::parser::token::TABLE,nullptr);
-  t1->appendSons($1);
-  t1->addSon($3);
+  t1->appendChildren($1);
+  t1->addChild($3);
   $$ = t1;
 }
 ;
@@ -509,8 +509,8 @@ pair_list : pair
 pair : expr ':' expr
 {
   stibbons::TreePtr t1 = make_shared<stibbons::Tree>(yy::parser::token::PAIR,nullptr);
-  t1->addSon($1);
-  t1->addSon($3);
+  t1->addChild($1);
+  t1->addChild($3);
   $$ = t1;	
 }
 ;
@@ -518,14 +518,14 @@ pair : expr ':' expr
 initializer_list : expr
 {
   stibbons::TreePtr t1 = make_shared<stibbons::Tree>(yy::parser::token::CALL,nullptr);
-  t1->addSon($1);
+  t1->addChild($1);
   $$ = t1;
 }
 | initializer_list ',' expr
 {
   stibbons::TreePtr t1 = make_shared<stibbons::Tree>(yy::parser::token::CALL,nullptr);
-  t1->appendSons($1);
-  t1->addSon($3);
+  t1->appendChildren($1);
+  t1->addChild($3);
   $$ = t1;
 }
 ;
@@ -534,31 +534,31 @@ creat_statement : nb_agt NEW AGT bloc
 {
   stibbons::TreePtr t1 = make_shared<stibbons::Tree>(yy::parser::token::NEW,nullptr);
   t1->setPosition({@1.begin.line,@1.begin.column});
-  t1->addSon($1);
-  t1->addSon($4);
+  t1->addChild($1);
+  t1->addChild($4);
   $$ = t1;
 }
 | nb_agt NEW ID '(' initializer_list ')'
 {
   stibbons::TreePtr t1 = make_shared<stibbons::Tree>(yy::parser::token::NEW,$3);
   t1->setPosition({@1.begin.line,@1.begin.column});
-  t1->addSon($1);
-  t1->addSon($5);
+  t1->addChild($1);
+  t1->addChild($5);
   $$ = t1;
 }
 | nb_agt NEW ID '(' ')'
 {
   stibbons::TreePtr t1 = make_shared<stibbons::Tree>(yy::parser::token::NEW,$3);
-  t1->addSon($1);
-  t1->addSon(make_shared<stibbons::Tree>(yy::parser::token::NEW,nullptr));
+  t1->addChild($1);
+  t1->addChild(make_shared<stibbons::Tree>(yy::parser::token::NEW,nullptr));
   t1->setPosition({@1.begin.line,@1.begin.column});
   $$ = t1;
 }
 | primary_expr '=' creat_statement
 {
   stibbons::TreePtr t1 = make_shared<stibbons::Tree>('=',nullptr);
-  t1->addSon($1);
-  t1->addSon($3);
+  t1->addChild($1);
+  t1->addChild($3);
   $$ = t1;
 }
 ;
@@ -583,21 +583,21 @@ nb_agt : NUMBER
 instr_turtle : FD expr
 { 
   stibbons::TreePtr t1 = make_shared<stibbons::Tree>(yy::parser::token::FD,nullptr);
-  t1->addSon($2);
+  t1->addChild($2);
   t1->setPosition({@1.begin.line,@1.begin.column});
   $$ = t1; 
 }
 | LT expr
 { 
   stibbons::TreePtr t1 = make_shared<stibbons::Tree>(yy::parser::token::LT,nullptr);
-  t1->addSon($2);
+  t1->addChild($2);
   t1->setPosition({@1.begin.line,@1.begin.column});
   $$ = t1; 
 }
 | RT expr
 { 
   stibbons::TreePtr t1 = make_shared<stibbons::Tree>(yy::parser::token::RT,nullptr);
-  t1->addSon($2);
+  t1->addChild($2);
   t1->setPosition({@1.begin.line,@1.begin.column});
   $$ = t1; 
 }
@@ -612,30 +612,30 @@ instr_turtle : FD expr
 | SEND expr expr
 { 
   stibbons::TreePtr t1 = make_shared<stibbons::Tree>(yy::parser::token::SEND,nullptr);
-  t1->addSon($2);
-  t1->addSon($3);
+  t1->addChild($2);
+  t1->addChild($3);
   t1->setPosition({@1.begin.line,@1.begin.column});
   $$ = t1; 
 }
 | SEND expr
 { 
   stibbons::TreePtr t1 = make_shared<stibbons::Tree>(yy::parser::token::SEND,nullptr);
-  t1->addSon($2);
+  t1->addChild($2);
   t1->setPosition({@1.begin.line,@1.begin.column});
   $$ = t1; 
 }
 | RECV primary_expr primary_expr
 { 
   stibbons::TreePtr t1 = make_shared<stibbons::Tree>(yy::parser::token::RECV,nullptr);
-  t1->addSon($2);
-  t1->addSon($3);
+  t1->addChild($2);
+  t1->addChild($3);
   t1->setPosition({@1.begin.line,@1.begin.column});
   $$ = t1; 
 }
 | RECV primary_expr
 { 
   stibbons::TreePtr t1 = make_shared<stibbons::Tree>(yy::parser::token::RECV,nullptr);
-  t1->addSon($2);
+  t1->addChild($2);
   t1->setPosition({@1.begin.line,@1.begin.column});
   $$ = t1; 
 }

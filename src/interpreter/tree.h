@@ -38,7 +38,7 @@ namespace stibbons {
 	class Tree {
 	private:
 		std::pair<int,ValuePtr> node;
-		std::vector<TreePtr > sons;
+		std::vector<TreePtr > children;
 		std::pair<int,int> position;
 	public:
 		/**
@@ -49,14 +49,14 @@ namespace stibbons {
 		Tree(int token = 0, ValuePtr val=nullptr);
 
 		/**
-		 * Destroy a tree and his sons.
+		 * Destroy a tree and his children.
 		 *
 		 */
 		virtual ~Tree() = default;
 
 		/**
 		 * Test if the node is a leaf.
-		 * \return true is current tree has no sons
+		 * \return true is current tree has no children
 		 */
 		virtual bool isLeaf() const;
 
@@ -68,44 +68,44 @@ namespace stibbons {
 
 		/**
 		 * If current tree node is equal to t root node,
-		 * append the sons of t to the current node.
+		 * append the children of t to the current node.
 		 *
 		 * \param t A Tree with root node equal to current Tree root node.
 		 */ 
 		void mergeTree(TreePtr );
 
 		/**
-		 * Append the sons of t to the current node.
+		 * Append the children of t to the current node.
 		 *
 		 * \param t A Tree.
 		 */ 
-		void appendSons(TreePtr );
+		void appendChildren(TreePtr );
 
 		/**
-		 * Create and append a son to current tree.
-		 * \param token The kind of token that is used to create the son
-		 * \param val The value (if needed) corresponding to the son's token
+		 * Create and append a child to current tree.
+		 * \param token The kind of token that is used to create the child
+		 * \param val The value (if needed) corresponding to the child's token
 		 */
-		virtual void addSon(int,ValuePtr);
+		virtual void addChild(int,ValuePtr);
 
 		/**
-		 * Append a tree son to current tree.
+		 * Append a tree child to current tree.
 		 * \param t The tree to append
 		 */
-		virtual void addSon(TreePtr );
+		virtual void addChild(TreePtr );
 
 		/**
-		 * Return all sons of current tree
-		 * \return a vector that contains all sons of the Tree
+		 * Return all children of current tree
+		 * \return a vector that contains all children of the Tree
 		 */
-		virtual const std::vector<TreePtr >& getSons() const;
+		virtual const std::vector<TreePtr >& getChildren() const;
 
 		/**
-		 * Return a son identify by his position
-		 * \param pos the position of the needed son
-		 * \return the requested son (TreePtr  type)
+		 * Return a child identify by his position
+		 * \param pos the position of the needed child
+		 * \return the requested child (TreePtr  type)
 		 */
-		virtual TreePtr  getSon(size_t pos=0) const;
+		virtual TreePtr  getChild(size_t pos=0) const;
 
 		/**
 		 * Set the position of the token in file

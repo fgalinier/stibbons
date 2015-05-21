@@ -31,14 +31,14 @@ namespace stibbons {
 			case 0: {
 				ValuePtr res = Nil::getInstance();
 				if(!tree->isLeaf()) {
-					auto sons = tree->getSons();
-					for(auto son : sons) res = interpret(manager,agent,son,hashTable);
+					auto children = tree->getChildren();
+					for(auto child : children) res = interpret(manager,agent,child,hashTable);
 					return res;
 				}
 			}
 				//Loop cases:
 			case yy::parser::token::WHL: {
-				auto val = this->interpret(manager,agent,tree->getSon(0),hashTable);
+				auto val = this->interpret(manager,agent,tree->getChild(0),hashTable);
 				ValuePtr res;
 				if(val->getType() != Type::BOOLEAN) 
 					throw SemanticException("WHILE",
@@ -46,10 +46,10 @@ namespace stibbons {
 					                        val->getType(),
 					                        getPosition(tree));
 				while(dynamic_pointer_cast<Boolean>(val)->getValue()) {
-					res = this->interpret(manager,agent,tree->getSon(1),hashTable);
+					res = this->interpret(manager,agent,tree->getChild(1),hashTable);
 					manager.checkHalt();
 					manager.wait();
-					val = this->interpret(manager,agent,tree->getSon(0));
+					val = this->interpret(manager,agent,tree->getChild(0));
 					if(val->getType() != Type::BOOLEAN)
 						throw SemanticException("WHILE",
 												Type::BOOLEAN,
@@ -59,7 +59,7 @@ namespace stibbons {
 				return res;
 			}
 			case yy::parser::token::RPT: {
-				auto val = this->interpret(manager,agent,tree->getSon(0),hashTable);
+				auto val = this->interpret(manager,agent,tree->getChild(0),hashTable);
 				ValuePtr res;
 				if(val->getType() != Type::NUMBER)
 					throw SemanticException("REPEAT",
@@ -68,18 +68,18 @@ namespace stibbons {
 					                        getPosition(tree));
 				auto nb = dynamic_pointer_cast<Number>(val)->getValue();
 				for(auto i=0;i<nb;i++) {
-					res = this->interpret(manager,agent,tree->getSon(1),hashTable);
+					res = this->interpret(manager,agent,tree->getChild(1),hashTable);
 				}
 				return res;
 			}
 			case yy::parser::token::FOR: {
-				auto key_value = tree->getSon(0);
-				auto key = (key_value->getSons().size() > 1)?key_value->getSon(1):nullptr;
+				auto key_value = tree->getChild(0);
+				auto key = (key_value->getChildren().size() > 1)?key_value->getChild(1):nullptr;
 				std::string key_id;
 				if(key)
 					key_id = dynamic_pointer_cast<String>(std::get<1>(key->getNode()))->getValue();
 				auto id = dynamic_pointer_cast<String>(std::get<1>(key_value->getNode()))->getValue();
-				auto table = this->interpret(manager,agent,key_value->getSon(0),hashTable);
+				auto table = this->interpret(manager,agent,key_value->getChild(0),hashTable);
 				ValuePtr res = Nil::getInstance();
 				if(table->getType() != Type::TABLE)
 					throw SemanticException("FOR",
@@ -93,29 +93,29 @@ namespace stibbons {
 					if(key)
 						agent->setProperty(key_id,make_shared<Number>(p.first));
 					agent->setProperty(id,p.second);
-					res = this->interpret(manager,agent,tree->getSon(1),hashTable);
+					res = this->interpret(manager,agent,tree->getChild(1),hashTable);
 				}
 				//update namedValues in properties
 				for(auto p : namedValues) {
 					if(key)
 						agent->setProperty(key_id,make_shared<String>(p.first));
 					agent->setProperty(id,p.second);
-					res = this->interpret(manager,agent,tree->getSon(1),hashTable);
+					res = this->interpret(manager,agent,tree->getChild(1),hashTable);
 				}
 				return res;
 			}
 				//Conditionnal cases:
 			case yy::parser::token::IF: {
-				auto cond = this->interpret(manager,agent,tree->getSon(0),hashTable);
+				auto cond = this->interpret(manager,agent,tree->getChild(0),hashTable);
 				if(cond->getType() != Type::BOOLEAN) 
 					throw SemanticException("IF",
 					                        Type::BOOLEAN,
 					                        cond->getType(),
 					                        getPosition(tree));
 				if(dynamic_pointer_cast<Boolean>(cond)->getValue())
-					return this->interpret(manager,agent,tree->getSon(1),hashTable);
-				if(tree->getSons().size() > 2)
-					return this->interpret(manager,agent,tree->getSon(2),hashTable);
+					return this->interpret(manager,agent,tree->getChild(1),hashTable);
+				if(tree->getChildren().size() > 2)
+					return this->interpret(manager,agent,tree->getChild(2),hashTable);
 				break;
 			}
 				//Variable cases:
@@ -130,14 +130,14 @@ namespace stibbons {
 				return agent->getProperty(id);
 			}
 			case yy::parser::token::TAB_ID: {
-				auto tab = this->interpret(manager,agent,tree->getSon(0),hashTable);
+				auto tab = this->interpret(manager,agent,tree->getChild(0),hashTable);
 				if(tab->getType() != Type::TABLE) 
 					throw SemanticException("[]",
 					                        Type::TABLE,
 					                        tab->getType(),
 					                        getPosition(tree));
 				//Get correspondante value with key or position in table
-				auto key = this->interpret(manager,agent,tree->getSon(1),hashTable);
+				auto key = this->interpret(manager,agent,tree->getChild(1),hashTable);
 				if(key->getType() == Type::STRING) {
 					return dynamic_pointer_cast<Table>(tab)
 						->getValue(dynamic_pointer_cast<String>(key)->getValue());
@@ -159,7 +159,7 @@ namespace stibbons {
 				//Attribute cases:
 			case yy::parser::token::ATT_ID: {
 				//get the value attribute of corresponding id
-				auto t = this->interpret(manager,agent,tree->getSon(0),hashTable);	
+				auto t = this->interpret(manager,agent,tree->getChild(0),hashTable);	
 				AgentPtr target;
 				if(t->getType() != Type::TURTLE 
 				   && t->getType() != Type::WORLD 
@@ -184,12 +184,12 @@ namespace stibbons {
 				{
 					//create a table in current agent
 					auto val = make_shared<Table>();
-					auto sons = tree->getSons();
-					if(sons.size() > 0) {
-						if(std::get<0>(sons.at(0)->getNode()) == yy::parser::token::PAIR) {
-							for(auto s : sons) {
-								auto key = this->interpret(manager,agent,s->getSon(0),hashTable);
-								auto value = this->interpret(manager,agent,s->getSon(1),hashTable);
+					auto children = tree->getChildren();
+					if(children.size() > 0) {
+						if(std::get<0>(children.at(0)->getNode()) == yy::parser::token::PAIR) {
+							for(auto s : children) {
+								auto key = this->interpret(manager,agent,s->getChild(0),hashTable);
+								auto value = this->interpret(manager,agent,s->getChild(1),hashTable);
 								if(key->getType() == Type::STRING) {
 									val->setValue(
 										dynamic_pointer_cast<String>(key)->getValue(),
@@ -212,7 +212,7 @@ namespace stibbons {
 							}
 						}
 						else {
-							for(auto s : sons) {
+							for(auto s : children) {
 								val->append(this->interpret(manager,agent,s,hashTable));
 							}
 						}
@@ -222,8 +222,8 @@ namespace stibbons {
 				//Arithmetic cases:
 			case '+':
 				try {
-					auto val1 = this->interpret(manager,agent,tree->getSon(0), hashTable);
-					auto val2 = this->interpret(manager,agent,tree->getSon(1), hashTable);
+					auto val1 = this->interpret(manager,agent,tree->getChild(0), hashTable);
+					auto val2 = this->interpret(manager,agent,tree->getChild(1), hashTable);
 					return val1->add(val2);
 				}
 				catch (std::domain_error e) {
@@ -231,15 +231,15 @@ namespace stibbons {
 				}
 			case '-':
 				try {
-					auto val1 = this->interpret(manager,agent,tree->getSon(0), hashTable);
-					auto val2 = this->interpret(manager,agent,tree->getSon(1), hashTable);
+					auto val1 = this->interpret(manager,agent,tree->getChild(0), hashTable);
+					auto val2 = this->interpret(manager,agent,tree->getChild(1), hashTable);
 					return val1->substract(val2);
 				}
 				catch (std::domain_error e) {
 					throw SemanticException(e.what(), getPosition(tree));
 				}
 			case yy::parser::token::UNARYMINUS: {
-				auto val1 = this->interpret(manager,agent,tree->getSon(0),hashTable);
+				auto val1 = this->interpret(manager,agent,tree->getChild(0),hashTable);
 				if(val1->getType() != Type::NUMBER) 
 					throw SemanticException("-",
 					                        Type::NUMBER,
@@ -249,8 +249,8 @@ namespace stibbons {
 			}
 			case '*':
 				try {
-					auto val1 = this->interpret(manager,agent,tree->getSon(0), hashTable);
-					auto val2 = this->interpret(manager,agent,tree->getSon(1), hashTable);
+					auto val1 = this->interpret(manager,agent,tree->getChild(0), hashTable);
+					auto val2 = this->interpret(manager,agent,tree->getChild(1), hashTable);
 					return val1->multiply(val2);
 				}
 				catch (std::domain_error e) {
@@ -258,8 +258,8 @@ namespace stibbons {
 				}
 			case '/':
 				try {
-					auto val1 = this->interpret(manager,agent,tree->getSon(0), hashTable);
-					auto val2 = this->interpret(manager,agent,tree->getSon(1), hashTable);
+					auto val1 = this->interpret(manager,agent,tree->getChild(0), hashTable);
+					auto val2 = this->interpret(manager,agent,tree->getChild(1), hashTable);
 					return val1->divide(val2);
 				}
 				catch (std::domain_error e) {
@@ -267,8 +267,8 @@ namespace stibbons {
 				}
 			case '%':
 				try {
-					auto val1 = this->interpret(manager,agent,tree->getSon(0), hashTable);
-					auto val2 = this->interpret(manager,agent,tree->getSon(1), hashTable);
+					auto val1 = this->interpret(manager,agent,tree->getChild(0), hashTable);
+					auto val2 = this->interpret(manager,agent,tree->getChild(1), hashTable);
 					return val1->modulo(val2);
 				}
 				catch (std::domain_error e) {
@@ -276,8 +276,8 @@ namespace stibbons {
 				}
 				//Boolean operation cases:
 			case yy::parser::token::AND: {
-				auto val1 = this->interpret(manager,agent,tree->getSon(0),hashTable);
-				auto val2 = this->interpret(manager,agent,tree->getSon(1),hashTable);
+				auto val1 = this->interpret(manager,agent,tree->getChild(0),hashTable);
+				auto val2 = this->interpret(manager,agent,tree->getChild(1),hashTable);
 				if(val1->getType() != Type::BOOLEAN || val2->getType() != Type::BOOLEAN) 
 					throw SemanticException("&",
 					                        Type::BOOLEAN, Type::BOOLEAN,
@@ -286,8 +286,8 @@ namespace stibbons {
 				return make_shared<Boolean>((dynamic_pointer_cast<Boolean>(val1)->getValue()) && (dynamic_pointer_cast<Boolean>(val2)->getValue()));
 			}
 			case yy::parser::token::OR: {
-				auto val1 = this->interpret(manager,agent,tree->getSon(0),hashTable);
-				auto val2 = this->interpret(manager,agent,tree->getSon(1),hashTable);
+				auto val1 = this->interpret(manager,agent,tree->getChild(0),hashTable);
+				auto val2 = this->interpret(manager,agent,tree->getChild(1),hashTable);
 				if(val1->getType() != Type::BOOLEAN || val2->getType() != Type::BOOLEAN) 
 					throw SemanticException("|",
 					                        Type::BOOLEAN, Type::BOOLEAN,
@@ -296,8 +296,8 @@ namespace stibbons {
 				return make_shared<Boolean>((dynamic_pointer_cast<Boolean>(val1)->getValue()) || (dynamic_pointer_cast<Boolean>(val2)->getValue()));
 			}
 			case yy::parser::token::XOR: {
-				auto val1 = this->interpret(manager,agent,tree->getSon(0),hashTable);
-				auto val2 = this->interpret(manager,agent,tree->getSon(1),hashTable);
+				auto val1 = this->interpret(manager,agent,tree->getChild(0),hashTable);
+				auto val2 = this->interpret(manager,agent,tree->getChild(1),hashTable);
 				if(val1->getType() != Type::BOOLEAN || val2->getType() != Type::BOOLEAN) 
 					throw SemanticException("^",
 					                        Type::BOOLEAN, Type::BOOLEAN,
@@ -306,7 +306,7 @@ namespace stibbons {
 				return make_shared<Boolean>((dynamic_pointer_cast<Boolean>(val1)->getValue()) ^ (dynamic_pointer_cast<Boolean>(val2)->getValue()));
 			}
 			case yy::parser::token::NOT: {
-				auto val1 = this->interpret(manager,agent,tree->getSon(0),hashTable);
+				auto val1 = this->interpret(manager,agent,tree->getChild(0),hashTable);
 				if(val1->getType() != Type::BOOLEAN) 
 					throw SemanticException("!",
 					                        Type::BOOLEAN,
@@ -315,19 +315,19 @@ namespace stibbons {
 				return make_shared<Boolean>(!(dynamic_pointer_cast<Boolean>(val1)->getValue()));
 			}
 			case yy::parser::token::EQ: {
-				auto val1 = this->interpret(manager,agent,tree->getSon(0),hashTable);
-				auto val2 = this->interpret(manager,agent,tree->getSon(1),hashTable);
+				auto val1 = this->interpret(manager,agent,tree->getChild(0),hashTable);
+				auto val2 = this->interpret(manager,agent,tree->getChild(1),hashTable);
 				return make_shared<Boolean>(val1->isEqual(val2));
 			}
 			case yy::parser::token::NEQ: {
-				auto val1 = this->interpret(manager,agent,tree->getSon(0),hashTable);
-				auto val2 = this->interpret(manager,agent,tree->getSon(1),hashTable);
+				auto val1 = this->interpret(manager,agent,tree->getChild(0),hashTable);
+				auto val2 = this->interpret(manager,agent,tree->getChild(1),hashTable);
 				return make_shared<Boolean>(val1->isDifferent(val2));
 			}
 			case yy::parser::token::GT: {
 				try{
-					auto val1 = this->interpret(manager,agent,tree->getSon(0),hashTable);
-					auto val2 = this->interpret(manager,agent,tree->getSon(1),hashTable);
+					auto val1 = this->interpret(manager,agent,tree->getChild(0),hashTable);
+					auto val2 = this->interpret(manager,agent,tree->getChild(1),hashTable);
 					if(val1->getType() != val2->getType())
 						throw SemanticException(">",
 												val1->getType(),val1->getType(),
@@ -342,8 +342,8 @@ namespace stibbons {
 				break; 
 			case yy::parser::token::GEQ: {
 				try{
-					auto val1 = this->interpret(manager,agent,tree->getSon(0),hashTable);
-					auto val2 = this->interpret(manager,agent,tree->getSon(1),hashTable);
+					auto val1 = this->interpret(manager,agent,tree->getChild(0),hashTable);
+					auto val2 = this->interpret(manager,agent,tree->getChild(1),hashTable);
 					if(val1->getType() != val2->getType())
 						throw SemanticException(">=",
 												val1->getType(),val1->getType(),
@@ -357,8 +357,8 @@ namespace stibbons {
 			} 
 			case yy::parser::token::LS: {
 				try{
-					auto val1 = this->interpret(manager,agent,tree->getSon(0),hashTable);
-					auto val2 = this->interpret(manager,agent,tree->getSon(1),hashTable);
+					auto val1 = this->interpret(manager,agent,tree->getChild(0),hashTable);
+					auto val2 = this->interpret(manager,agent,tree->getChild(1),hashTable);
 					if(val1->getType() != val2->getType())
 						throw SemanticException("<",
 												val1->getType(),val1->getType(),
@@ -372,8 +372,8 @@ namespace stibbons {
 			}
 			case yy::parser::token::LEQ: {
 				try{
-					auto val1 = this->interpret(manager,agent,tree->getSon(0),hashTable);
-					auto val2 = this->interpret(manager,agent,tree->getSon(1),hashTable);
+					auto val1 = this->interpret(manager,agent,tree->getChild(0),hashTable);
+					auto val2 = this->interpret(manager,agent,tree->getChild(1),hashTable);
 					if(val1->getType() != val2->getType())
 						throw SemanticException("<=",
 												val1->getType(),val1->getType(),
@@ -415,14 +415,14 @@ namespace stibbons {
 	}
 
 	FunctionPtr Interpreter::getFunctionFromTree(InterpreterManager& manager, const TreePtr tree) {
-		auto fctTree = tree->getSon(0);
+		auto fctTree = tree->getChild(0);
 		auto params = std::vector<std::string>();
-		auto sons = tree->getSons();
-		for(size_t i=1;i<sons.size();i++) {
+		auto children = tree->getChildren();
+		for(size_t i=1;i<children.size();i++) {
 			params.push_back(
 				dynamic_pointer_cast<String>(
 					std::get<1>(
-						sons.at(i)->getNode()
+						children.at(i)->getNode()
 					)
 				)->getValue()
 			);
@@ -439,18 +439,18 @@ namespace stibbons {
 		auto newHashTable = make_shared<Table>();
 
 		if(tree) {
-			if(fct->getParams().size() != tree->getSons().size()) {
+			if(fct->getParams().size() != tree->getChildren().size()) {
 				std::ostringstream oss;
 				oss<<"No matching function for "
 				   <<id
 				   <<" with "
-				   <<tree->getSons().size()
+				   <<tree->getChildren().size()
 				   <<" parameters";
 				throw SemanticException(oss.str().c_str(),
 										getPosition(tree));
 			}
 			for(size_t i=0;i<fct->getParams().size();i++) {
-				auto val = Interpreter::interpret(manager,agent,tree->getSon(i),hashTable);
+				auto val = Interpreter::interpret(manager,agent,tree->getChild(i),hashTable);
 				newHashTable->setValue(fct->getParams().at(i),val);
 			}
 		}
@@ -465,19 +465,19 @@ namespace stibbons {
 	}
 
 	inline ValuePtr Interpreter::affectationOp(InterpreterManager& manager,AgentPtr agent,TreePtr tree, TablePtr hashTable){
-		auto val = this->interpret(manager,agent,tree->getSon(1),hashTable);
-		auto son = tree->getSon(0)->getNode();
+		auto val = this->interpret(manager,agent,tree->getChild(1),hashTable);
+		auto child = tree->getChild(0)->getNode();
 		AgentPtr target;
 
-		if (std::get<0>(son) == yy::parser::token::TAB_ID) {
-			auto tab = this->interpret(manager,agent,tree->getSon(0)->getSon(0),hashTable);
+		if (std::get<0>(child) == yy::parser::token::TAB_ID) {
+			auto tab = this->interpret(manager,agent,tree->getChild(0)->getChild(0),hashTable);
 			if(tab->getType() != Type::TABLE) 
 				throw SemanticException("[]",
 										Type::TABLE,
 										tab->getType(),
 										getPosition(tree));
-			if(tree->getSon(0)->getSons().size() > 1) {
-				auto key = this->interpret(manager,agent,tree->getSon(0)->getSon(1),hashTable);
+			if(tree->getChild(0)->getChildren().size() > 1) {
+				auto key = this->interpret(manager,agent,tree->getChild(0)->getChild(1),hashTable);
 				if(key->getType() == Type::STRING) {
 					dynamic_pointer_cast<Table>(tab)
 						->setValue(dynamic_pointer_cast<String>(key)->getValue(),val);
@@ -498,9 +498,9 @@ namespace stibbons {
 				dynamic_pointer_cast<Table>(tab)->append(val);
 		}
 		else {
-			auto id = dynamic_pointer_cast<String>(std::get<1>(son))->getValue();
-			if (std::get<0>(son) == yy::parser::token::ATT_ID) {
-				auto t = this->interpret(manager,agent,tree->getSon(0)->getSon(0),hashTable);
+			auto id = dynamic_pointer_cast<String>(std::get<1>(child))->getValue();
+			if (std::get<0>(child) == yy::parser::token::ATT_ID) {
+				auto t = this->interpret(manager,agent,tree->getChild(0)->getChild(0),hashTable);
 				if(t->getType() != Type::TURTLE 
 				   && t->getType() != Type::WORLD 
 				   && t->getType() != Type::ZONE)
@@ -531,7 +531,7 @@ namespace stibbons {
 		TreePtr paramTree;
 		BreedPtr breed;
 		auto turtleTable = make_shared<Table>();
-		auto nb = this->interpret(manager,agent,tree->getSon(0),hashTable);
+		auto nb = this->interpret(manager,agent,tree->getChild(0),hashTable);
 
 		if(nb->getType() != Type::NUMBER)
 			throw SemanticException("NEW",
@@ -541,7 +541,7 @@ namespace stibbons {
 				
 		if(type == nullptr) {
 			id = "anonym agent";
-			auto function = make_shared<UserFunction>(manager,tree->getSon(1),vector<std::string>());
+			auto function = make_shared<UserFunction>(manager,tree->getChild(1),vector<std::string>());
 			breed = agent->getWorld()->createBreed(function);
 			paramTree = nullptr;
 
@@ -549,7 +549,7 @@ namespace stibbons {
 		else {
 			id = dynamic_pointer_cast<String>(type)->getValue();
 			breed = agent->getWorld()->getBreed(id);
-			paramTree = tree->getSon(1);
+			paramTree = tree->getChild(1);
 		}
 
 		for(auto i = 0;i<dynamic_pointer_cast<Number>(nb)->getValue();i++) {

@@ -35,7 +35,7 @@ namespace stibbons {
 				switch(std::get<0>(tree->getNode())) {
 					//Turtle cases:
 				case yy::parser::token::FD: {
-					auto val = this->interpret(manager,agent,tree->getSon(0),hashTable);
+					auto val = this->interpret(manager,agent,tree->getChild(0),hashTable);
 					if(val->getType() != Type::NUMBER) 
 						throw SemanticException("FD",
 												Type::NUMBER,
@@ -45,7 +45,7 @@ namespace stibbons {
 				}
 					break;
 				case yy::parser::token::RT: {
-					auto val = this->interpret(manager,agent,tree->getSon(0),hashTable);
+					auto val = this->interpret(manager,agent,tree->getChild(0),hashTable);
 					if(val->getType() != Type::NUMBER) 
 						throw SemanticException("RT",
 												Type::NUMBER,
@@ -55,7 +55,7 @@ namespace stibbons {
 				}
 					break;
 				case yy::parser::token::LT: {
-					auto val = this->interpret(manager,agent,tree->getSon(0),hashTable);
+					auto val = this->interpret(manager,agent,tree->getChild(0),hashTable);
 					if(val->getType() != Type::NUMBER) 
 						throw SemanticException("LT",
 												Type::NUMBER,
@@ -75,10 +75,10 @@ namespace stibbons {
 					break;
 					//Communication cases
 				case yy::parser::token::SEND:{
-					auto msg = this->interpret(manager,agent,tree->getSon(0),hashTable);
+					auto msg = this->interpret(manager,agent,tree->getChild(0),hashTable);
 					//send a message to all turtle if no recipient precised
-					if(tree->getSons().size() > 1){
-						auto rcp = this->interpret(manager,agent,tree->getSon(1),hashTable);
+					if(tree->getChildren().size() > 1){
+						auto rcp = this->interpret(manager,agent,tree->getChild(1),hashTable);
 						if(rcp->getType() != Type::TABLE)
 							throw SemanticException("In send at recipient",
 													Type::TABLE,
@@ -102,16 +102,16 @@ namespace stibbons {
 						auto msg = agent->recv();
 						
 						auto valMsg = msg.second;
-						auto son1 = tree->getSon(0)->getNode();
-						auto idMsg = dynamic_pointer_cast<String>(std::get<1>(son1))->getValue();
+						auto child1 = tree->getChild(0)->getNode();
+						auto idMsg = dynamic_pointer_cast<String>(std::get<1>(child1))->getValue();
 						
 						agent->setProperty(idMsg,valMsg);
 
-					if(tree->getSons().size() > 1){
+					if(tree->getChildren().size() > 1){
 
 						auto valShip = dynamic_pointer_cast<Turtle>(msg.first);
-						auto son2 = tree->getSon(1)->getNode();
-						auto idShip = dynamic_pointer_cast<String>(std::get<1>(son2))->getValue();
+						auto child2 = tree->getChild(1)->getNode();
+						auto idShip = dynamic_pointer_cast<String>(std::get<1>(child2))->getValue();
 
 						agent->setProperty(idShip,valShip);
 					}						

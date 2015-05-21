@@ -5,10 +5,10 @@ using namespace std;
 
 namespace stibbons {
 
-	Tree::Tree(int token,ValuePtr val): node(token,val),sons(std::vector<TreePtr >()) {}
+	Tree::Tree(int token,ValuePtr val): node(token,val),children(std::vector<TreePtr >()) {}
 
 	bool Tree::isLeaf() const {
-		return sons.empty();
+		return children.empty();
 	}
 
 	std::pair<int,ValuePtr> Tree::getNode() const {
@@ -19,31 +19,31 @@ namespace stibbons {
 		if(t == nullptr || std::get<0>(t->getNode()) != std::get<0>(this->getNode())) {
 			throw std::exception(); 
 		}
-		sons.insert(sons.end(),t->getSons().begin(),t->getSons().end());
+		children.insert(children.end(),t->getChildren().begin(),t->getChildren().end());
 	}
 
-	void Tree::appendSons(TreePtr  t) {
+	void Tree::appendChildren(TreePtr  t) {
 		if(t != nullptr) {
-			sons.insert(sons.end(),t->getSons().begin(),t->getSons().end());
+			children.insert(children.end(),t->getChildren().begin(),t->getChildren().end());
 		}
 	}
 
-	void Tree::addSon(TreePtr  t) {
+	void Tree::addChild(TreePtr  t) {
 		if(t) {
-			sons.push_back(t);
+			children.push_back(t);
 		}
 	}
 
-	void Tree::addSon(int token,ValuePtr val) {
-		sons.push_back(make_shared<Tree>(token,val));
+	void Tree::addChild(int token,ValuePtr val) {
+		children.push_back(make_shared<Tree>(token,val));
 	}
 
-	const std::vector<TreePtr >& Tree::getSons() const {
-		return sons;
+	const std::vector<TreePtr >& Tree::getChildren() const {
+		return children;
 	}
 
-	TreePtr  Tree::getSon(size_t pos) const {
-		return sons.at(pos);
+	TreePtr  Tree::getChild(size_t pos) const {
+		return children.at(pos);
 	}
 
 
@@ -57,7 +57,7 @@ namespace stibbons {
 
 	void Tree::output(std::ostream& os,std::string dec) const {
 		os<<dec<<" "<<::toString(std::get<0>(node))<<std::endl;
-		for(auto t : sons) {
+		for(auto t : children) {
 			t->output(os, dec+"-");
 		}
 	}
