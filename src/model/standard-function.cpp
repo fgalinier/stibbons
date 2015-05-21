@@ -178,7 +178,7 @@ ValuePtr AskZonesFunction::exec (AgentPtr agent, TablePtr params) {
 
 	auto function = asFunction(params->getValue("function"), "function");
 
-	auto ws = world->getSize();
+	auto ws = world->getWorldSize();
 	auto is = Size(2);
 
 	auto newParams = make_shared<Table>();
