@@ -1,7 +1,8 @@
 %initial/final : évolution
 
-Le projet Stibbons a pour but la création d'un langage de programmation multi-agent pour programmeur débutant et avancé.
-La finalité est d'effectuer des simulations de comportement d'agent. Par exemple, un exemple connu est celui des termites~: l'utilisateur programme un comportement pour des «~agents~», fait afficher des brindilles sur le sol (les «~zones~») et observe les agissements de ses agents.
+Le projet Stibbons a pour but la création d'un langage de programmation multi-agent pour développeurs débutants et avancés, ainsi que d'un environnement de développement l'accompagnant.
+La finalité est d'effectuer des simulations de comportements d'agents. Un exemple classique est celui dit \og~des termites~\fg~, qui consiste à modéliser des termites ramassant des brindilles pour former leur termitière.
+Pour cela, l'utilisateur définit le comportement d'agents représentant ici les termites, étale des brindilles sur le sol, et observe l'agissement de ses agents faire évoluer le modèle.
 
 \begin{figure}[h]
 \centering
@@ -9,7 +10,7 @@ La finalité est d'effectuer des simulations de comportement d'agent. Par exempl
 \caption{\label{netlogo-termites} Capture d'écran de NetLogo}
 \end{figure}
 
-Au début du projet, nous devions avoir une application graphique comparable à celle de NetLogo (cf.~\ref{netlogo-code},~\ref{netlogo-thermites}) .
+Notre but initial était d'avoir une application comparable à NetLogo (cf.~\ref{netlogo-code},~\ref{netlogo-termites}), mais exécutant les agents de façon parallèle et non séquencielle comme le fait ce dernier.
 
 \begin{figure}[h]
 \centering
@@ -18,9 +19,9 @@ Au début du projet, nous devions avoir une application graphique comparable à 
 \end{figure}
 
 
-Nous avions alors décidé de créer un langage où des tortues pourront bouger, communiquer entre elles et intéragir avec les zones. Une interface graphique pour observer une évolution de ces tortues était également prévue.
+Nous avons alors décidé de créer un langage permettant de manipuler des agents mobiles (dits tortues) afin de les faire se déplacer et communiquer entre eux, soit directement, soit indirectement en modifiant leur environement. Une interface graphique permettant d'observer directement l'évolution évolution du modèle était également prévue.
 
-Au cours du projet, notre tuteur, Michel Meynard, nous a suggéré de rajouter l'exportation des données que nous manipulions~: le modèle (qui comprend l'ensemble des tortues, les zones et le monde). Nous avons donc rajouté cette possibilité à notre application, en l'ajoutant sur notre backlog.
-Plus tard, nous avons aussi imaginé un programme complémentaire à notre application centré sur l'exportation de données~: un lancement à la console du programme, sans affichage graphique du déroulement de la simulation, mais avec des captures de cette simulation enregistré sous forme d'image et de JSON, pour les données.
+Au cours du projet, notre tuteur, Michel Meynard, nous a suggéré de rajouter l'exportation du modèle en cours d'exécution (comprenant l'état du monde, des zones le constituant, et des tortues y évoluant), que nous avons donc rajouté à notre backlog, et à terme à notre application.
+Plus tard, nous avons aussi imaginé un programme complémentaire à notre application, qui serait utilisable en ligne de commande et ne nécessiterait pas l'utilisation d'un serveur graphique pour fonctionner, mais permettant d'exporter le modèle à intervales réguliers.
 Cela permet, lorsqu'on fait une simulation longue de ne pas utiliser les ressources graphiques de l'ordinateur. En outre, cela permet d'exécuter la simulation à pleine vitesse.
-Un éditeur a été integré à l'interface graphique pour éditer le code et voir l'animation sans avoir deux programmes ouvert.
+Nous avons également décidé d'intégrer un éditeur de texte à l'application principale afin de pouvoir directement éditer et exécuter un programme Stibbons.
