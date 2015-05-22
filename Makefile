@@ -187,10 +187,23 @@ REPPDF = $(PDFDIR)/report.pdf
 
 REPPDFCLN = \
 	$(REPPDF) \
-	$(REPPDF:%.pdf=%.aux) \
-	$(REPPDF:%.pdf=%.log) \
-	$(REPPDF:%.pdf=%.toc) \
-	$(REPRAI).rai \
+	$(PDFDIR)/report.aux \
+	$(PDFDIR)/report.lof \
+	$(PDFDIR)/report.log \
+	$(PDFDIR)/report.lol \
+	$(PDFDIR)/report.lot \
+	$(PDFDIR)/report.rai \
+	$(PDFDIR)/report.rao \
+	$(PDFDIR)/report.toc \
+	$(REPDIR)/report.aux \
+	$(REPDIR)/report.bbl \
+	$(REPDIR)/report.blg \
+	$(REPDIR)/report.lof \
+	$(REPDIR)/report.log \
+	$(REPDIR)/report.lol \
+	$(REPDIR)/report.lot \
+	$(REPDIR)/report.rai \
+	$(REPDIR)/report.toc \
 	$(NULL)
 
 # Variables pour le rapport de gestion de projet
@@ -207,9 +220,9 @@ PROPDF = $(PDFDIR)/reportProjet.pdf
 
 PROPDFCLN = \
 	$(PROPDF) \
-	$(PROPDF:%.pdf=%.aux) \
-	$(PROPDF:%.pdf=%.log) \
-	$(PROPDF:%.pdf=%.toc) \
+	$(PDFDIR)/reportProjet.aux \
+	$(PDFDIR)/reportProjet.log \
+	$(PDFDIR)/reportProjet.toc \
 	$(NULL)
 
 # Tout compiler

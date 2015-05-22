@@ -8,11 +8,16 @@ stibbons
 
 # LaTeX
 *.pdf
+*.lof
 *.log
+*.lol
+*.lot
 *.aux
 *.toc
 *.bbl
 *.blg
+*.rai
+*.rao
 
 # Temporaires
 *~
