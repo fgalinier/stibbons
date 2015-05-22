@@ -2,7 +2,7 @@
  * \file application.cpp
  * \brief The Stibbons headless application
  * \author Adrien Plazas
- * \version 0.5
+ * \version 1.0
  * \date 05/05/2015
  */
 

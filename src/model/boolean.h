@@ -2,7 +2,7 @@
  * \file boolean.h
  * \brief A class representing a boolean
  * \author Julia Bassoumi, Adrien Plazas
- * \version 0.5
+ * \version 1.0
  * \date 14/03/2015
  */
 

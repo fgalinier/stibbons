@@ -2,7 +2,7 @@
  * \file type-value.h
  * \brief A class representing a type
  * \author Adrien Plazas
- * \version 0.5
+ * \version 1.0
  * \date 29/04/2015
  */
 
