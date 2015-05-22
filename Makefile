@@ -293,6 +293,7 @@ $(REPPDF): $(PDFDIR)/%.pdf: $(REPDIR)/%.tex $(RAILBIN) bibtex
 
 $(PROPDF): $(PDFDIR)/%.pdf: $(PRODIR)/%.tex
 	TEXINPUTS=.//:$$TEXINPUTS pdflatex -output-directory $(@D) $<
+	TEXINPUTS=.//:$$TEXINPUTS pdflatex -output-directory $(@D) $<
 
 bibtex: $(REPDIR)/report.aux
 	bibtex $<
