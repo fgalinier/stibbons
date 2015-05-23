@@ -1,37 +1,33 @@
 \section{Les classes \enquote{agents}}
-\subsubsection{Sprint 1 \& 2}
+\subsubsection{Sprints 1 et 2}
 Lors du premier sprint, nous avons commencer par mettre en place la base du programme. Nous avions prévu de faire l'UML~\ref{v0.1}.
 
  Pour le modèle, il s'agissait de mettre en place les classes :
 \begin{itemize}
-\item Turtle qui représente une tortue, 
-\item Point, pour stocker les coordonnées d'une tortue,
-\item Line, qui est composé de points, et qui permet aux tortues de laisser une trace (instruction pendown),
+\item Turtle qui représente une tortue~;
+\item Point, pour stocker les coordonnées d'une tortue~;
+\item Line, qui est composé de points, et qui permet aux tortues de laisser une trace (instruction pendown)~;
 \item World.
 \end{itemize}
 
 
 \begin{figure}[h]
-\caption{\label{v0.1} UML de la version 0.1 prévue}
 \includegraphics[scale=0.5]{doc/report/uml/v01.png}
+\caption{\label{v0.1} UML de la version 0.1 prévue}
 \end{figure}
 
 
 La classe World représente le monde des tortues. Il contient la liste des tortues, et les lignes tracées par ces tortues.
-A la fin du sprint 1, on pouvait voir une tortue avancer et tracer une ligne sur sur passage.
+A la fin du sprint 1, on pouvait voir une tortue avancer et tracer une ligne sur son passage.
 Nous avions réalisé le schéma~\ref{v0.1R}, en dehors de la classe Instruction.
 
-
-Pour le second sprint, nous avons ajouté une classe Agent, car les classes World, Turtle et Zone sont des agents, au sens multi-agent (cf ~\ref{v0.2}) . Elle contient le code en commun de ces trois classes.
+Pour le second sprint, nous avons ajouté une classe Agent, car les classes World, Turtle et Zone sont des agents, au sens multi-agent (cf ~\ref{v0.2}). Elle contient le code en commun de ces trois classes.
  
 Ils ont chacun un parent, celui qui l'a créer, une liste d'enfants, et des propriétés. Les propriétés sont des variables définit par l'utilisateur lors de la définition du code de l'agent, donc surtout utile pour les tortues.
 
-
 Le monde a une taille, une liste de \enquote{breed}, d'espèce. Il y a les espèces nommées et les \enquote{anonymes}, qui sont des \enquote{turtles} dans le code.
 
-
-Comme le montre ce code, on peut créer des tortues nommées ou pas. Une tortue anonyme s'écrit \enquote{new agent} et une nommée \enquote{agent listener}.\\
-
+Comme le montre ce code, on peut créer des tortues nommées ou pas. Une tortue anonyme s'écrit \enquote{new agent} et une nommée \enquote{agent listener}.
 
 \begin{lstlisting}
 agent listener () {
@@ -45,8 +41,8 @@ new agent {
 	fd 5
 }
 \end{lstlisting}
-\subsubsection{Sprint 3 \& 4}
-Lors du troisième sprint, nous avons mis en place des pointers intelligents dans toutes nos classes. Le but de ce sprint était la mise en place de la communication entre les agents. Les tortues peuvent communiquer avec les zones par écriture dans leurs propriétés. Les tortues peuvent communiquer entre elles grâce à des méthodes comme sendAll(message), recv(), etc 
+\subsubsection{Sprints 3 et 4}
+Lors du troisième sprint, nous avons mis en place des pointers intelligents dans toutes nos classes. Le but de ce sprint était la mise en place de la communication entre les agents. Les tortues peuvent communiquer avec les zones par écriture dans leurs propriétés. Les tortues peuvent communiquer entre elles grâce à des méthodes comme sendAll(message), recv(), etc.
 (cf figure~\ref{v0.3}).
 
 Ensuite, nous devions ajouter des fonctionnalités tel que la maîtrise du temps et l'exportation du modèle. Ces ajouts ne provoquent pas de changement du coté du modèle, si ce n'est quelques méthodes dans les classes World et Turtle et Zone pour l'exportation du modèle.
@@ -56,16 +52,15 @@ Cela permettra ensuite, en passant par une transformation en CSV, d'avoir un tab
 
 La maîtrise du temps se fait grâce à un bouton pause, qui arrête les threads qui s'exécutent, ou par un slider qui permet de ralentir ou de diminuer la vitesse. Cela se fait dans le code grâce à une méthode sleepfor() qui prend en paramètre un temps donné.
 
-
 \section{Les types}
-\subsubsection{Sprint 1 \& 2}
+\subsubsection{Sprints 1 et 2}
 Lors du premier sprint, nous mettions en place certains types Stibbons, comme Color, pour la couleur, ou Nil qui a une valeur nulle. Ils héritent de Value, une classe abstraite qui contient une valeur et ses accesseurs.
-Les instructions tel que pendown, forward, etc, sont finalement des mots clés dans la grammaire du langage, et non pas des instructions, contrairement à ce que nous avions prévu (cf UML~\ref{v0.1}).\\
+Les instructions tel que pendown, forward, etc, sont finalement des mots clés dans la grammaire du langage, et non pas des instructions, contrairement à ce que nous avions prévu (cf UML~\ref{v0.1}).
 Elles existent néanmoins dans le modèle dans la classe Turtle (cf UML~\ref{v0.2}).
 
 \begin{figure}[h]
-\caption{\label{v0.1R} UML de la version 0.1 réalisée}
 \includegraphics[scale=0.5]{doc/report/uml/v01reel.png}
+\caption{\label{v0.1R} UML de la version 0.1 réalisée}
 \end{figure}
 
 Lors du sprint deux, les types Stibbons sont les mêmes, mais leurs définitions s'est un peu compléxifiées en passant par une classe Simple-value, pour la mise en place des mutexs. Une énumeration des types Stibbons existe, elle est utilisée avec la méthode getType() pour pouvoir connaître le type de Value.
@@ -73,19 +68,19 @@ Pour que l'utilisateur puisse écrire des fonctions dans le code, nous avons ajo
 \\ Des mutexs ont été ajouté dans toutes les classes pour assurer que les threads sont thread-safe (cf figure~\ref{v0.2}).
 A la fin de ce sprint, nous devions relancer le programme pour charger un nouveau fichier de code, ce qui n'était pas pratique.
 \begin{figure}[h]
-\caption{\label{v0.2} UML version 0.2}
 \includegraphics[scale=0.45]{doc/report/uml/v02.png}
+\caption{\label{v0.2} UML version 0.2}
 \end{figure}
-\subsubsection{Sprint 3 \& 4}
+\subsubsection{Sprints 3 et 4}
 Lors du troisième sprint, nous avons ajouté une sous-classe de Function : userFunction, qui représentent les fonctions crées par l'utilisateur (cf figure~\ref{v0.3}) . Nous avons également créer des fonctions standarts comme ask-zone, qui permet de donner un ordre aux zones.
 \begin{figure}[h]
-\caption{\label{v0.3} UML version 0.3}
 \includegraphics[scale=0.4]{doc/report/uml/v03.png}
+\caption{\label{v0.3} UML version 0.3}
 \end{figure}
 
 On les différencie des instructions par leurs parenthéses derrière leur nom.
 L'ajout de table fait aussi partit de ce sprint. Nous avons choisi, pour notre langage un seul type de conteneur : les tableaux.
-Nous les écrivons façon php, avec des accolades.\\
+Nous les écrivons façon php, avec des accolades.
 \begin{lstlisting}
 a = 12
 
@@ -106,7 +101,7 @@ u = 5 new agent {
 Nous avons mis en place des mutexs récursifs lors du sprint quatre. Ils permettent à un thread de verrouiller plusieurs fois la même ressources alors qu'elle est déjà verrouillée. C'est la seule différence avec le mutex normal. Ces mutexs permettent d'éviter des blocages dans certaines situations (fonctions récursives, ...) .
 L'UML~\ref{v0.4} est l'état final du modèle car le sprint 5 n'y a apporté aucune modification. 
 \begin{figure}[h]
-\caption{\label{v0.4} UML version 0.4}
 \includegraphics[scale=0.4]{doc/report/uml/v04.png}
+\caption{\label{v0.4} UML version 0.4}
 \end{figure}
 

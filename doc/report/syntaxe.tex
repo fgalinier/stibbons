@@ -1,7 +1,7 @@
 \section{Syntaxe}
 
 \subsection{Flex}
-
+\label{flex-rail}
 \begin{rail}
 	ID : ( 'a-z' | underscore ) ( ( 'a-z'  | underscore | '0-9' ) * ) ;
 	FD : 'fd' | 'forward'	;
@@ -50,6 +50,7 @@
 
 
 \subsection{Bison}
+\label{bison-rail}
 
 \begin{rail}
 code : worlddirlist statementlist | statementlist ;

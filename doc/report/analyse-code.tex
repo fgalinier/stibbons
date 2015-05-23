@@ -1,8 +1,9 @@
 \section{Outils d'analyse}
 
 \subsection{Flex}
+\label{Flex}
 
-Flex est une version libre de l'analyseur lexical Lex. Il est généralement associé à l'analyseur syntaxique GNU Bison, la version GNU de Yacc.
+Flex est une version libre de l'analyseur lexical Lex (ref.~\cite{flex}). Il est généralement associé à l'analyseur syntaxique GNU Bison, la version GNU de Yacc.
 Il lit les fichiers d'entrée donnés pour obtenir la description de l'analyseur à générer. La description est une liste de paires d'expressions rationnelles et de code C, appelées règles. 
 
 Un fichier flex est composé de plusieurs parties. La première contient une partie optionnelle de définition, encadrée par les symboles \verb|%{ %}| (cf. listing \ref{flex-definition}), ainsi que des options pour flex (cf. listing~\ref{flex-options}). La seconde partie est une partie obligatoire de règles, commençant par \verb|%%| (cf. listing~\ref{flex-regles}), tandis que la dernière partie est une nouvelle partie optionnelle, débutée par \verb|%%|, pouvant contenir des fonctions C/C++ définies par l'utilisateur (cf. listing~\ref{flex-fonctions}).
@@ -39,7 +40,7 @@ Il faut par la suite penser à compiler le programme en liant la bibliothèque f
 
 \subsection{Bison}
 
-GNU Bison est une version de yacc, un outil d'analyse syntaxique (cf.~\ref{analyse-syntaxique}). Il génère un analyseur syntaxique ascendant utilisant un automate à pile (dérivation à droite, on remplace le symbole non terminal le plus à droite).
+GNU Bison est une version de yacc (ref.~\cite{bison}), un outil d'analyse syntaxique (cf.~\ref{analyse-syntaxique}). Il génère un analyseur syntaxique ascendant utilisant un automate à pile (dérivation à droite, on remplace le symbole non terminal le plus à droite).
 
 Son fonctionnement est le suivant~: à chaque règle de grammaire, on associe des actions (instructions d'un langage). L'analyseur généré essaie de reconnaître un mot du langage défini par la grammaire. Il exécute les actions pour chaque règle reconnue.
 
