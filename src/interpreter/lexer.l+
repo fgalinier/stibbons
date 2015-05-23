@@ -50,6 +50,7 @@ id [_a-z][_a-z0-9]*
 %x dbl_quote
 %x tpl_quote
 %s for_state
+%x end
 
  /*Rules*/
 %%
@@ -57,6 +58,9 @@ id [_a-z][_a-z0-9]*
 %{
   loc->step();
 %}
+
+<INITIAL><<EOF>> { BEGIN(end); return yy::parser::token_type('\n');}
+<end><<EOF>> { BEGIN(INITIAL); return 0; }
 
  /*Creating instruction tokens*/
 true|false { if(yytext[0] == 't' || yytext[0] == 'T') { pyylval->v = make_shared<stibbons::Boolean>(true); } else { pyylval->v = make_shared<stibbons::Boolean>(false); } return yy::parser::token::BOOLEAN;}

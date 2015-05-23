@@ -84,8 +84,6 @@
       return "RPT";
     case yy::parser::token::WHL:
       return "WHL";
-    case yy::parser::token::END:
-      return "END";
     case yy::parser::token::IF:
       return "IF";
     case yy::parser::token::ELSE:
@@ -128,8 +126,8 @@
 %token RT         "turn-right"
 %token PU         "pen-up"
 %token PD         "pen-down"
-%token SEND         "send"
-%token RECV         "recv"
+%token SEND       "send"
+%token RECV       "recv"
 %token DIE        "die"
 %token AND        "and"
 %token OR         "or"
@@ -143,7 +141,6 @@
 %token LEQ        "<="
 %token RPT        "repeat"
 %token WHL        "while"
-%token END        "end of file"
 %token IF         "if"
 %token ELSE       "else" 
 %token FCT        "function"
