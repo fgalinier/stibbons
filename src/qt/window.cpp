@@ -202,23 +202,21 @@ void Window::loadProgram() {
 		runner = nullptr;
 	}
 
+	auto scrollArea = new QScrollArea();
 	try {
 		runner = new Runner(program);
 
 		connect(runner, SIGNAL(error(QString,QString)),
 			    this, SLOT(error(QString,QString)));
 
-		auto scrollArea = new QScrollArea();
 		scrollArea->setAlignment(Qt::AlignCenter);
 		scrollArea->show();
 
 		worldView = new WorldView(nullptr);
 		worldView->setWorld(runner->getWorld());
 		worldView->show();
-
 		setCentralWidget(scrollArea);
 		scrollArea->setWidget(worldView);
-		createTab(scrollArea);
 	}
 	catch (SemanticException e) {
 		error("Semantic error", QString(e.what()));
@@ -229,6 +227,8 @@ void Window::loadProgram() {
 	catch (exception e) {
 		error("Unknown error", QString(e.what()));
 	}
+
+	createTab(scrollArea);
 
 	if (slider)
 		updateInterpreterWaitTime(slider->value());
