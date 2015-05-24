@@ -26,7 +26,7 @@ Application::Application (int & argc, char ** argv) :
 	{
 	setOrganizationName("StibbonsTeam");
 	setApplicationName("Stibbons");
-	setApplicationVersion("0.5");
+	setApplicationVersion("1.0");
 }
 
 Application::~Application () {

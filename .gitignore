@@ -1,6 +1,9 @@
 *.o
 *.so
+*.json
 stibbons
+stibbons-cli
+test
 
 # Qt
 *.qrc.cpp
