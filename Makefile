@@ -45,7 +45,6 @@ CLILIBS = \
 CFLAGS = -fPIC -Wall -Wpedantic -std=c++11 -g -ljson_spirit
 
 MODELSRC = \
-	src/interpreter/tree.cpp \
 	src/model/agent.cpp \
 	src/model/breed.cpp \
 	src/model/boolean.cpp \
@@ -73,10 +72,13 @@ BISONSRC = \
 	$(NULL)
 
 BISONTMP = \
+	src/interpreter/y.tab.c \
+	$(NULL)
+
+BISONHEADERS = \
 	src/interpreter/stack.hh \
 	src/interpreter/location.hh \
 	src/interpreter/position.hh \
-	src/interpreter/y.tab.c \
 	src/interpreter/y.tab.h \
 	$(NULL)
 
@@ -89,7 +91,6 @@ FLEXTMP = \
 	$(NULL)
 
 INTERPETERSRC = \
-	src/model/user-function.cpp \
 	src/interpreter/interpreter.cpp \
 	src/interpreter/tree.cpp \
 	src/interpreter/interpreter-exception.cpp \
@@ -116,37 +117,42 @@ TESTSRC = \
 
 QTSRC = \
 	src/qt/application.cpp \
-	src/qt/runner.cpp \
 	src/qt/stibbons.cpp \
 	src/qt/stibbons-editor.cpp \
 	src/qt/stibbons-highlighter.cpp \
 	src/qt/window.cpp \
-	src/qt/world-painter.cpp \
 	src/qt/world-view.cpp \
 	$(NULL)
 
 CLISRC = \
 	src/cli/application.cpp \
-	src/qt/runner.cpp \
 	src/cli/stibbons-cli.cpp \
+	$(NULL)
+
+COMMONSRC = \
+	src/qt/runner.cpp \
 	src/qt/world-painter.cpp \
 	$(NULL)
 
 MOCHEADERS = \
-	src/qt/runner.h \
 	src/qt/window.h \
 	src/qt/world-view.h \
 	src/qt/stibbons-editor.h \
 	$(NULL)
 
+COMMONMOCHEADERS = \
+	src/qt/runner.h \
+	$(NULL)
+
 CLIMOCHEADERS = \
 	src/cli/application.h \
-	src/qt/runner.h \
 	$(NULL)
 
 MOCSRC = $(MOCHEADERS:%.h=%.moc.cpp)
 
 CLIMOCSRC = $(CLIMOCHEADERS:%.h=%.moc.cpp)
+
+COMMONMOCSRC = $(COMMONMOCHEADERS:%.h=%.moc.cpp)
 
 QRCFILES = \
 	data/stibbons.qrc \
@@ -165,6 +171,8 @@ INTERPRETEROBJECTS = $(INTERPETERSRC:%.cpp=%.o)
 TESTOBJECTS = $(TESTSRC:%.cpp=%.o)
 
 QTOBJECTS = $(QTSRC:%.cpp=%.o) $(MOCSRC:%.cpp=%.o) $(QRCSRC:%.cpp=%.o)
+
+COMMONOBJECTS = $(COMMONSRC:%.cpp=%.o) $(COMMONMOCSRC:%.cpp=%.o)
 
 CLIOBJECTS = $(CLISRC:%.cpp=%.o) $(CLIMOCSRC:%.cpp=%.o)
 
@@ -187,7 +195,35 @@ REPTEX = $(REPDIR)/report.tex
 REPRAI = $(DOCDIR)/report
 
 REPDEPS = \
-	$(REPDIR)/*.tex \
+	$(REPDIR)/analyse-code.tex \
+	$(REPDIR)/analyseurLexical.tex \
+	$(REPDIR)/analyseurSemantique.tex \
+	$(REPDIR)/analyseurs.tex \
+	$(REPDIR)/analyseurSyntaxique.tex \
+	$(REPDIR)/applications.tex \
+	$(REPDIR)/conclusion.tex \
+	$(REPDIR)/cpp11.tex \
+	$(REPDIR)/gestion-projet.tex \
+	$(REPDIR)/git.tex \
+	$(REPDIR)/intro.tex \
+	$(REPDIR)/latex.tex \
+	$(REPDIR)/logo.tex \
+	$(REPDIR)/methode.tex \
+	$(REPDIR)/modele.tex \
+	$(REPDIR)/netlogo.tex \
+	$(REPDIR)/qt.tex \
+	$(REPDIR)/reunion1.tex \
+	$(REPDIR)/reunion2.tex \
+	$(REPDIR)/reunion3.tex \
+	$(REPDIR)/reunion4.tex \
+	$(REPDIR)/reunion5.tex \
+	$(REPDIR)/reunion6.tex \
+	$(REPDIR)/reunion7.tex \
+	$(REPDIR)/standard.tex \
+	$(REPDIR)/starlogo.tex \
+	$(REPDIR)/syntaxe.tex \
+	$(REPDIR)/tests-unitaires.tex \
+	$(REPDIR)/tutoriel.tex \
 	$(NULL)
 
 REPPDF = $(PDFDIR)/report.pdf
@@ -238,10 +274,10 @@ all: doc $(APP) $(CLIAPP) $(TEST)
 
 # Compilation du logiciel
 
-$(APP): $(MODELOBJECTS) $(BISONOBJECTS) $(FLEXOBJECTS) $(INTERPRETEROBJECTS) $(QTOBJECTS)
+$(APP): $(MODELOBJECTS) $(BISONOBJECTS) $(FLEXOBJECTS) $(INTERPRETEROBJECTS) $(QTOBJECTS) $(COMMONOBJECTS)
 	$(CC) $^ -o $@ $(CFLAGS) $(QTINCDIRS) $(QTLIBS)
 
-$(CLIAPP): $(MODELOBJECTS) $(BISONOBJECTS) $(FLEXOBJECTS) $(INTERPRETEROBJECTS) $(CLIOBJECTS)
+$(CLIAPP): $(MODELOBJECTS) $(BISONOBJECTS) $(FLEXOBJECTS) $(INTERPRETEROBJECTS) $(CLIOBJECTS) $(COMMONOBJECTS)
 	$(CC) $^ -o $@ $(CFLAGS) $(CLIINCDIRS) $(QTLIBS)
 
 $(TEST): $(MODELOBJECTS) $(BISONOBJECTS) $(FLEXOBJECTS) $(INTERPRETEROBJECTS) $(TESTOBJECTS)
@@ -255,6 +291,9 @@ $(FLEXTMP): $(FLEXSRC)
 
 $(MOCSRC): %.moc.cpp: %.h
 	$(MOC) $(QTINCDIRS) $< -o $@
+	
+$(COMMONMOCSRC): %.moc.cpp: %.h
+	$(MOC) $(QTINCDIRS) $< -o $@
 
 %.qrc.cpp: %.qrc
 	$(RCC) -name $(basename $(<F)) $< -o $@
@@ -262,7 +301,7 @@ $(MOCSRC): %.moc.cpp: %.h
 $(CLIMOCSRC): %.moc.cpp: %.h
 	$(MOC) $(CLIINCDIRS) $< -o $@
 
-$(MODELOBJECTS): %.o: %.cpp $(BISONTMP)
+$(MODELOBJECTS): %.o: %.cpp $(BISONTMP) $(BISONHEADERS)
 	$(CC) $< -c -o $@ $(CFLAGS)
 
 $(BISONOBJECTS): %.o: %.c
@@ -271,13 +310,16 @@ $(BISONOBJECTS): %.o: %.c
 $(FLEXOBJECTS): %.o: %.c
 	$(CC) $< -c -o $@ $(CFLAGS)
 
-$(INTERPRETEROBJECTS): %.o: %.cpp $(BISONTMP)
+$(INTERPRETEROBJECTS): %.o: %.cpp $(BISONTMP) $(BISONHEADERS)
 	$(CC) $< -c -o $@ $(CFLAGS)
 
 $(TESTOBJECTS): %.o: %.cpp
 	$(CC) $< -c -o $@ $(CFLAGS) $(TESTINCDIRS) $(TESTLIBS)
 
 $(QTOBJECTS): %.o: %.cpp
+	$(CC) $< -c -o $@ $(CFLAGS) $(QTINCDIRS) $(QTLIBS)
+	
+$(COMMONOBJECTS): %.o: %.cpp
 	$(CC) $< -c -o $@ $(CFLAGS) $(QTINCDIRS) $(QTLIBS)
 
 $(CLIOBJECTS): %.o: %.cpp
@@ -331,14 +373,17 @@ clean:
 	rm -Rf $(APP) $(TEST) \
 	$(MODELOBJECTS) \
 	$(BISONTMP) \
+	$(BISONHEADERS) \
 	$(BISONOBJECTS) \
 	$(FLEXTMP) \
 	$(FLEXOBJECTS) \
 	$(INTERPRETEROBJECTS) \
 	$(TESTOBJECTS) \
 	$(MOCSRC) \
+	$(COMMONMOCSRC) \
 	$(QRCSRC) \
 	$(QTOBJECTS) \
+	$(COMMONOBJECTS) \
 	$(CLIMOCSRC) \
 	$(CLIOBJECTS) \
 	$(REPPDFCLN)\
