@@ -26,14 +26,14 @@
 	FOR : 'for' ;
 	IN : ':' | 'in' ;
 	TYPE : nullt
-	| numbert 
-	| booleant 
-	| stringt 
+	| numbert
+	| booleant
+	| stringt
 	| colort
 	| tablet
 	| typet
 	| turtlet
-	| zonet 
+	| zonet
 	| worldt
 	;
 	NIL : 'null' ;
@@ -59,71 +59,71 @@ worlddirlist : worlddir
 | worlddirlist worlddir
 ;
 
-worlddir : '\%' ID lit 'newline' 
+worlddir : '\%' ID lit 'newline'
 | 'newline'
 ;
 
 statementlist : ( statement | statementlist statement ) ?
 ;
 
-statement : exprstatement | complstatement;	
+statement : exprstatement | complstatement;
 
 complstatement : bloc
-| declstatement 
-| selection 
-| loop 
+| declstatement
+| selection
+| loop
 | complstatement 'newline'
 ;
 
-bloc : lbrace rbrace 
-| lbrace statementlistbloc rbrace 
-; 
-
-statementlistbloc : statementlist 
-| statementlist exprnoseparator 
+bloc : lbrace rbrace
+| lbrace statementlistbloc rbrace
 ;
 
-declstatement : ( AGT | FCT ) ID lpar ( ( ID ( (',' ID) *) ) ? ) rpar bloc 
+statementlistbloc : statementlist
+| statementlist exprnoseparator
+;
+
+declstatement : ( AGT | FCT ) ID lpar ( ( ID ( (',' ID) *) ) ? ) rpar bloc
 ;
 
 selection : IF expr statement (ELSE statement) ? ;
 
 loop : RPT expr statement
 | WHL expr statement
-| FOR (( lpar ( ID | ID ',' ID ) IN expr rpar ) | ((ID | ID ',' ID ) IN expr)) statement 
+| FOR (( lpar ( ID | ID ',' ID ) IN expr rpar ) | ((ID | ID ',' ID ) IN expr)) statement
 ;
 
-exprstatement : 'newline' 
+exprstatement : 'newline'
 | expr 'newline'
-| instrturtle 'newline' 
+| instrturtle 'newline'
 | creatstatement 'newline'
 ;
 
-exprnoseparator : expr 
+exprnoseparator : expr
 | instrturtle
-| creatstatement 
+| creatstatement
 ;
 
-expr : assignmentexpression 
+expr : assignmentexpression
 | lpar expr rpar
-| expr ( '+' 
-| '-' 
-| '/' 
-| '*' 
-| '\%' 
-| AND 
-| OR 
-| XOR 
-| '==' 
+| expr ( '+'
+| '-'
+| '/'
+| '*'
+| '\%'
+| AND
+| OR
+| XOR
+| '=='
 | '!='
 | '>'
-| '>=' 
+| '>='
 | '<'
 | '<=' ) expr
-| '-' expr 
+| '-' expr
 | NOT expr
 | primaryexpr
-| lit 
+| lit
 ;
 
 assignmentexpression : primaryexpr '=' expr
@@ -155,10 +155,10 @@ instrturtle : FD expr
 | RECV primaryexpr
 | DIE ;
 
-lit : NUMBER 
-| STRING 
-| BOOLEAN 
-| COLOR 
+lit : NUMBER
+| STRING
+| BOOLEAN
+| COLOR
 | NIL
 | TYPE ;
 \end{rail}

@@ -14,7 +14,7 @@ struct {
 \end{lstlisting}
 
 \subsection{Fonctionnement}
-Par défaut, l'analyseur lexical généré par Flex utilise des variables globales et n'est pas réentrant. Dans l'optique d'obtenir un analyseur réentrant, nous avons utilisé l'option \verb|%option c++| et établit le modèle \ref{uml-lexer}. 
+Par défaut, l'analyseur lexical généré par Flex utilise des variables globales et n'est pas réentrant. Dans l'optique d'obtenir un analyseur réentrant, nous avons utilisé l'option \verb|%option c++| et établit le modèle \ref{uml-lexer}.
 
 \begin{figure}[h]
 \centering
@@ -26,7 +26,7 @@ Chaque appel à la méthode \verb|yylex()| de \verb|FlexScanner| génère un nou
 
 \begin{lstlisting}[label=lex-extrait,caption=Exemple de séquence d'instruction lors de la détection d'une couleur]
 #([a-f0-9]{6}|[a-f0-9]{3}) {
-                           pyylval->v=make_shared<stibbons::Color>(yytext); 
+                           pyylval->v=make_shared<stibbons::Color>(yytext);
                            return yy::parser::token::COLOR;
                            }
 \end{lstlisting}

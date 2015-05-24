@@ -22,7 +22,7 @@ A la fin du sprint 1, on pouvait voir une tortue avancer et tracer une ligne sur
 Nous avions réalisé le schéma~\ref{v0.1R}, en dehors de la classe Instruction.
 
 Pour le second sprint, nous avons ajouté une classe Agent, car les classes World, Turtle et Zone sont des agents, au sens multi-agent (cf ~\ref{v0.2}). Elle contient le code en commun de ces trois classes.
- 
+
 Ils ont chacun un parent, celui qui l'a créer, une liste d'enfants, et des propriétés. Les propriétés sont des variables définit par l'utilisateur lors de la définition du code de l'agent, donc surtout utile pour les tortues.
 
 Le monde a une taille, une liste de \enquote{breed}, d'espèce. Il y a les espèces nommées et les \enquote{anonymes}, qui sont des \enquote{turtles} dans le code.
@@ -55,7 +55,7 @@ La maîtrise du temps se fait grâce à un bouton pause, qui arrête les threads
 \section{Les types}
 \subsubsection{Sprints 1 et 2}
 Lors du premier sprint, nous mettions en place certains types Stibbons, comme Color, pour la couleur, ou Nil qui a une valeur nulle. Ils héritent de Value, une classe abstraite qui contient une valeur et ses accesseurs.
-Les instructions tel que pendown, forward, etc, sont finalement des mots clés dans la grammaire du langage, et non pas des instructions, contrairement à ce que nous avions prévu (cf UML~\ref{v0.1}).
+Les instructions tel que pendown, forward, etc., sont finalement des mots clés dans la grammaire du langage, et non pas des instructions, contrairement à ce que nous avions prévu (cf UML~\ref{v0.1}).
 Elles existent néanmoins dans le modèle dans la classe Turtle (cf UML~\ref{v0.2}).
 
 \begin{figure}[h]
@@ -99,7 +99,7 @@ u = 5 new agent {
 \end{lstlisting}
 
 Nous avons mis en place des mutexs récursifs lors du sprint quatre. Ils permettent à un thread de verrouiller plusieurs fois la même ressources alors qu'elle est déjà verrouillée. C'est la seule différence avec le mutex normal. Ces mutexs permettent d'éviter des blocages dans certaines situations (fonctions récursives, ...) .
-L'UML~\ref{v0.4} est l'état final du modèle car le sprint 5 n'y a apporté aucune modification. 
+L'UML~\ref{v0.4} est l'état final du modèle car le sprint 5 n'y a apporté aucune modification.
 \begin{figure}[h]
 \includegraphics[scale=0.4]{doc/report/uml/v04.png}
 \caption{\label{v0.4} UML version 0.4}
