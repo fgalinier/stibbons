@@ -30,12 +30,12 @@ class TestTurtle : public TestCase{
 			auto zoneSize = Size(2);
 			zoneSize.setValue(0, 10);
 			zoneSize.setValue(1, 10);
-			auto warp = vector<bool>();
-			warp.push_back(false);
-			warp.push_back(false);
+			auto warp = vector<BorderType>();
+			warp.push_back(BorderType::NONE);
+			warp.push_back(BorderType::NONE);
 			world = stibbons::World::construct(worldSize, zoneSize, warp);
-			turtle = stibbons::Turtle::construct(world);
-			t2 = stibbons::Turtle::construct(world);
+			turtle = stibbons::Turtle::construct(nullptr, world);
+			t2 = stibbons::Turtle::construct(nullptr, world);
 		}
 
 		void testAngle() {
