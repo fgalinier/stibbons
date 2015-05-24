@@ -31,9 +31,9 @@ class TestAgent : public TestCase {
 			auto zoneSize = Size(2);
 			zoneSize.setValue(0, 10);
 			zoneSize.setValue(1, 10);
-			auto warp = vector<bool>();
-			warp.push_back(false);
-			warp.push_back(false);
+			auto warp = vector<BorderType>();
+			warp.push_back(BorderType::NONE);
+			warp.push_back(BorderType::NONE);
 			w=World::construct(worldSize, zoneSize, warp);
 			w->setProperty("tortue", make_shared<String>("bleu"));
 			w->setProperty("color", make_shared<Color>());
@@ -41,7 +41,7 @@ class TestAgent : public TestCase {
 			z = Zone::construct(w);
 			z->setProperty("couleur", make_shared<String>("chat"));
 
-			t=Turtle::construct(w, 0);
+			t=Turtle::construct(nullptr, w, 0);
 			t->setProperty("chasse", make_shared<Number>(6.0));
 			t->setProperty("couleur", make_shared<String>("chat"));
 		}
