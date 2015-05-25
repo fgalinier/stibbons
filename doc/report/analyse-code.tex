@@ -44,7 +44,7 @@ GNU Bison est une version de yacc (ref.~\cite{bison}), un outil d'analyse syntax
 
 Son fonctionnement est le suivant~: à chaque règle de grammaire, on associe des actions (instructions d'un langage). L'analyseur généré essaie de reconnaître un mot du langage défini par la grammaire. Il exécute les actions pour chaque règle reconnue.
 
-Comme pour Flex, un fichier Bison est composé de trois parties. La première partie, facultative, contient une liste de définition C/C++, d'options bisons ainsi que de définition de jetons (cf. listing~\ref{bison-definition}), la seconde partie, contenue entre \verb|%%|, contient les règles (cf. listing~\ref{bison-regle}) et une dernière optionnelle de C/C++.
+Comme pour Flex, un fichier Bison est composé de trois parties. La première partie, facultative, contient une liste de définition C/C++, d'options bisons ainsi que de définition de jetons (cf. listing~\ref{bison-definition}), la seconde partie, contenue entre \verb|%%|, contient les règles (cf. listing~\ref{bison-regle}) et une dernière partie optionnelle écrite en C/C++.
 
 \begin{lstlisting}[label=bison-definition,caption=Definition C++ en bison]
 %skeleton "lalr1.cc"
