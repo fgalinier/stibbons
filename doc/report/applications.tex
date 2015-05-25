@@ -40,7 +40,7 @@ La version 0.2 (cf. Figure~\ref{screenshot-0.2}) apporte peu de modifications à
 
 À partir de la version 0.3 (cf. Figure~\ref{screenshot-0.3}), les couleurs des tortues peuvent être modifiées et, afin de les rendre plus visibles, elles sont désormais dessinées comme des triangles pleins. La ligne dessinée par une tortue prend la couleur de cette dernière au moment de l'abaissement du stylo.
 
-Le monde est désormais borné et est centré dans la vue, les zones le constituant sont désormais affichées, et leurs couleurs peuvent être modifiées. Si la vue est plus petite que le monde, des ascenseurs apparaissent.
+Le monde est désormais borné, c'est à dire que les tortues ne peuvent plus sortir du monde visible pour l'utilisateur, et est centré dans la vue, les zones le constituant sont désormais affichées, et leurs couleurs peuvent être modifiées. Si la vue est plus petite que le monde, des ascenseurs seront affichés.
 
 Redessiner le monde prennait de plus en plus de temps au fur et à mesure que le nombre de lignes le constituant augmentait. Afin d'améliorer drastiquement ces performances de rendu, les lignes seront désormais dessinées sur un tampon et seules les nouvelles lignes auront donc besoin d'être dessinées sur ce dernier, avant d'être reporté sur la vue.
 
@@ -61,7 +61,7 @@ Une entrée a été ajoutée au menu, permettant d'exporter le modèle en cours 
 
 Si une tortue change de couleur alors qu'elle trace une ligne, le stylo avec lequel la tortue trace ses lignes changera de couleur en même temps.
 
-Il est désormais possible de faire reboucler le monde sur lui même, cette option étant paramètrable pour chaque axe.
+Il est désormais possible de faire reboucler le monde sur lui même, cette option étant paramètrable pour chaque axe. Cela permet aux tortues, lorsqu'elles atteignent un bord, d'apparaitrent du coté opposé, comme si le monde était circulaire.
 
 Le monde ne comporte plus de tortue par défaut et c'est désormais celui-ci qui exécute le corps principal du programme.
 
