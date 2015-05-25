@@ -386,13 +386,6 @@ namespace stibbons {
 				}
 			}
 				// New agent
-			case yy::parser::token::AGT: {
-				//definition of new agent with corresponding breed
-				auto id = dynamic_pointer_cast<String>(std::get<1>(tree->getNode()))->getValue();
-				auto function = this->getFunctionFromTree(manager,tree);
-				agent->getWorld()->createBreed(function,id);
-			}
-				break;
 			case yy::parser::token::NEW:
 				//create new agent
 				return newOp(manager,agent,tree,hashTable);
