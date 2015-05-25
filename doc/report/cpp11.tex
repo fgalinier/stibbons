@@ -1,13 +1,9 @@
 \section{C++}
 
 \subsection{C++11}
-Nous avons utilisé quelques nouveautés de C++ 2011 pour faciliter notre développement ainsi que l'efficacité du code exécuté. En voici quelques exemples~:
-\begin{description}
-\item[auto] le mot-clef \verb|auto| laisse le compilateur déduire seul le type de la variable~;
-\item[thread]
-\item[mutex]
-\item[for\_range]
-\end{description}
+C++11 est la version du standard C++ que nous avons choisi d'utiliser. En effet, cette version a vu apparaître de nombreux ajouts, comme par exemple les \verb|std::thread| et les \verb|std::mutex|, qui nous ont permis de gérer le multithreading sans avoir à nous soucier de l'implémentation derrière (on n'a ainsi pas de problèmes de portabilités liés à ceci).
+
+En outre, d'autres ajouts de C++11, tel que l'inférence de type (avec le mot-clef \verb|auto|) ou les \emph{ranged-based for loop} (\verb|foreach|), nous ont permis une écriture plus souple de notre code et plus moderne.
 
 \subsection{GDB}
-Le «~GNU Project Debugger~» (ref.~\cite{gdb}) est un programme de débuggage permettant notamment de tracker les appels de fonction et de spécifier des conditions d'arrêts lors de l'exécution d'un programme. Il peut donc permettre d'avancer pas à pas dans un programme et de repérer l'endroit où un bug se situe. Il est très utilisé pour résoudre les erreurs de segmentation dû à sa précision de traçage~: la ligne exacte de l'erreur est fournit.
+Le «~GNU Project Debugger~» (ref.~\cite{gdb}) est un programme de débuggage permettant notamment de tracker les appels de fonctions et de spécifier des conditions d'arrêts lors de l'exécution d'un programme. Il peut donc permettre d'avancer pas à pas dans un programme et de repérer l'endroit où un bug se situe. Il est très utilisé pour résoudre les erreurs de segmentation dû à sa précision de traçage~: la ligne exacte de l'erreur est fournie.
