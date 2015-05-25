@@ -4,9 +4,9 @@
 
 Commençons par imprimer du texte.
 
-\begin{verbatim}
+\begin{lstlisting}[language=Stibbons]
 println("Salut, monde !")
-\end{verbatim}
+\end{lstlisting}
 
 Ici l'agent par défaut, le monde, appelle la fonction println avec pour paramètre la chaîne de caractères "Salut, monde !", ce qui a pour effet d'imprimer ce texte dans une nouvelle ligne sur la sortie standard.
 
@@ -14,21 +14,21 @@ Ici l'agent par défaut, le monde, appelle la fonction println avec pour paramè
 
 Créons maintenant des agents.
 
-\begin{verbatim}
+\begin{lstlisting}[language=Stibbons]
 new agent {
     println("Salut, humain !")
 }
-\end{verbatim}
+\end{lstlisting}
 
 Le monde crée un nouvel agent mobile, une tortue, qui apparaîtra alors dans le monde et exécutera le code passé entre accolades.
 
 Il est possible de créer plusieur tortues exécutant le même code en spécifiant leur nombre.
 
-\begin{verbatim}
+\begin{lstlisting}[language=Stibbons]
 5 new agent {
     println("Salut, humain !")
 }
-\end{verbatim}
+\end{lstlisting}
 
 Ainsi, cinq tortues sont créés et chacune d'elles imprime "Salut, humain !".
 
@@ -36,7 +36,7 @@ Ainsi, cinq tortues sont créés et chacune d'elles imprime "Salut, humain !".
 
 Les tortues peuvent se déplacer sur le monde en avançant et en tournant à gauche ou à droite. Elles ont également un stylo qu'elles peuvent abaisser ou relever afin de tracer des lignes sur le monde.
 
-\begin{verbatim}
+\begin{lstlisting}[language=Stibbons]
 new agent {
     pd
     fd 50
@@ -48,7 +48,7 @@ new agent {
     fd 50
     println("Voici un beau carré !")
 }
-\end{verbatim}
+\end{lstlisting}
 
 Ici, pd demande à la tortue d'abaisser son stylo (pen down), fd demande à la tortue d'avancer (forward) d'une certaine distance, et rt demande à la tortue de tourner d'un certain nombre de degrés.
 
@@ -56,7 +56,7 @@ Ici, pd demande à la tortue d'abaisser son stylo (pen down), fd demande à la t
 
 Afin d'éviter de se répéter, on peut demander à l'interprète de le faire un certain nombre de fois pour nous.
 
-\begin{verbatim}
+\begin{lstlisting}[language=Stibbons]
 new agent {
     pd
     repeat 4 {
@@ -65,13 +65,13 @@ new agent {
     }
     println("Voici qui est mieux. =)")
 }
-\end{verbatim}
+\end{lstlisting}
 
 \subsection{Boucler}
 
 Il est également possible de boucler tant qu'une condition est vraie.
 
-\begin{verbatim}
+\begin{lstlisting}[language=Stibbons]
 new agent {
     println("Je vais faire ma ronde.")
     while true {
@@ -79,20 +79,20 @@ new agent {
         rt 90
     }
 }
-\end{verbatim}
+\end{lstlisting}
 
 \subsection{Agents typés}
 
 Il est possible de définir un type d'agent sans en créer, afin d'en créer plus tard.
 
-\begin{verbatim}
+\begin{lstlisting}[language=Stibbons]
 agent personne (nom) {
     println("Je m'appelle " + nom + ".")
 }
 
 new personne("Mathieu")
 new personne("Michel")
-\end{verbatim}
+\end{lstlisting}
 
 Ici, le type d'agent personne a été définit. Un type d'agent peut prendre des paramètres exactement de la même manière qu'une fonction.
 
@@ -102,7 +102,10 @@ Ainsi on a pu créer deux tortues de type personne, chacune ayant son propre nom
 
 Il est possible de définir des fontions. Les fonctions sont définies dans l'espace de nom des propriétés de l'agent.
 
-\begin{verbatim}
+\begin{lstlisting}[language=Stibbons]
+%x_border bounce
+%y_border bounce
+
 agent fourmi () {
     function gigoter () {
         rt rand() % 60
@@ -116,7 +119,9 @@ agent fourmi () {
 }
 
 new fourmi()
-\end{verbatim}
+\end{lstlisting}
+
+Les deux premières lignes seront expliquées un peu plus tard.
 
 On définit ici la fonction gigoter pour les agents de type fourmi, qui est utilisée un peu plus bas dans le code.
 
@@ -124,7 +129,10 @@ On définit ici la fonction gigoter pour les agents de type fourmi, qui est util
 
 Les tortues ont une couleur qui peut être modifiée. C'est également cette couleur qu'elles utilisent pour dessiner sur le monde.
 
-\begin{verbatim}
+\begin{lstlisting}[language=Stibbons]
+%x_border bounce
+%y_border bounce
+
 agent fourmi (couleur) {
     function gigoter () {
         rt rand() % 60
@@ -142,74 +150,149 @@ agent fourmi (couleur) {
 
 new fourmi(red)
 new fourmi(blue)
-\end{verbatim}
+\end{lstlisting}
 
-\subsection{Zones}
+\subsection{Propriétés d'autres agents et parent}
 
-Le monde est constitué de zones, qui sont eux aussi des agents. Les zones ont tout comme les tortues une couleur qui peut être modifiée.
+Il est possible d'accéder aux propriétés d'autres agents via l'opérateur «~\verb|.|~». De plus, il est possible d'accéder à certains agents via des propriétés spéciales, telles que \verb|parent| pour  obtenir le parent de l'agent actuel, \verb|world| pour obtenir le monde et \verb|zone| pour obtenir la zone sur lequelle se trouve une tortue.
 
-\begin{verbatim}
-agent fourmi (couleur) {
+Ces deux derniers types d'agents seront présentés un peu plus tard.
+
+\begin{lstlisting}[language=Stibbons]
+%x_border bounce
+%y_border bounce
+
+color = black
+
+agent fourmi (enfants) {
+    color = parent.color + #444
+
+    if (enfants > 0) {
+        2 new fourmi (enfants - 1)
+    }
+
     function gigoter () {
         rt rand() % 60
         lt rand() % 60
         fd 1
     }
 
-    color = couleur
-    pd
-
     while true {
         gigoter()
-        zone.color = couleur
+    }
+}
+
+new fourmi (2)
+\end{lstlisting}
+
+Dans cet exemple, chaque fourmi définit sa couleur en fonction de celle de son parent en l'obtenant via \verb|parent.color|.
+
+\subsection{Le monde}
+
+Le monde est un agent très particulier~: il est unique, immobile, possède une taille, et c'est dans son contexte qu'est exécuté le corps principal d'un programme Stibbons. Ça en fait de fait l'ancètre commun à tous les autres agents.
+
+\begin{lstlisting}[language=Stibbons]
+5 new agent {
+    teleport(rand() % world.max_x, rand() % world.max_y, rand())
+}
+\end{lstlisting}
+
+Cet exemple crée 5 nouveaux agents et, grâce aux fonctions \verb|teleport| et \verb|rand| et aux propriétés spéciales du monde \verb|max_x| et \verb|max_y|, positionne chaque agent une position et un angle au hazard à l'intérieur des bords du monde.
+
+\subsection{Les zones}
+
+Le monde est constitué de zones qui sont elles aussi des agents. Les zones sont immobiles, colorées, et ont le mond epour parent.
+
+\begin{lstlisting}[language=Stibbons]
+%x_border bounce
+%y_border bounce
+
+agent fourmi (couleur) {
+    teleport(rand() % world.max_x, rand() % world.max_y, rand())
+
+    function gigoter () {
+        rt rand() % 60
+        lt rand() % 60
+        fd 1
+    }
+
+    color = couleur - #444
+    couleur_zone = couleur + #888
+
+    while (true) {
+        gigoter()
+        zone.color = couleur_zone
     }
 }
 
 new fourmi(red)
+new fourmi(green)
 new fourmi(blue)
-\end{verbatim}
+new fourmi(yellow)
+new fourmi(cyan)
+new fourmi(magenta)
+\end{lstlisting}
 
 Ici, les fourmis changent la couleur des zones sur lesquelles elles passent.
 
+\subsection{Directives de monde}
+
+Dans cette section seront enfin expliquées les mystérieuses instructions \verb|%x_border bounce| et \verb|%y_border bounce|.
+
+Le monde peut être paramétré au chargement du programme, pour cela on utilise des directives de monde qui doivent toutes être placées en tout début du programme.
+
+Les directives \verb|%world_width| et \verb|%world_height| permettent de définir le nombre de zones constituant le monde en largeur et en hauteur, et doivent être suivi du nombre souhaité.
+Les directives \verb|%zone_width| et \verb|%zone_height| permettent de définir la largeur et la hauteur des zones constituant le monde, et doivent être suivi de la taille souhaitée.
+Les directives \verb|%x_border| et \verb|%y_border| permettent de définir le comportement des tortues lorsqu'elles franchissent un bord du monde. Elles doivent être suivies de \verb|none| pour laisser les tortues sortir du monde, de \verb|bounce| pour faire rebondir les tortues contre les bords ou de \verb|wrap| pour reboucler le monde sur lui même par l'axe en question.
+
+\begin{lstlisting}[language=Stibbons]
+%world_width 100  // Le monde aura 100 zones en largeur
+%world_height 100 // Le monde aura 100 zones en hauteur
+%zone_width 5     // Les zones feront 5 unités de large
+%zone_height 5    // Les zones feront 5 unités de haut
+%x_border wrap    // Le monde rebouclera sur lui même sur les bords verticaux
+%y_border bounce  // Le monde sera solide sur les bords horizontaux
+\end{lstlisting}
+
 \subsection{Messages}
 
-Les tortues peuvent s'envoyer des messages. Les messages peuvent être envoyés à un destinataire précis ou à toutes les tortues.
+Les tortues peuvent s'envoyer des messages. Les messages peuvent être envoyés à un destinataire précis, à un ensemble de destinataires ou à toutes les tortues.
 
-\begin{verbatim}
+\begin{lstlisting}[language=Stibbons]
 destinataire = new agent {
-    message = recv()
+    recv message
 
     println("Quelqu'un m'a dit : " + message)
 }
 
 new agent {
-    send (destinataire, "Coucou !")
+    send "Coucou !" world.destinataire
 }
-\end{verbatim}
+\end{lstlisting}
 
-\begin{verbatim}
+\begin{lstlisting}[language=Stibbons]
 5 new agent {
-    message = recv()
+    recv message
 
     println("Quelqu'un m'a dit : " + message)
 }
 
 new agent {
-    send-all ("Oyez, agents !")
+    send "Oyez, agents !"
 }
-\end{verbatim}
+\end{lstlisting}
 
 S'il n'y a aucun message dans sa boîte à messages, une tortue demandant la lecture d'un message sera bloquée jusqu'à réception d'un message à lire. Pour éviter un bloquage, il est possible de vérifier le nombre de messages présents dans la boîte.
 
-\begin{verbatim}
+\begin{lstlisting}[language=Stibbons]
 new agent {
     new agent {
-        send (parent, "Bonjour, parent !")
+        send "Bonjour, parent !" parent
     }
 
     while true {
         if (inbox() > 0) {
-            message = recv()
+            recv message
 
             println("Quelqu'un m'a dit : " + message)
         }
@@ -218,5 +301,5 @@ new agent {
         fd 1
     }
 }
-\end{verbatim}
+\end{lstlisting}
 
