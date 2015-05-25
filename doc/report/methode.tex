@@ -1,6 +1,11 @@
-Pour réaliser ce projet, nous avons choisi de faire de l'agile, avec la méthode SCRUM. Nous nous sommes principalement servi des cours de gestion de projet de ce semestre, en particulier des interventions de Sandrine Maton. Faire de l'Agile permet d'avoir un rendu fonctionnel à chaque fin de sprint, et donc de s'assurer d'avoir un rendu final. De plus, c'est une manière de faire qui se développe en entreprise, nous voulions donc l'expérimenter.
+Pour réaliser ce projet, nous avons choisi de faire de l'Agile, avec la méthode SCRUM. Nous nous sommes principalement servi des cours de gestion de projet de ce semestre, en particulier des interventions de Sandrine Maton. Faire de l'Agile permet d'avoir un rendu fonctionnel à chaque fin de sprint, et donc de s'assurer d'avoir un rendu final. De plus, ces méthodes sont de plus en plus populaire dans le milieu des entreprises, nous voulions donc l'expérimenter.
+
+La méthode SCRUM est une méthode itérative, donc chaque itération est nommé «~sprint~». Un sprint se décompose en trois parties~: une réunion initiale, où les objectifs du sprint sont définis et les tâches réparties, le sprint en lui-même, durant lequel le développement a lieu, et une réunion pour faire le point sur le sprint écoulé.
 \subsubsection{Backlog initial}
-Nous avons commencer le projet avec un sprint 0, au cours duquel nous avons défini l'univers du projet, et ses fonctionnalités (cf.~\ref{bsp1}).
+Le sprint 0 correspond à la première période du projet, durant laquelle nous avons fait notre analyse de l'existant et des outils. C'est également durant ce sprint que nous avons choisi les différentes fonctionnalités que nous voulions voir dans le projet. Pour chacune d'entre elles, nous écrivions un scénario utilisateur, une courte description de ce que l'utilisateur doit pouvoir faire via une fonctionnalité. 
+
+Une fois ces fonctionnalités définies, nous avons priorisés celles-ci et établit le «~backlog~», la feuille de route de notre projet (cf. Table~\ref{bsp1}).
+
 {\tiny
 \begin{longtable}[c]{|c|p{2cm}|c|p{4cm}|*{4}{c|}}
 \hline
@@ -12,10 +17,10 @@ Nous avons commencer le projet avec un sprint 0, au cours duquel nous avons déf
 \hline
 \endhead
 \hline
-\caption{Le backlog à la fin du sprint 1} \label{bsp1}\\
+\caption{Le backlog au début du sprint 2} \label{bsp1}\\
 \endlastfoot
 \hline
-\caption[]{Le backlog à la fin du sprint 1}\\
+\caption[]{Le backlog au début du sprint 2}\\
 \endfoot
 1 & L'utilisateur écrit du code dans un éditeur & 200 &  &  &  &  &  \\
 \hline
@@ -60,9 +65,7 @@ suis tortue 2 par exemple) & 42,5h & 2 & & \\
 \hline
 \end{longtable}}
 
-Le backlog est composé de scénarios utilisateurs qui définissent les tâches à effectuer. Cela correspond a une courte description d'une fonctionnalité du programme. On leur attribut une priorité, et un test de validation.
-
-A chaque sprint, on décide des fonctionnalités qu'on ajoute, et du nombre d'heures qu'on estime devoir y passer.
+Lors de la réunion de début de sprint, les fonctionnalités à ajouter sont choisies et un test décrivant les actions à effectuer pour que l'ajout soit validé était ajouté au backlog. Nous faisions également une estimation du nombre d'heure nécessaire à chacune des nouveautés.
 \subsubsection{Backlog final}
 Voici pour comparer le backlog à la fin du sprint 5 (cf.~\ref{bsp5}):
 {\tiny
@@ -129,16 +132,16 @@ Voici pour comparer le backlog à la fin du sprint 5 (cf.~\ref{bsp5}):
 \hline
 24 & La tortue accède aux données de son parent & 50 & Taper parent.color= blue et observer le parent devenir bleu & 1h & 5 & Fini & 1h \\
 \hline
-25 & L'utilisateur peut stocker des valeurs dans une table & 540 & On stocke le retour dans t= {1,2} & 10h & 4 & Fini & 9h \\
+25 & L'utilisateur peut stocker des valeurs dans une table & 540 & On stocke le retour dans t= \{1,2\} & 10h & 4 & Fini & 9h \\
 \hline
-26 & L'utilisateur parcours un tableau & 530 & Faire foreach(f~: {1,2}) println(f) & 4h & 5 & Fini & 4h \\
+26 & L'utilisateur parcours un tableau & 530 & Faire foreach(f~: \{1,2\}) println(f) & 4h & 5 & Fini & 4h \\
 \hline
 27 & L'utilisateur lance l'application sans interface graphique & 250 & Lancer l'application et regarder les fichiers d'exportations & 16h & 5 & Fini & 15h \\
 \hline
 \end{longtable}}
-A la fin d'un sprint, on estime le temps passer sur chaque tâche, on fait le point sur notre avancée dans le projet.
+À la fin d'un sprint, nous estimions le temps passer sur chaque tâche et nous faisions le point sur notre avancée dans le projet.
 
-Ici, on peut voir un ajout de fonctionnalités, le changement de statut des fonctionnalités réalisées, et le temps réel passer à les rendre utilisables.
-Globalement, nous étions toujours dans les temps, car nous surestimions certaines tâches, qui s'averait plus facile que prévue.
+Sur le backlog final, nous pouvons voir un ajout de fonctionnalités, le changement de statut des fonctionnalités réalisées, et le temps réel passer à les rendre utilisables.
+%Globalement, nous étions toujours dans les temps, car nous surestimions certaines tâches, qui s'averait plus facile que prévue.
 
 

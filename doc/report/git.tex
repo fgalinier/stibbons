@@ -1,18 +1,23 @@
-Le SIF de l'UM2 (ref.~\cite{GitLabSIF}) a mis a disposition des étudiants un service GitLab (ref.~\cite{GitLab}). Git est le gestionnaire de version associé à GitLab, c'est pourquoi nous l'avons choisi.
-De plus, c'est un gestionnaire de version décentralisé, ce qui permet d'avoir accès à ceux-ci avec une simple connexion internet.
-Il s'utilise avec des systèmes de branches et le plus souvent depuis un terminal, mais nous l'avons aussi utilisé avec Gitg, qui est une interface permettant d'avoir un visuel (cf.~\ref{gitg}).
+Afin de permettre une meilleure gestion du projet (travail parallèle, gestion de bugs, etc.) nous avons décidé d'utiliser le gestionnaire de version Git ainsi que la forge GitLab mise à la disposition des étudiants par le SIF.
+La prise en main fut facile, les membres du groupe ayant pratiquement tous déjà utilisé cet outil. Nous avons également utilisé le système de suivi de bugs intégré à Gitlab (cf. Figure~\ref{bugs}).
 
 \begin{figure}[h]
-\caption{\label{gitg} Capture de Gitg}
-\includegraphics[scale=0.35]{doc/report/uml/gitbranche.png}
+\centering
+\includegraphics[scale=0.35]{doc/gestionProjet/bugs.png}
+\caption{\label{bugs} Système de suivi de bugs de Gitlab}
 \end{figure}
 
-Les commandes les plus utilisées sont les suivantes~:
-\begin{description}
-\item[git checkout nom-branche] permet de changer de branche~;
-\item[git branch] permet de savoir sur quelle branche on est~;
-\item[git add fichiers] permet de suivre des fichiers (enregistrer les modifications qu'on fait sur des fichiers)~;
-\item[git commit] permet de sauvegarder des changements des fichiers~;
-\end{description}
+Notre organisation des branches fut la suivante~:
+\begin{itemize}
+\item la branche master devait contenir une version fontionnelle compilable~;
+\item des branches de développement étaient créées pour chaque nouvelle fonctionnalité, et n'étaient fusionnées sur la branche master que lorsqu'elles étaient pleinement fonctionnelles~;
+\item des branches spécifiques à chaque version ont été dérivées de master lors de l'officialisation desdites versions.
+\end{itemize}
 
-De plus, GitLab possède une traqueur de bug. Ce dernier permet d'ouvrir des «~issues~» qui peuvent être fermées, ré-ouvertees, commentées, etc.
+Nous utilisions également Gitg, pour avoir une meilleure vue de l'état de notre dépôt (cf. Figure~\ref{Gitg}).
+
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.35]{doc/gestionProjet/gitbranche.png}
+\caption{\label{Gitg} Vue des branches dans Gitg}
+\end{figure}
