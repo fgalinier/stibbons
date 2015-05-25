@@ -1,23 +1,27 @@
 \section{NetLogo}
 \label{NetLogo}
 
-NetLogo est un environnement de modélisation programmable pour simuler et observer des phénomènes naturels et sociaux au fil du temps développé à la Northwestern University (ref.~\cite{netlogo}). Il permet de donner des instructions et de regarder des agents réaliser ces dernières. On peut alors faire des observations et des connexions inter-agents au niveau micro (individu par individu) comme au niveau macro (monde global).
-Il est aussi utilisé dans de nombreux domaines de recherche comme l'économie, la biologie, la physique, la chimie, etc. et de nombreux articles ont été publié sur NetLogo.
+NetLogo est un environnement de modélisation programmable développé à la Northwestern University (ref.~\cite{netlogo}) et permettant de simuler et d'observer des phénomènes naturels et sociaux au fil du temps. Il permet de donner des instructions à des agents et d'observer leur évolution et les connexions inter-agents au niveau micro (individu par individu) comme au niveau macro (monde global).
+Il est aussi utilisé dans de nombreux domaines de recherche comme l'économie, la biologie, la physique, la chimie, etc. et de nombreux articles ont été publié à son sujet.
 
 Au niveau du programme en lui-même, NetLogo est composé de 3 onglets~:
 \begin{itemize}
-	\item onglet info~: c'est la documentation du code~;
-	\item onglet code~: le code permettant de créer le modèle du monde ainsi que le comportement des agents y sont implémentés. Certaines procédures, ou parfois attributs, peuvent être lié à des widgets dans l'interface~;
-	\item onglet interface~:
+	\item l'onglet info~: la documentation du code~;
+	\item l'onglet code~: le code permettant de créer le modèle du monde ainsi que le comportement des agents y sont implémentés~;
+	\item l'onglet interface~:
           \begin{itemize}
-          \item la partie «~observation~» qui est représenté par une fenêtre où l'on verra notre modèle dans le temps. Le rendu du modèle peut être en 2D comme en 3D~;
-          \item la partie «~construction~» où l'on peut ajouter des widgets dans le but d’interagir avec le code. Par exemple un slider «~nb\_population~» qui permettra de choisir combien de tortues vont être créées sans modifier le code. On peut également y faire apparaître des boutons pour lancer ou arrêter des procédures, des graphes pour observer des variations, des switch pour gérer les variables globales, des notes, etc. On peut également contrôler le temps, ralentir pour mieux observer, accélérer pour voir ce que produit le modèle.
+          \item la partie «~observation~» qui est représentée par une fenêtre où l'on verra notre modèle évoluer dans le temps (le rendu pouvant être effectué en 2D comme en 3D)~;
+          \item la partie «~construction~» où l'on peut ajouter des widgets dans le but interagissant avec le code.
           \end{itemize}
 \end{itemize}
 
-NetLogo permet donc une interaction très rapide entre le code et le rendu graphique. Ceci permet aux développeurs de «~jouer~» avec leurs modèles en modifiant facilement certaines conditions et donc d'ajuster immédiatement leur code comme ils le souhaitent.
+Les widgets de la partie construction permettent d'interagir avec des procédures ou des variables du code. Par exemple, l'ajout d'un slider «~nb\_population~» pourrait permettre de définir le nombre de tortues à créer sans modifier le code. On pourrait également y faire apparaître des boutons pour démarrer ou arrêter des procédures, des graphes pour observer des variations, des interrupteurs pour gérer des variables globales, des notes, etc.
+
+On peut également contrôler le temps, ralentir pour mieux observer, accélérer pour voir ce que produit le modèle.
+
+NetLogo permet donc une interaction très rapide entre le code et le rendu graphique, permettant aux développeurs de «~jouer~» avec leurs modèles en modifiant facilement certaines conditions et donc d'ajuster immédiatement leur code comme ils le souhaitent.
 
 Une riche documentation et de nombreux tutoriels sont fournis sur le site officiel du langage, ce qui permet une prise en main simple et ludique.
 
 NetLogo est un logiciel libre et open source, sous licence GPL. Il fonctionne sur la machine virtuelle Java, et est donc opérable sur de nombreuses plate-formes (Mac, Windows, Linux, etc.).
-D'après le site officiel, NetLogo est décrit comme la prochaine génération de langage de modélisation multi-agents, tout comme StarLogo.
+D'après son site officiel, NetLogo est décrit comme la prochaine génération de langage de modélisation multi-agents, tout comme StarLogo.
