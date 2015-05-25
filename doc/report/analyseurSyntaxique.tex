@@ -1,6 +1,6 @@
 L'analyse syntaxique permet de vérifier que la structure d'un programme est bien en accord avec les règles de grammaire du langage. Par exemple, la grammaire de notre langage comporte une règle qui indique que le jeton \verb|<FD>| doit être suivi d'un jeton \verb|<NUMBER>|. Le but de notre analyse ici est double~: vérifier que le programme est bien un programme de notre langage valide, mais également généré un arbre abstrait qui pourra facilement être analysé par notre analyseur sémantique.
 
-Nous avons fait le choix d'utiliser GNU Bison (cf.~\ref{bison}) dans notre projet.
+Nous avons fait le choix d'utiliser GNU Bison (cf.~\ref{Bison}) dans notre projet.
 
 \subsection{Arbre abstrait}
 Un arbre abstrait est une structure d'arbre dont chaque noeud feuille représente les opérandes des opérations contenues sur les autres noeuds. Cet arbre peut être considéré comme une forme de code intermédiaire, et peut être interprété très facilement en interprétant pour chaque noeud, les sous-arbres et en appliquant l'opération du noeud courant.
