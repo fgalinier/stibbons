@@ -15,7 +15,7 @@ Pour ce qui est du WorldInterpreter, il n'y a pas encore d'exemple possible, tou
 
 \subsection{Fonctionnalités}
 
-\subsubsection{Sprint 1 \& 2}
+\subsubsection{Sprints 1 et 2}
 Les deux premiers sprints ont été assez conséquent au niveau du nombre de fonctionnalités ajoutées.
 En effet lors du sprint 1, on pouvait déjà effectuer les opérations de bases sur une tortue, telles que avancer, tourner, écrire, etc. De plus les opérations de calcul ainsi que la gestion de nombres ont été fait. En effet, il était nécessaire de gérer les nombres de manière à pouvoir indiquer à la tortue de quelle distance elle devait avancer.
 
@@ -25,7 +25,7 @@ Lors du deuxième sprint sont apparu les conditionnelles, ainsi que les boucles,
 \subsubsection{Sprint 3 à 5}
 Les sprints suivants ont été plus léger. Non pas parce qu'il y avait moins de travail, car la gestion de l'interpréteur fut remanier à ce moment là, mais car il y avait moins de fonctionnalités à ajouter. En effet, à partir du sprint 3, les fonctionnalités suivantes ont été rajoutés~:
 \begin{itemize}
-\item accès à la parenté et aux zones (en lecture seulement)~;
+\item accès à la parenté et aux zones~;
 \item ajout des tables et de boucles dédiés (\verb|foreach|)~;
 \item gestion de la vitesse et de la pause~;
 \item ajout des communications avec le \verb|send| et le \verb|recv|.
@@ -33,10 +33,10 @@ Les sprints suivants ont été plus léger. Non pas parce qu'il y avait moins de
 
 
 \subsection{Fonctionnement}
-Lors de l'analyse d'un jeton, qui correspond à un noeud de l'arbre syntaxique, on analyse d'abord ses fils (s'il y en a) puis ensuite le contenu du noeud actuel.
-Ainsi pour le test d'égalite \verb|1 == 2|, le noeud \verb|==| aura pour enfants les sous-arbres de noeud \verb|1| et \verb|2| qui seront analysés en premier. Puis le test \verb|==| sera appliqué sur le résultat de l'analyse de ces deux noeuds.
-Certains cas sont plus compliqués, comme lors de l'affection où, une fois le résultat des noeuds obtenus, une vérification de l'existance de la variable affectée est faite sur l'agent parent. Si la variable existe déjà, elle hérite de la valeur affecté dans le parent, sinon elle est égale à \verb|null|.
-Par exemple, dans le listing ~\ref{affect-parent}, la variable b existe dans wolf car son parent, le monde, possède une variable b égale à 2. Or dans le listing ~\ref{non-affect-parent} la variable b n'existe pas dans le monde, elle n'est pas non plus initialisé dans wolf, donc elle est égale à \verb|null|.
+Lors de l'analyse d'un jeton, qui correspond à un noeud de l'arbre syntaxique, on analyse d'abord ses fils (s'il y en a) puis ensuite le contenu du noeud courant.
+Ainsi pour le test d'égalité \verb|1 == 2|, le noeud \verb|==| aura pour enfants les sous-arbres de noeud \verb|1| et \verb|2| qui seront analysés en premier. Puis le test \verb|==| sera appliqué sur le résultat de l'analyse de ces deux noeuds.
+Certains cas sont plus compliqués, comme lors de l'affection où, une fois le résultat des noeuds obtenus, une vérification de l'existence de la variable affectée est faite sur l'agent parent. Si la variable existe déjà, elle hérite de la valeur affectée dans le parent, sinon elle est égale à \verb|null|.
+Par exemple, dans le listing ~\ref{affect-parent}, la variable b existe dans wolf car son parent, le monde, possède une variable b égale à 2. Or dans le listing ~\ref{non-affect-parent} la variable b n'existe pas dans le monde, elle n'est pas non plus initialisée dans wolf, donc elle est égale à \verb|null|.
 
 \begin{lstlisting}[label=affect-parent,caption=Affectation d'une variable héritée]
 b = 2
@@ -52,10 +52,10 @@ agent wolf(){
 new wolf()
 \end{lstlisting}
 
-Un autre cas complexe est celui de la création d'un nouvel agent. Ici on crée n nouveaux agents d'un certain type, explicité(\verb|n new nomBreed()|) ou anonyme(\verb|n new agent|). Ces nouveaux agents vont~:
+Un autre cas complexe est celui de la création d'un nouvel agent. Ici on crée n nouveaux agents d'un certain type, nommés(\verb|n new nomBreed()|) ou anonymes(\verb|n new agent|). Ces nouveaux agents vont~:
 \begin{itemize}
 \item récupérer le code correspondant à leur type (la \verb|breed|)~;
-\item charger leurs paramètres, seulement si la breed n'est pas anonyme~;
+\item charger leurs paramètres, seulement si la \verb|breed| n'est pas anonyme~;
 \item être lancés dans un thread.
 \end{itemize}
 
