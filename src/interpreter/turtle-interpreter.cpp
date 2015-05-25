@@ -79,16 +79,22 @@ namespace stibbons {
 					//send a message to all turtle if no recipient precised
 					if(tree->getChildren().size() > 1){
 						auto rcp = this->interpret(manager,agent,tree->getChild(1),hashTable);
-						if(rcp->getType() != Type::TABLE)
-							throw SemanticException("In send at recipient",
+						if(rcp->getType() == Type::TABLE) {
+							for(int i=0;i<dynamic_pointer_cast<Table>(rcp)->length();i++)
+								agent->send(dynamic_pointer_cast<Turtle>(
+									dynamic_pointer_cast<Table>(rcp)->getValue(i)),
+											msg);
+						}
+						else if (rcp->getType() == Type::TURTLE) {
+								agent->send(dynamic_pointer_cast<Turtle>(rcp),
+											msg);
+						}
+						else {
+							throw SemanticException("SEND at recipient",
 													Type::TABLE,
 													rcp->getType(),
 													getPosition(tree));
-
-						for(int i=0;i<dynamic_pointer_cast<Table>(rcp)->length();i++)
-							agent->send(dynamic_pointer_cast<Turtle>(
-									     dynamic_pointer_cast<Table>(rcp)->getValue(i)),
-									     msg);
+						}
 					}
 					else{
 						agent->sendAll(msg);
