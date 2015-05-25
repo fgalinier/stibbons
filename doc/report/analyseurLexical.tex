@@ -3,7 +3,7 @@ L'analyse lexicale vise à produire un flot de jetons qui pourront être analys�
 Nous avons fait le choix d'utiliser l'outil Flex pour notre projet (cf.~\ref{Flex}).
 
 \subsection{Jetons}
-Notre analyseur lexical a dans un premier temps généré un nombre limité de jetons. Ainsi, en version 0.1, nous générions seulement 26 jetons différents (dont 5 jetons de littéraux), contre 40 jetons en version 1.0 (dont 7 jetons de littéraux). Ces jetons sont définis dans le code source bison (cf. listing~\ref{parser}) et leur valeur a un type C++ défini par la structure listing~\ref{struct-jeton}. Dans cette structure, l'attribut \verb|tok| correspond au type du jeton (défini par une énumération plus tard) tandis que l'attribut \verb|v| correspond à une valeur. En effet, notre langage ayant un typage dynamique, toutes les valeurs ont un type statique de type \verb|Value|. Ainsi, grâce au polymorphisme, le jeton aura une valeur qui pourra être de type dynamique \verb|Number|, \verb|String|, \verb|Boolean|, etc. tout en gardant un type statique de \verb|Value|. C'est lors de l'analyse sémantique (cf.~\ref{Analyseur sémantique}) que le type réel du jeton est analysé.
+Notre analyseur lexical a dans un premier temps généré un nombre limité de jetons. Ainsi, en version 0.1, nous générions seulement 26 jetons différents (dont 5 jetons de littéraux), contre 40 jetons en version 1.0 (dont 7 jetons de littéraux). Ces jetons sont définis dans le code source bison (cf. listing~\ref{parser}) et leur valeur a un type C++ défini par la structure listing~\ref{struct-jeton}. Dans cette structure, l'attribut \verb|tok| correspond au type du jeton (défini par une énumération plus tard) tandis que l'attribut \verb|v| correspond à une valeur. En effet, notre langage ayant un typage dynamique, toutes les valeurs ont un type statique de type \verb|Value|. Ainsi, grâce au polymorphisme, le jeton aura une valeur qui pourra être de type dynamique \verb|Number|, \verb|String|, \verb|Boolean|, etc. tout en gardant un type statique de \verb|Value|. C'est lors de l'analyse sémantique (cf.~\ref{analyse-semantique}) que le type réel du jeton est analysé.
 
 \begin{lstlisting}[label=struct-jeton,caption=Type des valeurs des jetons]
 struct {
@@ -18,7 +18,7 @@ Par défaut, l'analyseur lexical généré par Flex utilise des variables global
 
 \begin{figure}[h]
 \centering
-\includegraphics[scale=0.6]{doc/report/uml/reentrant-parser}
+\includegraphics[scale=0.6]{doc/report/img/reentrant-parser}
 \caption{\label{uml-lexer} UML des analyseurs lexical et syntaxique}
 \end{figure}
 
