@@ -3,22 +3,22 @@
 
 Le Logo est un langage apparu dans les années 60. Son objectif était de permettre à des personnes possédant peu de connaissances en informatique et en programmation (des enfants par exemple) de découvrir ce domaine de manière ludique et interactive. Ainsi, le langage permettait de diriger une tortue graphique, capable d'abaisser un crayon ou un feutre pour dessiner sur une feuille placé au sol. Les instructions entrées permettaient ainsi de tracer des formes, permettant une représentation très visuelle du code (la tortue physique est remplacé dans les implémentations moderne par une tortue virtuelle).
 
-Le langage Logo en lui-même est un dérivé du Lisp (il est d'ailleurs parfois nommé Lisp sans parenthèses) et possède deux types de données: les «~mots~» (chaîne de caractères) et les listes.
+Le langage Logo en lui-même est un dérivé du Lisp (il est d'ailleurs parfois nommé Lisp sans parenthèses) et possède deux types de données~: les «~mots~» (chaîne de caractères) et les listes.
 
-Du fait du public visé, les instructions de bases (par exemple \verb|forward|, \verb|left|, \verb|pendown|, etc.) et les structures du type procédures, boucles ou conditionnelles sont écrites de façon à être clairement explicite~:
+Du fait du public visé, les instructions de bases (par exemple \verb|forward|, \verb|left|, \verb|pendown|, etc.) et les structures du type procédures, boucles ou conditionnelles sont écrites de façon à être clairement explicite (cf. \ref{logo-proc}, \ref{logo-rpt} et \ref{logo-condi}).
 
-\begin{lstlisting}
+\begin{lstlisting}[language=Stibbons,label=logo-proc,caption=Procédure en Logo]
 to <nom de la procedure> :<parametre>
   <instructions>
   output <valeur a retourner>
 end
 \end{lstlisting}
 
-\begin{lstlisting}
+\begin{lstlisting}[language=Stibbons,label=logo-rpt,caption=Boucle en Logo]
 repeat <nb fois> [liste d'instruction]
 \end{lstlisting}
 
-\begin{lstlisting}
+\begin{lstlisting}[language=Stibbons,label=logo-condi,caption=Conditionnelles en Logo]
 if <test> [liste d'instruction si vrai]
 ifelse <test> [liste d'instruction si vrai] [liste d'instruction si faux]
 \end{lstlisting}
