@@ -70,15 +70,15 @@ void StibbonsHighlighter::highlightBlock(const QString &line) {
 			break;
 		default: 
 			{
-				QRegExp worldInstr("^\\s*(%[_a-z][\\-_a-z0-9]*)(.+)");
+				QRegExp worldInstr("^\\s*(%[_a-z][\\-_a-z0-9]*)(\\s.+)?");
 				worldInstr.setCaseSensitivity(Qt::CaseInsensitive);
-				QRegExp keyword("\\b(new|agent|function|for|repeat|while|if|else|and|or|xor|not)(?!-)\\b");
+				QRegExp keyword("\\b(new|agent|function|for|repeat|while|if|else|and|or|xor|not)\\b");
 				keyword.setCaseSensitivity(Qt::CaseInsensitive);
-				QRegExp lit("\\b(true|false|\\d+|null|null_t|number_t|boolean_t|string_t|color_t|table_t|type_t|turtle_t|zone_t|world_t)(?!-)\\b");
+				QRegExp lit("\\b(true|false|\\d+|null|null_t|number_t|boolean_t|string_t|color_t|table_t|type_t|turtle_t|zone_t|world_t)\\b");
 				lit.setCaseSensitivity(Qt::CaseInsensitive);
 				QRegExp color("(#[a-f0-9]{3}|#[a-f0-9]{6})\\b");
 				color.setCaseSensitivity(Qt::CaseInsensitive);
-				QRegExp turtleInstr("\\b(fd|forward|lt|turn-left|rt|turn-right|pd|pen-down|pu|pen-up|send|recv|die)(?!-)\\b");
+				QRegExp turtleInstr("\\b(fd|forward|lt|turn_left|rt|turn_right|pd|pen_down|pu|pen_up|send|recv|die)\\b");
 				turtleInstr.setCaseSensitivity(Qt::CaseInsensitive);
 				
 				if (line.mid(i, 2) == "/*") {
@@ -107,6 +107,10 @@ void StibbonsHighlighter::highlightBlock(const QString &line) {
 						setFormat(start, keyword.matchedLength(), keywordFormat);
 						i += keyword.matchedLength();
 					}
+					if ((start = line.indexOf(turtleInstr,i)) > -1) {
+						setFormat(start, turtleInstr.matchedLength(), turtleInstrFormat);
+						i += turtleInstr.matchedLength();
+					}
 					if ((start = line.indexOf(color,i)) > -1) {
 						setFormat(start, color.matchedLength(), litFormat);
 						i += color.matchedLength();
@@ -114,10 +118,6 @@ void StibbonsHighlighter::highlightBlock(const QString &line) {
 					else if ((start = line.indexOf(lit,i)) > -1) {
 						setFormat(start, lit.matchedLength(), litFormat);
 						i += lit.matchedLength();
-					}
-					if ((start = line.indexOf(turtleInstr,i)) > -1) {
-						setFormat(start, turtleInstr.matchedLength(), turtleInstrFormat);
-						i += turtleInstr.matchedLength();
 					}
 				}
 			}

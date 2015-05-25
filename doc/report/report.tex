@@ -13,16 +13,32 @@
 \usepackage[margin=2.5cm]{geometry}
 \usepackage{longtable}
 
+
+\lstdefinelanguage{Stibbons}{
+  morekeywords={
+    new,agent,for,repeat,while,fd,forward,lt,turn-left,rt,turn-right,pd,pen-down,pu,pen-up,
+    if,else,true,false,and,or,xor,not,function,null,null\_t,number\_t,boolean\_t,string\_t,
+    color\_t,table\_t,turtle\_t,zone\_t,world\_t,send,recv,die
+  },
+  sensitive=false,
+  morecomment=[s]{/*}{*/},
+  morecomment=[l]{//},
+  morestring=[b]',
+  morestring=[b]",
+}
+
 \lstset{
-		breaklines=true,
-		captionpos=b,
-		showstringspaces=true,
-		tabsize=2,
-		language=C++,
-		frame=simple,
-		float,
-		floatplacement=H
-	   }
+  breaklines=true,
+  captionpos=b,
+  showstringspaces=true,
+  tabsize=2,
+  language=C++,
+  frame=simple,
+  float,
+  floatplacement=H
+}
+
+\lstset{literate={'}{{'}}1 {"}{{\\"}}1}
 
 \railalias{lbrace}{\{}
 \railalias{rbrace}{\}}
@@ -47,6 +63,10 @@
 \railalias{turtlet}{turtle\_t}
 \railalias{zonet}{zone\_t}
 \railalias{worldt}{world\_t}
+\railalias{turnleft}{turn\_left}
+\railalias{turnright}{turn\_right}
+\railalias{penup}{pen\_up}
+\railalias{pendown}{pen\_down}
 \railterm{lbrace,rbrace,lpar,rpar,dot,comma,sharp,underscore,pipe,ampersand,squote,dquote,tquote}
 
 

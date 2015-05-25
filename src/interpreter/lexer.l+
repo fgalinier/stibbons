@@ -69,13 +69,13 @@ null {return yy::parser::token::NIL;}
 
 fd|forward {return yy::parser::token::FD;}
 
-lt|turn-left {return yy::parser::token::LT;}
+lt|turn_left {return yy::parser::token::LT;}
 
-rt|turn-right {return yy::parser::token::RT;}
+rt|turn_right {return yy::parser::token::RT;}
 
-pd|pen-down {return yy::parser::token::PD;}
+pd|pen_down {return yy::parser::token::PD;}
 
-pu|pen-up {return yy::parser::token::PU;}
+pu|pen_up {return yy::parser::token::PU;}
 
 send {return yy::parser::token::SEND;}
 

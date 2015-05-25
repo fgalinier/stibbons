@@ -5,10 +5,10 @@
 \begin{rail}
 	ID : ( 'a-z' | underscore ) ( ( 'a-z'  | underscore | '0-9' ) * ) ;
 	FD : 'fd' | 'forward'	;
-	LT : 'lt' | 'turn-left'	;
-	RT : 'rt' | 'turn-right' ;
-	PD : 'pd' | 'pen-down' ;
-	PU : 'pu' | 'pen-up' ;
+	LT : 'lt' | turnleft	;
+	RT : 'rt' | turnright ;
+	PD : 'pd' | pendown ;
+	PU : 'pu' | penup ;
 	SEND : 'send'	;
 	RECV : 'recv'	;
 	DIE : 'die'	;
