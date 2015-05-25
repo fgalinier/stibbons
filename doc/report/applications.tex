@@ -10,13 +10,13 @@
 \end{figure}
 
 L'interface de la version 0.1 (cf. Figure~\ref{screenshot-0.1}) de Stibbons est composée d'une fenêtre séparée en une barre d'outil et une vue du monde.
-La barre d'outil contient un bouton permettant d'ouvrir un fichier contenant un programme Stibbons (Ctrl+O), un bouton permettant d'exécuter le programme ouvert, un bouton de pause non fonctionnel, et un bouton ouvrant un menu proposant la boîte de dialogues « À propos » et de quitter l'application (Ctrl+Q).
+La barre d'outil contient un bouton permettant d'ouvrir un fichier contenant un programme Stibbons (Ctrl+O), un bouton permettant d'exécuter le programme ouvert, un bouton de pause non fonctionnel, un bouton ouvrant un menu proposant la boîte de dialogues « À propos » et de quitter l'application (Ctrl+Q).
 
 Si la boîte de dialogue permettant d'ouvrir un programme est fermée sans avoir choisi de fichier, une message d'erreur l'indiquant est alors affiché.
 
 Une tortue existe par défaut dans le monde, elle est située dans le coin supérieur gauche de la vue et est orientée vers la droite. La tortue est alors dessinée comme un triangle noir creux et elle peut dessiner des lignes noires.
 
-L'analyseur syntaxique n'étant alors pas réentrant, ouvrir plusieur programmes les uns après les autres implique alors de redémarrer l'application.
+L'analyseur syntaxique n'étant alors pas réentrant, ouvrir plusieurs programmes les uns après les autres implique alors de redémarrer l'application.
 
 \subsection{Version 0.2}
 
@@ -27,7 +27,7 @@ L'analyseur syntaxique n'étant alors pas réentrant, ouvrir plusieur programmes
 \caption{\label{screenshot-0.2} Capture d'écran de la version 0.2}
 \end{figure}
 
-La version 0.2 (cf. Figure~\ref{screenshot-0.2}) apporte peu de modifications à l'application Stibbons elle même, le changement le plus visible étant le placement temporaire de l'origine au centre de la vue, afin d'avoir une meilleure vue du programme s'exécutant.
+La version 0.2 (cf. Figure~\ref{screenshot-0.2}) apporte peu de modifications à l'application Stibbons elle-même, le changement le plus visible étant le placement temporaire de l'origine au centre de la vue, afin d'avoir une meilleure vue du programme s'exécutant.
 
 \subsection{Version 0.3}
 
@@ -40,9 +40,9 @@ La version 0.2 (cf. Figure~\ref{screenshot-0.2}) apporte peu de modifications à
 
 À partir de la version 0.3 (cf. Figure~\ref{screenshot-0.3}), les couleurs des tortues peuvent être modifiées et, afin de les rendre plus visibles, elles sont désormais dessinées comme des triangles pleins. La ligne dessinée par une tortue prend la couleur de cette dernière au moment de l'abaissement du stylo.
 
-Le monde est désormais borné et est centré dans la vue, les zones le constituant sont désormais affichées, et leurs couleurs peuvent être modifiées. Si la vue est plus petite que le monde, des ascenseurs seront affichés.
+Le monde est désormais borné et est centré dans la vue, les zones le constituant sont désormais affichées, et leurs couleurs peuvent être modifiées. Si la vue est plus petite que le monde, des ascenseurs apparaissent.
 
-Redessiner le monde prennait de plus en plus de temps au fur et à mesure que le nombre de lignes le constituant augmentait, afin d'améliorer drastiquement les performances de rendu, les lignes seront désormais dessinées sur un tampon et seules les nouvelles lignes ont donc besoin d'être dessinées sur ce dernier, avant de le reporter sur la vue.
+Redessiner le monde prennait de plus en plus de temps au fur et à mesure que le nombre de lignes le constituant augmentait. Afin d'améliorer drastiquement ces performances de rendu, les lignes seront désormais dessinées sur un tampon et seules les nouvelles lignes auront donc besoin d'être dessinées sur ce dernier, avant d'être reporté sur la vue.
 
 \subsection{Version 0.4}
 
@@ -74,7 +74,7 @@ Le monde ne comporte plus de tortue par défaut et c'est désormais celui-ci qui
 \caption{\label{screenshot-1.0} Capture d'écran de la version 1.0}
 \end{figure}
 
-La version 1.0 (cf. Figure~\ref{screenshot-1.0}) marque l'apparition d'un éditeur de programme Stibbons dans l'application elle même. L'éditeur propose également une coloration syntaxique. L'ajout de cet éditeur implique que les boutons de démarrage, de pause et de redémarrage ne sont plus cachés par défaut car il est désormais possible d'exécuter un programme écrit sans en avoir chargé un avant.
+La version 1.0 (cf. Figure~\ref{screenshot-1.0}) marque l'apparition d'un éditeur de programme Stibbons dans l'application elle-même. L'éditeur propose également une coloration syntaxique. L'ajout de cet éditeur implique que les boutons de démarrage, de pause et de redémarrage ne soient plus cachés par défaut car il est désormais possible d'exécuter un programme écrit sans en avoir chargé un avant.
 
 De nombreux raccourcis clavier sont ajoutés, afin d'enregistrer le programme dans son fichier (Ctrl+S) ou dans un nouveau fichier (Ctrl+Shift+S), d'exporter le modèle (Ctrl+E) et de démarrer ou mettre en pause l'exécution du programme (Ctrl+Espace).
 
@@ -107,7 +107,7 @@ Arguments~:
 
 Le programme analyse la ligne de commande à l'aide de la classe QCommandLineParser, puis crée et exécute un objet représentant l'application selon les paramètres passés par l'utilisateur.
 
-Lors de l'exécution de l'application, il est possible d'exporter le modèle à intervale régulier grâce à l'option \texttt{-{}-}export. Par défaut, le modèle est exporté dans un fichier JSON, mais il est également possible d'exporter un rendu du monde en PNG, ou de ne pas exporter.
+Lors de l'exécution de l'application, il est possible d'exporter le modèle à intervalle régulier grâce à l'option \texttt{-{}-}export. Par défaut, le modèle est exporté dans un fichier JSON, mais il est également possible d'exporter un rendu du monde en PNG, ou encore de ne rien exporter.
 
 Afin de pouvoir dessiner le monde dans un fichier image, la classe WorldView, widget de l'application graphique jusque là responsable de dessiner le monde sur lui même, a vu ses fonctionnnalités de dessin d'un monde migrer vers la nouvelle classe WorldPainter, capable de dessiner un monde sur une surface.
-Cette nouvelle classe est désormais utilisée dans l'application graphique par WorldView pour se dessiner, et par l'application en ligne de commandes pour dessiner sur une QImage.
+Cette nouvelle classe est désormais utilisée dans l'application graphique par WorldView pour se dessiner, et par l'application en ligne de commande pour dessiner sur une QImage.
