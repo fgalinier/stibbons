@@ -1,11 +1,11 @@
 \section{Sujet}
 	\subsection{Objectif}
-	Le projet Stibbons est un projet visant à créer un interprète d'un dérivé de Logo, un langage de programmation permettant l'animation d'une «~tortue~» (cf. \ref{Logo}). Nous avons choisi de développer un langage multi-agents, à l'instar de NetLogo ou StarLogo (cf. \ref{NetLogo} et \ref{StarLogo}). Ainsi, l'objectif de ce projet était double~: la réalisation d'un interprète, capable d'analyser du code écrit dans un derivé de Logo, ainsi que la réalisation d'une application graphique capable de représenter l'évolution des agents.
+	Le projet Stibbons vise à créer un interprète d'un dérivé de Logo, un langage de programmation permettant l'animation d'un agent mobile dit «~tortue~» (cf. \ref{Logo}). Nous avons choisi de développer un langage multi-agents, à l'instar de NetLogo ou StarLogo (cf. \ref{NetLogo} et \ref{StarLogo}), rendant ainsi l'objectif de ce projet double~: d'une la réalisation d'un interprète capable d'analyser du code écrit dans un derivé de Logo, d'autre part la réalisation d'une application graphique capable de représenter l'évolution des agents.
 
-	\subsection{Système multi-agents}
-	Les systèmes multi-agents sont une approche de l'intelligence artificielle visant à facilité la résolution d'un problème en le découplant en plusieurs sous-problèmes. Ainsi, plutôt que de chercher à développer une intelligence unique complexe capable de résoudre le problème, l'approche multi-agent vise plutôt à créer des multitudes d'intelligences capables de résoudre qu'une petite partie du problème, et de compter sur l'intelligence collective émergeante pour voir apparaitre la solution au problème \cite{sma}.
+	\subsection{Systèmes multi-agents}
+	Les systèmes multi-agents sont une approche de l'intelligence artificielle visant à faciliter la résolution d'un problème en le découplant en plusieurs sous-problèmes. Ainsi, plutôt que de chercher à développer une intelligence unique complexe capable de résoudre le problème, l'approche multi-agent vise plutôt à créer des multitudes d'intelligences capables de résoudre une petite partie du problème, et de compter sur l'intelligence collective émergeante pour voir apparaître la solution au problème \cite{sma}.
 
-	Ainsi, on peut prendre en exemple les fourmis qui, bien que n'ayant individuellement qu'une capacité «~limitée~», sont capables de survivre grâce à la synergie de leurs colonies.
+	Ainsi, on peut prendre en exemple les fourmis qui, bien que n'ayant individuellement qu'une capacité limitée, sont capables de survivre grâce à la synergie de leurs colonies.
 
 \section{Cahier des charges}
 	\subsection{Fonctionnalités attendues}
@@ -13,14 +13,14 @@
 	\begin{itemize}
 		\item chaque agent devait être capable de communiquer avec les autres agents~;
 		\item chaque agent devait pouvoir modifier d'une certaine façon le monde~;
-		\item des structures des langages modernes de la programmation impératives devaient être présent dans le langage (tels que les conditionnelles, les boucles, les fonctions, etc.)~;
+		\item le langage devait comprendre des structures des langages de programmation impérative modernes, telles que des conditionnelles, des boucles, des fonctions, etc.~;
 		\item l'utilisateur devait pouvoir voir le monde où évoluent ces agents.
 	\end{itemize}
 
         \subsection{Contraintes}
-        Nous avions dès le début isolé un certain nombre de contraintes que nous voulions pour notre projet~:
+        Nous avions dès le début isolé un certain nombre de contraintes que nous souhaitions pour ce projet~:
         \begin{itemize}
-          \item l'utilisation d'un langage non interprété, de type C ou C++~;
-		  \item chaque agent devait évoluer parallèlement aux autres agents (threads)~;
+          \item l'utilisation d'un langage non interprété, de type C ou C++, pour son développement~;
+		  \item chaque agent devait évoluer parallèlement aux autres agents~;
           \item l'utilisation d'une méthode agile pour développer le projet.
         \end{itemize}
