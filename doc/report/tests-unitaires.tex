@@ -1,2 +1,11 @@
 \section{Tests unitaires}
+\subsection{CppUnit}
+CppUnit (ref.~\cite{CppUnit}) est un outil permettant d'organiser ses tests unitaires.
+ On définit une classe de tests avec des attributs nécessaires aux tests, et des méthodes qui réalisent les tests souhaités. Cette classe est ensuite enregistrée dans le registre des tests (cf. TestAgent.cpp).
+
+CppUnit posséde des macros pour simplifier les tests comme :
+CPPUNIT\_ASSERT(test), CPPUNIT\_ASSERT\_EQUAL(v1,v2),...
+
+Lors de l'exécution, il indique combien de tests ont réussit et échoué.
+Son écriture est simple, et son organisation permet une lecture rapide des tests.
 
