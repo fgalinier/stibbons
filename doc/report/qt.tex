@@ -39,12 +39,11 @@ Ainsi un widget peut émettre des signaux contenant ou non des données (par exe
 
 \subsubsection{Une extension à C++}
 
-Qt propose une extension à C++~: il y ajoute des mots-clés pour permettre de simplifier la définition d'objets descendants de QObject.
-, tout particulièrement en spécifiant un ensemble de slots d'une certaine visibilité.
+Qt propose une extension à C++~: il y ajoute des mots-clés pour permettre de simplifier la définition d'objets descendants de QObject, tout particulièrement en spécifiant un ensemble de slots d'une certaine visibilité.
 Ainsi lors de la déclaration d'une classe, il est possible de déclarer une liste de slots publics ou de signaux en les précédant des mentions \verb|public slots| et \verb|signals|, respectivement.
 Le Meta-Object Compiler de Qt est alors utilisé pour convertir ces définitions en C++ classique à la compilation.
 
-Qt propose également un système permettant d'embarquer des ressources (images, sons, ...) directement dans le binaire produit via la définition d'un fichier de collection de ressources (\verb|.qrc|) et l'utilisation d'un Ressource Compiler.
+Qt propose également un système permettant d'embarquer des ressources (images, sons, etc.) directement dans le binaire produit via la définition d'un fichier de collection de ressources (\verb|.qrc|) et l'utilisation d'un Ressource Compiler.
 
 qmake est un générateur de Makefiles permettant de simplifier l'utilisation du Meta-Object Compiler et du Ressource Compiler.
 
@@ -60,11 +59,11 @@ Il est possible de réaliser des widgets personnalisés en redéfinissant la mé
 
 Une instance QPainter est liée à un widget et propose diverses méthodes permettant de dessiner~:
 \begin{itemize}
-	\item des lignes
-	\item des arcs de cercle
-	\item des polygones
-	\item des ellipses
-	\item des images
-	\item du texte
+	\item des lignes~;
+	\item des arcs de cercle~;
+	\item des polygones~;
+	\item des ellipses~;
+	\item des images~;
+	\item du texte.
 \end{itemize}
 
