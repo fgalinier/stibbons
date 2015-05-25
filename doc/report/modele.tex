@@ -42,11 +42,11 @@ new agent {
 }
 \end{lstlisting}
 \subsubsection{Sprints 3 et 4}
-Lors du troisième sprint, nous avons mis en place des pointers intelligents dans toutes nos classes (cf figure~\ref{v0.3}). Le but de ce sprint était la mise en place de la communication entre les agents. //Les tortues peuvent communiquer avec les zones par écriture dans leurs propriétés. //Les zones ont des propriétés prédéfinis comme la couleur. L'utilisateur ne peux pas en ajouter.//A VOIR !!!!!!! Les tortues peuvent communiquer entre elles grâce à des méthodes comme sendAll(message), recv(), etc.
+Lors du troisième sprint, nous avons mis en place des pointers intelligents dans toutes nos classes (cf figure~\ref{v0.3}). Le but de ce sprint était la mise en place de la communication entre les agents. Les tortues peuvent communiquer avec les zones par écriture dans leurs propriétés. Les tortues peuvent communiquer entre elles grâce à des méthodes comme sendAll(message), recv(), etc.
 
 L'étape suivante était d'ajouter des fonctionnalités tel que la maîtrise du temps et l'exportation du modèle. Ces ajouts ne provoquent pas de changement du coté du modèle, si ce n'est quelques méthodes dans les classes World et Turtle et Zone pour l'exportation du modèle.
 
-L'exportation du modèle consiste à créer une sauvegarde de l'état du modèle à un instant t dans un fichier JSON grâce à la biliothèque JSON Spirit.
+L'exportation du modèle consiste à créer une sauvegarde de l'état du modèle à un instant t dans un fichier JSON grâce à la bibliothèque JSON Spirit.
 Cela permettra ensuite, en passant par une transformation en CSV, d'avoir un tableau avec toutes ces données, ce qui offre la possibilité d'avoir des diagrammes de l'évolution du monde.
 
 La maîtrise du temps se fait grâce à un bouton pause, qui arrête les threads qui s'exécutent, ou par un slider qui permet de ralentir ou de diminuer la vitesse. Cela se fait dans le code grâce à une méthode sleepfor() qui prend en paramètre un temps donné. Cette fonctionnalité n'impact pas le modèle.
