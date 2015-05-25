@@ -1,20 +1,19 @@
 \section{NetLogo}
 \label{NetLogo}
 
-NetLogo est un environnement de modélisation programmable pour simuler et observer des phénomènes naturels et sociaux au fil du temps développé à la Northwestern University (ref \cite{netlogo}). Il permet de donné des instructions et de regarder des agents réalisé ces dernières. On peut alors faire des observations et des connections inter-agents au niveau micro (individu par individu) comme au niveau macro (monde global).
-NetLogo étant un dérivé de Logo, il a récupéré la simplicité du code pour pouvoir être utilisé par un public variés, notamment pour apprendre aux enfant à programmer, d'où sa syntaxe simple. Cependant,comme expliqué dans l'article \cite{Logo}, des études sur Logo ont montré que les enfants, hormis quelques exceptions, n'arrive pas à créer un programme entier et code «~ligne par ligne~» ce qui les empêchent de créer un modèle complexe et de cerner l'ensemble de la syntaxe de NetLogo.
-Il est aussi utilisé dans de nombreux domaines de recherche comme l'économie, la biologie, la physique,la chimie... et de nombreux articles ont été publié sur NetLogo.
+NetLogo est un environnement de modélisation programmable pour simuler et observer des phénomènes naturels et sociaux au fil du temps développé à la Northwestern University (ref.~\cite{netlogo}). Il permet de donner des instructions et de regarder des agents réaliser ces dernières. On peut alors faire des observations et des connexions inter-agents au niveau micro (individu par individu) comme au niveau macro (monde global).
+Il est aussi utilisé dans de nombreux domaines de recherche comme l'économie, la biologie, la physique, la chimie, etc. et de nombreux articles ont été publié sur NetLogo.
 
 Au niveau du programme en lui-même, NetLogo est composé de 3 onglets~:
 \begin{itemize}
 	\item onglet info~: c'est la documentation du code~;
-	\item onglet code~: le code permettant de crée le modèle du monde ainsi que le comportement des agents y sont implémentés. On peut y retrouver les différentes procédures ainsi qu'une procédure «~Mere~» qui permettra d'initialisé le modèle. Certaines procédures, ou parfois attributs, peuvent être lié à des widgets dans l'interface~;
-	\item onglet interface~: l'interface contient deux parties.
+	\item onglet code~: le code permettant de créer le modèle du monde ainsi que le comportement des agents y sont implémentés. Certaines procédures, ou parfois attributs, peuvent être lié à des widgets dans l'interface~;
+	\item onglet interface~:
+          \begin{itemize}
+          \item la partie «~observation~» qui est représenté par une fenêtre où l'on verra notre modèle dans le temps. Le rendu du modèle peut être en 2D comme en 3D~;
+          \item la partie «~construction~» où l'on peut ajouter des widgets dans le but d’interagir avec le code. Par exemple un slider «~nb\_population~» qui permettra de choisir combien de tortues vont être créées sans modifier le code. On peut également y faire apparaître des boutons pour lancer ou arrêter des procédures, des graphes pour observer des variations, des switch pour gérer les variables globales, des notes, etc. On peut également contrôler le temps, ralentir pour mieux observer, accélérer pour voir ce que produit le modèle.
+          \end{itemize}
 \end{itemize}
-
-La partie «~observation~» qui est représenté par une fenêtre où l'on verra notre modèle dans le temps. Le rendu du modèle peut être en 2D comme en 3D.
-
-La partie «~construction~» où l'on peut ajouter des widgets dans le but d’interagir avec le code. Par exemple un slider «~nb\_population~» qui permettra de choisir combien de tortue vont être crée sans modifier le code. On peut également y faire apparaître des boutons pour lancer ou arrêter des procédures, des graphes pour observer des variations, des switch pour gérer les variables globales, des notes... On peut également contrôler le temps, ralentir pour mieux observer, accélérer pour voir ce que produit le modèle.
 
 NetLogo permet donc une interaction très rapide entre le code et le rendu graphique. Ceci permet aux développeurs de «~jouer~» avec leurs modèles en modifiant facilement certaines conditions et donc d'ajuster immédiatement leur code comme ils le souhaitent.
 
