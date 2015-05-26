@@ -1,3 +1,5 @@
 *.rai
 *.rao
+refman
 report/rail
+report/refman.tex

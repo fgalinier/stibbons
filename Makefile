@@ -212,6 +212,7 @@ REPDEPS = \
 	$(REPDIR)/modele.tex \
 	$(REPDIR)/netlogo.tex \
 	$(REPDIR)/qt.tex \
+	$(REPDIR)/refman.tex \
 	$(REPDIR)/reunion1.tex \
 	$(REPDIR)/reunion2.tex \
 	$(REPDIR)/reunion3.tex \
@@ -231,20 +232,25 @@ REPPDF = $(PDFDIR)/report.pdf
 REPPDFCLN = \
 	$(REPPDF) \
 	$(PDFDIR)/report.aux \
+	$(PDFDIR)/report.brf \
+	$(PDFDIR)/report.idx \
 	$(PDFDIR)/report.lof \
 	$(PDFDIR)/report.log \
 	$(PDFDIR)/report.lol \
 	$(PDFDIR)/report.lot \
+	$(PDFDIR)/report.out \
 	$(PDFDIR)/report.rai \
 	$(PDFDIR)/report.rao \
 	$(PDFDIR)/report.toc \
 	$(REPDIR)/report.aux \
 	$(REPDIR)/report.bbl \
 	$(REPDIR)/report.blg \
+	$(REPDIR)/report.idx \
 	$(REPDIR)/report.lof \
 	$(REPDIR)/report.log \
 	$(REPDIR)/report.lol \
 	$(REPDIR)/report.lot \
+	$(REPDIR)/report.out \
 	$(REPDIR)/report.rai \
 	$(REPDIR)/report.toc \
 	$(NULL)
@@ -356,6 +362,12 @@ $(REPDIR)/report.tex: $(REPDEPS)
 $(RAILBIN): $(RAILDIR)/Makefile
 	make -C $(<D) -f $(<F)
 
+doc/refman:
+	doxygen Doxyfile
+
+$(REPDIR)/refman.tex: doc/refman
+	grep "^\\\\input{\|^\\\\chapter{" doc/refman/latex/refman.tex | sed 's/\\input{/\\input{doc\/refman\/latex\//' > $@
+
 install: install-stibbons install-stibbons-cli
 
 install-stibbons:
@@ -386,9 +398,11 @@ clean:
 	$(COMMONOBJECTS) \
 	$(CLIMOCSRC) \
 	$(CLIOBJECTS) \
-	$(REPPDFCLN)\
-	$(PROPDFCLN)\
-	$(NULL)\
+	$(REPPDFCLN) \
+	$(PROPDFCLN) \
+	doc/refman \
+	$(REPDIR)/refman.tex \
+	$(NULL) \
 	sauvegarde.json
 	make clean -C $(RAILDIR) -f Makefile
 

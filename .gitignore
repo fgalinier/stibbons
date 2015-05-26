@@ -10,15 +10,18 @@ test
 *.moc.cpp
 
 # LaTeX
-*.pdf
+*.aux
+*.bbl
+*.blg
+*.brf
+*.idx
 *.lof
 *.log
 *.lol
 *.lot
-*.aux
+*.out
+*.pdf
 *.toc
-*.bbl
-*.blg
 *.rai
 *.rao
 
