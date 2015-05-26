@@ -6,9 +6,9 @@
 Flex est une version libre de l'analyseur lexical Lex (ref.~\cite{flex}). Il est généralement associé à l'analyseur syntaxique GNU Bison, la version GNU de Yacc.
 Il lit les fichiers d'entrée donnés pour obtenir la description de l'analyseur à générer. La description est une liste de paires d'expressions rationnelles et de code C, appelées règles.
 
-Un fichier flex est composé de plusieurs parties. La première contient une partie optionnelle de définition, encadrée par les symboles \verb|%{ %}| (cf. listing \ref{flex-definition}), ainsi que des options pour flex (cf. Listing~\ref{flex-options}). La seconde partie est une partie obligatoire de règles, commençant par \verb|%%| (cf. Listing~\ref{flex-regles}), tandis que la dernière partie est une nouvelle partie optionnelle, débutée par \verb|%%|, pouvant contenir des fonctions C/C++ définies par l'utilisateur (cf. Listing~\ref{flex-fonctions}).
+Un fichier Flex est composé de plusieurs parties. La première contient une partie optionnelle de définition, encadrée par les symboles \verb|%{ %}| (cf. Listing \ref{flex-definition}), ainsi que des options pour Flex (cf. Listing~\ref{flex-options}). La seconde partie est une partie obligatoire de règles, commençant par \verb|%%| (cf. Listing~\ref{flex-regles}), tandis que la dernière partie est une nouvelle partie optionnelle, débutée par \verb|%%|, pouvant contenir des fonctions C/C++ définies par l'utilisateur (cf. Listing~\ref{flex-fonctions}).
 
-\begin{lstlisting}[caption=Partie définition d'un fichier flex,label=flex-definition]
+\begin{lstlisting}[caption=Partie définition d'un fichier Flex,label=flex-definition]
 %{
  int yyFlexLexer::yywrap() {
 	return 1;
@@ -16,19 +16,19 @@ Un fichier flex est composé de plusieurs parties. La première contient une par
 %}
 \end{lstlisting}
 
-\begin{lstlisting}[caption=Options flex,label=flex-options]
+\begin{lstlisting}[caption=Options de Flex,label=flex-options]
 %option c++
 %option nodefault
 \end{lstlisting}
 
-\begin{lstlisting}[label=flex-regles,caption=Partie règles de flex]
+\begin{lstlisting}[label=flex-regles,caption=Partie règles de Flex]
 %%
 #([a-f0-9]{6}|[a-f0-9]{3}) {
 							pyylval->v=make_shared<stibbons::Color>(yytext);
 							return yy::parser::token::COLOR;
 						   }
 \end{lstlisting}
-\begin{lstlisting}[label=flex-fonctions,caption=Partie fonctions de flex]
+\begin{lstlisting}[label=flex-fonctions,caption=Partie fonctions de Flex]
 %%
 int main(){
 	// ...
@@ -36,16 +36,16 @@ int main(){
 \end{lstlisting}
 
 La transformation en code C++ se fait par compilation via l'appel à l'application \verb|flex -+ exemple.l+|. La fonction d'analyse ainsi générée se nomme \verb|yylex()|.
-Il faut par la suite penser à compiler le programme en liant la bibliothèque flex via le flag \verb|-lfl|.
+Il faut par la suite penser à compiler le programme en liant la bibliothèque Flex via le flag \verb|-lfl|.
 
 \subsection{Bison}
 \label{Bison}
 
-GNU Bison est une version de yacc (ref.~\cite{bison}), un outil d'analyse syntaxique (cf.~\ref{analyse-syntaxique}). Il génère un analyseur syntaxique ascendant utilisant un automate à pile (dérivation à droite, on remplace le symbole non terminal le plus à droite).
+GNU Bison est une version de Yacc (ref.~\cite{bison}), un outil d'analyse syntaxique (cf.~\ref{analyse-syntaxique}). Il génère un analyseur syntaxique ascendant utilisant un automate à pile (dérivation à droite, remplaçant le symbole non terminal le plus à droite).
 
-Son fonctionnement est le suivant~: à chaque règle de grammaire, on associe des actions (instructions d'un langage). L'analyseur généré essaie de reconnaître un mot du langage défini par la grammaire. Il exécute les actions pour chaque règle reconnue.
+Son fonctionnement est le suivant~: à chaque règle de grammaire, on associe des actions (instructions d'un langage). L'analyseur généré essaie de reconnaître un mot du langage défini par la grammaire et exécute les actions pour chaque règle reconnue.
 
-Comme pour Flex, un fichier Bison est composé de trois parties. La première partie, facultative, contient une liste de définition C/C++, d'options bisons ainsi que de définition de jetons (cf. Listing~\ref{bison-definition}), la seconde partie, contenue entre \verb|%%|, contient les règles (cf. Listing~\ref{bison-regle}) et une dernière partie optionnelle écrite en C/C++.
+Comme pour Flex, un fichier Bison est composé de trois parties~: la première partie, facultative, contient une liste de définition C/C++, d'options Bison ainsi que de définition de jetons (cf. Listing~\ref{bison-definition}), la seconde partie, contenue entre \verb|%%|, contient les règles (cf. Listing~\ref{bison-regle}) et une dernière optionnelle de C/C++.
 
 \begin{lstlisting}[label=bison-definition,caption=Definition C++ en bison]
 %skeleton "lalr1.cc"
@@ -97,14 +97,14 @@ selection : IF expr statement
 
 Les différents types de jeton sont déclarés via l'instruction \verb|%token NOM_DU_JETON| dans la première partie. On peut également définir le type C/C++ de la valeur du jeton via l'instruction \verb|%union|, ou en redéfinissant la macro \verb|YYSTYPE| (cf.~\ref{exemple-union} et \ref{exemple-yystype}).
 
-\begin{lstlisting}[label=exemple-union,caption=Exemple du type des valeurs des jetons avant la 0.3]
+\begin{lstlisting}[label=exemple-union,caption=Exemple du type des valeurs des jetons avant la version 0.3]
 %union{
   stibbons::Value* v;
   stibbons::Tree* tr;
 }
 \end{lstlisting}
 
-\begin{lstlisting}[label=exemple-yystype,caption=Exemple du type des valeurs des jetons en 1.0]
+\begin{lstlisting}[label=exemple-yystype,caption=Exemple du type des valeurs des jetons en version 1.0]
 #define YYSTYPE struct { stibbons::ValuePtr v; stibbons::TreePtr tr; int tok; }
 \end{lstlisting}
 

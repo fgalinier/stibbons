@@ -1,9 +1,9 @@
-L'analyse syntaxique permet de vérifier que la structure d'un programme est bien en accord avec les règles de grammaire du langage. Par exemple, la grammaire de notre langage comporte une règle qui indique que le jeton \verb|<FD>| doit être suivi d'un jeton \verb|<NUMBER>|. Le but de notre analyse ici est double~: vérifier que le programme est bien un programme de notre langage valide, mais également généré un arbre abstrait qui pourra facilement être analysé par notre analyseur sémantique.
+L'analyse syntaxique permet de vérifier que la structure d'un programme est bien en accord avec les règles de grammaire du langage. Par exemple, la grammaire de notre langage comporte une règle qui indique que le jeton \verb|<FD>| doit être suivi d'un jeton \verb|<NUMBER,>|. Le but de notre analyse ici est double~: vérifier que le programme est bien un programme de notre langage valide, mais également générer un arbre abstrait qui pourra facilement être analysé par notre analyseur sémantique.
 
 Nous avons fait le choix d'utiliser GNU Bison (cf.~\ref{Bison}) dans notre projet.
 
 \subsection{Arbre abstrait}
-Un arbre abstrait est une structure d'arbre dont chaque noeud feuille représente les opérandes des opérations contenues sur les autres noeuds. Cet arbre peut être considéré comme une forme de code intermédiaire, et peut être interprété très facilement en interprétant pour chaque noeud, les sous-arbres et en appliquant l'opération du noeud courant.
+Un arbre abstrait est une structure d'arbre dont chaque noeud feuille représente les opérandes des opérations contenues sur les autres noeuds. Cet arbre peut être considéré comme une forme de code intermédiaire, et peut être interprété très facilement en parcourant, pour chaque noeud, les sous-arbres et en appliquant l'opération du noeud courant.
 
 \begin{figure}[h!]
 \centering
@@ -31,7 +31,7 @@ Un arbre abstrait est une structure d'arbre dont chaque noeud feuille représent
 L'avantage de générer un tel arbre est qu'il est bien plus rapide d'effectuer un parcours d'arbre à chaque interprétation plutôt que de refaire une analyse syntaxique à chaque fois.
 
 \subsection{Fonctionnement}
-L'écriture du fichier Bison est assez semblable au fichier Flex. En effet, on peut associer pour chaque règle une liste d'instructions qui vont être exécutées lors de la détection de la règle. Ces instructions peuvent en outre être des affectations de valeur sémantique à une expression. Ainsi, dans l'extrait de code \ref{bison-extrait}, la valeur sémantique d'une sélection est un arbre dont les enfants sont dans l'ordre~: l'expression de test, la séquence d'instructions à exécuter si la condition est vrai et, optionnellement, la séquence d'instructions à exécuter si la condition est fausse.
+L'écriture du fichier Bison est assez semblable au fichier Flex. En effet, on peut associer à chaque règle une liste d'instructions qui vont être exécutées lors de la détection de la règle. Ces instructions peuvent en outre être des affectations de valeur sémantique à une expression. Ainsi, dans l'extrait de code \ref{bison-extrait}, la valeur sémantique d'une sélection est un arbre dont les enfants sont dans l'ordre~: l'expression de test, la séquence d'instructions à exécuter si la condition est vrai et, optionnellement, la séquence d'instructions à exécuter si la condition est fausse.
 
 \begin{lstlisting}[label=bison-extrait,caption=Cas du IF en Bison]
 selection : IF expr statement 

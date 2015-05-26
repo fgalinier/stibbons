@@ -16,7 +16,7 @@ Si la boîte de dialogue permettant d'ouvrir un programme est fermée sans avoir
 
 Une tortue existe par défaut dans le monde, elle est située dans le coin supérieur gauche de la vue et est orientée vers la droite. La tortue est alors dessinée comme un triangle noir creux et elle peut dessiner des lignes noires.
 
-L'analyseur syntaxique n'étant alors pas réentrant, ouvrir plusieurs programmes les uns après les autres implique alors de redémarrer l'application.
+L'analyseur syntaxique n'étant à ce moment pas réentrant, ouvrir plusieurs programmes les uns après les autres implique alors de redémarrer l'application.
 
 \subsection{Version 0.2}
 
@@ -42,7 +42,7 @@ La version 0.2 (cf. Figure~\ref{screenshot-0.2}) apporte peu de modifications à
 
 Le monde est désormais borné, c'est à dire que les tortues ne peuvent plus sortir du monde visible pour l'utilisateur, et est centré dans la vue, les zones le constituant sont désormais affichées, et leurs couleurs peuvent être modifiées. Si la vue est plus petite que le monde, des ascenseurs seront affichés.
 
-Redessiner le monde prennait de plus en plus de temps au fur et à mesure que le nombre de lignes le constituant augmentait. Afin d'améliorer drastiquement ces performances de rendu, les lignes seront désormais dessinées sur un tampon et seules les nouvelles lignes auront donc besoin d'être dessinées sur ce dernier, avant d'être reporté sur la vue.
+Redessiner le monde prennait de plus en plus de temps au fur et à mesure que le nombre de lignes le constituant augmentait. Afin d'améliorer drastiquement ces performances de rendu, les lignes seront désormais dessinées sur un tampon et seules les nouvelles lignes auront donc besoin d'être dessinées sur ce dernier, avant qu'il soit reporté sur la vue.
 
 \subsection{Version 0.4}
 
@@ -53,7 +53,7 @@ Redessiner le monde prennait de plus en plus de temps au fur et à mesure que le
 \caption{\label{screenshot-0.4} Capture d'écran de la version 0.4}
 \end{figure}
 
-À partir de la version 0.4 (cf. Figure~\ref{screenshot-0.4}), il est possible de modifier la vitesse d'exécution du programme, de le mettre en pause, de reprendre son exécution et de le redémarrer depuis le début (F5). De plus, l'analyseur syntaxique étant désormais réentrant, il est possible d'ouvrir plusieur programmes les uns à la suite des autres.
+À partir de la version 0.4 (cf. Figure~\ref{screenshot-0.4}), il est possible de modifier la vitesse d'exécution du programme, de le mettre en pause, de reprendre son exécution et de le redémarrer depuis le début (F5). De plus, l'analyseur syntaxique étant désormais réentrant, il est possible d'ouvrir plusieurs programmes les uns à la suite des autres.
 
 Les boutons de démarrage et de mise en pause sont désormais confondus, et sont cachés, de même que le bouton de redémarrage, tant qu'aucun programme n'a été ouvert.
 
@@ -105,9 +105,9 @@ Arguments~:
 
 \subsection{Fonctionnement}
 
-Le programme analyse la ligne de commande à l'aide de la classe QCommandLineParser, puis crée et exécute un objet représentant l'application selon les paramètres passés par l'utilisateur.
+Le programme analyse la ligne de commande à l'aide de la classe \verb|QCommandLineParser|, puis crée et exécute un objet représentant l'application selon les paramètres passés par l'utilisateur.
 
-Lors de l'exécution de l'application, il est possible d'exporter le modèle à intervalle régulier grâce à l'option \texttt{-{}-}export. Par défaut, le modèle est exporté dans un fichier JSON, mais il est également possible d'exporter un rendu du monde en PNG, ou encore de ne rien exporter.
+Lors de l'exécution de l'application, il est possible d'exporter le modèle à intervalle régulier grâce à l'option \verb|--export|. Par défaut, le modèle est exporté dans un fichier JSON, mais il est également possible d'exporter un rendu du monde en PNG, ou encore de ne rien exporter.
 
-Afin de pouvoir dessiner le monde dans un fichier image, la classe WorldView, widget de l'application graphique jusque là responsable de dessiner le monde sur lui même, a vu ses fonctionnnalités de dessin d'un monde migrer vers la nouvelle classe WorldPainter, capable de dessiner un monde sur une surface.
-Cette nouvelle classe est désormais utilisée dans l'application graphique par WorldView pour se dessiner, et par l'application en ligne de commande pour dessiner sur une QImage.
+Afin de pouvoir dessiner le monde dans un fichier image, la classe \verb|WorldView|, widget de l'application graphique jusque là responsable de dessiner le monde sur lui même, a vu ses fonctionnnalités de dessin d'un monde migrer vers la nouvelle classe \verb|WorldPainter|, capable de dessiner un monde sur une surface.
+Cette nouvelle classe est désormais utilisée dans l'application graphique par \verb|WorldView| pour se dessiner, et par l'application en ligne de commande pour dessiner sur une \verb|QImage|.
