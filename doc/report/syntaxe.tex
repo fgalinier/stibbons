@@ -53,17 +53,16 @@
 \label{bison-rail}
 
 \begin{rail}
-code : worlddirlist statementlist | statementlist ;
+code : (worlddirlist ?) statementlist ;
 
-worlddirlist : worlddir
-| worlddirlist worlddir
+worlddirlist : (worlddirlist ?) worlddir
 ;
 
 worlddir : '\%' ID lit 'newline'
 | 'newline'
 ;
 
-statementlist : ( statement | statementlist statement ) ?
+statementlist : ((statementlist ?) statement ) ?
 ;
 
 statement : exprstatement | complstatement;
@@ -75,12 +74,10 @@ complstatement : bloc
 | complstatement 'newline'
 ;
 
-bloc : lbrace rbrace
-| lbrace statementlistbloc rbrace
+bloc : lbrace (statementlistbloc ?) rbrace
 ;
 
-statementlistbloc : statementlist
-| statementlist exprnoseparator
+statementlistbloc : statementlist (exprnoseparator ?)
 ;
 
 declstatement : ( AGT | FCT ) ID lpar ( ( ID ( (',' ID) *) ) ? ) rpar bloc
@@ -135,8 +132,7 @@ assignmentexpression : primaryexpr '=' expr
 
 primaryexpr : ID
 | primaryexpr '.' ID
-| primaryexpr '[' expr ']'
-| primaryexpr '[' ']'
+| primaryexpr '[' (expr ?) ']'
 | ID lpar ( ( expr ((',' expr) *) ) ? )  rpar
 ;
 
