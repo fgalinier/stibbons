@@ -1,10 +1,19 @@
 
 \begin{frame}
-schema interpreter
+\includegraphics[scale=1]{doc/report/img/interpreteUML.png}
 \end{frame}
 
 \begin{frame}
-gestion : interprete-manager
+Rôle de l'interprete manager~:
+\begin{itemize}
+	\item Alerter des éventuelles pauses~;
+	\item Création d'un monde avec les directives choisies~;
+	\item Gérer les interpréteurs existants~;
+	\item Stocker les couples threads-interprete créés.
+\end{itemize}
+C'est une sorte de gestionnaire d'interpréteurs.
 \end{frame}
 
-explication analyse dans interpreter -->> vers Modèle
+\begin{frame}
+\note{L'interprete fonctionne de la manière suivante : lors de l'analyse d'un jeton, qui correspond à un nœud de l'arbre syntaxique, on analyse d'abord ses enfants (s'il y en a) puis ensuite le contenu du noeud courant.}
+\end{frame}
