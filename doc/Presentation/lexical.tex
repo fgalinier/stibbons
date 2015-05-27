@@ -1,0 +1,23 @@
+\begin{frame}
+	\begin{itemize}
+		\item Objectif~: Génération de jeton
+		\item Méthode~: Détection de lexème par des expressions régulières
+		\item Outil~: GNU Flex (Yacc)
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+	\begin{rail}
+		NUMBER : (('0-9' + ) ( (dot ( '0-9' * ) ) ?))
+		| dot ( '0-9' + ) ;
+	\end{rail}
+\end{frame}
+
+\begin{frame}[fragile]
+	\begin{lstlisting}[language=Stibbons]
+new agent {
+  a = 10
+  fd a + 2
+}
+	\end{lstlisting}
+\end{frame}

@@ -5,15 +5,29 @@
 \usepackage[T1]{fontenc}
 \usepackage{lmodern}
 \usepackage{graphicx}
+\usepackage{rail}
 \usepackage[french]{babel}
 \usepackage{listings} 
-\usetheme{Antibes}
+\usetheme{Goettingen}
 \setbeamertemplate{itemize item}[ball]
 \setbeameroption{show notes}
 %\setbeameroption{hide notes}
 
+\lstdefinelanguage{Stibbons}{
+  morekeywords={
+    new,agent,for,repeat,while,fd,forward,lt,turn-left,rt,turn-right,pd,pen-down,pu,pen-up,
+    if,else,true,false,and,or,xor,not,function,null,null\_t,number\_t,boolean\_t,string\_t,
+    color\_t,table\_t,turtle\_t,zone\_t,world\_t,send,recv,die
+  },
+  sensitive=false,
+  morecomment=[s]{/*}{*/},
+  morecomment=[l]{//},
+  morestring=[b]',
+  morestring=[b]",
+}
+
 \title{Stibbons}
-\author{Bassoumi Julia \& Galinier Florian \& Plazas Adrien \& Simon Clément}
+\author{Bassoumi Julia \\ Galinier Florian \\ Plazas Adrien \\ Simon Clément}
 \date{\today}
 
 \begin{document}
