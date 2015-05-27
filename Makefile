@@ -274,6 +274,29 @@ PROPDFCLN = \
 	$(PDFDIR)/reportProjet.toc \
 	$(NULL)
 
+# Variables pour la présentation
+
+KEYDIR = $(DOCDIR)/Presentation
+
+KEYTEX = $(KEYDIR)/presentation.tex
+KEYRAI = $(DOCDIR)/presentation
+
+KEYDEPS = \
+	$(KEYDIR)/*.tex \
+	$(NULL)
+
+KEYPDF = $(PDFDIR)/presentation.pdf
+
+KEYPDFCLN = \
+	$(KEYPDF) \
+	$(PDFDIR)/presentation.aux \
+	$(PDFDIR)/presentation.log \
+	$(PDFDIR)/presentation.nav \
+	$(PDFDIR)/presentation.out \
+	$(PDFDIR)/presentation.snm \
+	$(PDFDIR)/presentation.toc \
+	$(NULL)
+
 # Tout compiler
 
 all: doc $(APP) $(CLIAPP) $(TEST)
@@ -331,9 +354,23 @@ $(COMMONOBJECTS): %.o: %.cpp
 $(CLIOBJECTS): %.o: %.cpp
 	$(CC) $< -c -o $@ $(CFLAGS) $(CLIINCDIRS) $(CLILIBS)
 
+doc: refman report project keynote
+
+# Compilation de Rail
+
+$(RAILBIN): $(RAILDIR)/Makefile
+	make -C $(<D) -f $(<F)
+
+# Compilation du manuel de référence
+
+refman: doc/refman
+
+doc/refman:
+	doxygen Doxyfile
+
 # Compilation de la documentation
 
-doc: $(REPPDF) $(PROPDF)
+report: $(REPPDF)
 
 $(REPPDF): $(PDFDIR)/%.pdf: $(REPDIR)/%.tex $(RAILBIN) bibtex
 	# Compile pour générer la TOC
@@ -346,10 +383,6 @@ $(REPPDF): $(PDFDIR)/%.pdf: $(REPDIR)/%.tex $(RAILBIN) bibtex
 	# Compile avec la TOC
 	TEXINPUTS=.//:$$TEXINPUTS pdflatex -output-directory $(@D) $<
 
-$(PROPDF): $(PDFDIR)/%.pdf: $(PRODIR)/%.tex
-	TEXINPUTS=.//:$$TEXINPUTS pdflatex -output-directory $(@D) $<
-	TEXINPUTS=.//:$$TEXINPUTS pdflatex -output-directory $(@D) $<
-
 bibtex: $(REPDIR)/report.aux
 	bibtex $<
 
@@ -359,14 +392,33 @@ $(REPDIR)/report.aux: $(REPDIR)/report.tex
 $(REPDIR)/report.tex: $(REPDEPS)
 	touch $@
 
-$(RAILBIN): $(RAILDIR)/Makefile
-	make -C $(<D) -f $(<F)
-
-doc/refman:
-	doxygen Doxyfile
-
-$(REPDIR)/refman.tex: doc/refman
+$(REPDIR)/refman.tex: refman
 	grep "^\\\\input{\|^\\\\chapter{" doc/refman/latex/refman.tex | sed 's/\\input{/\\input{doc\/refman\/latex\//' > $@
+
+# Compilation du rapport de gestion de projet
+
+project: $(PROPDF)
+
+$(PROPDF): $(PDFDIR)/%.pdf: $(PRODIR)/%.tex
+	TEXINPUTS=.//:$$TEXINPUTS pdflatex -output-directory $(@D) $<
+	TEXINPUTS=.//:$$TEXINPUTS pdflatex -output-directory $(@D) $<
+
+# Compilation de la présentation
+
+keynote: $(KEYPDF)
+
+$(KEYPDF): $(PDFDIR)/%.pdf: $(KEYDIR)/%.tex $(RAILBIN)
+	# Compile pour générer la TOC
+	TEXINPUTS=.//:$$TEXINPUTS pdflatex -output-directory $(@D) $<
+	# Compile les diagrammes de syntaxe
+	if [ -a $(KEYRAI).rai ] ; \
+	then \
+		$(RAILBIN) $(REPRAI) ; \
+	fi;
+	# Compile avec la TOC
+	TEXINPUTS=.//:$$TEXINPUTS pdflatex -output-directory $(@D) $<
+
+# Installation
 
 install: install-stibbons install-stibbons-cli
 
@@ -380,6 +432,8 @@ install-stibbons:
 
 install-stibbons-cli:
 	install -D $(CLIAPP) $(BINDIR)
+
+# Nettoyage
 
 clean:
 	rm -Rf $(APP) $(TEST) \
@@ -400,11 +454,12 @@ clean:
 	$(CLIOBJECTS) \
 	$(REPPDFCLN) \
 	$(PROPDFCLN) \
+	$(KEYPDFCLN) \
 	doc/refman \
 	$(REPDIR)/refman.tex \
 	$(NULL) \
 	sauvegarde.json
 	make clean -C $(RAILDIR) -f Makefile
 
-.PHONY: all doc install install-stibbons install-stibbons-cli clean
+.PHONY: all doc refman report project keynote install install-stibbons install-stibbons-cli clean
 
