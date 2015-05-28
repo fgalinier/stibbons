@@ -413,7 +413,7 @@ $(KEYPDF): $(PDFDIR)/%.pdf: $(KEYDIR)/%.tex $(RAILBIN)
 	# Compile les diagrammes de syntaxe
 	if [ -a $(KEYRAI).rai ] ; \
 	then \
-		$(RAILBIN) $(REPRAI) ; \
+		$(RAILBIN) $(KEYRAI) ; \
 	fi;
 	# Compile avec la TOC
 	TEXINPUTS=.//:$$TEXINPUTS pdflatex -output-directory $(@D) $<
