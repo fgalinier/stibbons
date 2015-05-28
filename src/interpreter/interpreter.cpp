@@ -39,7 +39,7 @@ namespace stibbons {
 				//Loop cases:
 			case yy::parser::token::WHL: {
 				auto val = this->interpret(manager,agent,tree->getChild(0),hashTable);
-				ValuePtr res;
+				ValuePtr res = Nil::getInstance();;
 				if(val->getType() != Type::BOOLEAN) 
 					throw SemanticException("WHILE",
 					                        Type::BOOLEAN,
