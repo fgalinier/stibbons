@@ -59,6 +59,11 @@ class Point {
 		Point& operator= (Point&& other);
 
 		/**
+		 * Destroy a point
+		 */
+		virtual ~Point ();
+
+		/**
 		 * Set the value for an axis
 		 * \param axis the axis
 		 * \param value the value

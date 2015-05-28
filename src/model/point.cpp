@@ -30,7 +30,8 @@ Point::Point (Point&& other) {
 
 	// Reset other
 	other.dimensions = 0;
-	delete other.axes;
+	if (other.axes)
+		delete[] other.axes;
 	other.axes = nullptr;
 }
 
@@ -44,6 +45,8 @@ Point& Point::operator= (Point& other) {
 
 	// Set this
 	dimensions = other.dimensions;
+	if (axes)
+		delete[] axes;
 	axes = new double[dimensions]();
 	memcpy(axes, other.axes, dimensions * sizeof(double));
 
@@ -60,15 +63,23 @@ Point& Point::operator= (Point&& other) {
 
 	// Set this
 	dimensions = other.dimensions;
+	if (axes)
+		delete[] axes;
 	axes = new double[dimensions]();
 	memcpy(axes, other.axes, dimensions * sizeof(double));
 
 	// Reset other
 	other.dimensions = 0;
-	delete other.axes;
+	if (other.axes)
+		delete[] other.axes;
 	other.axes = nullptr;
 
 	return *this;
+}
+
+Point::~Point () {
+	if (axes)
+		delete[] axes;
 }
 
 void Point::setValue (unsigned axis, double value) throw(out_of_range) {
