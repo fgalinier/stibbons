@@ -124,14 +124,12 @@ namespace stibbons {
 				}
 					break;
 				default:
-					throw SemanticException("invalid action for a turtle",getPosition(tree));
+					//throw SemanticException("Invalid action for a turtle",getPosition(tree));		
 					break;
-				
 				}
 			}
 		}
-		
-		return Nil::getInstance();;
+		return Nil::getInstance();
 	}
 }
 

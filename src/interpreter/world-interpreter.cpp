@@ -19,18 +19,16 @@ namespace stibbons {
 	}
 
 	ValuePtr WorldInterpreter::interpret(InterpreterManager& manager,
-										 WorldPtr agent,
-										 const TreePtr tree,
-										 TablePtr hashTable) {
-		if(tree != nullptr) {
-		
+									   WorldPtr agent,
+									   const TreePtr tree,
+									   TablePtr hashTable) {
+		if(tree != nullptr){
 			ValuePtr start = Interpreter::interpret(manager,agent,tree,hashTable);
-			if(start != nullptr || std::get<0>(tree->getNode()) == 0 ) {
+
+			if(start != nullptr || std::get<0>(tree->getNode()) == 0 )	
 				return start;
-			}
 			else{
 				switch(std::get<0>(tree->getNode())) {
-					//Turtle cases:
 				case yy::parser::token::AGT: {
 					//definition of new agent with corresponding breed
 					auto id = dynamic_pointer_cast<String>(std::get<1>(tree->getNode()))->getValue();
@@ -39,7 +37,7 @@ namespace stibbons {
 				}
 					break;
 				default:
-					throw SemanticException("invalid action for a world",getPosition(tree));
+					throw SemanticException("Invalid action for the world",getPosition(tree));		
 					break;
 				}
 			}
