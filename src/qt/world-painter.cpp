@@ -128,6 +128,8 @@ void WorldPainter::paint(QPainter &p, Line &line, int xt, int yt) {
 
 	p.drawPolyline(points, l.size());
 
+	delete[] points;
+
 	p.setPen(oldPen);
 }
 
