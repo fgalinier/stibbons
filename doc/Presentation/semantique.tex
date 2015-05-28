@@ -81,10 +81,6 @@ new agent {
 \end{frame}
 
 \begin{frame}
-\includegraphics[scale=0.3]{doc/Presentation/img/arbre1.pdf}
-\end{frame}
-
-\begin{frame}
 \includegraphics[scale=0.3]{doc/report/uml/interpreterUML.png}
 \end{frame}
 
@@ -97,4 +93,13 @@ Rôle de l'interprète manager~:
 	\item Stocker les couples threads-interprete créés.
 \end{itemize}
 C'est une sorte de gestionnaire d'interpréteurs.
+\end{frame}
+
+\begin{frame}
+Un interprète~:
+\begin{itemize}
+	\item Analyse le jeton~;
+	\item Effectue les analyses des enfants du noeud courant~;
+	\item Appel la méthode correspondante dans le modèle.
+\end{itemize}
 \end{frame}
