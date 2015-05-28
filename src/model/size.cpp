@@ -29,7 +29,8 @@ Size::Size (Size&& other) {
 
 	// Reset other
 	other.dimensions = 0;
-	delete other.axes;
+	if (other.axes)
+		delete[] other.axes;
 	other.axes = nullptr;
 }
 
@@ -43,6 +44,8 @@ Size& Size::operator= (Size& other) {
 
 	// Set this
 	dimensions = other.dimensions;
+	if (axes)
+		delete[] axes;
 	axes = new size_t[dimensions]();
 	memcpy(axes, other.axes, dimensions * sizeof(size_t));
 
@@ -59,19 +62,23 @@ Size& Size::operator= (Size&& other) {
 
 	// Set this
 	dimensions = other.dimensions;
+	if (axes)
+		delete[] axes;
 	axes = new size_t[dimensions]();
 	memcpy(axes, other.axes, dimensions * sizeof(size_t));
 
 	// Reset other
 	other.dimensions = 0;
-	delete other.axes;
+	if (other.axes)
+		delete[] other.axes;
 	other.axes = nullptr;
 
 	return *this;
 }
 
 Size::~Size () {
-	delete axes;
+	if (axes)
+		delete[] axes;
 }
 
 void Size::setValue (unsigned axis, size_t value) throw(out_of_range) {
