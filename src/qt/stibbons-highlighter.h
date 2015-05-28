@@ -2,11 +2,20 @@
 
 #include <QSyntaxHighlighter>
 #include <QTextDocument>
+#include <vector>
 
 class StibbonsHighlighter : public QSyntaxHighlighter {
  public:
     StibbonsHighlighter(QTextDocument *document);
 	virtual void highlightBlock(const QString &text);
+ private:
+	std::vector<std::pair<QRegExp,QTextCharFormat>> rules;
+	
+	QTextCharFormat keywordFormat;
+	QTextCharFormat commentFormat;
+	QTextCharFormat litFormat;
+	QTextCharFormat worldInstrFormat;
+	QTextCharFormat turtleInstrFormat;
 };
 
 /*

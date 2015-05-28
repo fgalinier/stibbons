@@ -1,6 +1,48 @@
 #include "stibbons-highlighter.h"
 
-StibbonsHighlighter::StibbonsHighlighter(QTextDocument *document) : QSyntaxHighlighter(document) {}
+StibbonsHighlighter::StibbonsHighlighter(QTextDocument *document) : QSyntaxHighlighter(document) {
+	keywordFormat.setFontWeight(QFont::Bold);
+	keywordFormat.setForeground(Qt::blue);
+	commentFormat.setForeground(Qt::red);
+	commentFormat.setFontItalic(true);
+	litFormat.setForeground(Qt::darkGreen);
+	worldInstrFormat.setForeground(Qt::gray);
+	worldInstrFormat.setFontWeight(QFont::Bold);
+	turtleInstrFormat.setFontWeight(QFont::Bold);
+	turtleInstrFormat.setForeground(Qt::magenta);
+	
+	QStringList keywords;
+	QStringList turtleInstrs;
+	QStringList lits;
+	QStringList worldInstr("^\\s*(%[_a-z][\\-_a-z0-9]*)(\\s.+)?");
+
+	keywords << "\\bnew\\b" << "\\bagent\\b" << "\\bfunction\\b" << "\\bfor\\b" << "\\brepeat\\b" 
+			 << "\\bwhile\\b" << "\\bif\\b" << "\\belse\\b" << "\\band\\b" << "\\bor\\b"
+			 << "\\bxor\\b" << "\\bnot\\b";
+
+	turtleInstrs <<  "\\bfd\\b" << "\\bforward\\b" << "\\blt\\b" << "\\bturn_left\\b" << "\\brt\\b"
+				 << "\\bturn_right\\b" << "\\bpd\\b" << "\\bpen_down\\b" << "\\bpu\\b" 
+				 << "\\bpen_up\\b" << "\\bsend\\b" << "\\brecv\\b" << "\\bdie\\b";
+
+	lits << "\\btrue\\b" << "\\bfalse\\b" << "\\b\\d+\\b" << "\\bnull\\b" << "\\bnull_t\\b"
+		 << "\\bnumber_t\\b" << "\\bboolean_t\\b" << "\\bstring_t\\b" << "\\bcolor_t\\b"
+		 << "\\btable_t\\b" << "\\btype_t\\b" << "\\bturtle_t\\b" << "\\bzone_t\\b" 
+		 << "\\bworld_t\\b" << "#([a-f0-9]){3}\\b" << "#([a-f0-9]){6}\\b" << "\\bnone\\b" 
+		 << "\\bbounce\\b" << "\\bwrap\\b";
+	
+	rules.push_back({QRegExp("^\\s*(%[_a-z][\\-_a-z0-9]*)\\b"),worldInstrFormat});
+
+	for (auto pattern : keywords) {
+		rules.push_back({QRegExp(pattern),keywordFormat});
+	}
+	for (auto pattern : turtleInstrs) {
+		rules.push_back({QRegExp(pattern),turtleInstrFormat});
+	}
+	for (auto pattern : lits) {
+		rules.push_back({QRegExp(pattern),litFormat});
+	}
+	rules.push_back({QRegExp("//[^\n]*"),commentFormat});
+}
 
 void StibbonsHighlighter::highlightBlock(const QString &line) {
     enum { 
@@ -11,126 +53,83 @@ void StibbonsHighlighter::highlightBlock(const QString &line) {
 		TplQuoteState
 	};
 
-    int state = previousBlockState();
-    int start = 0;
+	for(auto rule : rules) {
+		rule.first.setCaseSensitivity(Qt::CaseInsensitive);
+		auto index = rule.first.indexIn(line);
+		while (index > -1) {
+			int l = rule.first.matchedLength();
+			setFormat(index, l, rule.second);
+			index = rule.first.indexIn(line, index + l);
+		}
+	}
 
-	QTextCharFormat keywordFormat;
-	keywordFormat.setFontWeight(QFont::Bold);
-	keywordFormat.setForeground(Qt::blue);
-	QTextCharFormat commentFormat;
-	commentFormat.setForeground(Qt::red);
-	QTextCharFormat litFormat;
-	litFormat.setForeground(Qt::darkGreen);
-	QTextCharFormat worldInstrFormat;
-	worldInstrFormat.setForeground(Qt::gray);
-	QTextCharFormat worldInstrKFormat;
-	worldInstrKFormat.setFontWeight(QFont::Bold);
-	worldInstrKFormat.setForeground(Qt::gray);
-	QTextCharFormat turtleInstrFormat;
-	turtleInstrFormat.setFontWeight(QFont::Bold);
-	turtleInstrFormat.setForeground(Qt::magenta);
+	int commentStart = 0;
+	int splStart = 0;
+	int dblStart = 0;
+	int tplStart = 0;
+    int state = previousBlockState();
 
     for (int i = 0; i < line.length(); ++i) {
         switch (state) {
-		case CommentState: 
-			{
-				if (line.mid(i, 2) == "*/") {
-					setFormat(start, i - start + 2, commentFormat);
-					start = i - start + 2;
-					state = InitialState;
-				}
+		case CommentState:
+			if (line.mid(i, 2) == "*/") {
+				setFormat(commentStart, i - commentStart + 2, commentFormat);
+				state = InitialState;
 			}
 			break;
 		case SplQuoteState:
-			{
-				if (line.mid(i,1) == "'" && line.mid(i-1,1) != "\\") {
-					setFormat(start, i - start + 1, litFormat);
-					start = i - start + 1;
-					state = InitialState;
-				}
+			if (line.mid(i, 1) == "'") {
+				setFormat(splStart, i - splStart + 1, litFormat);
+				state = InitialState;
 			}
 			break;
 		case DblQuoteState:
-			{
-				if (line.mid(i,1) == "\"" && line.mid(i-1,1) != "\\") {
-					setFormat(start, i - start + 1, litFormat);
-					start = i - start + 1;
-					state = InitialState;
-				}
+			if (line.mid(i, 1) == "\"") {
+				setFormat(dblStart, i - dblStart + 1, litFormat);
+				state = InitialState;
 			}
 			break;
 		case TplQuoteState:
-			{
-				if (line.mid(i,3) == "\"\"\"") {
-					setFormat(start, i - start + 3, litFormat);
-					start = i - start + 3;
-					state = InitialState;
-				}
+			if (line.mid(i, 3) == "\"\"\"") {
+				setFormat(tplStart, i - tplStart + 3, litFormat);
+				state = InitialState;
 			}
 			break;
-		default: 
-			{
-				QRegExp worldInstr("^\\s*(%[_a-z][\\-_a-z0-9]*)(\\s.+)?");
-				worldInstr.setCaseSensitivity(Qt::CaseInsensitive);
-				QRegExp keyword("\\b(new|agent|function|for|repeat|while|if|else|and|or|xor|not)\\b");
-				keyword.setCaseSensitivity(Qt::CaseInsensitive);
-				QRegExp lit("\\b(true|false|\\d+|null|null_t|number_t|boolean_t|string_t|color_t|table_t|type_t|turtle_t|zone_t|world_t)\\b");
-				lit.setCaseSensitivity(Qt::CaseInsensitive);
-				QRegExp color("(#[a-f0-9]{3}|#[a-f0-9]{6})\\b");
-				color.setCaseSensitivity(Qt::CaseInsensitive);
-				QRegExp turtleInstr("\\b(fd|forward|lt|turn_left|rt|turn_right|pd|pen_down|pu|pen_up|send|recv|die)\\b");
-				turtleInstr.setCaseSensitivity(Qt::CaseInsensitive);
-				
-				if (line.mid(i, 2) == "/*") {
-					start = i;
-					state = CommentState;
-				} else if (line.mid(i,3) == "\"\"\"") {
-					start = i;
-					state = TplQuoteState;
-				} else if (line.mid(i,1) == "\"") {
-					start = i;
-					state = DblQuoteState;
-				} else if (line.mid(i,1) == "'") {
-					start = i;
-					state = SplQuoteState;
-				} else if (line.mid(i, 2) == "//") {
-					setFormat(i, line.length() - i, commentFormat);
-					return;
-				}
-				else {
-					if ((start = line.indexOf(worldInstr,i)) > -1) {
-						setFormat(start, worldInstr.matchedLength(), worldInstrFormat);
-						setFormat(worldInstr.pos(1),worldInstr.cap(1).length(),worldInstrKFormat);
-						i += worldInstr.matchedLength();
-					}
-					if ((start = line.indexOf(keyword,i)) > -1) {
-						setFormat(start, keyword.matchedLength(), keywordFormat);
-						i += keyword.matchedLength();
-					}
-					if ((start = line.indexOf(turtleInstr,i)) > -1) {
-						setFormat(start, turtleInstr.matchedLength(), turtleInstrFormat);
-						i += turtleInstr.matchedLength();
-					}
-					if ((start = line.indexOf(color,i)) > -1) {
-						setFormat(start, color.matchedLength(), litFormat);
-						i += color.matchedLength();
-					}
-					else if ((start = line.indexOf(lit,i)) > -1) {
-						setFormat(start, lit.matchedLength(), litFormat);
-						i += lit.matchedLength();
-					}
-				}
+		default:
+			if (line.mid(i, 2) == "/*") {
+				commentStart = i+1;
+				state = CommentState;
+				break;
+			}
+			if (line.mid(i, 1) == "'") {
+				splStart = i;
+				state = SplQuoteState;
+				break;
+			}
+			if (line.mid(i, 1) == "\"") {
+				dblStart = i;
+				state = DblQuoteState;
+				break;
+			}
+			if (line.mid(i, 3) == "\"\"\"") {
+				tplStart = i+2;
+				state = TplQuoteState;
+				break;
 			}
 			break;
 		}
-    }
+	}
+
+	if (state == CommentState)
+        setFormat(commentStart, line.length() - commentStart, commentFormat);
+    if (state == SplQuoteState)
+        setFormat(splStart, line.length() - splStart, litFormat);
+    if (state == DblQuoteState)
+        setFormat(dblStart, line.length() - dblStart, litFormat);
+    if (state == TplQuoteState)
+        setFormat(tplStart, line.length() - tplStart, litFormat);
 
 	setCurrentBlockState(state);
-
-    if (state == CommentState)
-        setFormat(start, line.length() - start, commentFormat);
-    if (state == TplQuoteState || state == DblQuoteState || state == SplQuoteState)
-        setFormat(start, line.length() - start, litFormat);
 }
 
 /*
