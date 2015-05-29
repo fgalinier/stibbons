@@ -8,20 +8,23 @@
 
 \begin{frame}[fragile]
 	\begin{rail}
-		NUMBER : (('0-9' + ) ( (dot ( '0-9' * ) ) ?))
+		NUMBER : (('0-9' + ) \\ ( (dot ( '0-9' * ) ) ?))
 		| dot ( '0-9' + ) ;
 	\end{rail}
 \end{frame}
 
 \begin{frame}[fragile]
+	Code~:
 	\begin{lstlisting}[language=Stibbons]
 new agent {
   a = 10
   fd a + 2
 }
-
-4 new agent{
-  fd 10
-}
+	\end{lstlisting}
+	Jetons~:
+	\begin{lstlisting}[breaklines]
+<NEW> <AGT> <{> <\n> <ID,"a"> <=> 
+<NUMBER,10> <\n> <FD> <ID,"a"> <+> 
+<NUMBER,2> <\n> <}>
 	\end{lstlisting}
 \end{frame}
