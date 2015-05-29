@@ -85,22 +85,22 @@ new agent {
 \includegraphics[scale=0.3]{doc/report/uml/interpreterUML.png}
 \end{frame}
 
-\begin{frame}
-Rôle de l'interprète manager~:
+\begin{frame}[fragile]
+Rôles de la classe \verb|InterpretManager|
 \begin{itemize}
-	\item Alerter des éventuelles pauses~;
-	\item Création d'un monde avec les directives choisies~;
-	\item Gérer les interpréteurs existants~;
-	\item Stocker les couples threads-interprete créés.
+	\item alerter des éventuelles pauses
+	\item créer un monde avec les directives choisies
+	\item gérer les interprètes existants
+	\item stocker les couples thread-interprète créés
 \end{itemize}
-C'est une sorte de gestionnaire d'interpréteurs.
 \end{frame}
 
 \begin{frame}
-Un interprète~:
+
+L'interprète
 \begin{itemize}
-	\item Analyse le jeton~;
-	\item Effectue les analyses des enfants du noeud courant~;
-	\item Appel la méthode correspondante dans le modèle.
+	\item analyse un jeton
+	\item analyse les enfants du noeud courant
+	\item appelle la méthode correspondante du modèle
 \end{itemize}
 \end{frame}
