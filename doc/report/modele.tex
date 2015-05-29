@@ -46,7 +46,7 @@ new agent {
 Lors du troisième sprint, nous avons mis en place des pointeurs intelligents dans toutes nos classes (cf. Figure~\ref{v0.3}). Le but de ce sprint était la mise en place de la communication entre les agents~: les tortues devaient pouvoir communiquer via les zones par modification de leurs propriétés, et elles devaient aussi pouvoir communiquer entre elles grâce à des instructions comme \verb|send| et \verb|recv|.
 
 L'étape suivante était d'ajouter des fonctionnalités telles que la maîtrise du temps et l'exportation du modèle. Ces ajouts ne provoquent pas de changements majeurs du côté du modèle, si ce n'est quelques méthodes dans les classes \verb|World|, \verb|Turtle| et \verb|Zone| pour l'export du modèle.
-Celui-ci consiste à créer une sauvegarde de l'état du modèle à un instant \verb|t| dans un fichier JSON grâce à la bibliothèque JSON Spirit.
+Celui-ci consiste à créer une sauvegarde de l'état du modèle à un instant \verb|t| dans un fichier JSON grâce à la bibliothèque JSON Spirit (cf. Listing \ref{json} ).
 Cela permettra ensuite, par exemple en passant par une transformation en CSV, d'avoir des tableaux avec toutes les données, ce qui offre la possibilité d'avoir des diagrammes de l'évolution du monde.
 
 La maîtrise du temps se fait grâce à un bouton pause, qui arrête les threads s'exécutant, ou par un slider qui permet de ralentir ou de diminuer la vitesse.
