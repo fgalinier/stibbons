@@ -1,4 +1,4 @@
-L'analyse syntaxique permet de vérifier que la structure d'un programme est bien en accord avec les règles de grammaire du langage. Par exemple, la grammaire de notre langage comporte une règle qui indique que le jeton \verb|<FD>| doit être suivi d'un jeton \verb|<NUMBER,>|. Le but de notre analyse ici est double~: vérifier que le programme est bien un programme de notre langage valide, mais également générer un arbre abstrait qui pourra facilement être analysé par notre analyseur sémantique.
+L'analyse syntaxique permet de vérifier que la structure d'un programme est bien en accord avec les règles de grammaire du langage. Par exemple, la grammaire de notre langage comporte une règle, qui indique qu'un appel de fonction sans paramètre, est constituée du jeton \verb|<ID>| suivi des jetons \verb|<(>| et \verb|<)>|. Le but de notre analyse ici est double~: vérifier que le programme est bien un programme de notre langage valide, mais également générer un arbre abstrait qui pourra facilement être analysé par notre analyseur sémantique.
 
 Nous avons fait le choix d'utiliser GNU Bison (cf.~\ref{Bison}) dans notre projet.
 
