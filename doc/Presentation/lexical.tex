@@ -1,4 +1,5 @@
 \begin{frame}
+	\frametitle{Analyseur lexical}
 	\begin{description}
 		\item [Objectif] Génération de jetons
 		\item [Méthode] Détection de lexèmes par des expressions régulières
@@ -23,8 +24,9 @@ new agent {
 	\end{lstlisting}
 	Jetons~:
 	\begin{lstlisting}[breaklines]
-<NEW> <AGT> <{> <\n> <ID,"a"> <=> 
-<NUMBER,10> <\n> <FD> <ID,"a"> <+> 
-<NUMBER,2> <\n> <}>
+<NEW> <AGT> <{> <\n> 
+<ID,"a"> <=> <NUMBER,10> <\n>
+<FD> <ID,"a"> <+> <NUMBER,2> <\n>
+<}>
 	\end{lstlisting}
 \end{frame}

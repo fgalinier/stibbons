@@ -1,8 +1,41 @@
 \begin{frame}
 \frametitle{Organisation}
-Méthode agile : SCRUM
+Méthode agile : Scrum
 \begin{itemize}
 \item Temps divisé en sprints
 \item Backlog
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Backlog}
+{\tiny
+\begin{longtable}[c]{|c|p{1cm}|c|p{1.7cm}|*{4}{c|}}
+\hline
+\bf id & \bf Scénario utilisateur & \bf Priorité & \bf Tests & \bf Estimation & \bf Sprint & \bf Statut & \bf Temps réel \\
+\hline
+\endfirsthead
+\hline
+\bf id & \bf Scénario utilisateur & \bf Priorité & \bf Tests & \bf Estimation & \bf Sprint & \bf Statut & \bf Temps réel \\
+\hline
+\endhead
+1 & L'utilisateur écrit du code dans un éditeur & 200 & L'utilisateur écrit du code dans un éditeur intégré & & & & \\
+\hline
+2 & L'utilisateur importe du code dans le logiciel & 1100 & Importer du code Stibbons depuis un fichier, vérifier que le code obtenu est bien identique à celui du fichier. & 4h & 1 & Fini & 1h \\
+\hline
+3 & L'utilisateur visualise les rapports d'erreurs du code & 400 & Exécuter pd 50 et constater une erreur. & 8h & 4 & Fini & 8h \\
+\hline
+4 & L'utilisateur visualise l'évolution du modèle & 1400 & Vérifier que l'interprétation d'instructions données fait bien évoluer comme prévu la tortue dans son environnement. & 24h & 1 & Fini & 70h \\
+\hline
+\end{longtable}}
+\end{frame}
+
+\begin{frame}
+Outils~:
+\begin{itemize}
+\item CppUnit
+\item Json Spirit
+\item Git
 \end{itemize}
 \end{frame}
