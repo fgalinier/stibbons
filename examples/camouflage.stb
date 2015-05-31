@@ -1,0 +1,117 @@
+/*
+ L'objectif de cet exemple est la mise en avant de l'avantage évolutif.
+ Nous avons deux types d'agents : les lézards et les papillons.
+
+ Les papillons ne font que se reproduire et sont porteurs de deux gènes de couleurs. 
+ Le gène rouge est dominant, le vert récessif. Si les deux parents d'un papillon sont 
+ de la même couleur, l'enfant sera de cette couleur. Sinon, le gène rouge prendra le
+ dessus en fonction d'un pourcentage de chance variable défini au début du code.
+ 
+ Les lézards passent quant à eux leur temps à chasser. S'ils croisent un papillon, ils
+ tenteront de le manger. Si sa cible est rouge, il la tuera instantannément. Si elle est
+ verte, cette dernière aura un pourcentage de chance d'être mangé défini par une variable
+ en début de code (qui simule la capacité de ces papillons à se fondre dans leur
+ environnement).
+
+ Lors de l'exécution de l'exemple, on observe la population de papillons rouges devenir
+ assez vite majoritaire, avant de régresser voire de disparaitre face aux papillons verts,
+ plus adapté à l'environnement.
+*/
+%world_width 80
+%world_height 80
+%x_border bounce
+%y_border bounce
+
+number = 10
+green_chance = 25
+greenEatChance = 5
+nb_lezard = 5
+
+nb_max = 30
+
+nb_green = (number * (green_chance / 100))
+nb_red = number - nb_green
+
+agent papillon(gene_1,gene_2) {
+	function init(gene_1,gene_2) {
+		teleport(random(0,world.max_x),random(0,world.max_y),rand())
+		if(gene_1 == gene_2) color = gene_1
+		else if (random(0,100) < world.green_chance) color = green
+		else color = red
+		life = 50
+	}
+	
+	function hatch() {
+		if (life > 100) and (world.number < world.nb_max) {
+			t = in_radius(10)
+			if(size(t) > 0) {
+				world.number = world.number + 1
+				new papillon(color,t[0].color)
+				life = 50
+			}
+		}
+	}
+		
+	function wiggle() {
+		rt random(0,60)
+		lt random(0,60)
+		fd 1
+	}
+	
+	function run() {
+		hatch()
+		wiggle()
+		life = life + 1
+	}
+	
+	init(gene_1,gene_2)
+	while(life > 0) {
+		run()
+	}
+	
+	world.number = world.number - 1
+	die
+}
+
+agent lezard() {
+	hunger = 100
+	function hunt() {
+		t = in_radius(10)
+		hungry = true
+		for target in t {
+			if hungry {
+				if ((target.color == red) or (random(0,100) < world.greenEatChance)) {
+					hungry = false
+					target.life = -10
+					hunger = hunger + 100
+				}
+			}
+		}
+	}
+	
+	function wiggle() {
+		rt random(0,60)
+		lt random(0,60)
+		fd 5
+	}
+	
+	teleport(random(0,world.max_x),random(0,world.max_y),rand())
+	while(true) {
+		if hunger > 0 hunger = hunger - 1
+		if hunger < 10 {
+			hunt()
+			wiggle()
+		}
+	}
+}
+
+function init() {
+	color = #347235
+}
+
+ask_zones(init)
+
+nb_green new papillon(green,green)
+nb_red new papillon(red,red)
+nb_lezard new lezard()
+
