@@ -208,9 +208,8 @@ for { BEGIN(for_state); return yy::parser::token::FOR; }
 
 "/*" {BEGIN(comment);}
 
-<comment>[^*]
+<comment>[^*] {loc->lines(countNewLine(yytext)); loc->step();}
 <comment>"*"+[^*/]*
-<comment>\n\n* {loc->lines(yyleng); loc->step();}
 <comment>"*"+"/" {BEGIN(INITIAL);}
 
 [ \r\t]+  {loc->step();}
