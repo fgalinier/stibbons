@@ -3,7 +3,7 @@ L'analyse syntaxique permet de vérifier que la structure d'un programme est bie
 Nous avons fait le choix d'utiliser GNU Bison (cf.~\ref{Bison}) dans notre projet.
 
 \subsection{Arbre abstrait}
-Un arbre abstrait est une structure d'arbre dont chaque noeud feuille représente les opérandes des opérations contenues sur les autres noeuds. Cet arbre peut être considéré comme une forme de code intermédiaire, et peut être interprété très facilement en parcourant, pour chaque noeud, les sous-arbres et en appliquant l'opération du noeud courant.
+Un arbre abstrait est une structure d'arbre dont chaque nœud feuille représente les opérandes des opérations contenues sur les autres nœuds. Cet arbre peut être considéré comme une forme de code intermédiaire, et peut être interprété très facilement en parcourant, pour chaque nœud, les sous-arbres et en appliquant l'opération du nœud courant.
 
 \begin{figure}[h!]
 \centering
@@ -31,7 +31,7 @@ Un arbre abstrait est une structure d'arbre dont chaque noeud feuille représent
 L'avantage de générer un tel arbre est qu'il est bien plus rapide d'effectuer un parcours d'arbre à chaque interprétation plutôt que de refaire une analyse syntaxique à chaque fois.
 
 \subsection{Fonctionnement}
-L'écriture du fichier Bison est assez semblable au fichier Flex. En effet, on peut associer à chaque règle une liste d'instructions qui vont être exécutées lors de la détection de la règle. Ces instructions peuvent en outre être des affectations de valeur sémantique à une expression. Ainsi, dans l'extrait de code \ref{bison-extrait}, la valeur sémantique d'une sélection est un arbre dont les enfants sont dans l'ordre~: l'expression de test, la séquence d'instructions à exécuter si la condition est vrai et, optionnellement, la séquence d'instructions à exécuter si la condition est fausse.
+L'écriture du fichier Bison est assez semblable au fichier Flex. En effet, on peut associer à chaque règle une liste d'instructions qui vont être exécutées lors de la détection de la règle. Ces instructions peuvent en outre être des affectations de valeur sémantique à une expression. Ainsi, dans l'extrait de code \ref{bison-extrait}, la valeur sémantique d'une sélection est un arbre dont les enfants sont dans l'ordre~: l'expression de test, la séquence d'instructions à exécuter si la condition est vraie et, optionnellement, la séquence d'instructions à exécuter si la condition est fausse.
 
 \begin{lstlisting}[label=bison-extrait,caption=Cas du IF en Bison]
 selection : IF expr statement 
