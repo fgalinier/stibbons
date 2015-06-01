@@ -210,9 +210,9 @@ ColorPtr Color::divide (ColorPtr other) {
 	auto green = other->g();
 	auto blue  = other->b();
 
-	return make_shared<Color>(red   != 0.0 ? r() * red   : 1.0,
-	                          green != 0.0 ? r() * green : 1.0,
-	                          blue  != 0.0 ? r() * blue  : 1.0);
+	return make_shared<Color>(red   != 0.0 ? r() / red   : 1.0,
+	                          green != 0.0 ? g() / green : 1.0,
+	                          blue  != 0.0 ? b() / blue  : 1.0);
 }
 
 double Color::compare (ValuePtr other) {
