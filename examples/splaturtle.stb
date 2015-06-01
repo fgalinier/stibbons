@@ -1,0 +1,32 @@
+%x_border WRAP
+%y_border WRAP
+
+agent ant (c) {
+	function wiggle() {
+		rt rand() % 60
+		lt rand() % 60
+		fd 1
+	}
+
+	last_zone = nil
+	color = c - #222
+	zc = c + #888
+
+	teleport(rand() % world.max_x, rand() % world.max_y, rand())
+
+	while (true) {
+		wiggle()
+		if (last_zone != zone) {
+			last_zone = zone
+			zone.color = zone.color * zc
+		}
+	}
+}
+
+new ant(red)
+new ant(green)
+new ant(blue)
+new ant(yellow)
+new ant(cyan)
+new ant(magenta)
+
