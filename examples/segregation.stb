@@ -1,3 +1,10 @@
+/*
+ Dans cet exemple, chaque tortue a un seuil de tolérance envers les tortues de couleur différente.
+ Elles vont tenter de s'éloigner des tortues différentes jusqu'à obtenir le pourcentage désiré de tortues de la même couleur dans leur entourage.
+
+ On remarque que plus les tortues sont "racistes", plus elles vont mettre de temps à trouver un
+ état stable.
+*/
 %x_warp true
 %y_warp true
 

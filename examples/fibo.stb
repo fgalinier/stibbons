@@ -1,16 +1,21 @@
+/*
+ Dans cet exemple, on se sert des agents pour découper le calcul de fibonacci.
+ L'agent sergeant_fibo va se charger d'attendre le résultat et de l'afficher, tandis que les autres
+ agent vont travailler comme des fonctions récursives, délégant les sous-opérations si elles ne sont 
+ pas élémentaires à de nouveaux agents.
+*/
 agent sergeant_fibo(n) {
 	new fibo(n)
 	recv nb
-	println("Résultat :")
+	print("Résultat : ")
 	println(nb)
 }
 
 agent fibo (n) {
 	teleport(0,world.max_y,-45)
 	pd
-	dest = { parent }
 	if(n < 2) {
-		send n dest
+		send n parent
 		fd n * 10
 	}
 	else {
@@ -18,7 +23,7 @@ agent fibo (n) {
 		new fibo(n - 2)
 		recv a
 		recv b
-		send a + b dest
+		send a + b parent
 		fd (a + b) * 10
 	}
 }
