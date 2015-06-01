@@ -1,26 +1,70 @@
 \section{Propriétés standard}
 
-Les agents possèdent certaines propriétés par défaut. Ces propriétés varient selon leur type, et peuvent être de simples attributs prédéfinis, des fonctions prédéfinies, ou encore des propriétés spéciales ayant une sémantique particulière.
+Les agents possèdent certaines propriétés par défaut. Ces propriétés varient selon leur type, et peuvent être de simples valeurs en lecture seule, des fonctions en lecture seule, ou encore des propriétés spéciales ayant une sémantique particulière et requérant un type précis.
 
-Les propriétés spéciales ont une sémantique particulière et peuvent par conséquent être en lecture seule ou avoir certaines requêtes quant au valeurs qui lui sont affectées.
-
-\subsection{Attributs communs aux tortues et au monde}
+\subsection{Attributs communs à tous les agents}
 
 \begin{description}
 	\item[black] $\rightarrow$ \#000000
+
+	Le noir.
+
+	\emph{Attribut en lecture seule.}
+
 	\item[white] $\rightarrow$ \#ffffff
+
+	Le blanc.
+
+	\emph{Attribut en lecture seule.}
+
 	\item[grey] $\rightarrow$ \#7f7f7f
+
+	Un gris moyen.
+
+	\emph{Attribut en lecture seule.}
+
 	\item[red] $\rightarrow$ \#ff0000
+
+	Le rouge.
+
+	\emph{Attribut en lecture seule.}
+
 	\item[green] $\rightarrow$ \#00ff00
+
+	Le vert.
+
+	\emph{Attribut en lecture seule.}
+
 	\item[blue] $\rightarrow$ \#0000ff
+
+	Le bleu.
+
+	\emph{Attribut en lecture seule.}
+
 	\item[yellow] $\rightarrow$ \#ffff00
+
+	Le jaune.
+
+	\emph{Attribut en lecture seule.}
+
 	\item[cyan] $\rightarrow$ \#00ffff
+
+	Le cyan.
+
+	\emph{Attribut en lecture seule.}
+
 	\item[magenta] $\rightarrow$ \#ff00ff
+
+	Le magenta.
+
+	\emph{Attribut en lecture seule.}
+
 \end{description}
 
-\subsection{Fonctions communes aux tortues et au monde}
+\subsection{Fonctions communes à tous les agents}
 
 \begin{description}
+	% print
 	\item[print] (value) $\rightarrow$ null
 
 	Imprime une valeur sur la sortie standard.
@@ -30,6 +74,7 @@ Les propriétés spéciales ont une sémantique particulière et peuvent par con
 		\item[Retourne] null
 	\end{description}
 
+	% println
 	\item[println] (value) $\rightarrow$ null
 
 	Imprime une valeur dans une nouvelle ligne sur la sortie standard.
@@ -39,12 +84,44 @@ Les propriétés spéciales ont une sémantique particulière et peuvent par con
 		\item[Retourne] null
 	\end{description}
 
+	% rand
 	\item[rand] () $\rightarrow$ number
 
 	Retourne un entier positif au hasard.
 
 	\begin{description}
 		\item[Retourne] un entier positif au hazard
+	\end{description}
+
+	% random
+	\item[random] (min, max) $\rightarrow$ number
+
+	Retourne un entier positif au hasard compris entre les bornes indiquées.
+
+	\begin{description}
+		\item[min] La valeur borne minimale inclusive
+		\item[max] La valeur borne maximale exclusive
+		\item[Retourne] un entier positif au hazard compris entre les bornes indiquées
+	\end{description}
+
+	% type_of
+	\item[type\_of] (value) $\rightarrow$ type
+
+	Retourne le type d'une valeur.
+
+	\begin{description}
+		\item[value] La valeur dont on veut obtenir le type
+		\item[Retourne] le type de la valeur
+	\end{description}
+
+	% type_of
+	\item[size] (table) $\rightarrow$ number
+
+	Retourne le nombre d'éléments contenus dans une table.
+
+	\begin{description}
+		\item[table] La table dont on veut connaître le nombre d'éléments
+		\item[Retourne] le nombre d'éléments contenus dans la table
 	\end{description}
 \end{description}
 
@@ -62,6 +139,21 @@ Les propriétés spéciales ont une sémantique particulière et peuvent par con
 	L'ordonnée maximale du monde.
 
 	\emph{Attribut en lecture seule.}
+\end{description}
+
+\subsection{Fonctions du monde}
+
+\begin{description}
+	% ask_zones
+	\item[ask\_zones] (function) $\rightarrow$ null
+
+	Exécute une fonction sur chaque zone.
+
+	\begin{description}
+		\item[function] La fonction à exécuter sur chaque zone
+		\item[Retourne] null
+	\end{description}
+
 \end{description}
 
 \subsection{Attributs des tortues}
@@ -110,9 +202,10 @@ Les propriétés spéciales ont une sémantique particulière et peuvent par con
 	\emph{Attribut en lecture seule.}
 \end{description}
 
-\subsection{Fonctions de tortues}
+\subsection{Fonctions des tortues}
 
 \begin{description}
+	% distance_to
 	\item[distance\_to] (turtle) $\rightarrow$ number
 
 	Retourne la distance la plus courte vers une autre tortue.
@@ -122,6 +215,7 @@ Les propriétés spéciales ont une sémantique particulière et peuvent par con
 		\item[Retourne] null
 	\end{description}
 
+	% face
 	\item[face] (turtle) $\rightarrow$ null
 
 	Tourne la tortue pour qu'elle fasse face à une autre par le chemin le plus court.
@@ -131,6 +225,7 @@ Les propriétés spéciales ont une sémantique particulière et peuvent par con
 		\item[Retourne] null
 	\end{description}
 
+	% in_radius
 	\item[in\_radius] (distance) $\rightarrow$ table
 
 	Retourne l' ensemble de tortues dans le rayon donné autour de la tortue.
@@ -140,6 +235,7 @@ Les propriétés spéciales ont une sémantique particulière et peuvent par con
 		\item[Retourne] Une table contenant les tortues dans le rayon
 	\end{description}
 
+	% inbox
 	\item[inbox] () $\rightarrow$ number
 
 	Retourne le nombre de message non lus.
@@ -148,6 +244,7 @@ Les propriétés spéciales ont une sémantique particulière et peuvent par con
 		\item[Retourne] Le nombre de messages non lus
 	\end{description}
 
+	% teleport
 	\item[teleport] (x, y, angle) $\rightarrow$ null
 
 	Téléporte une tortue à une certaine coordonnée et avec un certain angle.
@@ -168,5 +265,17 @@ Les propriétés spéciales ont une sémantique particulière et peuvent par con
 	La couleur de la zone.
 
 	\emph{Requiert une valeur de type color.}
+
+	\item[parent] $\rightarrow$ agent
+
+	L'agent qui a créé la zone.
+
+	\emph{Attribut en lecture seule.}
+
+	\item[world] $\rightarrow$ world
+
+	Le monde.
+
+	\emph{Attribut en lecture seule.}
 \end{description}
 
