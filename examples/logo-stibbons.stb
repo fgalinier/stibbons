@@ -1,0 +1,171 @@
+/*
+Ce programme a pour but de dessiner le logo stibbons selon des coordonnées données
+
+Aucun but de simulation n'est présent ici, seul le dessin obtenu compte.
+
+*/
+
+%world_width 100
+%world_height 100
+%zone_width 4
+%zone_height 4
+
+/*Agents chargé du fond vert*/
+agent green(c,x,y){
+	color = green
+	teleport(x,y,0)
+	repeat c {
+		fd 1
+		zone.color=green
+	}
+	die
+}
+
+/*Fonction d'appel des agents pour le fond vert*/
+function greenWall(c,x,y){
+	i = y
+	repeat c {
+		1 new green(c,x,i)
+		i=i+1
+	}
+
+
+}
+
+/*Agent permettant le lancement de ceux qui vont faire le S*/
+agent orderS(){
+	send "GO S!"
+	die
+}
+
+/*Agents cahrgé de dessiner le S*/
+agent stibbon(c,x,y,t,d){
+	color = white
+	if(x > y){
+		teleport(x+30,y-20-t,0)
+	}
+	if(x < y){
+		teleport(x+30,y+c-20-t,0)
+	}
+	if(x == y){
+		teleport(x+30,c-20-t,0)
+	}
+	recv msg
+	if(msg == "GO S!"){
+		pd
+		fd c-50-d
+		lt 90
+		fd 60
+		lt 90
+		fd c-50
+		rt 90
+		fd 60
+		rt 90
+		fd c-70+d
+	}
+	die
+}
+
+/*Fonction d'appel des agents pour le S*/
+function drawS(c,x,y){
+	d = 10
+	t = x
+	repeat 20{
+		1 new orderS()
+		1 new stibbon(c,x,y,t,d)
+		d = d-1
+		t = t-1
+	}
+}
+
+/*Agents chargé de dessiner les pattes*/
+agent patte(c,x,y,a){
+	color=white
+	teleport(x+148,y+50,a)
+	pd
+	fd 22
+	die
+}
+
+/*Fonction d'appel des agents pour les pattes*/
+function drawPatte(c,x,y){
+	i=y
+	repeat 2{
+		1 new patte(c,x,i,40)
+		1 new patte(c,x,i,90)
+		1 new patte(c,x,i,130)
+		1 new patte(c,x,i,-130)
+		1 new patte(c,x,i,-90)
+		1 new patte(c,x,i,-40)
+		i=i-1
+	}
+
+	t=x
+	repeat 2{
+		1 new patte(c,t,y,40)
+		1 new patte(c,t,y,90)
+		1 new patte(c,t,y,130)
+		1 new patte(c,t,y,-130)
+		1 new patte(c,t,y,-90)
+		1 new patte(c,t,y,-40)
+		t=t-1
+	}
+}
+
+/*Agents chargé de dessiner la tête*/
+agent head(c,x,y){
+	color=white
+	teleport(x+175,y+42,90)
+	pd
+	fd 22
+	lt 90
+	a=17
+	while(a != 0){
+		a=a-1
+		fd 2
+		lt 10
+	}
+	die
+}
+
+/*Fonction d'appel des agents pour la tête*/
+function drawHead(c,x,y){
+	t=x
+	repeat 12 {
+		1 new head(c,t,y)
+		t=t+1
+	}
+	
+}
+
+/*Main*/
+c = 200
+
+x = 0
+y = 0
+greenWall(c,x,y)
+drawS(c,x,y)
+drawPatte(c,x,y)
+drawHead(c,x,y)
+
+
+x = 200
+y = 0
+greenWall(c,x,y)
+drawS(c,x,y)
+drawPatte(c,x,y)
+drawHead(c,x,y)
+
+x = 0
+y = 200
+greenWall(c,x,y)
+drawS(c,x,y)
+drawPatte(c,x,y)
+drawHead(c,x,y)
+
+x = 200
+y = 200
+greenWall(c,x,y)
+drawS(c,x,y)
+drawPatte(c,x,y)
+drawHead(c,x,y)
