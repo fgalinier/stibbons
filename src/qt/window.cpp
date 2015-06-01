@@ -104,6 +104,9 @@ void Window::createActions() {
 	saveUnderAct->setShortcuts(QKeySequence::SaveAs);
 	saveUnderAct->setStatusTip(tr("Save the program in a file"));
 	connect(saveUnderAct, SIGNAL(triggered()), this, SLOT(saveUnder()));
+
+	new QShortcut(QKeySequence::NextChild, this, SLOT(nextTab()));
+	new QShortcut(QKeySequence::PreviousChild, this, SLOT(previousTab()));
 }
 
 void Window::createToolBars() {
@@ -408,6 +411,24 @@ void Window::createTab(QScrollArea *t){
 
 	this->setCentralWidget(tab); 
 
+}
+
+void Window::nextTab() {
+	if (!tab)
+		return;
+
+	auto i = tab->count();
+	if (i > 0)
+		tab->setCurrentIndex((tab->currentIndex() + 1) % i);
+}
+
+void Window::previousTab() {
+	if (!tab)
+		return;
+
+	auto i = tab->count();
+	if (i > 0)
+		tab->setCurrentIndex((tab->currentIndex() - 1) % i);
 }
 
 }

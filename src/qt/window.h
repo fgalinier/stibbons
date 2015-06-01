@@ -54,6 +54,10 @@ class Window : public QMainWindow {
 
 		void error(QString type, QString what);
 
+	private slots:
+		void nextTab();
+		void previousTab();
+
 	signals :
 		void change();
 
