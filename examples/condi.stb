@@ -1,3 +1,7 @@
+/*
+Ce code teste les conditionnelles.
+Il crée un agent qui dessine selon les résultats des conditionnelles.
+*/
 new agent {
 	pd
 

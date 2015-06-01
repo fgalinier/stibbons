@@ -1,3 +1,7 @@
+/*
+Ce code dessine un carré.
+*/
+
 new agent {
 	pd
 	fd 50

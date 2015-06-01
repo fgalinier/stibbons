@@ -1,3 +1,10 @@
+/*
+Ce programme teste les communications.
+L'agent a attend un message, quand il en reçoit un, il affiche dans la sortie standard "Quelqu'un m'a dit" suit du message.
+
+Un agent non nommé est aussi défini : il envoiele message coucou à la variable receveur. Celle-ci contient la tortue renvoyée par le new a().
+*/
+
 agent a () {
 	recv message
 	println("Quelqu’un m’a dit : " + message)

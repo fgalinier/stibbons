@@ -1,6 +1,10 @@
+/*
+Ce code dessine une spirale avec une tortue.
+*/
+
 new agent {
 	a = 1
-
+	teleport(world.max_x/2,world.max_y/2,0)
 	pd
 	repeat 60 {
 		rt 30

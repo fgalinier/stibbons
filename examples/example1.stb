@@ -1,3 +1,7 @@
+/*
+Ce programme effectue un simple déplacement de tortue.
+*/
+
 new agent {
 	pd
 	fd 50

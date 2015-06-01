@@ -1,7 +1,12 @@
+/*
+Ce programme crée un agent qui dessine un cercle.
+*/
 %x_border WRAP
 %y_border WRAP
 
+
 new agent {
+	teleport(world.max_x/2,world.max_y/2,0)
 	pd
 	repeat 360 {
 		rt 1

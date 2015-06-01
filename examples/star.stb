@@ -1,3 +1,10 @@
+/*
+Ce programme démontre l'interaction entre agents.
+On a un agent star rouge, qui se balade aléatoirement.
+5 agent anonymes regardent vers la star en permanence.
+Ils tournent quand elle passe.
+*/
+
 %x_border WRAP
 %y_border WRAP
 

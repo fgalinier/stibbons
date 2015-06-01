@@ -1,3 +1,6 @@
+/*
+Ce programme trace une ligne, qui débordant de la zone, réapparait du coté opposé avec un monde circulaire.
+*/
 %x_border WRAP
 %y_border WRAP
 

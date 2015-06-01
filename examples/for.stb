@@ -1,3 +1,10 @@
+/* 
+Ce programme teste l'utilisation des boucles for sur les tableaux.
+On crée deux tableaux, qu'on affiche.
+On teste ensuite un for sur un tableau, en faisant afficher les valeurs contenues dans le tableau.
+Ensuite, on affiche les clé-valeur, puis un tableau vide.
+*/
+
 t = {1, 2, 3}
 t["bla"] = 5
 

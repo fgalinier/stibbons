@@ -1,4 +1,9 @@
+/*
+Ce programme dessine un cercle à l'infini.
+*/
+
 new agent {
+	teleport(world.max_x/2,world.max_y/2,0)
 	while (true) {
 		pd
 		repeat 360 {

@@ -4,6 +4,7 @@
  agent vont travailler comme des fonctions récursives, délégant les sous-opérations si elles ne sont 
  pas élémentaires à de nouveaux agents.
 */
+
 agent sergeant_fibo(n) {
 	new fibo(n)
 	recv nb

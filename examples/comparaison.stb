@@ -1,3 +1,7 @@
+/*
+Ce code effectue différentes comparaisons entre différents types et affiche le résultat dans la sortie standard.
+*/
+
 if(1 == false){
 	println("1 == false")
 }

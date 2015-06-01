@@ -1,3 +1,7 @@
+/*
+Ce programme crée 2 agents qui tournent en rond à l'infini.
+*/
+
 2 new agent {
 	while true {
 		fd 20

@@ -1,3 +1,7 @@
+/*
+Ce programme trace un carré en coloriant les zones dans un dégradé de gris.
+*/
+
 agent pen (y) {
 	teleport(0, y, 0)
 
