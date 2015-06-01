@@ -264,7 +264,7 @@ void Window::halt() {
 }
 
 void Window::save(){
-if (openFileName != NULL)
+if (openFileName != "")
 {
 	QFile code(openFileName);
 	code.open(QIODevice::WriteOnly | QIODevice::Text);
@@ -277,8 +277,8 @@ if (openFileName != NULL)
 }
 
 void Window::saveUnder(){
-	QString fileName = QFileDialog::getSaveFileName(this, tr("Save File"));
-	QFile code(fileName);
+	openFileName = QFileDialog::getSaveFileName(this, tr("Save File"));
+	QFile code(openFileName);
 	code.open(QIODevice::WriteOnly | QIODevice::Text);
 	QTextStream flux(&code);
 	flux<< textArea->toPlainText();
