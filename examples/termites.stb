@@ -40,7 +40,7 @@ agent termite () {
 	}
 
 	function find_new_pile () {
-		while (zone.color != yellow) {
+		while zone.color != yellow {
 			wiggle()
 		}
 	}
@@ -48,25 +48,21 @@ agent termite () {
 	function put_down_chip () {
 		continue = true
 		while continue {
-			if (zone.color == black) {
+			if zone.color == black {
 				zone.color = yellow
 				color = white
 				get_away()
 				continue = false
 			}
 			else {
-				rt rand()
-				fd 1
+				wiggle()
 			}
 		}
 	}
 
 	function get_away () {
-		rt rand()
-		fd 20
-		while (zone.color != black) {
-			rt rand()
-			fd 20
+		while zone.color != black {
+			wiggle()
 		}
 	}
 

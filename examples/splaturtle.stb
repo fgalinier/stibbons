@@ -1,7 +1,17 @@
 %x_border WRAP
 %y_border WRAP
 
-agent ant (c) {
+// Spread ink on the zone
+function spread () {
+	zone.color = zone.color * zcolor
+}
+
+// Erase the zone
+function erase () {
+	zone.color = zone.color + #444
+}
+
+agent squid (tool, ink) {
 	function wiggle() {
 		rt rand() % 60
 		lt rand() % 60
@@ -9,24 +19,25 @@ agent ant (c) {
 	}
 
 	last_zone = nil
-	color = c - #222
-	zc = c + #888
+	color = ink - #222
+	zcolor = ink + #888
 
 	teleport(rand() % world.max_x, rand() % world.max_y, rand())
 
-	while (true) {
+	while true {
 		wiggle()
-		if (last_zone != zone) {
+		if last_zone != zone {
 			last_zone = zone
-			zone.color = zone.color * zc
+			tool()
 		}
 	}
 }
 
-new ant(red)
-new ant(green)
-new ant(blue)
-new ant(yellow)
-new ant(cyan)
-new ant(magenta)
+new squid(spread, red)
+new squid(spread, green)
+new squid(spread, blue)
+new squid(spread, yellow)
+new squid(spread, cyan)
+new squid(spread, magenta)
 
+6 new squid(erase, grey)

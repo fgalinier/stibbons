@@ -12,6 +12,6 @@ agent a () {
 receveur = new a()
 
 new agent {
-	send world.receveur "Coucou !"
+	send "Coucou !" world.receveur
 }
 
