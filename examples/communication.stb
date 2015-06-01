@@ -7,7 +7,7 @@ Lorque c'est le cas, il dit son nom et affiche ce message.
 Les affichages se font dans la sortie standard (console).
 On instancie 3 listener, Denis, Bjarne et Linus.
 
-On crée ensuite (l. 22) un agent non nommé qui envoit le message "hello, agents" à tout les agents, et qui crée un listener, Michel.
+On crée ensuite (l. 24) un agent non nommé qui envoit le message "Hello, agents!" à tous les agents, et qui crée un listener, Michel.
 Il envoit le message "Hello agents" à michel.
 */
 

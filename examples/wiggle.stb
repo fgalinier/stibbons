@@ -1,6 +1,6 @@
 /*
 Ce programme montre le déplacement aléatoire de tortues.
-On définit une fonction wiggle, puis on l'éxécute à l'infini.
+On définit une fonction wiggle, puis on l'exécute à l'infini.
 */
 
 %x_border WRAP

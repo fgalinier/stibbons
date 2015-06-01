@@ -2,7 +2,7 @@
 Ce programme teste l'instruction die.
 On crée 2 types d'agent : ant et cow.
 ant trace une ligne en se baladant aléatoirement.
-cow est rouge, se déplace 101 fois et meure.
+cow est rouge, se déplace 101 fois et meurt.
 On instancie 4 ant et 1 cow.
 Le programme doit donc finir avec 4 ant.
 */

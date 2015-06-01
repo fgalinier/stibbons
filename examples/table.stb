@@ -1,7 +1,7 @@
 /*
 Ce code teste les tableaux.
 On commence par définir deux tableaux.
-On affiche dans la sortie standard le troisième élément de t (bla), puis on le modifie en y metteant le chiffre 32, on le réaffiche (32).
+On affiche dans la sortie standard le troisième élément de t (bla), puis on le modifie en y mettant le chiffre 32, on le réaffiche (32).
 On affiche ensuite le tableau v, puis le tableau u, qui contient des tortues.
 */
 

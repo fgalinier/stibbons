@@ -1,5 +1,5 @@
 /*
-Ce code dessine un carré.
+Ce code dessine un carré (sans utilisation de boucle).
 */
 
 new agent {

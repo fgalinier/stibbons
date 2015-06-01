@@ -2,7 +2,7 @@
 Le programme montre l'utilisation de couleurs sur les zones.
 
 On crée plusieurs tortues qui prennent en paramètre une couleur.
-Elles se déplacent ensuite aléatoirement en modifiant la couleur des zones sur lequels elles passent.
+Elles se déplacent ensuite aléatoirement en modifiant la couleur des zones sur lesquelles elles passent.
 */
 
 %x_border WRAP

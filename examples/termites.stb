@@ -1,13 +1,13 @@
 /*
 Ce programme inspiré d'un exemple de NetLogo, présente les termites.
-Le but de ce programme est la construction d'une termitère par des termites.
+Le but de ce programme est la construction d'une termitière par des termites.
 
 Elles doivent pour cela regrouper des brindilles.
-Au départ, les zones sont aléatoirement coloriés en noir et jaune, le jaune correspondant à des brindilles.
+Au départ, les zones sont aléatoirement coloriées en noir et jaune, le jaune correspondant à des brindilles.
 On crée ensuite des agents qui se baladent aléatoirement.
 Lorqu'ils croisent une brindille, ils la prennent et la portent jusqu'à trouver un nouveau tas.
 
-Lors du déroulement de la simulation, des tas doivent être créé.
+Lors du déroulement de la simulation, des tas doivent être créés.
 */
 
 %world_width 100
