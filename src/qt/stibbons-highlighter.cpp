@@ -41,7 +41,6 @@ StibbonsHighlighter::StibbonsHighlighter(QTextDocument *document) : QSyntaxHighl
 	for (auto pattern : lits) {
 		rules.push_back({QRegExp(pattern),litFormat});
 	}
-	rules.push_back({QRegExp("//[^\n]*"),commentFormat});
 }
 
 void StibbonsHighlighter::highlightBlock(const QString &line) {
@@ -96,6 +95,10 @@ void StibbonsHighlighter::highlightBlock(const QString &line) {
 			}
 			break;
 		default:
+			if (line.mid(i, 2) == "//") {
+				setFormat(i+1, line.length() - i + 1, commentFormat);
+				return;
+			}
 			if (line.mid(i, 2) == "/*") {
 				commentStart = i+1;
 				state = CommentState;
