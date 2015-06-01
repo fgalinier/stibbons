@@ -58,7 +58,7 @@ void Window::createActions() {
 
 	icon = QApplication::style()->standardIcon (QStyle::SP_BrowserReload);
 	resetAct = new QAction(icon, tr("&Reset"), this);
-	resetAct->setShortcuts(QKeySequence::Refresh);
+	resetAct->setShortcut(QKeySequence(tr("F5")));
 	resetAct->setStatusTip(tr("Reset the world..."));
 	connect(resetAct, SIGNAL(triggered()), this, SLOT(reset()));
 
@@ -67,6 +67,12 @@ void Window::createActions() {
 	runAct->setShortcut(QKeySequence(tr("Ctrl+Space")));
 	runAct->setStatusTip(tr("Run the program"));
 	connect(runAct, SIGNAL(triggered()), this, SLOT(run()));
+
+	icon = QApplication::style()->standardIcon (QStyle::SP_MediaPlay);
+	rerunAct = new QAction(icon, tr("&Reset and run"), this);
+	rerunAct->setShortcut(QKeySequence(tr("Ctrl+R")));
+	rerunAct->setStatusTip(tr("Reset and run the program"));
+	connect(rerunAct, SIGNAL(triggered()), this, SLOT(rerun()));
 
 	icon = QApplication::style()->standardIcon (QStyle::SP_DialogSaveButton);
 	saveAct = new QAction(icon, tr("&Save"), this);
@@ -129,8 +135,11 @@ void Window::createToolBars() {
 
 	// Bouton menu
 	QMenu *menu = new QMenu(tr("Menu"));
+	menu->addAction(rerunAct);
+	menu->addSeparator();
 	menu->addAction(saveUnderAct);
 	menu->addAction(exportAct);
+	menu->addSeparator();
 	menu->addAction(aboutAct);
 	menu->addAction(quitAct);
 	toolbar->addAction(menu->menuAction());
@@ -251,6 +260,11 @@ void Window::run() {
 		runner->start();
 
 	updateToolbar();
+}
+
+void Window::rerun() {
+	reset();
+	run();
 }
 
 void Window::halt() {

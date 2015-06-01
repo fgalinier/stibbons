@@ -43,6 +43,7 @@ class Window : public QMainWindow {
 		void open();
 		void reset();
 		void run();
+		void rerun();
 		void halt();
 		void exportModel();
 		void exportModel(QString fileName);
@@ -76,6 +77,7 @@ class Window : public QMainWindow {
 		QAction *openAct;
 		QAction *resetAct;
 		QAction *runAct;
+		QAction *rerunAct;
 		QAction *haltAct;
 		QAction *quitAct;
 		QAction *aboutAct;
