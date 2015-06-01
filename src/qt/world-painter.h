@@ -2,7 +2,7 @@
  * \file world-painter.h
  * \brief The Stibbons world painter
  * \author Adrien Plazas
- * \version 1.0
+ * \version 1.1
  * \date 05/05/2015
  */
 

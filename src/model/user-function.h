@@ -2,7 +2,7 @@
  * \file user-function.h
  * \brief A class representing a user defined function
  * \author Adrien Plazas
- * \version 1.0
+ * \version 1.1
  * \date 10/04/2015
  */
 

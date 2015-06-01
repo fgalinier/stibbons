@@ -3,7 +3,7 @@
  * \brief Classes implementing standard functions
  * \author Adrien Plazas
  * \author Florian Galinier
- * \version 1.0
+ * \version 1.1
  * \date 10/04/2015
  */
 

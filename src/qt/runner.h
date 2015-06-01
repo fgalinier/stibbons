@@ -2,7 +2,7 @@
  * \file runner.h
  * \brief The Runner class header
  * \author Adrien Plazas
- * \version 1.0
+ * \version 1.1
  * \date 05/05/2015
  */
 

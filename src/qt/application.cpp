@@ -2,7 +2,7 @@
  * \file application.cpp
  * \brief The Stibbons application
  * \author Adrien Plazas
- * \version 1.0
+ * \version 1.1
  * \date 26/02/2015
  */
 

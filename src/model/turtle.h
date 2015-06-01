@@ -2,7 +2,7 @@
  * \file turtle.h
  * \brief The Turtle class header.
  * \author Julia Bassoumi, Adrien Plazas
- * \version 1.0
+ * \version 1.1
  * \date 08/04/2015
  */
 #pragma once

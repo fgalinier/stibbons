@@ -2,7 +2,7 @@
  * \file line-number-area.h
  * \brief The LineNumberArea class header
  * \author Florian Galinier
- * \version 1.0
+ * \version 1.1
  * \date 05/05/2015
  */
 #pragma once

@@ -2,7 +2,7 @@
  * \file semantic-exception.h
  * \brief SemanticException class header.
  * \author Florian Galinier
- * \version 1.0
+ * \version 1.1
  * \date 28/03/15
  *
  * Declaration of SemanticException class, used to prevent when interpreter find a

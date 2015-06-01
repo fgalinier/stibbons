@@ -2,7 +2,7 @@
  * \file size.h
  * \brief A size with a parametrable number of dimensions
  * \author Julia Bassoumi, Adrien Plazas
- * \version 1.0
+ * \version 1.1
  * \date 08/04/2015
  */
 

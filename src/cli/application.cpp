@@ -2,7 +2,7 @@
  * \file application.cpp
  * \brief The Stibbons headless application
  * \author Adrien Plazas
- * \version 1.0
+ * \version 1.1
  * \date 05/05/2015
  */
 
@@ -26,7 +26,7 @@ Application::Application (int & argc, char ** argv) :
 	{
 	setOrganizationName("StibbonsTeam");
 	setApplicationName("Stibbons");
-	setApplicationVersion("1.0");
+	setApplicationVersion("1.1");
 }
 
 Application::~Application () {

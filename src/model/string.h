@@ -2,7 +2,7 @@
  * \file string.h
  * \brief A class representing a string
  * \author Julia Bassoumi, Adrien Plazas
- * \version 1.0
+ * \version 1.1
  * \date 14/03/2015
  */
 

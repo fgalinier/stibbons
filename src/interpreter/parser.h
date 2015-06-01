@@ -2,7 +2,7 @@
  * \file parser.h
  * \brief Parser class header.
  * \author Florian Galinier
- * \version 1.0
+ * \version 1.1
  * \date 26/04/15
  *
  * Definition of the Parser class.

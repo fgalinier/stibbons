@@ -3,7 +3,7 @@
  * \brief Interpreter class header.
  * \author Florian Galinier
  * \author Clément Simon
- * \version 1.0
+ * \version 1.1
  * \date 15/03/15
  *
  * Declaration of Interpreter class.

@@ -2,7 +2,7 @@
  * \file function.h
  * \brief A class representing a function
  * \author Adrien Plazas
- * \version 1.0
+ * \version 1.1
  * \date 10/04/2015
  */
 

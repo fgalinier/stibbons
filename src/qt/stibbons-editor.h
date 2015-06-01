@@ -2,7 +2,7 @@
  * \file stibbons-highlighter.h
  * \brief The Highlighter header class
  * \author Florian Galiner
- * \version 1.0
+ * \version 1.1
  * \date 26/02/2015
  */
 #pragma once
