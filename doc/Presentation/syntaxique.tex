@@ -16,6 +16,23 @@
 	\end{rail}
 \end{frame}
 
+\begin{frame}[fragile]
+	Code~:
+	\begin{lstlisting}[language=Stibbons]
+new agent {
+  a = 10
+  fd a + 2
+}
+	\end{lstlisting}
+	Jetons~:
+	\begin{lstlisting}[breaklines]
+<NEW> <AGT> <{> <\n> 
+<ID,"a"> <=> <NUMBER,10> <\n>
+<FD> <ID,"a"> <+> <NUMBER,2> <\n>
+<}>
+	\end{lstlisting}
+\end{frame}
+
 \begin{frame}
 L'exemple précédent génère l'abre abstrait suivant~:
 \includegraphics[scale=0.3]{doc/Presentation/img/arbre.pdf}
