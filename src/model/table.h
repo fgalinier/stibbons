@@ -42,6 +42,13 @@ class Table : public GenericValue<Type::TABLE> {
 		 virtual ValuePtr getValue(string key);
 
 		 /**
+		 * Check if a key exists in the table
+		 * \param key the key
+		 * \return wether the key exists or not
+		 */
+		 virtual bool exists(string key);
+
+		 /**
 		 * Get all the named values
 		 * \return values contained in the table
 		 */

@@ -41,6 +41,15 @@ namespace stibbons {
 		return got->second;
 	}	
 
+	bool Table::exists(string key) {
+		lock_guard<recursive_mutex> lock(value_m);
+
+		auto got = namedValues.find(key);
+
+		return !(got == namedValues.end());
+
+	}
+
 	const unordered_map<string, ValuePtr>& Table::getNamedValues() {
 		lock_guard<recursive_mutex> lock(value_m);
 
