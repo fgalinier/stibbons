@@ -118,7 +118,12 @@ namespace stibbons {
 		 * \return a pair <line,column>
 		 */
 		virtual std::pair<int,int> getPosition() const;
-
+		
+		/**
+		 * Print the abstract tree in the given stream.
+		 * \param os the ostream where the tree is printed
+		 * \param dec the shifting symbol (used for pretty print)
+		 */
 		virtual void output(std::ostream&,std::string dec="") const;
 	};
 

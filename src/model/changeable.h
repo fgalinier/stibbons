@@ -1,3 +1,11 @@
+/**
+ * \file changeable.h
+ * \brief The Changeable header class
+ * \author Julia Bassoumi, Adrien Plazas
+ * \version 1.0
+ * \date 14/03/2015
+ */
+
 #pragma once
 
 #include "color.h"

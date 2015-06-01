@@ -14,12 +14,28 @@
 #include <QApplication>
 
 namespace stibbons {
+	/**
+	 * \class Application
+	 * \brief The application itself
+	 *
+	 * \author Adrien Plazas
+	 */
 
-class Application : private QApplication {
+	class Application : private QApplication {
 	public:
+		/**
+		 * Constructor
+		 * \param argc the arguments' number
+		 * \param argv the arguments' list
+		 */
 		Application(int & argc, char ** argv);
+
+		/**
+		 * Run the application
+		 * \return the return state of the application
+		 */
 		int exec();
-};
+	};
 
 }
 

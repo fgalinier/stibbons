@@ -35,7 +35,18 @@ enum class Type {
 	TYPE
 };
 
+/**
+ * Return a string corresponding to the given type.
+ * \param type the type
+ * \return a string corresponding to the type
+ */
 std::string toString(Type& type);
+
+/**
+ * Return a string corresponding to the given type (with r-value reference).
+ * \param type the type
+ * \return a string corresponding to the type
+ */
 std::string toString(Type&& type);
 
 class Agent;

@@ -1,3 +1,10 @@
+/**
+ * \file turtle.h
+ * \brief The Turtle class header.
+ * \author Julia Bassoumi, Adrien Plazas
+ * \version 1.0
+ * \date 08/04/2015
+ */
 #pragma once
 
 #include "changeable.h"
@@ -50,8 +57,10 @@ class Turtle : public Agent {
 		static TurtlePtr construct (Breed *breed = nullptr);
 
 		/**
-		 * Create a turtle
-		 *
+		 * Construct a turtle
+		 * \param breed the turtle's breed
+		 * \param parent a turtle who create the current turtle
+		 * \param id the id of the turtle
 		 */
 		static TurtlePtr construct (Breed *breed, AgentPtr parent, turtle_id id = 0);
 
@@ -167,8 +176,8 @@ class Turtle : public Agent {
 		 * \param the degree to turn
 		 */
 		void turnLeft(double angle);
-		/**
 
+		/**
 		 * Let a trace on the map behind the turtle
 		 */
 		void penDown() throw (future_error);
@@ -209,15 +218,17 @@ class Turtle : public Agent {
 
 		/**
 		 * Send a message to the Turtle t
-		 * \param a turtle t and the message
+		 * \param t a turtle
+		 * \param v the message to send
 		 */
-		void send(TurtlePtr t, ValuePtr);
+		void send(TurtlePtr t, ValuePtr v);
 
 		/**
-		 * Send a message to all the turtle  in t
-		 * \param a vector of turtle t and the message
+		 * Send a message to all the turtle in t
+		 * \param t a vector of turtle
+		 * \param v the message to send
 		 */
-		void send(vector<TurtlePtr> t, ValuePtr);
+		void send(vector<TurtlePtr> t, ValuePtr v);
 
 		/**
 		 * Send a message to all turtles
@@ -263,18 +274,22 @@ class Turtle : public Agent {
 
 	protected:
 		/**
-		 * Create a turtle
+		 * Create a turtle with breed
+		 * \param breed the turtle's breed
 		 */
 		Turtle (Breed *breed);
 
 		/**
 		 * Create a turtle
-		 *
+		 * \param breed the turtle's breed
+		 * \param parent a turtle who create the current turtle
+		 * \param id the id of the turtle
 		 */
 		Turtle (Breed *breed, AgentPtr parent, turtle_id id = 0);
 
 		/**
 		 * Special constructor for Breed
+		 * \param parent a turtle who create the current turtle
 		 */
 		Turtle (TurtlePtr parent);
 
@@ -286,7 +301,8 @@ class Turtle : public Agent {
 	private:
 		/**
 		 * Add a message to the deque
-		 * \param the expediteur and the message
+		 * \param exp the sender
+		 * \param v the message
 		 */
 		void addMessage(TurtlePtr exp, ValuePtr v);
 

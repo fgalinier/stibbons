@@ -34,9 +34,17 @@ class SimpleValue {
 		}
 
 		SimpleValue() = default;
+
+		/**
+		 * Copy constructor.
+		 * \param value the value to copy
+		 */
 		SimpleValue(T value) : value(value) {}
 
-		// Move initialization
+		/**
+		 * Move initialization.
+		 * \param other the value to move
+		 */
 		SimpleValue (SimpleValue&& other) {
 			lock_guard<recursive_mutex> lock(other.value_m);
 
@@ -47,7 +55,10 @@ class SimpleValue {
 			other.reset();
 		}
 
-		// Copy initialization
+		/**
+		 * Copy initialization.
+		 * \param other the value to copy
+		 */
 		SimpleValue(SimpleValue& other) {
 			lock_guard<recursive_mutex> lock(other.value_m);
 
@@ -55,7 +66,10 @@ class SimpleValue {
 			value = other.value;
 		}
 
-		// Move assignment
+		/**
+		 * Move assignment.
+		 * \param other the value to move
+		 */
 		SimpleValue& operator = (SimpleValue&& other) {
 			if (this == &other)
 				return *this;
@@ -73,7 +87,10 @@ class SimpleValue {
 			return *this;
 		}
 
-		// Copy assignment
+		/**
+		 * Copy assignment.
+		 * \param other the value to copy.
+		 */
 		SimpleValue& operator = (SimpleValue& other) {
 			if (this == &other)
 				return *this;

@@ -1,3 +1,10 @@
+/**
+ * \file stibbons-highlighter.h
+ * \brief The Highlighter header class
+ * \author Florian Galiner
+ * \version 1.0
+ * \date 26/02/2015
+ */
 #pragma once
 
 #include <QPlainTextEdit>
@@ -6,13 +13,32 @@
 #include <QPainter>
 #include <QSize>
 
+/**
+ * \class StibbonsEditor
+ * \brief The editor class in Qt application.
+ *
+ * \author Florian Galiner
+ */
 class StibbonsEditor : public QPlainTextEdit {
     Q_OBJECT
 
  public:
+	/**
+	 * Constructor
+	 * \param parent the widget parent
+	 */
     StibbonsEditor(QWidget *parent = 0);
 
+	/**
+	 * Repaint the lines number
+	 * \param event the event that called the method
+	 */
     void lineNumberAreaPaintEvent(QPaintEvent *event);
+
+	/**
+	 * Return the line number area width
+	 * \return the line number area width
+	 */
     int areaWidth() const;
 
  protected:

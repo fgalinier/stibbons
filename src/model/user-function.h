@@ -10,13 +10,8 @@
 
 #include "function.h"
 
-//#include "value.h"
 #include "../interpreter/interpreter-manager.h"
 #include "../interpreter/tree.h"
-//#include <iostream>
-//#include <vector>
-//#include <string>
-//#include <mutex>
 
 namespace stibbons {
 

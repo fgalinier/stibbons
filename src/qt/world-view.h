@@ -18,13 +18,33 @@
 
 namespace stibbons {
 
-class WorldView : public QWidget {
-	Q_OBJECT
+	/**
+	 * \class WorldView
+	 * \brief The view of the world in Qt application.
+	 *
+	 * \author Adrien Plazas
+	 */
+	class WorldView : public QWidget {
+		Q_OBJECT
 
 	public:
+		
+		/**
+		 * Constructor
+		 * \param parent the parent widget
+		 */
 		WorldView(QWidget *parent = nullptr);
 
+		/**
+		 * Set the current world with the param
+		 * \param world the new world
+		 */
 		void setWorld(WorldPtr world);
+
+		/**
+		 * Get the current world
+		 * \return the current world
+		 */
 		WorldPtr getWorld();
 
 		virtual QSize sizeHint() const;
@@ -33,12 +53,15 @@ class WorldView : public QWidget {
 		virtual void paintEvent(QPaintEvent *event);
 
 	signals:
+		/**
+		 * Method to call when the world changed
+		 */
 		void changed();
 
 	private:
 		WorldPtr world;
 		WorldPainter worldPainter;
-};
+	};
 
 }
 

@@ -1,3 +1,10 @@
+/**
+ * \file zone.h
+ * \brief The Zone header class
+ * \author Julia Bassoumi, Adrien Plazas
+ * \version 1.0
+ * \date 14/03/2015
+ */
 #pragma once
 
 #include "world.h"
@@ -33,6 +40,7 @@ class Zone : public Agent{
 	public:
 		/**
 		 * Create a zone
+		 * \param parent the parent of the current zone
 		 */
 		static ZonePtr construct (AgentPtr parent);
 
@@ -123,6 +131,7 @@ class Zone : public Agent{
 	protected:
 		/**
 		 * Create a zone
+		 * \param parent the parent of the current zone
 		 */
 		Zone (AgentPtr parent);
 

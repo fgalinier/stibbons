@@ -29,83 +29,96 @@ class QMenu;
 using namespace std;
 namespace stibbons {
 
-class Window : public QMainWindow {
-	Q_OBJECT
+	/**
+	 * \class Window
+	 * \brief The window of Qt application.
+	 *
+	 * \author Adrien Plazas
+	 */
+	class Window : public QMainWindow {
+		Q_OBJECT
 
 	public:
+		/**
+		 * Constructor
+		 */
 		Window();
+
+		/**
+		 * Destructor
+		 */
 		~Window();
 
 	protected:
 		void closeEvent(QCloseEvent *event) Q_DECL_OVERRIDE;
 
-	public slots:
-		void open();
-		void reset();
-		void run();
-		void rerun();
-		void halt();
-		void exportModel();
-		void exportModel(QString fileName);
-		void about();
-		void updateInterpreterWaitTime(int waitTime);
-		void save();
-		void saveUnder();
+		public slots:
+			void open();
+			void reset();
+			void run();
+			void rerun();
+			void halt();
+			void exportModel();
+			void exportModel(QString fileName);
+			void about();
+			void updateInterpreterWaitTime(int waitTime);
+			void save();
+			void saveUnder();
 
-		void error(QString type, QString what);
+			void error(QString type, QString what);
 
-	private slots:
-		void nextTab();
-		void previousTab();
+			private slots:
+				void nextTab();
+				void previousTab();
 
 	signals :
-		void change();
+				void change();
 
 	private:
-		void createActions();
-		void createToolBars();
-		void readSettings();
-		void writeSettings();
+				void createActions();
+				void createToolBars();
+				void readSettings();
+				void writeSettings();
 
-		void loadFile(const QString &fileName);
-		void loadProgram();
+				void loadFile(const QString &fileName);
+				void loadProgram();
 
-		void updateToolbar();
+				void updateToolbar();
 
-		void createTab(QScrollArea *t);
+				void createTab(QScrollArea *t);
 
-		void loadText(QString fileName);
+				void loadText(QString fileName);
 
-		void updatePrint(QScrollArea* t);
+				void updatePrint(QScrollArea* t);
 
-		QAction *openAct;
-		QAction *resetAct;
-		QAction *runAct;
-		QAction *rerunAct;
-		QAction *haltAct;
-		QAction *quitAct;
-		QAction *aboutAct;
-		QAction *exportAct;
-		QAction *saveAct;
-		QAction *saveUnderAct;
+				QAction *openAct;
+				QAction *resetAct;
+				QAction *runAct;
+				QAction *rerunAct;
+				QAction *haltAct;
+				QAction *quitAct;
+				QAction *aboutAct;
+				QAction *exportAct;
+				QAction *saveAct;
+				QAction *saveUnderAct;
 
-		WorldView *worldView;
+				WorldView *worldView;
 
-		QToolBar *toolbar;
-		QSlider* slider;
+				QToolBar *toolbar;
+				QSlider* slider;
 
-		QTabWidget *tab;
-		QWidget *print;
-		QWidget *code;
-		StibbonsEditor *textArea;
-		StibbonsHighlighter *highlighter;
+				QTabWidget *tab;
+				QWidget *print;
+				QWidget *code;
+				StibbonsEditor *textArea;
+				StibbonsHighlighter *highlighter;
 
-		Runner *runner;
+				Runner *runner;
 
-		std::string program;
-		QString openFileName;
+				std::string program;
+				QString openFileName;
 
-};
+	};
 
 }
 

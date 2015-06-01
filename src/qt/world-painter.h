@@ -16,13 +16,37 @@
 
 namespace stibbons {
 
-class WorldPainter {
+	/**
+	 * \class WorldPainter
+	 * \brief The painter of the world in Qt application.
+	 *
+	 * \author Adrien Plazas
+	 */
+	class WorldPainter {
 	public:
+		/**
+		 * Constructor
+		 * \param world the world to paint
+		 */
 		WorldPainter(WorldPtr world);
 
+		/**
+		 * Reset the buffer which contains lines
+		 */
 		void resetLinesBuffer();
 
+		/**
+		 * Paint an object on the world view
+		 * \param p object to paint
+		 */
 		void paint(QPainter &p);
+
+		/**
+		 * Paint an object on the world view
+		 * \param p object to paint
+		 * \param xt x translation
+		 * \param yt y translation
+		 */
 		void paint(QPainter &p, int xt, int yt);
 
 	private:
@@ -38,7 +62,7 @@ class WorldPainter {
 		QImage linesBuffer;
 
 		WorldPtr world;
-};
+	};
 
 }
 

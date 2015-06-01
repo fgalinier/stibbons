@@ -1,3 +1,10 @@
+/**
+ * \file line-number-area.h
+ * \brief The LineNumberArea class header
+ * \author Florian Galinier
+ * \version 1.0
+ * \date 05/05/2015
+ */
 #pragma once
 
 #include <QPlainTextEdit>
@@ -5,8 +12,18 @@
 #include <QSize>
 #include "stibbons-editor.h"
 
+/**
+ * \class LineNumberArea
+ * \brief Widget that contain the line number area
+ *
+ * \author Florian Galinier
+ */
 class LineNumberArea : public QWidget {
  public:
+	/**
+	 * Constructor
+	 * \param editor the stibbons editor
+	 */
     LineNumberArea(StibbonsEditor *editor) : QWidget(editor), editor(editor) {}
 
     QSize sizeHint() const Q_DECL_OVERRIDE {
