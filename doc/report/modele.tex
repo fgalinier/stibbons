@@ -12,6 +12,7 @@ Lors du premier sprint, nous avons commencé par mettre en place la base du prog
 
 
 \begin{figure}[h]
+\centering
 \includegraphics[scale=0.5]{doc/report/uml/v01.png}
 \caption{\label{v0.1} UML prévisionnel de la version 0.1}
 \end{figure}
@@ -56,6 +57,7 @@ La maîtrise du temps se fait grâce à un bouton pause, qui arrête les threads
 Lors du premier sprint, nous avons mis en place un certains nombre de types (cf. Figure~\ref{v0.1R}), comme \verb|Color|, représentant les couleurs, ou encore \verb|Nil|, représentant la valeur nulle. Ils héritent de \verb|Value|, une classe abstraite qui contient une valeur et ses accesseurs.
 
 \begin{figure}[h]
+\centering
 \includegraphics[scale=0.5]{doc/report/uml/v01reel.png}
 \caption{\label{v0.1R} UML de la version 0.1 réalisée}
 \end{figure}
@@ -65,6 +67,7 @@ Pour que l'utilisateur puisse écrire des fonctions dans le code, nous avons ajo
 Des mutex ont également été ajoutés dans toutes les classes pour assurer que les objets soient thread-safe (cf.~\ref{v0.2}).
 
 \begin{figure}[h]
+\centering
 \includegraphics[scale=0.45]{doc/report/uml/v02.png}
 \caption{\label{v0.2} UML version 0.2}
 \end{figure}
@@ -92,6 +95,7 @@ u = 5 new agent {
 \end{lstlisting}
 
 \begin{figure}[h]
+\centering
 \includegraphics[scale=0.4]{doc/report/uml/v03.png}
 \caption{\label{v0.3} UML version 0.3}
 \end{figure}
@@ -101,7 +105,8 @@ Nous avons mis en place des mutex récursifs lors du quatrième sprint. Ils perm
 Ces mutex permettent d'éviter des blocages dans certaines situations (fonctions récursives, etc.).
 L'UML \ref{v0.4} est l'état final du modèle, le sprint 5 n'y ayant apporté aucune modification.
 \begin{figure}[h]
-\includegraphics[scale=0.4]{doc/report/uml/v04.png}
+\centering
+\includegraphics[scale=0.55, angle=90]{doc/report/uml/v04.png}
 \caption{\label{v0.4} UML version 0.4}
 \end{figure}
 

@@ -35,7 +35,7 @@ int main(){
 }
 \end{lstlisting}
 
-La transformation en code C++ se fait par compilation via l'appel à l'application \verb|flex -+ exemple.l+|. La fonction d'analyse ainsi générée se nomme \verb|yylex()|.
+La transformation en code C++ se fait par compilation via l'appel à l'application \texttt{flex -+ exemple.l+}. La fonction d'analyse ainsi générée se nomme \verb|yylex()|.
 Il faut par la suite penser à compiler le programme en liant la bibliothèque Flex via le flag \verb|-lfl|.
 
 \subsection{Bison}
@@ -108,6 +108,6 @@ Les différents types de jeton sont déclarés via l'instruction \verb|%token NO
 #define YYSTYPE struct { stibbons::ValuePtr v; stibbons::TreePtr tr; int tok; }
 \end{lstlisting}
 
-Si on veut un analyseur syntaxique en C++, il faut utiliser un squelette de parseur C++ en utilisant soit l'option bison \verb|-skeleton=lalr1.cc|, soit en utilisant la directive \verb|%skeleton "lalr1.cc"|.
+Si on veut un analyseur syntaxique en C++, il faut utiliser un squelette de parseur C++ en utilisant soit l'option bison \verb|-skeleton=lalr1.cc|, soit en utilisant la directive \texttt{\%skeleton "lalr1.cc"}.
 
-La transformation en code C++ se fait par compilation via l'appel à l'application \verb|bison -ydt exemple.y+|. La fonction d'analyse ainsi générée se nomme \verb|yyparse()| et fait appel en interne à \verb|yylex()|.
+La transformation en code C++ se fait par compilation via l'appel à l'application \texttt{bison -ydt exemple.y+}. La fonction d'analyse ainsi générée se nomme \verb|yyparse()| et fait appel en interne à \verb|yylex()|.

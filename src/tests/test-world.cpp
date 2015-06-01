@@ -24,8 +24,8 @@ class TestWorld : public TestCase{
 
 		void setUp(){
 			auto worldSize = Size(2);
-			worldSize.setValue(0, 10);
-			worldSize.setValue(1, 10);
+			worldSize.setValue(0, 3);
+			worldSize.setValue(1, 3);
 			auto zoneSize = Size(2);
 			zoneSize.setValue(0, 10);
 			zoneSize.setValue(1, 10);
