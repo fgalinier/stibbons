@@ -57,25 +57,25 @@ void Window::createActions() {
 	connect(openAct, SIGNAL(triggered()), this, SLOT(open()));
 
 	icon = QApplication::style()->standardIcon (QStyle::SP_BrowserReload);
-	resetAct = new QAction(icon, tr("&Reset..."), this);
+	resetAct = new QAction(icon, tr("&Reset"), this);
 	resetAct->setShortcuts(QKeySequence::Refresh);
 	resetAct->setStatusTip(tr("Reset the world..."));
 	connect(resetAct, SIGNAL(triggered()), this, SLOT(reset()));
 
 	icon = QApplication::style()->standardIcon (QStyle::SP_MediaPlay);
-	runAct = new QAction(icon, tr("&Run..."), this);
+	runAct = new QAction(icon, tr("&Run"), this);
 	runAct->setShortcut(QKeySequence(tr("Ctrl+Space")));
 	runAct->setStatusTip(tr("Run the program"));
 	connect(runAct, SIGNAL(triggered()), this, SLOT(run()));
 
 	icon = QApplication::style()->standardIcon (QStyle::SP_DialogSaveButton);
-	saveAct = new QAction(icon, tr("&Save..."), this);
+	saveAct = new QAction(icon, tr("&Save"), this);
 	saveAct->setShortcuts(QKeySequence::Save);
 	saveAct->setStatusTip(tr("Save the program"));
 	connect(saveAct, SIGNAL(triggered()), this, SLOT(save()));
 
 	icon = QApplication::style()->standardIcon (QStyle::SP_MediaPause);
-	haltAct = new QAction(icon, tr("&Halt..."), this);
+	haltAct = new QAction(icon, tr("&Halt"), this);
 	haltAct->setShortcut(QKeySequence(tr("Ctrl+Space")));
 	haltAct->setStatusTip(tr("Halt the execution of the program"));
 	connect(haltAct, SIGNAL(triggered()), this, SLOT(halt()));
