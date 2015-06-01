@@ -121,13 +121,9 @@ namespace stibbons {
 				//Variable cases:
 			case yy::parser::token::ID: {
 				auto id = dynamic_pointer_cast<String>(std::get<1>(tree->getNode()))->getValue();
-				if(hashTable) {
-					auto got = hashTable->getValue(id);
-					if (got->getType() != Type::NIL) {
-						return hashTable->getValue(id);
-					}
-				}
-				return agent->getProperty(id);
+				return (hashTable && hashTable->exists(id)) ?
+					hashTable->getValue(id) :
+					agent->getProperty(id);
 			}
 			case yy::parser::token::TAB_ID: {
 				auto tab = this->interpret(manager,agent,tree->getChild(0),hashTable);
@@ -565,7 +561,10 @@ namespace stibbons {
 
 	inline ValuePtr Interpreter::callOp(InterpreterManager& manager,AgentPtr agent,TreePtr tree, TablePtr hashTable){
 		auto id = dynamic_pointer_cast<String>(std::get<1>(tree->getNode()))->getValue();
-		auto fct = dynamic_pointer_cast<Function>(agent->getProperty(id));
+		auto fctval = (hashTable && hashTable->exists(id)) ?
+			hashTable->getValue(id) :
+			agent->getProperty(id);
+		auto fct = dynamic_pointer_cast<Function>(fctval);
 		if(fct == nullptr)
 			throw SemanticException("Try to eval a non function value",
 									getPosition(tree));
