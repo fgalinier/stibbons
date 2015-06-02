@@ -13,7 +13,8 @@ agent star () {
 
 3 new star ()
 
-6 new agent {
+
+agent paparazzi (id) {
 	function wiggle(){
 		rt rand() % 50
 		lt rand() % 50
@@ -22,9 +23,9 @@ agent star () {
 	function findStar(){
 		if (inbox() != 0){ 
 			recv msg exp
-			println("Je suis ")
+			/*println("Je suis ")
 			println(id)
-			println(" et j'ai reçu un message")
+			println(" et j'ai reçu un message")*/
 			face(exp)
 			wiggle()
 		}
@@ -32,9 +33,9 @@ agent star () {
 		if (size(turtles) != 0) {
 			for i in turtles {
 				if (i.color == red){
-					println("Je suis ")
-					println(id)
-					println("et je l'ai trouvé !")
+					/*print("Je suis ")
+					print(id)
+					print("et je l'ai trouvé !\n")*/
 					coordonnee={i.pos_x, i.pos_y, i.pos_angle}
 					face(i)
 					send coordonnee
@@ -49,4 +50,8 @@ agent star () {
 	
 }
 
-
+id=1
+repeat 6 {
+	new paparazzi (id)
+	id=id+1
+}
