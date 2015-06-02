@@ -16,7 +16,7 @@ agent green(c,x,y){
 	teleport(x,y,0)
 	repeat c {
 		fd 1
-		zone.color=green
+		zone.color=#77ee77
 	}
 	die
 }
@@ -79,7 +79,7 @@ function drawS(c,x,y){
 }
 
 /*Agents chargé de dessiner les pattes*/
-agent patte(c,x,y,a){
+agent paw(c,x,y,a){
 	color=white
 	teleport(x+148,y+50,a)
 	pd
@@ -88,26 +88,26 @@ agent patte(c,x,y,a){
 }
 
 /*Fonction d'appel des agents pour les pattes*/
-function drawPatte(c,x,y){
+function drawPaw(c,x,y){
 	i=y
 	repeat 2{
-		1 new patte(c,x,i,40)
-		1 new patte(c,x,i,90)
-		1 new patte(c,x,i,130)
-		1 new patte(c,x,i,-130)
-		1 new patte(c,x,i,-90)
-		1 new patte(c,x,i,-40)
+		1 new paw(c,x,i,40)
+		1 new paw(c,x,i,90)
+		1 new paw(c,x,i,130)
+		1 new paw(c,x,i,-130)
+		1 new paw(c,x,i,-90)
+		1 new paw(c,x,i,-40)
 		i=i-1
 	}
 
 	t=x
 	repeat 2{
-		1 new patte(c,t,y,40)
-		1 new patte(c,t,y,90)
-		1 new patte(c,t,y,130)
-		1 new patte(c,t,y,-130)
-		1 new patte(c,t,y,-90)
-		1 new patte(c,t,y,-40)
+		1 new paw(c,t,y,40)
+		1 new paw(c,t,y,90)
+		1 new paw(c,t,y,130)
+		1 new paw(c,t,y,-130)
+		1 new paw(c,t,y,-90)
+		1 new paw(c,t,y,-40)
 		t=t-1
 	}
 }
@@ -145,7 +145,7 @@ x = 0
 y = 0
 greenWall(c,x,y)
 drawS(c,x,y)
-drawPatte(c,x,y)
+drawPaw(c,x,y)
 drawHead(c,x,y)
 
 
@@ -153,19 +153,19 @@ x = 200
 y = 0
 greenWall(c,x,y)
 drawS(c,x,y)
-drawPatte(c,x,y)
+drawPaw(c,x,y)
 drawHead(c,x,y)
 
 x = 0
 y = 200
 greenWall(c,x,y)
 drawS(c,x,y)
-drawPatte(c,x,y)
+drawPaw(c,x,y)
 drawHead(c,x,y)
 
 x = 200
 y = 200
 greenWall(c,x,y)
 drawS(c,x,y)
-drawPatte(c,x,y)
+drawPaw(c,x,y)
 drawHead(c,x,y)
