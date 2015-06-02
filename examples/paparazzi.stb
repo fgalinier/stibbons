@@ -1,0 +1,52 @@
+%x_border bounce
+%y_border bounce
+
+agent star () {
+	teleport(100,100,0)
+	color=red
+	while (true) {
+		rt rand() % 20
+		lt rand() % 20
+		fd 1
+	}
+}
+
+3 new star ()
+
+6 new agent {
+	function wiggle(){
+		rt rand() % 50
+		lt rand() % 50
+		fd 5
+	}
+	function findStar(){
+		if (inbox() != 0){ 
+			recv msg exp
+			println("Je suis ")
+			println(id)
+			println(" et j'ai reçu un message")
+			face(exp)
+			wiggle()
+		}
+		turtles=in_radius(20)
+		if (size(turtles) != 0) {
+			for i in turtles {
+				if (i.color == red){
+					println("Je suis ")
+					println(id)
+					println("et je l'ai trouvé !")
+					coordonnee={i.pos_x, i.pos_y, i.pos_angle}
+					face(i)
+					send coordonnee
+				}
+			}	
+		}
+	}
+	while(true){
+		wiggle()
+		findStar()
+	}
+	
+}
+
+
