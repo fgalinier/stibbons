@@ -38,8 +38,8 @@ agent orderS(){
 	die
 }
 
-/*Agents cahrgé de dessiner le S*/
-agent stibbon(c,x,y,t,d){
+/*Agents chargé de dessiner le S*/
+agent sBody(c,x,y,t,d){
 	color = white
 	if(x > y){
 		teleport(x+30,y-20-t,0)
@@ -72,7 +72,7 @@ function drawS(c,x,y){
 	t = x
 	repeat 20{
 		1 new orderS()
-		1 new stibbon(c,x,y,t,d)
+		1 new sBody(c,x,y,t,d)
 		d = d-1
 		t = t-1
 	}
