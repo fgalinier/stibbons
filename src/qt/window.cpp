@@ -358,13 +358,14 @@ void Window::about() {
 	QMessageBox::about(this, tr("About Stibbons"),
 		tr(
 			"<p><b>Stibbons</b> multi agent-system</p>"
-			"<p><a href=\"https://gitlab.info-ufr.univ-montp2.fr/florian.galinier/stibbons\">Site Web</a></p>"
+			"<p><a href=\"https://gitlab.info-ufr.univ-montp2.fr/florian.galinier/stibbons\">Website</a></p>"
 			"<p><small>"
 				"Copyright © 2015 <a href=\"mailto://julia.bassoumi@etud.univ-montp2.fr\">Julia Bassoumi</a><br/>"
 				"Copyright © 2015 <a href=\"mailto://florian.galinier@etud.univ-montp2.fr\">Florian Galinier</a><br/>"
 				"Copyright © 2015 <a href=\"mailto://adrien.plazas@etud.univ-montp2.fr\">Adrien Plazas</a><br/>"
 				"Copyright © 2015 <a href=\"mailto://clement.simon@etud.univ-montp2.fr\">Clement Simon</a>"
 			"</small></p>"
+			"<p><small><a href=\"http://www.umontpellier.fr/\">University of Montpellier</a></small></p>"
 		));
 }
 
