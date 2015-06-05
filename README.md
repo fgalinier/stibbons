@@ -1,5 +1,7 @@
 # Stibbons
 
+![Logo Stibbons](https://gitlab.info-ufr.univ-montp2.fr/florian.galinier/stibbons/raw/master/data/images/stibbons-full.png)
+
 Ceci est le projet Stibbons en version 1.1 développé dans le cadre du Master Architecture et
 InGénierie du Logiciel et du wEb à la Faculté des Sciences à l'Université Montpellier.
 
