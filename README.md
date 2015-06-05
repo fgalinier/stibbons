@@ -10,9 +10,7 @@ débutants et avancés : le Stibbons. Nous l’avons réalisé en C++ et ses app
 le framework Qt. Deux applications sont proposées pour répondre à deux cas d’utilisation dif-
 férents : une application graphique permettant de développer des programmes Stibbons et de
 les voir s’exécuter directement, et une application en ligne de commande simplifiant l’exécution
-d’un programme et permettant un export régulier de données du modèle exécuté. Ce rapport
-expose le fonctionnement du langage Stibbons et de ses applications, ainsi que l’organisation
-que nous avons eu tout au long de la réalisation de ce projet.
+d’un programme et permettant un export régulier de données du modèle exécuté. 
 
 ## Dépendances des exécutables
 
