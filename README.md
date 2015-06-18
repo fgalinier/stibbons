@@ -1,63 +1,61 @@
 # Stibbons
 
-![Logo Stibbons](https://gitlab.info-ufr.univ-montp2.fr/florian.galinier/stibbons/raw/master/data/images/stibbons-full.png)
+![Stibbons logo](https://raw.githubusercontent.com/Ynigvi/stibbons/master/data/images/stibbons-full.png)
 
-Ceci est le projet Stibbons en version 1.1 développé dans le cadre du Master Architecture et
-InGénierie du Logiciel et du wEb à la Faculté des Sciences à l'Université Montpellier.
+The Stibbons project's development began within the context of the AIGLE (Software and Web Architecture and Engineering) master of Faculty of Science, University of Montpellier.
 
-Ce projet vise à la création d’un langage de programmation multi-agents pour programmeurs
-débutants et avancés : le Stibbons. Nous l’avons réalisé en C++ et ses applications utilisent
-le framework Qt. Deux applications sont proposées pour répondre à deux cas d’utilisation dif-
-férents : une application graphique permettant de développer des programmes Stibbons et de
-les voir s’exécuter directement, et une application en ligne de commande simplifiant l’exécution
-d’un programme et permettant un export régulier de données du modèle exécuté. 
+The project provide a new multi-agent programming language called Stibbons. It is built in C++11 and its applications use the Qt framework.
 
-## Dépendances des exécutables
+Two applications are proposed to answer to different cases:
+- a GUI based application alowing to develop and run Stibbons programs,
+- a CLI based application used to run Stibbons programs without the need of a windowing system and to regularly export the generated model.
+
+## Dependencies
 
 - C++11
 - Qt 5.0
 - Flex
 - Bison
-- Json Spirit 4.0.4 (requiert Boost)
+- Json Spirit 4.0.4 (requires Boost)
 - CppUnit
 
-## Compilation
+## Compile
 
-### Tout
+### All
 
-`make` ou `make all`
+`make` or `make all`
 
-### Nettoyage
+### Clean
 
 `make clean`
 
 ### Applications
 
-#### Application graphique
+#### GUI application
 
 `make stibbons`
 
-#### Application en ligne de commande
+#### CLI application
 
 `make stibbons-cli`
 
-#### Tests unitaires
+#### Unit tests
 
 `make test`
 
-### Documentation
+### Documentation (french)
 
 `make doc`
 
-#### Rapport
+#### Report
 
 `make report`
 
-#### Rapport de gestion de projet
+#### Project management report
 
 `make project`
 
-#### Présentation
+#### Keynote
 
 `make keynote`
 
