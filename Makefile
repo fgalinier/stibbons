@@ -8,41 +8,24 @@ ICONSDIR = $(SHAREDIR)/icons
 INSTALLEDICONDIR = $(ICONSDIR)/hicolor/scalable/apps
 
 CC = g++ 
-MOC = moc-qt5
-RCC = rcc-qt5
-
-INCDIR = /usr/include
-QTINCDIR = $(INCDIR)/qt5
+MOC = moc
+RCC = rcc
 
 TESTINCDIRS = `pkg-config --cflags cppunit`
 
 TESTLIBS = `pkg-config --libs cppunit`
 
-QTINCDIRS = \
-	-I$(QTINCDIR) \
-	-I$(QTINCDIR)/QtCore \
-	-I$(QTINCDIR)/QtGui \
-	-I$(QTINCDIR)/QtWidgets \
-	$(NULL)
+QTPKGS = Qt5Core Qt5Gui Qt5Widgets
 
-QTLIBS = \
-	-lQt5Core \
-	-lQt5Gui \
-	-lQt5Widgets \
-	$(NULL)
+QTINCDIRS = $(shell pkg-config --cflags $(QTPKGS))
+QTLIBS = $(shell pkg-config --libs $(QTPKGS))
 
-CLIINCDIRS = \
-	-I$(QTINCDIR) \
-	-I$(QTINCDIR)/QtCore \
-	-I$(QTINCDIR)/QtGui \
-	$(NULL)
+CLIPKGS = Qt5Core Qt5Gui
 
-CLILIBS = \
-	-lQt5Core \
-	-lQt5Gui \
-	$(NULL)
+CLIINCDIRS = $(shell pkg-config --cflags $(CLIPKGS))
+CLILIBS = $(shell pkg-config --libs $(CLIPKGS))
 
-CFLAGS = -fPIC -Wall -Wpedantic -std=c++11 -g -ljson_spirit
+CFLAGS = -fPIC -Wall -Wpedantic -std=c++11 -g -ljson_spirit  -lpthread
 
 MODELSRC = \
 	src/model/agent.cpp \
